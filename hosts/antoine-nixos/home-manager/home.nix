@@ -9,7 +9,7 @@
   imports = [
     # Reusable modules
     ../../../modules/home-manager/hyprland
-    ../../../modules/home-manager/alacritty
+    ../../../modules/home-manager/alacritty.nix
     ../../../modules/home-manager/zsh.nix
     ../../../modules/home-manager/git.nix
     ../../../modules/home-manager/waybar
