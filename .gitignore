@@ -1,1 +1,5 @@
-smb-secrets
+/smb-secrets
+
+# Darwin
+/nix.conf
+/registry.json

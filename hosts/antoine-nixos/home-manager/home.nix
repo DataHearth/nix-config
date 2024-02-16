@@ -17,12 +17,15 @@
     ../../../modules/home-manager/swaylock
     ../../../modules/home-manager/vscode.nix
     ../../../modules/home-manager/go.nix
-    ../../../modules/home-manager/utils.nix 
+    ../../../modules/home-manager/utils.nix
     ../../../modules/home-manager/tofi
     ../../../modules/home-manager/services/dunst.nix
     # ../../../modules/home-manager/services/espanso.nix
     ../../../modules/home-manager/services/gpg_ssh_agent.nix
     ../../../modules/home-manager/looking-glass
+
+    # Shared home-manager configuration between systems
+    ../../shared/hm.nix
 
     # Host specific
     ./services.nix
@@ -38,44 +41,21 @@
     nextcloud-client
     signal-desktop
     vlc
-    
+
     # CLI tools
-    ripgrep
-    jq
-    yq-go
+    cliphist
     gnupg
-    iotop
-    iftop
-    zip
-    unzip
-    difftastic
-    wget
-    fd
-    waybar
-    swaynotificationcenter
-    playerctl
-    nodejs
+    grim
+    hyprshot
+    pciutils
     python3
-    xh
-    nix-index
-    corepack
-    neofetch
+    slurp
+    swaynotificationcenter
     swww
     tofi
-    grim
-    slurp
-    hyprshot
+    waybar
     wl-clipboard
-    satty
-    cliphist
-    pciutils
-    awscli2
-    rustup
-    gh
-    php83
-    php83Packages.composer
-    zoxide
-    ruff
+    iotop
 
     # Libraries
     libnotify
@@ -91,32 +71,14 @@
     XDG_DATA_HOME = "$HOME/.local/share";
     XDG_STATE_HOME = "$HOME/.local/state";
   };
-  home.sessionPath = [
-    "$(go env GOBIN)"
-    "$HOME/.cargo/bin"
-  ];
 
   programs = {
     cava.enable = true;
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
-    };
-
-    starship = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-
     gpg = {
       enable = true;
       mutableKeys = true;
       mutableTrust = true;
     };
-
-    # Add GPG key outside of reusable module
     git.signing.key = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
   };
 

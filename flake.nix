@@ -25,12 +25,14 @@
           ({ ... }: { nixpkgs.overlays = [ (import ./packages) ]; })
         ];
       };
-      antoine-macbookpro = nix-darwin.lib.darwinSystem {
+    };
+    darwinConfigurations.antoine-macbookpro = nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs; };
         system = "x86_64-darwin";
         modules = [
+          ./hosts/antoine-macbookpro/configuration.nix
           home-manager.darwinModules.default
         ];
       };
-    };
   };
 }

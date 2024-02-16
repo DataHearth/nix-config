@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
     # Modules
@@ -6,7 +6,7 @@
     ../../modules/linux/nvidia.nix
     inputs.home-manager.nixosModules.default
 
-    # Normal configuration
+    # Host specific
     ./hardware-configuration.nix
     ./systemd.nix
     ./services.nix
