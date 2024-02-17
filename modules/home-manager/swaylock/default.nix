@@ -1,14 +1,11 @@
 { ... }:
 {
-  home.file = {
-    ".config/swaylock/lock.png".source = ./lock.png;
-  };
   programs.swaylock = {
     enable = true;
     settings = {
       daemonize = true;
       color="24273a";
-      image = "~/.config/swaylock/lock.png";
+      image = "~/Pictures/wallpapers/lock.png";
       bs-hl-color="f4dbd6";
       caps-lock-bs-hl-color="f4dbd6";
       caps-lock-key-hl-color="a6da95";
