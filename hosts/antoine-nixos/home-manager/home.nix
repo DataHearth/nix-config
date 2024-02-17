@@ -80,6 +80,13 @@
       mutableTrust = true;
     };
     git.signing.key = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
+    vscode.package = (pkgs.vscode.override{ isInsiders = true; }).overrideAttrs (oldAttrs: rec {
+      src = (builtins.fetchTarball {
+        url = "https://vscode.download.prss.microsoft.com/dbazure/download/insider/00124e9e5830e3efc897db71c781899f8a676295/code-insider-x64-1708101203.tar.gz";
+        sha256 = "0r78a5mqpijg7lvnvp5vpcq0avihpmsx6i0cq2b5qp0iyy9pwmjp";
+      });
+      version = "latest";
+    });
   };
 
   wayland.windowManager = {

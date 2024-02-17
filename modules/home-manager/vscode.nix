@@ -2,13 +2,6 @@
 {
   programs.vscode = {
     enable = true;
-    package = (pkgs.vscode.override{ isInsiders = true; }).overrideAttrs (oldAttrs: rec {
-      src = (builtins.fetchTarball {
-        url = "https://update.code.visualstudio.com/commit:e244acbb172c428cb219717a07bf55d2737492ca/linux-x64/insider";
-        sha256 = "03b0hgslmg64a2mc6jfncpfkz8bn2f20fvdc3nn95h2z4aa7mk4w";
-      });
-      version = "latest";
-    });
     enableUpdateCheck = false;
     extensions = with pkgs.vscode-extensions; [
       github.github-vscode-theme

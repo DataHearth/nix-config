@@ -23,6 +23,7 @@
     yq-go
     zip
     zoxide
+    gitoxide
   ];
   home.sessionPath = [
     "$(go env GOBIN)"
