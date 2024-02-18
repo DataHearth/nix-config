@@ -38,6 +38,10 @@
       vimAlias = true;
     };
 
+    bash = {
+
+    };
+
     starship = {
       enable = true;
       enableZshIntegration = true;

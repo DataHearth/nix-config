@@ -87,6 +87,10 @@
       });
       version = "latest";
     });
+    bash = {
+      enable = true;
+      enableCompletion = true;
+    };
   };
 
   wayland.windowManager = {
