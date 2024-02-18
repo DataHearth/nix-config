@@ -16,6 +16,18 @@
           family = "FiraCode Nerd Font";
           style = "Retina";
         };
+        bold = {
+          family = "Firacode Nerd Font";
+          style = "Bold";
+        };
+        # italic = {
+        #   family = "Firacode Nerd Font";
+        #   style = "";
+        # };
+        # bold_italic = {
+        #   family = "Firacode Nerd Font";
+        #   style = "Retina";
+        # };
       };
       scrolling.multiplier = 5;
       selection.save_to_clipboard = true;
