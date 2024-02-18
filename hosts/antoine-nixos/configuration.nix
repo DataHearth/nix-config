@@ -73,8 +73,8 @@
   xdg.portal.enable = true;
 
   # Define users account
+  users.defaultUserShell = pkgs.zsh;
   users.users.datahearth = {
-    shell = pkgs.zsh;
     isNormalUser = true;
     description = "Antoine Langlois";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
@@ -89,7 +89,7 @@
   };
 
   # Environment
-  environment.shells = with pkgs; [ zsh ];
+  environment.shells = with pkgs; [ zsh bash ];
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
   };
