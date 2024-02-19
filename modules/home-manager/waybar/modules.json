@@ -184,8 +184,8 @@
     },
     "tooltip-format": "{icon} {desc} | {volume}%",
     "on-click": "amixer sset Master toggle",
-    "on-scroll-up": "amixet sset Master 2%+",
-    "on-scroll-down": "amixet sset Master 2%-"
+    "on-scroll-up": "amixer sset Master 2%+",
+    "on-scroll-down": "amixer sset Master 2%-"
   },
 
   "pulseaudio#microphone": {
