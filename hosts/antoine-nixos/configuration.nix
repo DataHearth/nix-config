@@ -103,6 +103,7 @@
     home-manager
     docker
     looking-glass-client
+    playerctl
   ];
 
   fonts.packages = with pkgs; [

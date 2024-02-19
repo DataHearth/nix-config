@@ -12,6 +12,10 @@ function confirm {
   fi
 }
 
+function lock {
+  sleep 0.5s; swaylock & disown
+}
+
 function powermenu {
   poweroff=" Poweroff"
   reboot=" Reboot"
@@ -32,11 +36,11 @@ function powermenu {
       ;;
 
     $lock)
-      sleep 0.5s; swaylock & disown
+      lock
       ;;
 
     $suspend)
-      sleep 0.5s; swaylock & disown
+      lock
       systemctl suspend
       ;;
 
@@ -94,23 +98,27 @@ function run {
 }
 
 case $1 in
-  powermenu)
+  "powermenu")
     powermenu
     ;;
 
-  launcher)
+  "launcher")
     launcher
     ;;
 
-  screenshot)
+  "screenshot")
     screenshot
     ;;
 
-  clipboard)
+  "clipboard")
     clipboard
     ;;
 
-  run)
+  "run")
     run
+    ;;
+
+  "lock")
+    lock
     ;;
 esac

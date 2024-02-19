@@ -14,11 +14,10 @@
     "hyprland/workspaces",
     "custom/separator#dot-line",
     "cpu",
-    "custom/separator#dot-line",
     "temperature",
-    "custom/separator#dot-line",
     "memory",
-    "custom/separator#blank_3",
+    "disk",
+    "custom/separator#dot-line",
     "custom/cava_mviz"
   ],
   "modules-center": ["clock"],

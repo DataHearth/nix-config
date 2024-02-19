@@ -114,10 +114,7 @@
 
   "memory": {
     "interval": 2,
-    "format": "{used:0.1f}G 󰾆",
-    "tooltip": true,
-    "tooltip-format": "{used:0.1f}GB/{total:0.1f}G",
-    "on-click-right": "alacritty --title btop -e btop"
+    "format": "{used:0.1f}GB/{total:0.1f}GB 󰾆"
   },
 
   "mpris": {
@@ -127,8 +124,8 @@
     "on-click": "playerctl previous",
     "on-click-right": "playerctl next",
     "player-icons": {
-      "chromium": "",
       "default": "",
+      "chromium": "",
       "firefox": "",
       "spotify": "",
       "vlc": "󰕼"
@@ -185,13 +182,19 @@
       "default": ["", "", "󰕾", ""],
       "ignored-sinks": ["Easy Effects Sink"]
     },
-    "tooltip-format": "{icon} {desc} | {volume}%"
+    "tooltip-format": "{icon} {desc} | {volume}%",
+    "on-click": "amixer sset Master toggle",
+    "on-scroll-up": "amixet sset Master 2%+",
+    "on-scroll-down": "amixet sset Master 2%-"
   },
 
   "pulseaudio#microphone": {
     "format": "{format_source}",
     "format-source": "",
-    "format-source-muted": ""
+    "format-source-muted": "",
+    "on-click": "amixer sset Capture toggle",
+    "on-scroll-up": "amixet sset Capture 2%+",
+    "on-scroll-down": "amixet sset Capture 2%-"
   },
 
   "temperature": {
@@ -214,16 +217,10 @@
     "show-passive-items": true
   },
 
-  "wireplumber": {
-    "format": "{icon} {volume} %",
-    "format-muted": " Mute",
-    "format-icons": ["", "", "󰕾", ""]
-  },
-
   "custom/lock": {
     "format": "󰌾 ",
     "interval": 86400,
-    "on-click": "sleep 0.5s; swaylock & disown"
+    "on-click": "~/.config/tofi/exec.sh lock"
   },
 
   "custom/cava_mviz": {
@@ -245,24 +242,6 @@
 
   "custom/separator#line": {
     "format": "|",
-    "interval": "once",
-    "tooltip": false
-  },
-
-  "custom/separator#blank": {
-    "format": "",
-    "interval": "once",
-    "tooltip": false
-  },
-
-  "custom/separator#blank_2": {
-    "format": "  ",
-    "interval": "once",
-    "tooltip": false
-  },
-
-  "custom/separator#blank_3": {
-    "format": "   ",
     "interval": "once",
     "tooltip": false
   }
