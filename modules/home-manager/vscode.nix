@@ -43,6 +43,10 @@
       vscode-icons-team.vscode-icons
       zxh404.vscode-proto3
       twxs.cmake
+      aaron-bond.better-comments
+      alexisvt.flutter-snippets
+      christian-kohler.npm-intellisense
+      ecmel.vscode-html-css
 
       # Overlay
       charliermarsh.ruff
