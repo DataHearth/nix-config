@@ -47,8 +47,6 @@
       alexisvt.flutter-snippets
       christian-kohler.npm-intellisense
       ecmel.vscode-html-css
-
-      # Overlay
       charliermarsh.ruff
     ];
     userSettings = {
