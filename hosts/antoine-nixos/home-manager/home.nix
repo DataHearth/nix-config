@@ -8,21 +8,22 @@
 
   imports = [
     # Reusable modules
-    ../../../modules/home-manager/hyprland
     ../../../modules/home-manager/alacritty.nix
     ../../../modules/home-manager/zsh.nix
     ../../../modules/home-manager/git.nix
-    ../../../modules/home-manager/waybar
     ../../../modules/home-manager/ssh.nix
-    ../../../modules/home-manager/swaylock
-    ../../../modules/home-manager/vscode.nix
     ../../../modules/home-manager/go.nix
     ../../../modules/home-manager/utils.nix
-    ../../../modules/home-manager/tofi
     ../../../modules/home-manager/services/dunst.nix
     # ../../../modules/home-manager/services/espanso.nix
     ../../../modules/home-manager/services/gpg_ssh_agent.nix
+
+    ../../../modules/home-manager/hyprland
+    ../../../modules/home-manager/waybar
+    ../../../modules/home-manager/swaylock
     ../../../modules/home-manager/looking-glass
+    ../../../modules/home-manager/vscode
+    ../../../modules/home-manager/tofi
 
     # Shared home-manager configuration between systems
     ../../shared/hm.nix

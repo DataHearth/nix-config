@@ -1,0 +1,12 @@
+{
+  "If error statement": {
+    "prefix": "err",
+    "body": ["if err != nil {", "\t$1", "}"],
+    "description": "Create an if statement for error"
+  },
+  "Inline if error statement": {
+    "prefix": "in-err",
+    "body": ["if $1 := $2; $3 != nil {", "\t$4", "}"],
+    "description": "Create an inline if statement for error"
+  }
+}
