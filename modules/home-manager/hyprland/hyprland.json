@@ -20,6 +20,7 @@
     "$mod, F, fullscreen,",
     "$mod, P, exec, ~/.config/tofi/exec.sh powermenu",
     "$mod, T, exec, ~/.config/tofi/exec.sh screenshot",
+    "$mod SHIFT, T, togglegroup",
     "$mod, C, exec, ~/.config/tofi/exec.sh clipboard",
     "$mod, R, exec, ~/.config/tofi/exec.sh run",
 
