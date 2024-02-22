@@ -61,8 +61,8 @@
     libnotify
 
     # Overlay
-    nosql-workbench
-    spacedrive
+    pr-nosql.nosql-workbench
+    pr-hoppscotch.hoppscotch
   ];
 
   home.sessionVariables = {
