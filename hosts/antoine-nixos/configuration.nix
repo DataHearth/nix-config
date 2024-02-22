@@ -1,4 +1,4 @@
-{ inputs, pkgs, pr-overlay, ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
     # Modules
