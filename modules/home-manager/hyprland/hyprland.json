@@ -119,6 +119,7 @@
     "workspace 1,class:(firefox)",
     "workspace 2,class:(Alacritty)",
     "workspace 3,class:(code-insiders-url-handler)",
+    "workspace 3,class:(code-url-handler)",
     "workspace 4,class:(discord)",
     "workspace 4,class:(signal)",
     "workspace 6,title:(Spotify Premium)"
