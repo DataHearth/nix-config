@@ -5,7 +5,6 @@
     modules_hm_path = modules_base_path + "/home-manager"; 
   in [
     # Reusable modules
-    "${modules_hm_path}/alacritty.nix"
     "${modules_hm_path}/zsh.nix"
     "${modules_hm_path}/ssh.nix"
     "${modules_hm_path}/go.nix"
@@ -76,6 +75,8 @@
 
   # Custom modules (./modules/home-manager)
   hm = {
+    alacritty.enable = true;
+    
     git = {
       enable = true;
       signingKey = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
