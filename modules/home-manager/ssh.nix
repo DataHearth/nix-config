@@ -35,6 +35,26 @@
         identityFile = "~/.ssh/id_ed25519";
         identitiesOnly = true;
       };
+      "dev.app.bienaporter.com" = {
+        hostname = "dev.app.bienaporter.com";
+        user = "bienaporter";
+        identityFile =  "~/.ssh/id_ed25519_cd-dev";
+        identitiesOnly = true;
+        port = 5022;
+      };
+      "prod.app.bienaporter.com" = {
+        hostname = "prod.app.bienaporter.com";
+        user = "bienaporter";
+        identityFile =  "~/.ssh/id_ed25519_cd-prod";
+        identitiesOnly = true;
+        port = 5022;
+      };
+      "gitlab-bap" = {
+        hostname = "gitlab.com";
+        user = "git";
+        identityFile = "~/.ssh/id_ed25519_bap";
+        identitiesOnly = true;
+      };
     };
   };
 }
