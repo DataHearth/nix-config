@@ -7,7 +7,6 @@
     # Reusable modules
     "${modules_hm_path}/alacritty.nix"
     "${modules_hm_path}/zsh.nix"
-    "${modules_hm_path}/git.nix"
     "${modules_hm_path}/ssh.nix"
     "${modules_hm_path}/go.nix"
     "${modules_hm_path}/utils.nix"
@@ -26,7 +25,7 @@
 
     # Host specific
     ./services.nix
-  ];
+  ] ++ (import ../../../modules/home-manager { });
 
   # Almost static information
   home = {
@@ -75,10 +74,16 @@
     ];
   };
 
+  # Custom modules (./modules/home-manager)
+  hm = {
+    git = {
+      enable = true;
+      signingKey = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
+    };
+  };
   programs = {
     home-manager.enable = true;
     cava.enable = true;
-    git.signing.key = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
 
     gpg = {
       enable = true;
