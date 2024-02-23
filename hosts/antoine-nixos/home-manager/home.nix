@@ -12,7 +12,6 @@
     "${modules_hm_path}/go.nix"
     "${modules_hm_path}/utils.nix"
     "${modules_hm_path}/services/dunst.nix"
-    "${modules_hm_path}/services/espanso.nix"
     "${modules_hm_path}/services/gpg_ssh_agent.nix"
 
     "${modules_hm_path}/hyprland"
