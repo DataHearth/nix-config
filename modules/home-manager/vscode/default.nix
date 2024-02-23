@@ -3,6 +3,7 @@
   programs.vscode = {
     enable = true;
     enableUpdateCheck = false;
+    enableExtensionUpdateCheck = false;
     extensions = with pkgs.vscode-extensions; [
       github.github-vscode-theme
       github.copilot-chat
@@ -18,8 +19,6 @@
       dart-code.flutter
       bbenoist.nix
 
-      # ms-vsliveshare.vsliveshare
-      # ms-vscode.cpptools
       ms-vscode.cmake-tools
       ms-vscode-remote.remote-ssh
       ms-vscode-remote.remote-containers
