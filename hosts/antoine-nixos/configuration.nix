@@ -14,6 +14,7 @@
   # Nix configuration
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  system.stateVersion = "24.05";
 
   # Bootloader.
   boot.loader.grub = {
@@ -136,6 +137,4 @@
       options = ["${automount_opts},credentials=${smb_secrets}/cronos"];
     };
   };
-
-  system.stateVersion = "23.11";
 }
