@@ -74,22 +74,6 @@
         "type": "github"
       }
     },
-    "pr-hoppscotch": {
-      "locked": {
-        "lastModified": 1708621173,
-        "narHash": "sha256-ZgakQyQVYxpr7buwPyza9HIUhkpdXRRuXyaaYsx22ao=",
-        "owner": "datahearth",
-        "repo": "nixpkgs",
-        "rev": "4375e546f4de4652970e9af54625dad44515aed0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "datahearth",
-        "repo": "nixpkgs",
-        "rev": "4375e546f4de4652970e9af54625dad44515aed0",
-        "type": "github"
-      }
-    },
     "pr-nosql-workbench": {
       "locked": {
         "lastModified": 1708552631,
@@ -112,7 +96,6 @@
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
-        "pr-hoppscotch": "pr-hoppscotch",
         "pr-nosql-workbench": "pr-nosql-workbench"
       }
     },

@@ -15,7 +15,6 @@
 
     # Pending PRs
     pr-nosql-workbench.url = "github:datahearth/nixpkgs/8d4967078aca101d396e651ac894c63d0a3bee48";
-    pr-hoppscotch.url = "github:datahearth/nixpkgs/4375e546f4de4652970e9af54625dad44515aed0";
   };
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, flake-utils, ... }:
@@ -24,9 +23,6 @@
       pr-nosql = import inputs.pr-nosql-workbench {
         system = prev.system;
         config.allowUnfree = true;
-      };
-      pr-hoppscotch = import inputs.pr-hoppscotch {
-        system = prev.system;
       };
     };
   in

@@ -1,29 +1,26 @@
 { pkgs, lib, ... }:
 {
-  # Almost static information
-  home.username = "datahearth";
-  home.homeDirectory = "/home/datahearth";
-  home.stateVersion = "23.11";
-  programs.home-manager.enable = true;
-
-  imports = [
+  imports = let 
+    modules_base_path = ../../../modules;
+    modules_hm_path = modules_base_path + "/home-manager"; 
+  in [
     # Reusable modules
-    ../../../modules/home-manager/alacritty.nix
-    ../../../modules/home-manager/zsh.nix
-    ../../../modules/home-manager/git.nix
-    ../../../modules/home-manager/ssh.nix
-    ../../../modules/home-manager/go.nix
-    ../../../modules/home-manager/utils.nix
-    ../../../modules/home-manager/services/dunst.nix
-    # ../../../modules/home-manager/services/espanso.nix
-    ../../../modules/home-manager/services/gpg_ssh_agent.nix
+    "${modules_hm_path}/alacritty.nix"
+    "${modules_hm_path}/zsh.nix"
+    "${modules_hm_path}/git.nix"
+    "${modules_hm_path}/ssh.nix"
+    "${modules_hm_path}/go.nix"
+    "${modules_hm_path}/utils.nix"
+    "${modules_hm_path}/services/dunst.nix"
+    # "${modules_hm_path}/services/espanso.nix"
+    "${modules_hm_path}/services/gpg_ssh_agent.nix"
 
-    ../../../modules/home-manager/hyprland
-    ../../../modules/home-manager/waybar
-    ../../../modules/home-manager/swaylock
-    ../../../modules/home-manager/looking-glass
-    ../../../modules/home-manager/vscode
-    ../../../modules/home-manager/tofi
+    "${modules_hm_path}/hyprland"
+    "${modules_hm_path}/waybar"
+    "${modules_hm_path}/swaylock"
+    "${modules_hm_path}/looking-glass"
+    "${modules_hm_path}/vscode"
+    "${modules_hm_path}/tofi"
 
     # Shared home-manager configuration between systems
     ../../shared/hm.nix
@@ -32,57 +29,63 @@
     ./services.nix
   ];
 
-  home.packages = with pkgs; [
-    # GUI Applications
-    firefox
-    discord
-    spotify
-    gparted
-    satty
-    nextcloud-client
-    signal-desktop
-    vlc
+  # Almost static information
+  home = {
+    username = "datahearth";
+    homeDirectory = "/home/datahearth";
+    stateVersion = "23.11";
 
-    # CLI tools
-    cliphist
-    gnupg
-    grim
-    hyprshot
-    pciutils
-    python3
-    slurp
-    swaynotificationcenter
-    swww
-    tofi
-    waybar
-    wl-clipboard
-    iotop
+    sessionVariables = {
+      XDG_CACHE_HOME = "$HOME/.cache";
+      XDG_CONFIG_HOME = "$HOME/.config";
+      XDG_DATA_HOME = "$HOME/.local/share";
+      XDG_STATE_HOME = "$HOME/.local/state";
+    };
 
-    # Libraries
-    libnotify
+    packages = with pkgs; [
+      # GUI Applications
+      firefox
+      discord
+      spotify
+      gparted
+      satty
+      nextcloud-client
+      signal-desktop
+      vlc
 
-    # Overlay
-    pr-nosql.nosql-workbench
-    pr-hoppscotch.hoppscotch
-  ];
+      # CLI tools
+      cliphist
+      gnupg
+      grim
+      hyprshot
+      pciutils
+      python3
+      slurp
+      swaynotificationcenter
+      swww
+      tofi
+      waybar
+      wl-clipboard
+      iotop
 
-  home.sessionVariables = {
-    XDG_CACHE_HOME = "$HOME/.cache";
-    XDG_CONFIG_HOME = "$HOME/.config";
-    XDG_DATA_HOME = "$HOME/.local/share";
-    XDG_STATE_HOME = "$HOME/.local/state";
+      # Libraries
+      libnotify
+
+      # Overlay
+      pr-nosql.nosql-workbench
+    ];
   };
 
   programs = {
+    home-manager.enable = true;
     cava.enable = true;
+    git.signing.key = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
 
     gpg = {
       enable = true;
       mutableKeys = true;
       mutableTrust = true;
     };
-
-    git.signing.key = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
 
     vscode = {
       extensions = with pkgs.vscode-extensions; [
