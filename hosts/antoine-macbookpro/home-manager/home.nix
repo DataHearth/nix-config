@@ -19,7 +19,7 @@
   hm = {
     git = {
       enable = true;
-      signingKey = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
+      signingKey = "099D31E860471ABE8425358243C0623D204EE13D";
     };
   };
 

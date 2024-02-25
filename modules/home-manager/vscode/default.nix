@@ -47,6 +47,7 @@
       christian-kohler.npm-intellisense
       ecmel.vscode-html-css
       charliermarsh.ruff
+      earthly.earthfile-syntax-highlighting
     ];
     userSettings = lib.importJSON ./settings.json;
     languageSnippets = {
