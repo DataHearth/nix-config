@@ -67,9 +67,6 @@
 
       # Libraries
       libnotify
-
-      # Overlay
-      pr-nosql.nosql-workbench
     ];
   };
 

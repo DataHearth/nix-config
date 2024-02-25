@@ -1,6 +1,10 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
+    # GUI
+    hoppscotch
+    nosql-workbench
+
     # CLI
     awscli2
     corepack
