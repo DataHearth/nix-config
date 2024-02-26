@@ -4,6 +4,7 @@
     # GUI
     hoppscotch
     nosql-workbench
+    thunderbird
 
     # CLI
     awscli2
@@ -43,7 +44,8 @@
     };
 
     bash = {
-
+      enable = true;
+      enableCompletion = true;
     };
 
     starship = {

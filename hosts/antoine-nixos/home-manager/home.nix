@@ -49,6 +49,7 @@
       nextcloud-client
       signal-desktop
       vlc
+      protonmail-bridge
 
       # CLI tools
       cliphist
@@ -95,11 +96,6 @@
         ms-vscode.cpptools
       ];
     };
-
-    bash = {
-      enable = true;
-      enableCompletion = true;
-    };
   };
 
   wayland.windowManager = {
@@ -111,7 +107,15 @@
         ];
         workspace = [
           "DP-1,1"
+          "DP-1,3"
+          "DP-1,5"
+          "DP-1,7"
+          "DP-1,9"
           "HDMI-A-1,2"
+          "HDMI-A-1,4"
+          "HDMI-A-1,6"
+          "HDMI-A-1,8"
+          "HDMI-A-1,0"
         ];
         env = [
           "LIBVA_DRIVER_NAME,nvidia"

@@ -114,7 +114,10 @@
   ];
 
   programs = {
-    hyprland.enable = true;
+    # hyprland.enable = true;
+
+    # Enable shells globally to allow system usage
+    # Further customization inside home.nix
     zsh.enable = true;
     steam.enable = true;
   };
