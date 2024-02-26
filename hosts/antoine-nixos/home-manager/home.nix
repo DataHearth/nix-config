@@ -30,7 +30,7 @@
   home = {
     username = "datahearth";
     homeDirectory = "/home/datahearth";
-    stateVersion = "23.11";
+    stateVersion = "24.05";
 
     sessionVariables = {
       XDG_CACHE_HOME = "$HOME/.cache";
@@ -107,15 +107,7 @@
         ];
         workspace = [
           "DP-1,1"
-          "DP-1,3"
-          "DP-1,5"
-          "DP-1,7"
-          "DP-1,9"
           "HDMI-A-1,2"
-          "HDMI-A-1,4"
-          "HDMI-A-1,6"
-          "HDMI-A-1,8"
-          "HDMI-A-1,0"
         ];
         env = [
           "LIBVA_DRIVER_NAME,nvidia"

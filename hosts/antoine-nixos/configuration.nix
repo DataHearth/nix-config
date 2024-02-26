@@ -114,7 +114,9 @@
   ];
 
   programs = {
-    # hyprland.enable = true;
+    # Enable DE in login page
+    # Further customization inside home.nix
+    hyprland.enable = true;
 
     # Enable shells globally to allow system usage
     # Further customization inside home.nix
