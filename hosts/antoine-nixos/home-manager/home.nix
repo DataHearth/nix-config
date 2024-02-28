@@ -24,7 +24,7 @@
 
     # Host specific
     ./services.nix
-  ] ++ (import ../../../modules/home-manager { });
+  ] ++ (import ../../../modules/home-manager);
 
   # Almost static information
   home = {
@@ -80,6 +80,7 @@
       signingKey = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
     };
   };
+
   programs = {
     home-manager.enable = true;
     cava.enable = true;

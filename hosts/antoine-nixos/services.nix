@@ -1,47 +1,50 @@
 { pkgs, ... }:
 {
-  services.xserver = {
-    enable = true;
-    desktopManager.gnome.enable = true;
+  services = {
+    xserver = {
+      enable = true;
+      desktopManager.gnome.enable = true;
 
-    displayManager = {
-      autoLogin.enable = false;
-      gdm.enable = true;
+      displayManager = {
+        autoLogin.enable = false;
+        gdm.enable = true;
 
-      autoLogin.user = "datahearth";
+        autoLogin.user = "datahearth";
+      };
+      xkb.layout = "fr";
     };
-    xkb.layout = "fr";
-  };
 
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    pulse.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      pulse.enable = true;
 
-    alsa.support32Bit = true;
-  };
-
-  services.tlp = {
-    enable = true;
-    settings = {
-      TLP_DEFAULT_MODE = "AC";
-      TLP_PERSISTENT_DEFAULT = 1;
-      INTEL_GPU_MIN_FREQ_ON_AC = 500;
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      alsa.support32Bit = true;
     };
-  };
 
-  services.power-profiles-daemon.enable = false;
-  services.printing.enable = true;
-  services.deluge.enable = true;
+    tlp = {
+      enable = true;
+      settings = {
+        TLP_DEFAULT_MODE = "AC";
+        TLP_PERSISTENT_DEFAULT = 1;
+        INTEL_GPU_MIN_FREQ_ON_AC = 500;
+        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
+        CPU_SCALING_GOVERNOR_ON_AC = "performance";
+      };
+    };
 
-  # Custom services
-  services.passthrough = {
-    enable = false;
-    ids = [ "10de:1b81" "10de:10f0" ];
-    user = "datahearth";
+    power-profiles-daemon.enable = false;
+    printing.enable = true;
+    deluge.enable = true;
+    gnome.gnome-keyring.enable = true;
+
+    # Custom services
+    passthrough = {
+      enable = false;
+      ids = [ "10de:1b81" "10de:10f0" ];
+      user = "datahearth";
+    };
+    nvidia.enable = true;
+    nvidia.sleepIssue = true;
   };
-  services.nvidia.enable = true;
-  services.nvidia.sleepIssue = true;
 }

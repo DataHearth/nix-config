@@ -1,4 +1,3 @@
-{ ... }:
 [
   ./git.nix
   ./alacritty.nix
