@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, lib, ... }:
 {
   imports = [
     # Modules
@@ -131,12 +131,12 @@
       automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
       smb_secrets = "/etc/nixos/smb-secrets";
     in {
-    "/mnt/cronos/medias" = {
+    "/mnt/cronos/medias" = lib.mkForce {
       device = "//10.0.0.2/medias";
       fsType = "cifs";
       options = ["${automount_opts},credentials=${smb_secrets}/cronos"];
     };
-    "/mnt/cronos/isos" = {
+    "/mnt/cronos/isos" = lib.mkForce {
       device = "//10.0.0.2/isos";
       fsType = "cifs";
       options = ["${automount_opts},credentials=${smb_secrets}/cronos"];
