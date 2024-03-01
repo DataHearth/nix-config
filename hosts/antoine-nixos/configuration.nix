@@ -1,10 +1,13 @@
-{ inputs, pkgs, lib, ... }:
+{ pkgs, lib, nixvim, home-manager, ... }:
 {
   imports = [
+    home-manager.nixosModules.default
+    nixvim.nixosModules.nixvim
+
     # Modules
     ../../modules/linux/passthrough.nix
     ../../modules/linux/nvidia.nix
-    inputs.home-manager.nixosModules.default
+    ../../modules/neovim
 
     # Host specific
     ./hardware-configuration.nix
@@ -25,7 +28,10 @@
 
   # Networking
   networking = {
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      dns = "none";
+    };
     hostName = "antoine-nixos";
     nameservers = [
       "10.0.0.3"
@@ -37,14 +43,15 @@
     ];
     wireless.enable = false;
     dhcpcd.extraConfig = "nohook resolv.conf";
-    networkmanager.dns = "none";
   };
 
   # Hardware
-  hardware.pulseaudio.enable = false;
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
+  hardware = {
+    pulseaudio.enable = false;
+    opengl = {
+      enable = true;
+      driSupport = true;
+    };
   };
   
   # Time
@@ -77,40 +84,34 @@
     };
   };
 
-  # Define users account
-  users.defaultUserShell = pkgs.zsh;
-  users.users.datahearth = {
-    isNormalUser = true;
-    description = "Antoine Langlois";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
-  };
-  home-manager = {
-    extraSpecialArgs = { inherit inputs; };
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    users = {
-      "datahearth" = import ./home-manager/home.nix;
+  users = {
+    defaultUserShell = pkgs.zsh;
+    users.datahearth = {
+      isNormalUser = true;
+      description = "Antoine Langlois";
+      extraGroups = [ "networkmanager" "wheel" "docker" ];
     };
   };
 
-  # Environment
-  environment.shells = with pkgs; [ zsh bash ];
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
+  environment = {
+    shells = with pkgs; [ zsh bash ];
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+    };
+    variables = {
+      KWIN_DRM_USE_MODIFIERS = "0";
+      WLR_NO_HARDWARE_CURSORS = "1";
+    };
+    systemPackages = with pkgs; [
+      networkmanagerapplet
+      pinentry
+      home-manager
+      docker
+      looking-glass-client
+      playerctl
+      xdg-desktop-portal-gtk
+    ];
   };
-  environment.variables = {
-    KWIN_DRM_USE_MODIFIERS = "0";
-    WLR_NO_HARDWARE_CURSORS = "1";
-  };
-  environment.systemPackages = with pkgs; [
-    networkmanagerapplet
-    pinentry
-    home-manager
-    docker
-    looking-glass-client
-    playerctl
-    xdg-desktop-portal-gtk
-  ];
 
   fonts.packages = with pkgs; [
     (nerdfonts.override {
@@ -118,7 +119,17 @@
     })
   ];
 
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users = {
+      "datahearth" = import ./home-manager/home.nix;
+    };
+  };
+  
   programs = {
+    steam.enable = true;
+
     # Enable DE in login page
     # Further customization inside home.nix
     hyprland.enable = true;
@@ -126,10 +137,12 @@
     # Enable shells globally to allow system usage
     # Further customization inside home.nix
     zsh.enable = true;
-    steam.enable = true;
   };
-
+  
   virtualisation.docker.enable = true;
+  custom = {
+    neovim.enable = true;
+  };
 
   fileSystems = let
       # this line prevents hanging on network split

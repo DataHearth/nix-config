@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -11,15 +12,26 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-utils.url = "github:numtide/flake-utils";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, flake-utils, ... }:
+  outputs = inputs@{ 
+    self,
+    nixpkgs,
+    nix-darwin,
+    home-manager,
+    flake-utils,
+    nixvim,
+    ... 
+  }:
   {
     nixosConfigurations = {
       antoine-nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs home-manager nixvim; };
         modules = [
           ./hosts/antoine-nixos/configuration.nix
           home-manager.nixosModules.default
