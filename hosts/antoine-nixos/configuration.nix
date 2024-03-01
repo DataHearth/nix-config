@@ -71,7 +71,11 @@
   sound.enable = true;
   security.rtkit.enable = true;
   security.pam.services.swaylock = {};
-  xdg.portal.enable = true;
+  xdg = {
+    portal = {
+      enable = true;
+    };
+  };
 
   # Define users account
   users.defaultUserShell = pkgs.zsh;
@@ -105,6 +109,7 @@
     docker
     looking-glass-client
     playerctl
+    xdg-desktop-portal-gtk
   ];
 
   fonts.packages = with pkgs; [
