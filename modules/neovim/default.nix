@@ -1,4 +1,4 @@
-{ lib, config, options, ...}:
+{ lib, config, options, fetchFromGithub, pkgs, ...}:
 with lib;
 let
   cfg = config.custom.neovim;
@@ -17,11 +17,11 @@ let
 in
 {
   options.custom.neovim = {
-    inherit enable colorscheme;
+    inherit enable colorscheme defaultEditor;
   };
 
   config = mkIf cfg.enable {
-    environment.variables.EDITOR = "neovim";
+    environment.variables.EDITOR = mkIf cfg.defaultEditor "neovim";
 
     programs.nixvim = {
       enable = true;
@@ -44,7 +44,8 @@ in
         transparentBackground = true;
         flavour = "macchiato";
       };
-      plugins = import ./plugins;
+      # plugins = import ./plugins { vimUtils = pkgs.vimUtils; fetchFromGithub = fetchFromGithub; };
+      plugins = import ./plugins { };
     };
   };
 }
