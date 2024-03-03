@@ -4,6 +4,7 @@
     enable = true;
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
+    mutableExtensionsDir = false;
     extensions = with pkgs.vscode-extensions; [
       github.github-vscode-theme
       github.copilot-chat
