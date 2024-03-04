@@ -44,7 +44,12 @@ in
         transparentBackground = true;
         flavour = "macchiato";
       };
-      # plugins = import ./plugins { vimUtils = pkgs.vimUtils; fetchFromGithub = fetchFromGithub; };
+      keymaps = [
+        {
+          action = "<cmd>CHADopen<cr>";
+          key = "<C-t>";
+        }
+      ];
       plugins = import ./plugins { };
     };
   };

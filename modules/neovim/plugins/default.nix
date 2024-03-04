@@ -18,4 +18,5 @@
   coq-thirdparty = import ./coq-thirdparty.nix;
   copilot-vim = import ./copilot-vim.nix;
   lsp = import ./lsp.nix;
+  chadtree = import ./chadtree.nix;
 }
