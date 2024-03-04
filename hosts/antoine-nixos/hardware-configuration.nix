@@ -28,11 +28,6 @@
       fsType = "autofs";
     };
 
-  fileSystems."/mnt/games" =
-    { device = "/dev/disk/by-uuid/62cb1cf1-fee4-480d-89fe-bb0613f4e830";
-      fsType = "ext4";
-    };
-
   swapDevices =
     [ { device = "/dev/disk/by-uuid/61135a24-abf9-4fe8-b224-75848e56efc4"; }
     ];

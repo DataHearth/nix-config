@@ -147,7 +147,7 @@
   fileSystems = let
       # this line prevents hanging on network split
       automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-      smb_secrets = "/etc/nixos/smb-secrets";
+      smb_secrets = "/home/datahearth/.config/nix-config/smb-secrets";
     in {
     "/mnt/cronos/medias" = lib.mkForce {
       device = "//10.0.0.2/medias";
@@ -158,6 +158,11 @@
       device = "//10.0.0.2/isos";
       fsType = "cifs";
       options = ["${automount_opts},credentials=${smb_secrets}/cronos"];
+    };
+    "/home/datahearth/games" = lib.mkForce {
+      device = "/dev/disk/by-uuid/62cb1cf1-fee4-480d-89fe-bb0613f4e830";
+      fsType = "ext4";
+      options = ["${automount_opts},uid=1000,gid=100"];
     };
   };
 }
