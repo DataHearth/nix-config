@@ -21,7 +21,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.variables.EDITOR = mkIf cfg.defaultEditor "neovim";
+    environment.variables.EDITOR = mkIf cfg.defaultEditor "nvim";
 
     programs.nixvim = {
       enable = true;
