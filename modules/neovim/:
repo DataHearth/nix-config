@@ -22,18 +22,13 @@
 
   ## CMP
   nvim-cmp = import ./nvim-cmp.nix;
-  cmp_luasnip.enable = true;
-  cmp-nvim-lsp.enable = true;
-  cmp-cmdline.enable = true;
-  cmp-path.enable = true;
-  cmp-buffer.enable = true;
-  crates-nvim.enable = true;
-
-  ### Thirdparties
-  copilot-lua = import ./copilot-lua.nix;
-  copilot-cmp = import ./copilot-cmp.nix;
 
   ## COQ
-  # coq-nvim = import ./coq-nvim.nix;
-  # coq-thirdparty = import ./coq-thirdparty.nix;
+  coq-nvim = import ./coq-nvim.nix;
+  coq-thirdparty = import ./coq-thirdparty.nix;
+
+  ## Thirdparties
+  copilot-vim = import ./copilot-vim.nix;
+
+  cmp_luasnip.enable = true;
 }
