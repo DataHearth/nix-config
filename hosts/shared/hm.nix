@@ -27,7 +27,6 @@
     xh
     yq-go
     zip
-    zoxide
     gitoxide
   ];
   home.sessionPath = [
@@ -36,6 +35,8 @@
   ];
 
   programs = {
+    zoxide.enable = true;
+
     bash = {
       enable = true;
       enableCompletion = true;

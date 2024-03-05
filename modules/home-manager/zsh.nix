@@ -21,7 +21,6 @@
     };
     initExtra = ''
       neofetch
-      eval "$(zoxide init zsh)"
     '';
   };
 }
