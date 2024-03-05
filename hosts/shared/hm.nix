@@ -28,6 +28,7 @@
     yq-go
     zip
     gitoxide
+    glow
   ];
   home.sessionPath = [
     "$(go env GOBIN)"
