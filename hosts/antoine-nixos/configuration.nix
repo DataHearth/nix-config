@@ -152,17 +152,23 @@
     "/mnt/cronos/medias" = lib.mkForce {
       device = "//10.0.0.2/medias";
       fsType = "cifs";
-      options = ["${automount_opts},credentials=${smb_secrets}/cronos"];
+      options = [ automount_opts "credentials=${smb_secrets}/cronos" ];
     };
     "/mnt/cronos/isos" = lib.mkForce {
       device = "//10.0.0.2/isos";
       fsType = "cifs";
-      options = ["${automount_opts},credentials=${smb_secrets}/cronos"];
+      options = [ "${automount_opts},credentials=${smb_secrets}/cronos" ];
     };
-    "/home/datahearth/games" = lib.mkForce {
-      device = "/dev/disk/by-uuid/62cb1cf1-fee4-480d-89fe-bb0613f4e830";
+    "/mnt/linux-games" = lib.mkForce {
+      device = "/dev/disk/by-uuid/a0bd2373-edc1-4c95-aac1-85aa6c5bacc0";
       fsType = "ext4";
-      options = ["${automount_opts},uid=1000,gid=100"];
+      options = [ automount_opts ];
+    };
+    "/home/datahearth/linux-games" = lib.mkForce {
+      device = "/mnt/linux-games";
+      depends = [ "/mnt/linux-games" ];
+      fsType = "none";
+      options = [ "bind" "user" "rw" automount_opts ];
     };
   };
 }

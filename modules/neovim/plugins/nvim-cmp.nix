@@ -26,5 +26,13 @@
         "s"
       ];
     };
+    "<C-e>" = {
+      action = "cmp.mapping.abort()";
+      modes = [
+        "i"
+        "s"
+      ];
+    };
   };
+  snippet.expand = "luasnip";
 }
