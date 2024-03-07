@@ -21,7 +21,7 @@
   lsp = import ./lsp.nix;
 
   ## CMP
-  nvim-cmp = import ./nvim-cmp.nix;
+  cmp = import ./cmp.nix;
   cmp_luasnip.enable = true;
   cmp-nvim-lsp.enable = true;
   cmp-cmdline.enable = true;

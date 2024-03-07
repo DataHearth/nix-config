@@ -4,7 +4,6 @@
     # GUI
     hoppscotch
     nosql-workbench
-    thunderbird
 
     # CLI
     awscli2
