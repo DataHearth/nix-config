@@ -1,7 +1,7 @@
 { inputs, pkgs, ... }: {
   imports = [
     ./services.nix
-    inputs.home-manager.darwinModules.default
+    ../../modules/neovim
   ];
 
   # Nix
@@ -30,6 +30,9 @@
     };
   };
 
+  custom = {
+    neovim.enable = true;
+  };
   programs = {
     zsh.enable = true;
   };

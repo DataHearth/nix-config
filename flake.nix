@@ -46,6 +46,7 @@
         modules = [
           ./hosts/antoine-macbookpro/configuration.nix
           home-manager.darwinModules.default
+          nixvim.nixDarwinModules.nixvim
         ];
       };
     };

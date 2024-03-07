@@ -10,7 +10,7 @@
 
     # Shared home-manager configuration between systems
     ../../shared/hm.nix
-  ] ++ (import ../../../modules/home-manager { });
+  ] ++ (import ../../../modules/home-manager);
 
   home.packages = with pkgs; [
   ];
