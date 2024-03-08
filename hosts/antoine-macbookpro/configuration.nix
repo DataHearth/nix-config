@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, lib, ... }: {
   imports = [
     ./services.nix
     ../../modules/neovim
@@ -35,5 +35,7 @@
   };
   programs = {
     zsh.enable = true;
+    # HTMX lsp doesn't build on macos
+    nixvim.plugins.lsp.servers.htmx.enable = lib.mkForce false;
   };
 }
