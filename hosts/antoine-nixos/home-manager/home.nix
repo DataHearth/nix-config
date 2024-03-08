@@ -9,7 +9,6 @@
     "${modules_hm_path}/ssh.nix"
     "${modules_hm_path}/go.nix"
     "${modules_hm_path}/utils.nix"
-    "${modules_hm_path}/services/dunst.nix"
     "${modules_hm_path}/services/gpg_ssh_agent.nix"
 
     "${modules_hm_path}/waybar"
@@ -73,6 +72,7 @@
   # Custom modules (./modules/home-manager)
   hm = {
     alacritty.enable = true;
+    dunst.enable = true;
     
     git = {
       enable = true;

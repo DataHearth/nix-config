@@ -112,7 +112,7 @@
 
   fonts.packages = with pkgs; [
     (nerdfonts.override {
-      fonts = ["FiraCode"];
+      fonts = ["FiraCode" "Mononoki"];
     })
   ];
 
