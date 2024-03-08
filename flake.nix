@@ -31,10 +31,10 @@
     nixosConfigurations = {
       antoine-nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs home-manager nixvim; };
         modules = [
           ./hosts/antoine-nixos/configuration.nix
-          home-manager.nixosModules.default
+          home-manager.nixosModules.home-manager
+          nixvim.nixosModules.nixvim
         ];
       };
     };

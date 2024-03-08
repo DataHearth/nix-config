@@ -1,9 +1,6 @@
-{ pkgs, lib, nixvim, home-manager, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
-    home-manager.nixosModules.default
-    nixvim.nixosModules.nixvim
-
     # Modules
     ../../modules/linux/passthrough.nix
     ../../modules/linux/nvidia.nix
