@@ -3,9 +3,9 @@
   settings = {
     mapping = {
       "<C-Space>" = "cmp.mapping.complete()";
-      "<CR>" = "cmp.mapping.confirm({ select = true })";
-      "<S-Tab>" = "cmp.mapping.select_prev_item(), {'i', 's'}";
-      "<Tab>" = "cmp.mapping.select_next_item(), {'i', 's'}";
+      "<CR>" = "cmp.mapping.confirm({ select = false })";
+      "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+      "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
     };
     sources = [
       { name = "nvim_lsp"; }
@@ -15,5 +15,9 @@
       { name = "copilot"; }
       { name = "crates"; }
     ];
+    completion = {
+      keyword_length = 3;
+    };
+    preselect = "cmp.PreselectMode.None";
   };
 }
