@@ -116,8 +116,8 @@
   "misc": { "force_default_wallpaper": 0 },
   "monitor": ",preferred,auto,auto",
   "windowrulev2": [
-    "workspace 1,class:(firefox)",
-    "workspace 2,class:(Alacritty)",
+    "workspace 1,class:(Alacritty)",
+    "workspace 2,class:(firefox)",
     "workspace 3,class:(code-insiders-url-handler)",
     "workspace 3,class:(code-url-handler)",
     "workspace 4,class:(discord)",
