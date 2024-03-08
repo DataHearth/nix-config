@@ -12,7 +12,6 @@
     "${modules_hm_path}/services/dunst.nix"
     "${modules_hm_path}/services/gpg_ssh_agent.nix"
 
-    "${modules_hm_path}/hyprland"
     "${modules_hm_path}/waybar"
     "${modules_hm_path}/swaylock"
     "${modules_hm_path}/looking-glass"
@@ -79,6 +78,27 @@
       enable = true;
       signingKey = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
     };
+
+    hyprland = {
+      enable = true;
+      hyprlock.enable = false;
+      additionalSettings = {
+        monitor = lib.mkForce [
+          "DP-1,preferred,0x0,2"
+          "HDMI-A-1,preferred,1920x0,1"
+        ];
+        workspace = [
+          "DP-1,1"
+          "HDMI-A-1,2"
+        ];
+        env = [
+          "LIBVA_DRIVER_NAME,nvidia"
+          "XDG_SESSION_TYPE,wayland"
+          # "GBM_BACKEND,nvidia-drm"
+          "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        ];
+      };
+    };
   };
 
   programs = {
@@ -96,27 +116,6 @@
         ms-vsliveshare.vsliveshare
         ms-vscode.cpptools
       ];
-    };
-  };
-
-  wayland.windowManager = {
-    hyprland = {
-      settings = {
-        monitor = lib.mkForce [
-          "DP-1,preferred,0x0,2"
-          "HDMI-A-1,preferred,1920x0,1"
-        ];
-        workspace = [
-          "DP-1,1"
-          "HDMI-A-1,2"
-        ];
-        env = [
-          "LIBVA_DRIVER_NAME,nvidia"
-          "XDG_SESSION_TYPE,wayland"
-          # "GBM_BACKEND,nvidia-drm"
-          "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-        ];
-      };
     };
   };
 }
