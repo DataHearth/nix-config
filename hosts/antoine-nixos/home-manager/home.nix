@@ -11,7 +11,6 @@
     "${modules_hm_path}/utils.nix"
     "${modules_hm_path}/services/gpg_ssh_agent.nix"
 
-    "${modules_hm_path}/waybar"
     "${modules_hm_path}/swaylock"
     "${modules_hm_path}/looking-glass"
     "${modules_hm_path}/vscode"
@@ -73,6 +72,7 @@
   hm = {
     alacritty.enable = true;
     dunst.enable = true;
+    waybar.enable = true;
     
     git = {
       enable = true;

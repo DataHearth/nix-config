@@ -3,4 +3,5 @@
   ./alacritty.nix
   ./hyprland
   ./dunst
+  ./waybar
 ]

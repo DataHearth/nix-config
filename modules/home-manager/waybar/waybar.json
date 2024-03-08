@@ -1,38 +1,25 @@
 {
   "include": "~/.config/waybar/modules.json",
-  "layer": "top",
-  "exclusive": true,
-  "passthrough": false,
   "position": "top",
-  "spacing": 3,
-  "fixed-center": true,
-  "ipc": true,
-  "margin-top": 3,
-  "margin-left": 8,
-  "margin-right": 8,
   "modules-left": [
-    "hyprland/workspaces",
-    "custom/separator#dot-line",
-    "cpu",
-    "temperature",
-    "memory",
-    "disk",
-    "custom/separator#dot-line",
-    "custom/cava_mviz"
+    "hyprland/workspaces"
   ],
-  "modules-center": ["clock"],
+  "modules-center": [
+    "clock"
+  ],
   "modules-right": [
-    "network#speed",
-    "custom/separator#dot-line",
+    "custom/leftend", 
+    "pulseaudio", 
+    "pulseaudio#microphone", 
+    "custom/spacer", 
+    "network", 
+    "custom/spacer", 
+    "disk", 
+    "custom/spacer", 
     "tray",
-    "custom/separator#dot-line",
-    "bluetooth",
-    "custom/separator#dot-line",
-    "mpris",
-    "pulseaudio",
-    "pulseaudio#microphone",
-    "custom/separator#dot-line",
+    "custom/spacer", 
     "custom/lock",
-    "custom/power"
+    "custom/power",
+    "custom/rightend"
   ]
 }
