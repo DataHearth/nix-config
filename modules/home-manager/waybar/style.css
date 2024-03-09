@@ -133,22 +133,22 @@ label:focus {
 }
 
 #pulseaudio {
-    color: rgb(240, 251, 119);
-    border-bottom: 2px solid rgb(240, 251, 119);
+  color: rgb(240, 251, 119);
+  border-bottom: 2px solid rgb(240, 251, 119);
 }
 
 #pulseaudio.muted {
-    color: #ff0b0b;
+  color: #ff0b0b;
 }
 
 #network {
-    color: rgb(148, 200, 255);
-    border-bottom: 2px solid rgb(148, 200, 255);
+  color: rgb(148, 200, 255);
+  border-bottom: 2px solid rgb(148, 200, 255);
 }
 
 #network.disconnected {
-    color: #f53c3c;
-    border-bottom: 2px solid #f53c3c;
+  color: #f53c3c;
+  border-bottom: 2px solid #f53c3c;
 }
 
 #backlight {
@@ -206,7 +206,7 @@ label:focus {
   padding-left: 14px;
   padding-right: 10px;
   text-shadow: 2px 2px 4px black;
-  font-size: 16px;
+  /* font-size: 16px; */
 }
 
 #keyboard-state {
