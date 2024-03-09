@@ -77,19 +77,17 @@
     "shadow_range": 4,
     "shadow_render_power": 3
   },
-  "device:epic-mouse-v1": { "sensitivity": -0.5 },
+  "device": {
+    "name": "epic-mouse-v1",
+    "sensitivity": -0.5
+  },
   "dwindle": { "preserve_split": "yes", "pseudotile": "yes" },
-  "env": [
-    "XCURSOR_SIZE,24", 
-    "WLR_NO_HARDWARE_CURSORS,1 Hyprland"
-  ],
   "exec-once": [
     "swww init; swww img ~/Pictures/wallpapers/wallpaper1.jpg",
+    "wl-paste --type text --watch cliphist store; wl-paste --type image --watch cliphist store",
     "nm-applet --indicator",
     "waybar",
     "dunst",
-    "wl-paste --type text --watch cliphist store",
-    "wl-paste --type image --watch cliphist store",
     "signal-desktop",
     "Discord",
     "alacritty",

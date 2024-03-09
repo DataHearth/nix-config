@@ -10,24 +10,22 @@ let
     description = "Should the XWayland option be enabled";
     example = true;
   };
-  additionalSettings = mkOption {
-    type = with lib.types;
-      let
-        valueType = nullOr (oneOf [
-          bool
-          int
-          float
-          str
-          path
-          (attrsOf valueType)
-          (listOf valueType)
-        ]) // {
-          description = "Hyprland configuration value";
-        };
-      in valueType;
-    default = {};
-    description = "Additional settings for Hyprland";
+  workspaceSettings = mkOption {
+    type = types.listOf types.nonEmptyStr;
+    description = "Workspace definition";
+    default = [];
   };
+  monitorSettings = mkOption {
+    type = types.listOf types.nonEmptyStr;
+    description = "Monitors definition";
+    default = [];
+  };
+  envVariables = mkOption {
+    type = types.listOf types.nonEmptyStr;
+    description = "Environment variables";
+    default = [ "XCURSOR_SIZER,24" ];
+  };
+  nvidia = mkEnableOption "nvidia";
 
   hyprlock = {
     enable = mkEnableOption "hyprlock";
@@ -35,7 +33,7 @@ let
 in
 {
   options.hm.hyprland = {
-    inherit enable hyprlock additionalSettings enableXWayland;
+    inherit enable hyprlock enableXWayland workspaceSettings monitorSettings nvidia envVariables;
   };
 
   config = mkIf cfg.enable {
@@ -48,7 +46,16 @@ in
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = cfg.enableXWayland;
-      settings = builtins.fromJSON (builtins.readFile ./hyprland.json) // cfg.additionalSettings;
+      settings = builtins.fromJSON (builtins.readFile ./hyprland.json) // {
+        env = if cfg.nvidia then [
+          "WLR_NO_HARDWARE_CURSORS,1"
+          "LIBVA_DRIVER_NAME,nvidia"
+          "XDG_SESSION_TYPE,wayland"
+          "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+        ] ++ cfg.envVariables else cfg.envVariables; 
+        monitor = mkIf (cfg.monitorSettings != []) cfg.monitorSettings;
+        workspace = mkIf (cfg.workspaceSettings != []) cfg.workspaceSettings;
+      };
     };
   };
 }

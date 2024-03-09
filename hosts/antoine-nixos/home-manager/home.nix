@@ -82,22 +82,23 @@
     hyprland = {
       enable = true;
       hyprlock.enable = false;
-      additionalSettings = {
-        monitor = lib.mkForce [
-          "DP-1,preferred,0x0,2"
-          "HDMI-A-1,preferred,1920x0,1"
-        ];
-        workspace = [
-          "DP-1,1"
-          "HDMI-A-1,2"
-        ];
-        env = [
-          "LIBVA_DRIVER_NAME,nvidia"
-          "XDG_SESSION_TYPE,wayland"
-          # "GBM_BACKEND,nvidia-drm"
-          "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-        ];
-      };
+      workspaceSettings = [
+        "DP-1,1"
+        "DP-1,3"
+        "DP-1,5"
+        "DP-1,7"
+        "DP-1,9"
+        "HDMI-A-1,2"
+        "HDMI-A-1,4"
+        "HDMI-A-1,6"
+        "HDMI-A-1,8"
+        "HDMI-A-1,10"
+      ];
+      monitorSettings = [
+        "DP-1,preferred,0x0,2"
+        "HDMI-A-1,preferred,1920x0,1"
+      ];
+      nvidia = true;
     };
   };
 

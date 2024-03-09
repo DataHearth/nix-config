@@ -97,7 +97,6 @@
     };
     variables = {
       KWIN_DRM_USE_MODIFIERS = "0";
-      WLR_NO_HARDWARE_CURSORS = "1";
     };
     systemPackages = with pkgs; [
       networkmanagerapplet
