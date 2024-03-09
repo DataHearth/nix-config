@@ -17,9 +17,6 @@
     "disk", 
     "custom/spacer", 
     "tray",
-    "custom/spacer", 
-    "custom/lock",
-    "custom/power",
     "custom/rightend"
   ]
 }
