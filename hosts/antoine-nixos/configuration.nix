@@ -160,11 +160,5 @@
       fsType = "ext4";
       options = [ automount_opts ];
     };
-    "/home/datahearth/linux-games" = lib.mkForce {
-      device = "/mnt/linux-games";
-      depends = [ "/mnt/linux-games" ];
-      fsType = "none";
-      options = [ "bind" "user" "rw" automount_opts ];
-    };
   };
 }
