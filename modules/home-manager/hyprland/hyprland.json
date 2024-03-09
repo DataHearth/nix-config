@@ -68,20 +68,28 @@
     ", XF86AudioPrev, exec, playerctl previous",
     ", XF86AudioNext, exec, playerctl next"
   ],
-  "bindm": ["$mod, mouse:272, movewindow", "$mod, mouse:273, resizewindow"],
+  "bindm": [
+    "$mod, mouse:272, movewindow",
+    "$mod, mouse:273, resizewindow"
+  ],
   "decoration": {
-    "blur": { "enabled": true, "passes": 1, "size": 3 },
+    "blur": {
+      "enabled": true,
+      "passes": 1,
+      "size": 3
+    },
     "col.shadow": "rgba(1a1a1aee)",
     "drop_shadow": "yes",
-    "rounding": 3,
-    "shadow_range": 4,
-    "shadow_render_power": 3
+    "rounding": 1
   },
   "device": {
     "name": "epic-mouse-v1",
     "sensitivity": -0.5
   },
-  "dwindle": { "preserve_split": "yes", "pseudotile": "yes" },
+  "dwindle": {
+    "preserve_split": "yes",
+    "pseudotile": "yes"
+  },
   "exec-once": [
     "swww init; swww img ~/Pictures/wallpapers/wallpaper1.jpg",
     "wl-paste --type text --watch cliphist store; wl-paste --type image --watch cliphist store",
@@ -96,22 +104,27 @@
   ],
   "general": {
     "allow_tearing": false,
-    "border_size": 2,
     "col.active_border": "rgba(33ccffee) rgba(00ff99ee) 45deg",
     "col.inactive_border": "rgba(595959aa)",
-    "gaps_in": 5,
-    "gaps_out": 20,
+    "gaps_in": 3,
+    "gaps_out": 10,
     "layout": "dwindle"
   },
-  "gestures": { "workspace_swipe": "off" },
+  "gestures": {
+    "workspace_swipe": "off"
+  },
   "input": {
     "follow_mouse": 1,
     "kb_layout": "fr",
     "numlock_by_default": true,
     "sensitivity": 0
   },
-  "master": { "new_is_master": true },
-  "misc": { "force_default_wallpaper": 0 },
+  "master": {
+    "new_is_master": true
+  },
+  "misc": {
+    "force_default_wallpaper": 0
+  },
   "monitor": ",preferred,auto,auto",
   "windowrulev2": [
     "workspace 1,class:(Alacritty)",
