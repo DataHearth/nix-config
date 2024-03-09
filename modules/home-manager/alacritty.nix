@@ -47,8 +47,7 @@ in
         font = {
           size = cfg.fontSize;
           normal = {
-            family = "FiraCode Nerd Font";
-            style = "Retina";
+            family = "Mononoki Nerd Font";
           };
         };
         scrolling.multiplier = 5;
