@@ -68,6 +68,8 @@ window#modules-right {
 #tray,
 #mode,
 #idle_inhibitor,
+#cpu,
+#memory,
 #custom-leftend,
 #custom-spacer,
 #custom-rightend,
@@ -110,21 +112,16 @@ label:focus {
 }
 
 #custom-spacer {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 #custom-leftend, #custom-rightend {
   padding-left: 8px;
 }
 
-#custom-leftend {
+#custom-leftend, #custom-rightend {
   border-top-left-radius: 7px;
   border-bottom-left-radius: 7px;
-}
-
-#custom-rightend {
-  border-top-right-radius: 7px;
-  border-bottom-right-radius: 7px;
 }
 
 #pulseaudio {
@@ -132,7 +129,12 @@ label:focus {
   border-bottom: 2px solid rgb(240, 251, 119);
 }
 
-#pulseaudio.muted {
+#pulseaudio.microphone {
+  padding-left: 7px;
+  padding-right: 2px;
+}
+
+#pulseaudio.muted, #pulseaudio.microphone.muted {
   color: #ff0b0b;
 }
 
@@ -201,7 +203,11 @@ label:focus {
   padding-left: 14px;
   padding-right: 10px;
   text-shadow: 2px 2px 4px black;
-  /* font-size: 16px; */
+}
+
+#cpu, #memory {
+  color: #41ba9b;
+  border-bottom: 2px solid #41ba9b;
 }
 
 #keyboard-state {

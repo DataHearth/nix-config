@@ -1,8 +1,13 @@
 {
   "include": "~/.config/waybar/modules.json",
+  "layer": "top",
   "position": "top",
   "modules-left": [
-    "hyprland/workspaces"
+    "hyprland/workspaces",
+    "custom/spacer", 
+    "cpu",
+    "custom/spacer", 
+    "memory"
   ],
   "modules-center": [
     "clock"

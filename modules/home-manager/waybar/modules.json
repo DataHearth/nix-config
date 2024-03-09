@@ -77,37 +77,34 @@
   },
   "pulseaudio": {
     "format": "{icon} {volume}%",
-    "format-bluetooth": "{icon} {volume}% {format_source}",
-    "format-bluetooth-muted": " {icon} {format_source}",
-    "format-headphone": " {icon} ",
-    "format-headphone-muted": "",
     "format-muted": "",
-    "format-source": "{volume}% ",
-    "format-source-muted": "",
     "format-icons": {
-        "headphone": "",
-        "hands-free": "",
-        "headset": "",
-        "phone": "",
-        "portable": "",
-        "car": "",
         "default": ["", "", "󰕾", ""]
     },
     "on-click": "amixer sset Master toggle"
   },
   "pulseaudio#microphone": {
     "format": "{format_source}",
-    "format-source": "  ",
-    "format-source-muted": "  ",
+    "format-source": "",
+    "format-source-muted": "",
     "on-click": "amixer sset Capture toggle"
   },
+  "cpu": {
+    "format": " {usage}%",
+    "interval": 2
+  },
+  "memory": {
+    "format": "󰾆 {used:0.1f}GB",
+    "interval": 2
+  },
+
   "custom/lock": {
-    "format": " 󰌾 ",
+    "format": "󰌾",
     "interval": 86400,
     "on-click": "~/.config/tofi/exec.sh lock"
   },
   "custom/power": {
-    "format": " ⏻ ",
+    "format": "⏻",
     "on-click": "~/.config/tofi/exec.sh powermenu",
     "interval": 86400
   },
