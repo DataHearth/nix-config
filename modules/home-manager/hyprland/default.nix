@@ -1,6 +1,7 @@
 { config, options, lib, pkgs, ... }:
 with lib;
 let
+  hyprlandSettings = builtins.fromJSON (builtins.readFile ./hyprland.json);
   cfg = config.hm.hyprland;
 
   enable = mkEnableOption "hyprland";
@@ -37,7 +38,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = mkIf cfg.hyprlock.enable [ pkgs.hyprlock ];
+    home.packages = with pkgs; [] ++ 
+      (if cfg.hyprlock.enable then [ hyprlock ] else [ ]);
 
     home.file.".config/hypr/hyprlock.conf" = mkIf cfg.hyprlock.enable {
       source = ./hyprlock.conf;
@@ -46,13 +48,13 @@ in
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = cfg.enableXWayland;
-      settings = builtins.fromJSON (builtins.readFile ./hyprland.json) // {
-        env = if cfg.nvidia then [
+      settings = hyprlandSettings // {
+        env = hyprlandSettings.env ++ (if cfg.nvidia then [
           "WLR_NO_HARDWARE_CURSORS,1"
           "LIBVA_DRIVER_NAME,nvidia"
-          "XDG_SESSION_TYPE,wayland"
           "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-        ] ++ cfg.envVariables else cfg.envVariables; 
+        ] else []) ++ cfg.envVariables;
+        exec-once = hyprlandSettings.exec-once ++ [ "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" ];
         monitor = mkIf (cfg.monitorSettings != []) cfg.monitorSettings;
         workspace = mkIf (cfg.workspaceSettings != []) cfg.workspaceSettings;
       };
