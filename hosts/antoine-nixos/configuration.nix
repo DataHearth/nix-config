@@ -15,6 +15,10 @@
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.stateVersion = "24.05";
+  time.timeZone = "Europe/Paris";
+  console.keyMap = "fr";
+  sound.enable = true;
+  virtualisation.docker.enable = true;
 
   # Bootloader.
   boot.loader.grub = {
@@ -51,30 +55,27 @@
     };
   };
   
-  # Time
-  time.timeZone = "Europe/Paris";
-
-  # International properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "fr_FR.UTF-8";
-    LC_IDENTIFICATION = "fr_FR.UTF-8";
-    LC_MEASUREMENT = "fr_FR.UTF-8";
-    LC_MONETARY = "fr_FR.UTF-8";
-    LC_NAME = "fr_FR.UTF-8";
-    LC_NUMERIC = "fr_FR.UTF-8";
-    LC_PAPER = "fr_FR.UTF-8";
-    LC_TELEPHONE = "fr_FR.UTF-8";
-    LC_TIME = "fr_FR.UTF-8";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "fr_FR.UTF-8";
+      LC_IDENTIFICATION = "fr_FR.UTF-8";
+      LC_MEASUREMENT = "fr_FR.UTF-8";
+      LC_MONETARY = "fr_FR.UTF-8";
+      LC_NAME = "fr_FR.UTF-8";
+      LC_NUMERIC = "fr_FR.UTF-8";
+      LC_PAPER = "fr_FR.UTF-8";
+      LC_TELEPHONE = "fr_FR.UTF-8";
+      LC_TIME = "fr_FR.UTF-8";
+    };
+  };
+  
+  security = {
+    rtkit.enable = true;
+    pam.services.swaylock = {};
+    polkit.enable = true;
   };
 
-  # Configure console keymap
-  console.keyMap = "fr";
-
-  # Enable sound with pipewire.
-  sound.enable = true;
-  security.rtkit.enable = true;
-  security.pam.services.swaylock = {};
   xdg = {
     portal = {
       enable = true;
@@ -92,9 +93,6 @@
 
   environment = {
     shells = with pkgs; [ zsh bash ];
-    sessionVariables = {
-      NIXOS_OZONE_WL = "1";
-    };
     variables = {
       KWIN_DRM_USE_MODIFIERS = "0";
     };
@@ -105,7 +103,10 @@
       docker
       looking-glass-client
       playerctl
-      xdg-desktop-portal-gtk
+
+      # Libraries
+      kdePackages.qtwayland
+      libsForQt5.qt5.qtwayland
     ];
   };
 
@@ -135,7 +136,6 @@
     zsh.enable = true;
   };
   
-  virtualisation.docker.enable = true;
   custom = {
     neovim.enable = true;
   };

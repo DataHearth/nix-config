@@ -6,20 +6,19 @@
       desktopManager.gnome.enable = true;
 
       displayManager = {
-        autoLogin.enable = false;
         gdm.enable = true;
-
-        autoLogin.user = "datahearth";
       };
       xkb.layout = "fr";
     };
 
     pipewire = {
       enable = true;
-      alsa.enable = true;
       pulse.enable = true;
 
-      alsa.support32Bit = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
     };
 
     tlp = {
@@ -34,7 +33,6 @@
     };
 
     power-profiles-daemon.enable = false;
-    printing.enable = true;
     deluge.enable = true;
     gnome.gnome-keyring.enable = true;
 
