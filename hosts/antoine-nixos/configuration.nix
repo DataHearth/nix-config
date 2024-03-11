@@ -11,7 +11,6 @@
     ./systemd.nix
     ./services.nix
   ];
-  # Nix configuration
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.stateVersion = "24.05";
@@ -20,14 +19,12 @@
   sound.enable = true;
   virtualisation.docker.enable = true;
 
-  # Bootloader.
   boot.loader.grub = {
     enable = true;
     device = "/dev/nvme0n1";
     useOSProber = true;
   };
 
-  # Networking
   networking = {
     networkmanager = {
       enable = true;
@@ -46,7 +43,6 @@
     dhcpcd.extraConfig = "nohook resolv.conf";
   };
 
-  # Hardware
   hardware = {
     pulseaudio.enable = false;
     opengl = {
@@ -126,13 +122,7 @@
   
   programs = {
     steam.enable = true;
-
-    # Enable DE in login page
-    # Further customization inside home.nix
     hyprland.enable = true;
-
-    # Enable shells globally to allow system usage
-    # Further customization inside home.nix
     zsh.enable = true;
   };
   
