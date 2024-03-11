@@ -89,9 +89,9 @@
 
   environment = {
     shells = with pkgs; [ zsh bash ];
-    variables = {
-      KWIN_DRM_USE_MODIFIERS = "0";
-    };
+    # variables = {
+    #   KWIN_DRM_USE_MODIFIERS = "0";
+    # };
     systemPackages = with pkgs; [
       networkmanagerapplet
       pinentry
@@ -110,6 +110,7 @@
     (nerdfonts.override {
       fonts = ["FiraCode" "Mononoki"];
     })
+    corefonts
   ];
 
   home-manager = {
