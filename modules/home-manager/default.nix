@@ -4,4 +4,5 @@
   ./hyprland
   ./dunst
   ./waybar
+  ./ssh
 ]

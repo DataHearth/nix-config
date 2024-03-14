@@ -6,7 +6,6 @@
   in [
     # Reusable modules
     "${modules_hm_path}/zsh.nix"
-    "${modules_hm_path}/ssh.nix"
     "${modules_hm_path}/go.nix"
     "${modules_hm_path}/utils.nix"
     "${modules_hm_path}/services/gpg_ssh_agent.nix"
@@ -73,6 +72,7 @@
     alacritty.enable = true;
     dunst.enable = true;
     waybar.enable = true;
+    ssh.enable = true;
     
     git = {
       enable = true;

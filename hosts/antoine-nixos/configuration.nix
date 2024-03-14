@@ -32,15 +32,14 @@
     };
     hostName = "antoine-nixos";
     nameservers = [
-      "10.0.0.3"
-      "fe80::5054:ff:fe61:6a2a"
+      "10.0.0.2"
+      "fe80::1ac0:4dff:fe8f:ad21"
       "1.1.1.1"
       "1.0.0.1"
       "2606:4700:4700::1111"
       "2606:4700:4700::1001"
     ];
     wireless.enable = false;
-    dhcpcd.extraConfig = "nohook resolv.conf";
   };
 
   hardware = {
@@ -99,6 +98,7 @@
       docker
       looking-glass-client
       playerctl
+      kdePackages.okular
 
       # Libraries
       kdePackages.qtwayland

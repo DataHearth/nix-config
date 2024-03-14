@@ -1,5 +1,6 @@
 { }:
 {
+  diffview.enable = true;
   telescope = import ./telescope.nix;
   treesitter = import ./treesitter.nix;
   trouble = import ./trouble.nix;
@@ -32,8 +33,4 @@
   ### Thirdparties
   copilot-lua = import ./copilot-lua.nix;
   copilot-cmp = import ./copilot-cmp.nix;
-
-  ## COQ
-  # coq-nvim = import ./coq-nvim.nix;
-  # coq-thirdparty = import ./coq-thirdparty.nix;
 }
