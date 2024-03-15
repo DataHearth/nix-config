@@ -45,7 +45,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/antoine-macbookpro/configuration.nix
-          home-manager.darwinModules.default
+          home-manager.darwinModules.home-manager
           nixvim.nixDarwinModules.nixvim
         ];
       };
