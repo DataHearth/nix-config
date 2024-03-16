@@ -1,12 +1,7 @@
 { pkgs, ... }:
 {
   programs = {
-    btop = {
-      enable = true;
-      settings = {
-        color_theme = "catppuccin_macchiato";
-      };
-    };
+    btop.enable = true;
     
     bat = {
       enable = true;
