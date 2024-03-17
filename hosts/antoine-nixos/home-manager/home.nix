@@ -4,21 +4,13 @@
     modules_base_path = ../../../modules;
     modules_hm_path = modules_base_path + "/home-manager"; 
   in [
-    # Reusable modules
-    "${modules_hm_path}/zsh.nix"
-    "${modules_hm_path}/go.nix"
-    "${modules_hm_path}/utils.nix"
     "${modules_hm_path}/services/gpg_ssh_agent.nix"
-
     "${modules_hm_path}/swaylock"
     "${modules_hm_path}/looking-glass"
     "${modules_hm_path}/vscode"
     "${modules_hm_path}/tofi"
 
-    # Shared home-manager configuration between systems
     ../../shared/hm.nix
-
-    # Host specific
     ./services.nix
   ] ++ (import ../../../modules/home-manager);
 
@@ -46,6 +38,8 @@
       signal-desktop
       vlc
       protonmail-bridge
+      hoppscotch
+      nosql-workbench
 
       # CLI tools
       cliphist
