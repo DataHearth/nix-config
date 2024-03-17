@@ -12,7 +12,7 @@
 
     git = {
       enable = true;
-      signingKey = "099D31E860471ABE8425358243C0623D204EE13D";
+      signingKey = "FFC492C15320B05D0F8D7D58ABF6737C63396D35";
     };
   };
 
