@@ -1,4 +1,4 @@
-{ lib, config, options, fetchFromGithub, pkgs, ...}:
+{ lib, config, options, pkgs, ...}:
 with lib;
 let
   cfg = config.custom.neovim;
@@ -49,8 +49,95 @@ in
           action = "<cmd>CHADopen<cr>";
           key = "<C-t>";
         }
+        {
+          action = ''
+          function()
+            local conf = require("telescope.config").values
+            local file_paths = {}
+            for _, item in ipairs(require("harpoon"):list().items) do
+                table.insert(file_paths, item.value)
+            end
+
+            require("telescope.pickers").new({}, {
+                prompt_title = "Harpoon",
+                finder = require("telescope.finders").new_table({
+                    results = file_paths,
+                }),
+                previewer = conf.file_previewer({}),
+                sorter = conf.generic_sorter({}),
+            }):find()
+          end
+          '';
+          key = "<C-e>";
+          lua = true;
+        }
+        {
+          action = "function() require('harpoon'):list():append() end";
+          key = "<leader>a";
+          lua = true;
+        }
+        {
+          action = "function() require('harpoon'):list():prev() end";
+          key = "<leader>p";
+          lua = true;
+        }
+        {
+          action = "function() require('harpoon'):list():next() end";
+          key = "<leader>n";
+          lua = true;
+        }
+        {
+          action = "function() require('harpoon'):list():clear() end";
+          key = "<leader>c";
+          lua = true;
+        }
       ];
-      plugins = import ./plugins { };
+      plugins = {
+        diffview.enable = true;
+        chadtree.enable = true;
+        leap.enable = true;
+        nix.enable = true;
+        comment-nvim.enable = true;
+        todo-comments.enable = true;
+        lualine.enable = true;
+        luasnip.enable = true;
+        autoclose.enable = true;
+        illuminate.enable = true;
+        copilot-cmp.enable = true;
+        cmp_luasnip.enable = true;
+        cmp-nvim-lsp.enable = true;
+        cmp-cmdline.enable = true;
+        cmp-path.enable = true;
+        cmp-buffer.enable = true;
+        crates-nvim.enable = true;
+        telescope = import ./plugins/telescope.nix;
+        treesitter = import ./plugins/treesitter.nix;
+        trouble = import ./plugins/trouble.nix;
+        indent-blankline = import ./plugins/indent-blankline.nix;
+        dashboard = import ./plugins/dashboard.nix;
+        gitsigns = import ./plugins/gitsigns.nix;
+        harpoon = {
+          enable = true;
+          package = pkgs.vimUtils.buildVimPlugin {
+            name = "harpoon2";
+            src = pkgs.fetchFromGitHub {
+              owner = "ThePrimeagen";
+              repo = "harpoon";
+              rev = "a38be6e0dd4c6db66997deab71fc4453ace97f9c";
+              hash = "sha256-RjwNUuKQpLkRBX3F9o25Vqvpu3Ah1TCFQ5Dk4jXhsbI=";
+            };
+          };
+        };
+
+        # Completion
+        lsp = import ./plugins/lsp.nix;
+
+        ## CMP
+        cmp = import ./plugins/cmp.nix;
+
+        ### Thirdparties
+        copilot-lua = import ./plugins/copilot-lua.nix;
+      };
     };
   };
 }
