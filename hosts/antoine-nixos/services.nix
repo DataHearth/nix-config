@@ -48,6 +48,6 @@
       user = "datahearth";
     };
     nvidia.enable = true;
-    nvidia.sleepIssue = true;
+    nvidia.sleepIssue = false;
   };
 }

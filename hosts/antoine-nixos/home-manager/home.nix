@@ -76,11 +76,11 @@
       enable = true;
       hyprlock.enable = false;
       workspaceSettings = [
-        "DP-1,1"
-        "DP-1,3"
-        "DP-1,5"
-        "DP-1,7"
-        "DP-1,9"
+        "DP-2,1"
+        "DP-2,3"
+        "DP-2,5"
+        "DP-2,7"
+        "DP-2,9"
         "HDMI-A-1,2"
         "HDMI-A-1,4"
         "HDMI-A-1,6"
@@ -88,7 +88,7 @@
         "HDMI-A-1,10"
       ];
       monitorSettings = [
-        "DP-1,preferred,0x0,2"
+        "DP-2,preferred,0x0,2"
         "HDMI-A-1,preferred,1920x0,1"
       ];
       nvidia = true;

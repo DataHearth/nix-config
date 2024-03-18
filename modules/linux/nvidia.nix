@@ -11,7 +11,7 @@ with lib;
 
   config = mkIf cfg.enable {
     services.xserver.videoDrivers = ["nvidia"];
-    boot.kernelParams = mkIf (cfg.sleepIssue) [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+    boot.kernelParams = [] ++ (if cfg.sleepIssue then ["nvidia.NVreg_PreserveVideoMemoryAllocations=1"] else []);
     hardware = {
       opengl = {
         enable = true;
@@ -21,7 +21,7 @@ with lib;
       nvidia = {
         modesetting.enable = true;
         nvidiaSettings = true;
-        powerManagement.enable = mkIf (cfg.sleepIssue) true;
+        powerManagement.enable = cfg.sleepIssue;
       };
     };
   };
