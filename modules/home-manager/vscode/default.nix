@@ -49,6 +49,8 @@
       ecmel.vscode-html-css
       charliermarsh.ruff
       earthly.earthfile-syntax-highlighting
+      davidanson.vscode-markdownlint
+      samuelcolvin.jinjahtml
     ];
     userSettings = lib.importJSON ./settings.json;
     languageSnippets = {
