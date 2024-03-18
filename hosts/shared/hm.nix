@@ -32,6 +32,7 @@
   programs = {
     zoxide.enable = true;
     btop.enable = true;
+    eza.enable = true;
 
     bash = {
       enable = true;
@@ -60,11 +61,6 @@
           file = "Catppuccin-macchiato.tmTheme";
         };
       };
-    };
-
-    eza = {
-      enable = true;
-      enableAliases = true;
     };
 
     go = {

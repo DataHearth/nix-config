@@ -4,7 +4,6 @@
     modules_base_path = ../../../modules;
     modules_hm_path = modules_base_path + "/home-manager"; 
   in [
-    "${modules_hm_path}/services/gpg_ssh_agent.nix"
     "${modules_hm_path}/swaylock"
     "${modules_hm_path}/looking-glass"
     "${modules_hm_path}/vscode"
