@@ -47,7 +47,9 @@
       ids = [ "10de:1b81" "10de:10f0" ];
       user = "datahearth";
     };
-    nvidia.enable = true;
-    nvidia.sleepIssue = false;
+    nvidia = {
+      enable = true;
+      sleepIssue = true;
+    };
   };
 }
