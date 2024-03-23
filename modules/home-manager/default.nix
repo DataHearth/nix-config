@@ -5,4 +5,5 @@
   ./dunst
   ./waybar
   ./ssh
+  ./hyprlock.nix
 ]

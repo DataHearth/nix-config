@@ -27,24 +27,13 @@ let
     default = [ "XCURSOR_SIZER,24" ];
   };
   nvidia = mkEnableOption "nvidia";
-
-  hyprlock = {
-    enable = mkEnableOption "hyprlock";
-  };
 in
 {
   options.hm.hyprland = {
-    inherit enable hyprlock enableXWayland workspaceSettings monitorSettings nvidia envVariables;
+    inherit enable enableXWayland workspaceSettings monitorSettings nvidia envVariables;
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [] ++ 
-      (if cfg.hyprlock.enable then [ hyprlock ] else [ ]);
-
-    home.file.".config/hypr/hyprlock.conf" = mkIf cfg.hyprlock.enable {
-      source = ./hyprlock.conf;
-    };
-
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = cfg.enableXWayland;

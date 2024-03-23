@@ -13,7 +13,7 @@ function confirm {
 }
 
 function lock {
-  sleep 0.5s; swaylock & disown
+  sleep 0.5s; hyprlock & disown
 }
 
 function powermenu {
@@ -23,7 +23,7 @@ function powermenu {
   suspend=" Suspend"
   logout=" Logout"
 
-  action=$(echo -e "$poweroff\n$reboot\n$lock\n$suspend\n$logout" |\
+  action=$(echo -e "$suspend\n$lock\n$poweroff\n$reboot\n$logout" |\
     tofi -c $config_dir/powermenu.conf)
 
   case $action in

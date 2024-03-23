@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, hyprlock, ... }:
 {
   imports = [
     # Modules
@@ -8,7 +8,6 @@
 
     # Host specific
     ./hardware-configuration.nix
-    ./systemd.nix
     ./services.nix
   ];
   nixpkgs.config.allowUnfree = true;
@@ -70,8 +69,12 @@
   
   security = {
     rtkit.enable = true;
-    pam.services.swaylock = {};
     polkit.enable = true;
+
+    pam.services = {
+      swaylock = {};
+      hyprlock = {};
+    };
   };
 
   xdg = {
@@ -119,6 +122,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    extraSpecialArgs = { inherit hyprlock; };
     users = {
       "datahearth" = import ./home-manager/home.nix;
     };

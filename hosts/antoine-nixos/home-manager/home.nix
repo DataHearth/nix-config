@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, hyprlock, ... }:
 {
   imports = let 
     modules_base_path = ../../../modules;
@@ -11,6 +11,7 @@
 
     ../../shared/hm.nix
     ./services.nix
+    hyprlock.homeManagerModules.default
   ] ++ (import ../../../modules/home-manager);
 
   # Almost static information
@@ -66,6 +67,12 @@
     dunst.enable = true;
     waybar.enable = true;
     ssh.enable = true;
+
+    hyprlock = {
+      enable = true;
+      lockBackgroundImage = "~/Pictures/wallpapers/lock2.png";
+      defaultDisplay = "DP-2";
+    };
     
     git = {
       enable = true;
@@ -74,7 +81,6 @@
 
     hyprland = {
       enable = true;
-      hyprlock.enable = false;
       workspaceSettings = [
         "DP-2,1"
         "DP-2,3"
