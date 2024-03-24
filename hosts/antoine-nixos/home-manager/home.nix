@@ -68,7 +68,7 @@
     waybar.enable = true;
     ssh.enable = true;
     hypridle = {
-      enable = true;
+      enable = false;
       enabledListeners.brightness = false;
     };
 
