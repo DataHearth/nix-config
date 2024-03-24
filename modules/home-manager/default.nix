@@ -6,4 +6,5 @@
   ./waybar
   ./ssh
   ./hyprlock.nix
+  ./hypridle.nix
 ]

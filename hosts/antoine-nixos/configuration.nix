@@ -1,4 +1,4 @@
-{ pkgs, lib, hyprlock, ... }:
+{ pkgs, lib, hyprlock, hypridle, ... }:
 {
   imports = [
     # Modules
@@ -122,7 +122,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit hyprlock; };
+    extraSpecialArgs = { inherit hyprlock hypridle; };
     users = {
       "datahearth" = import ./home-manager/home.nix;
     };

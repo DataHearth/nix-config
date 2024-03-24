@@ -1,4 +1,4 @@
-{ pkgs, lib, hyprlock, ... }:
+{ pkgs, lib, hyprlock, hypridle, ... }:
 {
   imports = let 
     modules_base_path = ../../../modules;
@@ -12,6 +12,7 @@
     ../../shared/hm.nix
     ./services.nix
     hyprlock.homeManagerModules.default
+    hypridle.homeManagerModules.default
   ] ++ (import ../../../modules/home-manager);
 
   # Almost static information
@@ -67,6 +68,7 @@
     dunst.enable = true;
     waybar.enable = true;
     ssh.enable = true;
+    hypridle.enable = true;
 
     hyprlock = {
       enable = true;

@@ -20,6 +20,10 @@
       url = "github:hyprwm/hyprlock";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hypridle = {
+      url = "github:hyprwm/hypridle";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ 
@@ -30,13 +34,14 @@
     flake-utils,
     nixvim,
     hyprlock,
+    hypridle,
     ... 
   }:
   {
     nixosConfigurations = {
       antoine-nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit hyprlock; };
+        specialArgs = { inherit hyprlock hypridle; };
         modules = [
           ./hosts/antoine-nixos/configuration.nix
           home-manager.nixosModules.home-manager
