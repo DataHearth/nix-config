@@ -4,6 +4,28 @@ let
   cfg = config.hm.hypridle;
 
   enable = mkEnableOption "hypridle";
+  enabledListeners = {
+    brightness = mkOption {
+      type = types.bool;
+      description = "Enable brightness control";
+      default = true;
+    };
+    lock = mkOption {
+      type = types.bool;
+      description = "Enable lock control";
+      default = true;
+    };
+    monitors = mkOption {
+      type = types.bool;
+      description = "Enable monitors control";
+      default = true;
+    };
+    suspend = mkOption {
+      type = types.bool;
+      description = "Enable suspend control";
+      default = true;
+    };
+  };
   timeouts = {
     lowerBrightness = mkOption {
       type = types.int;
@@ -29,7 +51,7 @@ let
 in
 {
   options.hm.hypridle = {
-    inherit enable timeouts;
+    inherit enable timeouts enabledListeners;
   };
 
   config = mkIf cfg.enable {
@@ -40,24 +62,24 @@ in
       beforeSleepCmd = "loginctl lock-session";
       afterSleepCmd = "hyprctl dispatch dpms on";
       listeners = [
-        {
+        (mkIf cfg.enabledListeners.brightness {
           timeout = cfg.timeouts.lowerBrightness;
           onTimeout = "brightnessctl -s set 10";
           onResume = "brightnessctl -r";
-        }
-        {
+        })
+        (mkIf cfg.enabledListeners.lock {
           timeout = cfg.timeouts.lock;
-          onTimeout = "loginctl lock-session";
-        }
-        {
+          onTimeout = "pidof hyprlock || hyprlock";
+        })
+        (mkIf cfg.enabledListeners.monitors {
           timeout = cfg.timeouts.displaysOff;
           onTimeout = "hyprctl dispatch dpms off";
           onResume = "hyprctl dispatch dpms on";
-        }
-        {
+        })
+        (mkIf cfg.enabledListeners.suspend {
           timeout = cfg.timeouts.suspend;
           onTimeout = "systemctl suspend";
-        }
+        })
       ];
     };
   };

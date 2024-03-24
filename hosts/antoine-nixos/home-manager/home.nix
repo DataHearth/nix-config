@@ -4,7 +4,6 @@
     modules_base_path = ../../../modules;
     modules_hm_path = modules_base_path + "/home-manager"; 
   in [
-    "${modules_hm_path}/swaylock"
     "${modules_hm_path}/looking-glass"
     "${modules_hm_path}/vscode"
     "${modules_hm_path}/tofi"
@@ -68,7 +67,10 @@
     dunst.enable = true;
     waybar.enable = true;
     ssh.enable = true;
-    hypridle.enable = true;
+    hypridle = {
+      enable = true;
+      enabledListeners.brightness = false;
+    };
 
     hyprlock = {
       enable = true;
