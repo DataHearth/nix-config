@@ -1,4 +1,4 @@
 {
   enable = true;
-  exclude.filetypes = [ "dashboard" ];
+  settings.exclude.filetypes = [ "dashboard" ];
 }

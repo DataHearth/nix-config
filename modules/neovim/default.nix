@@ -97,7 +97,7 @@ in
         chadtree.enable = true;
         leap.enable = true;
         nix.enable = true;
-        comment-nvim.enable = true;
+        comment.enable = true;
         todo-comments.enable = true;
         lualine.enable = true;
         luasnip.enable = true;
