@@ -1,4 +1,6 @@
 {
   enable = true;
-  settings.auto_close = true;
+  settings = {
+    auto_close = true;
+  };
 }

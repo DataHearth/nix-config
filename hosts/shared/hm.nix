@@ -87,6 +87,7 @@
         cat = "bat";
         dc = "docker compose";
         pnpm-upgrade = "pnpm add -g pnpm";
+        cd = "z";
       };
       initExtra = ''
         neofetch

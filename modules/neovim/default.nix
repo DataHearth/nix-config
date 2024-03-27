@@ -50,6 +50,10 @@ in
           key = "<C-t>";
         }
         {
+          action = "<cmd>TroubleToggle<cr>";
+          key = "<C-S-t>";
+        }
+        {
           action = ''
           function()
             local conf = require("telescope.config").values
@@ -101,7 +105,7 @@ in
         todo-comments.enable = true;
         lualine.enable = true;
         luasnip.enable = true;
-        autoclose.enable = true;
+        nvim-autopairs.enable = true;
         illuminate.enable = true;
         copilot-cmp.enable = true;
         cmp_luasnip.enable = true;
@@ -110,8 +114,8 @@ in
         cmp-path.enable = true;
         cmp-buffer.enable = true;
         crates-nvim.enable = true;
+        treesitter.enable = true;
         telescope = import ./plugins/telescope.nix;
-        treesitter = import ./plugins/treesitter.nix;
         trouble = import ./plugins/trouble.nix;
         indent-blankline = import ./plugins/indent-blankline.nix;
         dashboard = import ./plugins/dashboard.nix;
