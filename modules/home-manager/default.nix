@@ -1,10 +1,10 @@
 [
   ./git.nix
   ./alacritty.nix
+  ./ssh.nix
+  ./hyprlock.nix
+  ./hypridle.nix
   ./hyprland
   ./dunst
   ./waybar
-  ./ssh
-  ./hyprlock.nix
-  ./hypridle.nix
 ]

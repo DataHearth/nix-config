@@ -22,6 +22,7 @@ in
       enable = true;
       addKeysToAgent = cfg.addKeysToAgent;
       matchBlocks = {
+        # Git servers
         "gitea.antoine-langlois.net" = {
           hostname = "gitea.antoine-langlois.net";
           user = "git";
@@ -35,6 +36,14 @@ in
           identityFile = "~/.ssh/${keyNamePrefix}_git";
           identitiesOnly = true;
         };
+        "gitlab.com" = {
+          hostname = "gitlab.com";
+          user = "git";
+          identityFile = "~/.ssh/${keyNamePrefix}_git";
+          identitiesOnly = true;
+        };
+
+        # Servers
         "cronos" = {
           hostname = "10.0.0.2";
           user = "root";
@@ -67,12 +76,6 @@ in
           hostname = "51.91.11.36";
           user = "gitlab-runner";
           identityFile = "~/.ssh/${keyNamePrefix}_bap-runner";
-          identitiesOnly = true;
-        };
-        "bap-gitlab" = {
-          hostname = "gitlab.com";
-          user = "git";
-          identityFile = "~/.ssh/${keyNamePrefix}_git";
           identitiesOnly = true;
         };
 
