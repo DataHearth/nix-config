@@ -14,6 +14,7 @@
       { name = "buffer"; }
       { name = "copilot"; }
       { name = "crates"; }
+      { name = "cmdline"; }
     ];
     completion = {
       keyword_length = 3;

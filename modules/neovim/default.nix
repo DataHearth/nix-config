@@ -54,6 +54,10 @@ in
           key = "<C-S-t>";
         }
         {
+          action = "<cmd>lua vim.lsp.buf.hover()<cr>";
+          key = "<S-k>";
+        }
+        {
           action = ''
           function()
             local conf = require("telescope.config").values
