@@ -33,6 +33,7 @@
     zoxide.enable = true;
     btop.enable = true;
     eza.enable = true;
+    fzf.enable = true;
 
     bash = {
       enable = true;
