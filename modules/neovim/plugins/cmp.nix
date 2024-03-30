@@ -13,7 +13,6 @@
       { name = "path"; }
       { name = "buffer"; }
       { name = "copilot"; }
-      { name = "crates"; }
       { name = "cmdline"; }
     ];
     completion = {

@@ -99,6 +99,10 @@ in
           key = "<leader>c";
           lua = true;
         }
+       {
+         action = "<cmd>lua vim.lsp.buf.format()<cr>";
+         key = "<leader>s";
+       }
       ];
       plugins = {
         diffview.enable = true;
