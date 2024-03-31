@@ -46,6 +46,7 @@ in
       };
       keymaps = import ./keymaps;
       plugins = {
+        barbecue.enable = true;
         chadtree.enable = true;
         cmp = import ./plugins/cmp.nix { lib = lib; };
         cmp-buffer.enable = true;

@@ -18,7 +18,7 @@
       }):find()
     end
     '';
-    key = "<C-e>";
+    key = "<leader>e";
     lua = true;
   }
   {

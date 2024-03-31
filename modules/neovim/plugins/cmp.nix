@@ -5,9 +5,29 @@
     mapping = {
       "<C-Space>" = "cmp.mapping.complete()";
       "<CR>" = "cmp.mapping.confirm({ select = false })";
-      "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
-      "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+      "<Down>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+      "<Up>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
       "<C-e>" = "cmp.mapping(cmp.mapping.abort(), {'i', 's'})";
+      "<Tab>" = ''
+      cmp.mapping(function(fallback)
+        local luasnip = require("luasnip")
+        if luasnip.jumpable(1) then
+          luasnip.jump(1)
+        else
+          fallback()
+        end
+      end, {'i', 's'})
+      '';
+      "<S-Tab>" = ''
+      cmp.mapping(function(fallback)
+        local luasnip = require("luasnip")
+        if luasnip.jumpable(-1) then
+          luasnip.jump(-1)
+        else
+          fallback()
+        end
+      end, {'i', 's'})
+      '';
     };
     sources = [
       { name = "nvim_lsp"; }
@@ -44,6 +64,7 @@
         winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
         col_offset = -3;
         side_padding = 0;
+        border = "rounded";
       };
     };
   };
