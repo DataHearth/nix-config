@@ -23,22 +23,22 @@
   }
   {
     action = "function() require('harpoon'):list():append() end";
-    key = "<leader>a";
+    key = "<leader>ha";
     lua = true;
   }
   {
     action = "function() require('harpoon'):list():prev() end";
-    key = "<leader>p";
+    key = "<leader>hp";
     lua = true;
   }
   {
     action = "function() require('harpoon'):list():next() end";
-    key = "<leader>n";
+    key = "<leader>hn";
     lua = true;
   }
   {
     action = "function() require('harpoon'):list():clear() end";
-    key = "<leader>c";
+    key = "<leader>hc";
     lua = true;
   }
 ]

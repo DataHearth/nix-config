@@ -26,6 +26,9 @@
       "<S-k>" = "hover";
       "<leader>f" = "format";
       "<leader>a" = "code_action";
+      "<leader>r" = "rename";
+      "<leader>gd" = "declaration";
+      "<leader>gr" = "references";
     };
   };
 }
