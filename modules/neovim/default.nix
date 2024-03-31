@@ -46,29 +46,35 @@ in
       };
       keymaps = import ./keymaps;
       plugins = {
-        diffview.enable = true;
         chadtree.enable = true;
-        leap.enable = true;
-        nix.enable = true;
+        cmp = import ./plugins/cmp.nix { lib = lib; };
+        cmp-buffer.enable = true;
+        cmp-cmdline.enable = true;
+        cmp-nvim-lsp.enable = true;
+        cmp-path.enable = true;
+        cmp_luasnip.enable = true;
         comment.enable = true;
-        todo-comments.enable = true;
+        copilot-cmp.enable = true;
+        copilot-lua = import ./plugins/copilot-lua.nix;
+        crates-nvim.enable = true;
+        dashboard = import ./plugins/dashboard.nix;
+        diffview.enable = true;
+        gitsigns = import ./plugins/gitsigns.nix;
+        illuminate.enable = true;
+        indent-blankline = import ./plugins/indent-blankline.nix;
+        leap.enable = true;
+        lsp = import ./plugins/lsp.nix;
+        lspkind.enable = true;
         lualine.enable = true;
         luasnip.enable = true;
+        nix.enable = true;
         nvim-autopairs.enable = true;
-        illuminate.enable = true;
-        copilot-cmp.enable = true;
-        cmp_luasnip.enable = true;
-        cmp-nvim-lsp.enable = true;
-        cmp-cmdline.enable = true;
-        cmp-path.enable = true;
-        cmp-buffer.enable = true;
-        crates-nvim.enable = true;
-        treesitter.enable = true;
         telescope = import ./plugins/telescope.nix;
+        todo-comments.enable = true;
+        treesitter.enable = true;
         trouble = import ./plugins/trouble.nix;
-        indent-blankline = import ./plugins/indent-blankline.nix;
-        dashboard = import ./plugins/dashboard.nix;
-        gitsigns = import ./plugins/gitsigns.nix;
+
+        # Custom
         harpoon = {
           enable = true;
           package = pkgs.vimUtils.buildVimPlugin {
@@ -81,15 +87,6 @@ in
             };
           };
         };
-
-        # Completion
-        lsp = import ./plugins/lsp.nix;
-
-        ## CMP
-        cmp = import ./plugins/cmp.nix;
-
-        ### Thirdparties
-        copilot-lua = import ./plugins/copilot-lua.nix;
       };
     };
   };

@@ -1,3 +1,4 @@
+{ lib, ... }:
 {
   enable = true;
   settings = {
@@ -6,6 +7,7 @@
       "<CR>" = "cmp.mapping.confirm({ select = false })";
       "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
       "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+      "<C-e>" = "cmp.mapping(cmp.mapping.abort(), {'i', 's'})";
     };
     sources = [
       { name = "nvim_lsp"; }
@@ -24,5 +26,25 @@
         require('luasnip').lsp_expand(args.body)
       end
     '';
+    formatting = {
+      fields = [ "kind" "abbr" "menu" ];
+      format = lib.mkForce ''
+        function(entry, vim_item)
+          local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
+          local strings = vim.split(kind.kind, "%s", { trimempty = true })
+          kind.kind = " " .. (strings[1] or "") .. " "
+          kind.menu = "    (" .. (strings[2] or "") .. ")"
+
+          return kind
+        end
+      '';
+    };
+    window = {
+      completion = {
+        winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
+        col_offset = -3;
+        side_padding = 0;
+      };
+    };
   };
 }

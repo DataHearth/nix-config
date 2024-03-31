@@ -21,4 +21,11 @@
     tsserver.enable = true;
     yamlls.enable = true;
   };
+  keymaps = {
+    lspBuf = {
+      "<S-k>" = "hover";
+      "<leader>f" = "format";
+      "<leader>a" = "code_action";
+    };
+  };
 }
