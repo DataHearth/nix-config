@@ -44,66 +44,7 @@ in
         transparentBackground = true;
         flavour = "macchiato";
       };
-      keymaps = [
-        {
-          action = "<cmd>CHADopen<cr>";
-          key = "<C-t>";
-        }
-        {
-          action = "<cmd>TroubleToggle<cr>";
-          key = "<C-S-t>";
-        }
-        {
-          action = "<cmd>lua vim.lsp.buf.hover()<cr>";
-          key = "<S-k>";
-        }
-        {
-          action = ''
-          function()
-            local conf = require("telescope.config").values
-            local file_paths = {}
-            for _, item in ipairs(require("harpoon"):list().items) do
-                table.insert(file_paths, item.value)
-            end
-
-            require("telescope.pickers").new({}, {
-                prompt_title = "Harpoon",
-                finder = require("telescope.finders").new_table({
-                    results = file_paths,
-                }),
-                previewer = conf.file_previewer({}),
-                sorter = conf.generic_sorter({}),
-            }):find()
-          end
-          '';
-          key = "<C-e>";
-          lua = true;
-        }
-        {
-          action = "function() require('harpoon'):list():append() end";
-          key = "<leader>a";
-          lua = true;
-        }
-        {
-          action = "function() require('harpoon'):list():prev() end";
-          key = "<leader>p";
-          lua = true;
-        }
-        {
-          action = "function() require('harpoon'):list():next() end";
-          key = "<leader>n";
-          lua = true;
-        }
-        {
-          action = "function() require('harpoon'):list():clear() end";
-          key = "<leader>c";
-          lua = true;
-        }
-       {
-         action = "<cmd>lua vim.lsp.buf.format()<cr>";
-         key = "<leader>s";
-       }
-      ];
+      keymaps = import ./keymaps;
       plugins = {
         diffview.enable = true;
         chadtree.enable = true;
