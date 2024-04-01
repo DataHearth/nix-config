@@ -27,8 +27,7 @@ in
 
       backgrounds = [
         {
-          # path = mkIf (cfg.lockBackgroundImage != "") cfg.lockBackgroundImage;
-          path = "";
+          path = mkIf (cfg.lockBackgroundImage != "") cfg.lockBackgroundImage;
           blur_passes = 3;
           contrast = 0.8916;
           brightness = 0.8172;
