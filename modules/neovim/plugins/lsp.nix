@@ -12,8 +12,8 @@
     ruff-lsp.enable = true;
     rust-analyzer = {
       enable = true;
-      installCargo = false;
-      installRustc = false;
+      installCargo = true;
+      installRustc = true;
     };
     svelte.enable = true;
     tailwindcss.enable = true;

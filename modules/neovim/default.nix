@@ -32,7 +32,7 @@ in
       globals = {
         mapleader = " ";
       };
-      options = {
+      opts = {
         tabstop = 2;
         expandtab = true;
         softtabstop = 2;
@@ -50,8 +50,9 @@ in
         chadtree.enable = true;
         cmp = import ./plugins/cmp.nix { lib = lib; };
         cmp-buffer.enable = true;
-        cmp-cmdline.enable = true;
+        cmp-nvim-lsp-signature-help.enable = true;
         cmp-nvim-lsp.enable = true;
+        cmp-nvim-lua.enable = true;
         cmp-path.enable = true;
         cmp_luasnip.enable = true;
         comment.enable = true;

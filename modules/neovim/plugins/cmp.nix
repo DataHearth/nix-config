@@ -30,12 +30,13 @@
       '';
     };
     sources = [
-      { name = "nvim_lsp"; }
-      { name = "luasnip"; }
-      { name = "path"; }
       { name = "buffer"; }
       { name = "copilot"; }
-      { name = "cmdline"; }
+      { name = "luasnip"; }
+      { name = "nvim_lsp"; }
+      { name = "nvim_lsp_signature_help"; }
+      { name = "nvim_lua"; }
+      { name = "path"; }
     ];
     completion = {
       keyword_length = 3;
@@ -66,6 +67,7 @@
         side_padding = 0;
         border = "rounded";
       };
+      documentation.border = "rounded";
     };
   };
 }
