@@ -88,7 +88,7 @@
     users.datahearth = {
       isNormalUser = true;
       description = "Antoine Langlois";
-      extraGroups = [ "networkmanager" "wheel" "docker" ];
+      extraGroups = [ "networkmanager" "wheel" "docker" "wireshark" ];
     };
   };
 
@@ -105,6 +105,7 @@
       looking-glass-client
       playerctl
       kdePackages.okular
+      wireshark
 
       # Libraries
       kdePackages.qtwayland
@@ -132,6 +133,7 @@
     steam.enable = true;
     hyprland.enable = true;
     zsh.enable = true;
+    wireshark.enable = true;
   };
   
   custom = {
