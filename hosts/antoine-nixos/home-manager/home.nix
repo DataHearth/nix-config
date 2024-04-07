@@ -40,6 +40,7 @@
       protonmail-bridge
       hoppscotch
       nosql-workbench
+      qalculate-gtk
 
       # CLI tools
       cliphist
