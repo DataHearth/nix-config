@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, ... }: {
+{ inputs, pkgs, lib, hyprlock, hypridle, ... }: {
   imports = [
     ./services.nix
     ../../modules/neovim
@@ -8,6 +8,9 @@
   nix.settings.experimental-features = "nix-command flakes";
   nixpkgs.hostPlatform = "x86_64-darwin";
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "nix-2.16.2"
+  ];
 
   # System
   system.stateVersion = 4;
@@ -22,7 +25,7 @@
     shell = pkgs.zsh;
   };
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = { inherit inputs hyprlock hypridle; };
     useGlobalPkgs = true;
     useUserPackages = true;
     users = {

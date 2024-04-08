@@ -1,7 +1,10 @@
-{ pkgs, lib, ... }: 
+{ pkgs, lib, hyprlock, hypridle, ... }: 
 {
   imports = [
     ../../shared/hm.nix
+
+    hyprlock.homeManagerModules.default
+    hypridle.homeManagerModules.default
   ] ++ (import ../../../modules/home-manager);
 
   home.packages = with pkgs; [

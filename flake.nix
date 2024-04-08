@@ -53,7 +53,7 @@
     darwinConfigurations = {
       antoine-macbookpro = nix-darwin.lib.darwinSystem {
         system = "x86_64-darwin";
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs hyprlock hypridle; };
         modules = [
           ./hosts/antoine-macbookpro/configuration.nix
           home-manager.darwinModules.home-manager
