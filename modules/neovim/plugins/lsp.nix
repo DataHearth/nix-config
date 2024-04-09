@@ -10,6 +10,7 @@
     lua-ls.enable = true;
     nixd.enable = true;
     ruff-lsp.enable = true;
+    pyright.enable = true;
     rust-analyzer = {
       enable = true;
       installCargo = true;
