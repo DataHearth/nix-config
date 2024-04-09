@@ -38,9 +38,9 @@
       signal-desktop
       vlc
       protonmail-bridge
-      hoppscotch
       nosql-workbench
       qalculate-gtk
+      insomnia
 
       # CLI tools
       cliphist
