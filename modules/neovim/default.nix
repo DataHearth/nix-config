@@ -90,6 +90,33 @@ in
           };
         };
       };
+      extraPlugins = [
+        {
+          config = ''
+          lua require("gotests").setup()
+          '';
+          plugin = pkgs.vimUtils.buildVimPlugin {
+            name = "gotests.nvim";
+            src = pkgs.fetchFromGitHub {
+              owner = "yanskun";
+              repo = "gotests.nvim";
+              rev = "2ddd2a3d43a7ab92cc14f6a2f84291d991a30c2d";
+              hash = "sha256-OHUK2pv9VHKzSuFRo3e1Y7Akjmjbs+jjxi6NaXHqeCk=";
+            };
+          };
+        }
+        {
+          plugin = pkgs.vimUtils.buildVimPlugin {
+            name = "vim-go-impl";
+            src = pkgs.fetchFromGitHub {
+              owner = "rhysd";
+              repo = "vim-go-impl";
+              rev = "74988dc3958f68355b9d4a3ffaa97a74d0006248";
+              hash = "sha256-oPjULtIQpIf5qrCbaiybOCaB4zJDmrBuCretyXPViCM=";
+            };
+          };
+        }
+      ];
     };
   };
 }

@@ -3,7 +3,16 @@
   servers = {
     bashls.enable = true;
     dockerls.enable = true;
-    gopls.enable = true;
+    gopls = {
+      enable = true;
+      extraOptions = {
+        staticcheck = true;
+        gofumpt = true;
+        analyses = {
+          unusedvariable = true;
+        };
+      };
+    };
     html.enable = true;
     htmx.enable = true;
     jsonls.enable = true;
