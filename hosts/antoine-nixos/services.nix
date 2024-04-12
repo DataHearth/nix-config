@@ -40,6 +40,7 @@
     power-profiles-daemon.enable = false;
     deluge.enable = true;
     gnome.gnome-keyring.enable = true;
+    tailscale.enable = true;
 
     # Custom services
     passthrough = {
