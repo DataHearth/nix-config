@@ -8,6 +8,7 @@
   ] ++ (import ../../../modules/home-manager);
 
   home.packages = with pkgs; [
+    pinentry_mac
   ];
 
   hm = {

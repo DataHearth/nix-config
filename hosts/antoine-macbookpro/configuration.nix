@@ -36,9 +36,17 @@
   custom = {
     neovim.enable = true;
   };
+
   programs = {
     zsh.enable = true;
     # HTMX lsp doesn't build on macos
     nixvim.plugins.lsp.servers.htmx.enable = lib.mkForce false;
   };
+
+  fonts.fonts = with pkgs; [
+    (nerdfonts.override {
+      fonts = ["FiraCode" "Mononoki"];
+    })
+    corefonts
+  ];
 }

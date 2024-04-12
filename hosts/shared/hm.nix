@@ -2,6 +2,15 @@
 {
   home.packages = with pkgs; [
     # awscli2
+    asciinema
+    grype
+    git-chglog
+    tokei
+    goreleaser
+    syft
+    hyperfine
+    rclone
+    restic
     corepack
     difftastic
     fd
@@ -16,6 +25,7 @@
     ruff
     rustup
     sd
+    git-lfs
     unzip
     wget
     xh
