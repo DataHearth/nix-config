@@ -68,7 +68,14 @@ in
         lsp = import ./plugins/lsp.nix;
         lspkind.enable = true;
         lualine.enable = true;
-        luasnip.enable = true;
+        luasnip = {
+          enable = true;
+          fromVscode = [
+            {
+              paths = ./snippets;
+            }
+          ];
+        };
         nix.enable = true;
         nvim-autopairs.enable = true;
         telescope = import ./plugins/telescope.nix;
