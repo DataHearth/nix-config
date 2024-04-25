@@ -1,4 +1,4 @@
-{ pkgs, lib, hyprlock, hypridle, ... }:
+{ pkgs, hyprlock, hypridle, ... }:
 {
   imports = let 
     modules_base_path = ../../../modules;
@@ -13,6 +13,11 @@
     hyprlock.homeManagerModules.default
     hypridle.homeManagerModules.default
   ] ++ (import ../../../modules/home-manager);
+
+  qt = {
+    enable = true;
+    platformTheme.name = "qtct";
+  };
 
   # Almost static information
   home = {
@@ -41,6 +46,8 @@
       nosql-workbench
       qalculate-gtk
       insomnia
+      obs-studio
+      kdePackages.dolphin
 
       # CLI tools
       cliphist
@@ -56,9 +63,11 @@
       waybar
       wl-clipboard
       iotop
+      nix-du
 
       # Libraries
       libnotify
+      libsForQt5.breeze-icons
     ];
   };
 
@@ -87,16 +96,16 @@
     hyprland = {
       enable = true;
       workspaceSettings = [
-        "DP-2,1"
-        "DP-2,3"
-        "DP-2,5"
-        "DP-2,7"
-        "DP-2,9"
-        "HDMI-A-1,2"
-        "HDMI-A-1,4"
-        "HDMI-A-1,6"
-        "HDMI-A-1,8"
-        "HDMI-A-1,10"
+        "1, monitor:DP-2, default:true"
+        "3, monitor:DP-2"
+        "5, monitor:DP-2"
+        "7, monitor:DP-2"
+        "9, monitor:DP-2"
+        "2, HDMI-A-1, default:true"
+        "4, monitor:HDMI-A-1"
+        "6, monitor:HDMI-A-1"
+        "8, monitor:HDMI-A-1"
+        "10, monitor:HDMI-A-1"
       ];
       monitorSettings = [
         "DP-2,preferred,0x0,2"

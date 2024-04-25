@@ -11,9 +11,6 @@
     ./services.nix
   ];
   nixpkgs.config.allowUnfree = true;
-  # nixpkgs.config.permittedInsecurePackages = [
-  #   "nix-2.16.2"
-  # ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.stateVersion = "24.05";
   time.timeZone = "Europe/Paris";

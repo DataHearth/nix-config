@@ -33,6 +33,7 @@
     zip
     gitoxide
     glow
+    just
   ];
   home.sessionPath = [
     "$(go env GOBIN)"

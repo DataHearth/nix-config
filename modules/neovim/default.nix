@@ -41,8 +41,10 @@ in
       };
       colorschemes.catppuccin = {
         enable = true;
-        transparentBackground = true;
-        flavour = "macchiato";
+        settings = {
+          transparent_background = true;
+          flavour = "macchiato";
+        };
       };
       keymaps = import ./keymaps;
       plugins = {
