@@ -6,7 +6,6 @@
   in [
     "${modules_hm_path}/looking-glass"
     "${modules_hm_path}/vscode"
-    "${modules_hm_path}/tofi"
 
     ../../shared/hm.nix
     ./services.nix
@@ -77,6 +76,8 @@
     dunst.enable = true;
     waybar.enable = true;
     ssh.enable = true;
+    rofi-wayland.enable = true;
+
     hypridle = {
       enable = false;
       enabledListeners.brightness = false;

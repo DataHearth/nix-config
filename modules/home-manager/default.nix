@@ -4,6 +4,8 @@
   ./ssh.nix
   ./hyprlock.nix
   ./hypridle.nix
+  ./zellij.nix
+  ./rofi-wayland
   ./hyprland
   ./dunst
   ./waybar

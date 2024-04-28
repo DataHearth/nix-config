@@ -18,14 +18,13 @@
     "$mod, S, togglesplit,",
     "$mod SHIFT, S, togglespecialworkspace,",
     "$mod, F, fullscreen,",
-    "$mod, P, exec, ~/.config/tofi/exec.sh powermenu",
-    "$mod, T, exec, ~/.config/tofi/exec.sh screenshot",
+    "$mod, P, exec, ~/.config/rofi/powermenu.sh",
+    "$mod, T, exec, ~/.config/rofi/screenshot.sh",
     "$mod SHIFT, T, togglegroup",
-    "$mod, C, exec, ~/.config/tofi/exec.sh clipboard",
-    "$mod, R, exec, ~/.config/tofi/exec.sh run",
+    "$mod, C, exec, ~/.config/rofi/clipboard.sh",
 
     "$mod, RETURN, exec, alacritty",
-    "$mod, SPACE, exec, ~/.config/tofi/exec.sh launcher",
+    "$mod, SPACE, exec, ~/.config/rofi/dmenu.sh",
 
     "$mod, left, movefocus, l",
     "$mod, right, movefocus, r",
