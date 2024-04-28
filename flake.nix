@@ -24,6 +24,7 @@
       url = "github:hyprwm/hypridle";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
   outputs = inputs@{ 
@@ -31,10 +32,10 @@
     nixpkgs,
     nix-darwin,
     home-manager,
-    flake-utils,
     nixvim,
     hyprlock,
     hypridle,
+    mac-app-util,
     ... 
   }:
   {
@@ -53,7 +54,7 @@
     darwinConfigurations = {
       antoine-macbookpro = nix-darwin.lib.darwinSystem {
         system = "x86_64-darwin";
-        specialArgs = { inherit inputs hyprlock hypridle; };
+        specialArgs = { inherit inputs hyprlock hypridle mac-app-util; };
         modules = [
           ./hosts/antoine-macbookpro/configuration.nix
           home-manager.darwinModules.home-manager

@@ -1,10 +1,11 @@
-{ pkgs, lib, hyprlock, hypridle, ... }: 
+{ pkgs, hyprlock, hypridle, mac-app-util, ... }: 
 {
   imports = [
     ../../shared/hm.nix
 
     hyprlock.homeManagerModules.default
     hypridle.homeManagerModules.default
+    mac-app-util.homeManagerModules.default
   ] ++ (import ../../../modules/home-manager);
 
   home.packages = with pkgs; [
@@ -20,9 +21,9 @@
     };
   };
 
-  programs = rec {
+  programs = {
     bash.enable = true;
   };
 
-  home.stateVersion = "23.11";
+  home.stateVersion = "24.05";
 }

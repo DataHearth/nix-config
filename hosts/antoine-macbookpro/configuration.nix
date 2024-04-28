@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, hyprlock, hypridle, ... }: {
+{ inputs, pkgs, lib, hyprlock, hypridle, mac-app-util, ... }: {
   imports = [
     ./services.nix
     ../../modules/neovim
@@ -25,7 +25,7 @@
     shell = pkgs.zsh;
   };
   home-manager = {
-    extraSpecialArgs = { inherit inputs hyprlock hypridle; };
+    extraSpecialArgs = { inherit inputs hyprlock hypridle mac-app-util; };
     useGlobalPkgs = true;
     useUserPackages = true;
     users = {
