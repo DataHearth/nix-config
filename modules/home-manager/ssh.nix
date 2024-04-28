@@ -1,4 +1,4 @@
-{ config, options, lib, ... }:
+{ config, lib, ... }:
 with lib;
 let
   keyNamePrefix = "id_ed25519";

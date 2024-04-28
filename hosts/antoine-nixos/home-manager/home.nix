@@ -92,6 +92,11 @@
       enable = true;
       signingKey = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
     };
+    
+    zellij = {
+      enable = true;
+      copy_command = "wl-copy";
+    };
 
     hyprland = {
       enable = true;

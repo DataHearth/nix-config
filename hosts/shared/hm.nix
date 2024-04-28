@@ -1,39 +1,40 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    # awscli2
     asciinema
-    grype
-    git-chglog
-    tokei
-    goreleaser
-    syft
-    hyperfine
-    rclone
-    restic
+    awscli2
     corepack
     difftastic
     fd
     gh
+    git-chglog
+    git-lfs
+    gitoxide
+    glow
+    goreleaser
+    grype
+    hyperfine
     iftop
     jq
+    just
     neofetch
     nix-index
     nodejs
     python3
+    rclone
+    restic
     ripgrep
     ruff
     rustup
     sd
-    git-lfs
+    syft
+    tokei
     unzip
     wget
     xh
     yq-go
+    zellij
     zip
-    gitoxide
-    glow
-    just
   ];
   home.sessionPath = [
     "$(go env GOBIN)"
