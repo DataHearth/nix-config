@@ -16,20 +16,23 @@
     "$mod, Q, killactive,",
     "$mod, V, togglefloating,",
     "$mod, S, togglesplit,",
-    "$mod SHIFT, S, togglespecialworkspace,",
+    "$mod SHIFT, T, togglegroup",
     "$mod, F, fullscreen,",
+
     "$mod, P, exec, ~/.config/rofi/powermenu.sh",
     "$mod, T, exec, ~/.config/rofi/screenshot.sh",
-    "$mod SHIFT, T, togglegroup",
     "$mod, C, exec, ~/.config/rofi/clipboard.sh",
+    "$mod, SPACE, exec, ~/.config/rofi/dmenu.sh",
 
     "$mod, RETURN, exec, alacritty",
-    "$mod, SPACE, exec, ~/.config/rofi/dmenu.sh",
 
     "$mod, left, movefocus, l",
     "$mod, right, movefocus, r",
     "$mod, up, movefocus, u",
     "$mod, down, movefocus, d",
+    "$mod, J, changegroupactive, b",
+    "$mod, K, changegroupactive, f",
+
     "$mod, mouse_down, workspace, e+1",
     "$mod, mouse_up, workspace, e-1",
 
@@ -54,11 +57,15 @@
     "$mod SHIFT, underscore, movetoworkspace, 8",
     "$mod SHIFT, ccedilla, movetoworkspace, 9",
     "$mod SHIFT, agrave, movetoworkspace, 10",
+
     "$mod SHIFT, left, movewindow, l",
     "$mod SHIFT, right, movewindow, r",
     "$mod SHIFT, up, movewindow, u",
     "$mod SHIFT, down, movewindow, d",
-    "$mod SHIFT, S, movetoworkspace, special:magic",
+
+
+    "$mod SHIFT, J, movewindoworgroup, l",
+    "$mod SHIFT, K, movewindoworgroup, r",
 
     ", XF86AudioRaiseVolume, exec, amixer sset Master 2%+",
     ", XF86AudioLowerVolume, exec, amixer sset Master 2%-",

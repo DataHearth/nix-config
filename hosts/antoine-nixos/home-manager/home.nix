@@ -95,7 +95,7 @@
     };
     
     zellij = {
-      enable = true;
+      enable = false;
       copy_command = "wl-copy";
     };
 
@@ -107,7 +107,7 @@
         "5, monitor:DP-2"
         "7, monitor:DP-2"
         "9, monitor:DP-2"
-        "2, HDMI-A-1, default:true"
+        "2, monitor:HDMI-A-1, default:true"
         "4, monitor:HDMI-A-1"
         "6, monitor:HDMI-A-1"
         "8, monitor:HDMI-A-1"
