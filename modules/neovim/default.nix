@@ -138,6 +138,9 @@ in {
             rust = {
               require("formatter.filetypes.rust").rustfmt,
             },
+            svelte = {
+              require("formatter.filetypes.svelte").prettier,
+            },
             toml = {
               require("formatter.filetypes.toml").taplo,
             },
@@ -145,10 +148,19 @@ in {
               require("formatter.filetypes.typescript").prettierd,
             },
             ["*"] = {
-              require("formatter.filetypes.any").remove_trailing_whitespace
+              require("formatter.filetypes.any").remove_trailing_whitespace,
+              vim.lsp.buf.format,
             }
           }
         }
+
+        local augroup = vim.api.nvim_create_augroup
+        local autocmd = vim.api.nvim_create_autocmd
+        augroup("__formatter__", { clear = true })
+        autocmd("BufWritePost", {
+          group = "__formatter__",
+          command = ":FormatWrite",
+        })
       '';
       extraPlugins = with pkgs.vimPlugins; [ formatter-nvim ];
     };
