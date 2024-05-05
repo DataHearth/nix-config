@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   services = {
     xserver = {
       enable = true;
@@ -31,7 +30,8 @@
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --time --greeting \"Speak Friend and Enter\" --remember --remember-user-session --asterisks --cmd Hyprland";
+          command = ''
+            ${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --time --greeting "Speak Friend and Enter" --remember --remember-user-session --asterisks --cmd Hyprland'';
           user = "datahearth";
         };
       };

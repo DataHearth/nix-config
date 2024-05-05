@@ -1,22 +1,17 @@
 { inputs, pkgs, lib, hyprlock, hypridle, mac-app-util, ... }: {
-  imports = [
-    ./services.nix
-    ../../modules/neovim
-  ];
+  imports = [ ./services.nix ../../modules/neovim ];
 
   # Nix
   nix.settings.experimental-features = "nix-command flakes";
   nixpkgs.hostPlatform = "x86_64-darwin";
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "nix-2.16.2"
-  ];
+  nixpkgs.config.permittedInsecurePackages = [ "nix-2.16.2" ];
 
   # System
   system.stateVersion = 4;
   system.configurationRevision = inputs.rev or inputs.dirtyRev or null;
 
-  environment.systemPackages = with pkgs; [];
+  environment.systemPackages = with pkgs; [ ];
   environment.shells = with pkgs; [ zsh ];
 
   users.users.antoine = {
@@ -28,14 +23,10 @@
     extraSpecialArgs = { inherit inputs hyprlock hypridle mac-app-util; };
     useGlobalPkgs = true;
     useUserPackages = true;
-    users = {
-      "antoine" = import ./home-manager/home.nix;
-    };
+    users = { "antoine" = import ./home-manager/home.nix; };
   };
 
-  custom = {
-    neovim.enable = true;
-  };
+  custom = { neovim.enable = true; };
 
   programs = {
     zsh.enable = true;
@@ -44,9 +35,7 @@
   };
 
   fonts.fonts = with pkgs; [
-    (nerdfonts.override {
-      fonts = ["FiraCode" "Mononoki"];
-    })
+    (nerdfonts.override { fonts = [ "FiraCode" "Mononoki" ]; })
     corefonts
   ];
 }

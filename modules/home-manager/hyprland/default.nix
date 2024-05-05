@@ -14,12 +14,12 @@ let
   workspaceSettings = mkOption {
     type = types.listOf types.nonEmptyStr;
     description = "Workspace definition";
-    default = [];
+    default = [ ];
   };
   monitorSettings = mkOption {
     type = types.listOf types.nonEmptyStr;
     description = "Monitors definition";
-    default = [];
+    default = [ ];
   };
   envVariables = mkOption {
     type = types.listOf types.nonEmptyStr;
@@ -27,10 +27,10 @@ let
     default = [ "XCURSOR_SIZER,24" ];
   };
   nvidia = mkEnableOption "nvidia";
-in
-{
+in {
   options.hm.hyprland = {
-    inherit enable enableXWayland workspaceSettings monitorSettings nvidia envVariables;
+    inherit enable enableXWayland workspaceSettings monitorSettings nvidia
+      envVariables;
   };
 
   config = mkIf cfg.enable {
@@ -42,10 +42,13 @@ in
           "WLR_NO_HARDWARE_CURSORS,1"
           "LIBVA_DRIVER_NAME,nvidia"
           "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-        ] else []) ++ cfg.envVariables;
-        exec-once = hyprlandSettings.exec-once ++ [ "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" ];
-        monitor = mkIf (cfg.monitorSettings != []) cfg.monitorSettings;
-        workspace = mkIf (cfg.workspaceSettings != []) cfg.workspaceSettings;
+        ] else
+          [ ]) ++ cfg.envVariables;
+        exec-once = hyprlandSettings.exec-once ++ [
+          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+        ];
+        monitor = mkIf (cfg.monitorSettings != [ ]) cfg.monitorSettings;
+        workspace = mkIf (cfg.workspaceSettings != [ ]) cfg.workspaceSettings;
       };
     };
   };

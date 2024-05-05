@@ -4,11 +4,8 @@ let
   cfg = config.hm.waybar;
 
   enable = mkEnableOption "waybar";
-in
-{
-  options.hm.waybar = {
-    inherit enable;
-  };
+in {
+  options.hm.waybar = { inherit enable; };
 
   config = mkIf cfg.enable {
     programs.waybar = {

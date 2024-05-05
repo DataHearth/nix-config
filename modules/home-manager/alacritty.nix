@@ -6,7 +6,7 @@ let
   enable = mkEnableOption "alacritty";
   themes = mkOption {
     type = types.listOf types.path;
-    default = [];
+    default = [ ];
     description = "List of themes to install";
     example = [
       (builtins.fetchurl {
@@ -27,11 +27,8 @@ let
     description = "Font size";
     example = 14;
   };
-in
-{
-  options.hm.alacritty = {
-    inherit enable themes opacity fontSize;
-  };
+in {
+  options.hm.alacritty = { inherit enable themes opacity fontSize; };
 
   config = mkIf cfg.enable {
     programs.alacritty = {
@@ -39,22 +36,19 @@ in
       settings = {
         import = [
           (builtins.fetchurl {
-            url = "https://raw.githubusercontent.com/catppuccin/alacritty/832787d6cc0796c9f0c2b03926f4a83ce4d4519b/catppuccin-macchiato.toml";
+            url =
+              "https://raw.githubusercontent.com/catppuccin/alacritty/832787d6cc0796c9f0c2b03926f4a83ce4d4519b/catppuccin-macchiato.toml";
             sha256 = "1iq187vg64h4rd15b8fv210liqkbzkh8sw04ykq0hgpx20w3qilv";
           })
         ] ++ cfg.themes;
         env.TERM = "xterm-256color";
         font = {
           size = cfg.fontSize;
-          normal = {
-            family = "Mononoki Nerd Font";
-          };
+          normal = { family = "Mononoki Nerd Font"; };
         };
         scrolling.multiplier = 5;
         selection.save_to_clipboard = true;
-        window = {
-          opacity = cfg.opacity;
-        };
+        window = { opacity = cfg.opacity; };
       };
     };
   };

@@ -1,1 +1,1 @@
-[] ++ (import ./cmd.nix) ++ (import ./harpoon.nix)
+[ ] ++ (import ./cmd.nix) ++ (import ./harpoon.nix)

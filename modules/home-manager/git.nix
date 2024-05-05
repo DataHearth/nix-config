@@ -20,18 +20,15 @@ let
   extraConfig = mkOption {
     type = types.attrs;
     description = "Extra git configuration";
-    default = {};
+    default = { };
   };
   extraAliases = mkOption {
     type = types.attrs;
     description = "Extra git aliases";
-    default = {};
+    default = { };
   };
-in
-{
-  options.hm.git = {
-    inherit enable signingKey user extraConfig extraAliases;
-  };
+in {
+  options.hm.git = { inherit enable signingKey user extraConfig extraAliases; };
 
   config = mkIf cfg.enable {
     programs.git = {
@@ -53,9 +50,7 @@ in
       };
       userName = cfg.user.name;
       userEmail = cfg.user.email;
-      extraConfig = {
-        init.defaultBranch = "main";
-      } // cfg.extraConfig;
+      extraConfig = { init.defaultBranch = "main"; } // cfg.extraConfig;
     };
   };
 }

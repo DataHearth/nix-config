@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   home.packages = with pkgs; [
     asciinema
     awscli2
@@ -36,10 +35,7 @@
     zellij
     zip
   ];
-  home.sessionPath = [
-    "$(go env GOBIN)"
-    "$HOME/.cargo/bin"
-  ];
+  home.sessionPath = [ "$(go env GOBIN)" "$HOME/.cargo/bin" ];
 
   programs = {
     zoxide.enable = true;
@@ -57,12 +53,10 @@
       enableZshIntegration = true;
       enableBashIntegration = true;
     };
-    
+
     bat = {
       enable = true;
-      config = {
-        theme = "catppuccin_macchiato";
-      };
+      config = { theme = "catppuccin_macchiato"; };
       themes = {
         catppuccin_macchiato = {
           src = pkgs.fetchFromGitHub {
@@ -86,16 +80,15 @@
       enable = true;
       enableCompletion = true;
       autosuggestion.enable = true;
-      syntaxHighlighting = {
-        enable = true;
-      };
+      syntaxHighlighting = { enable = true; };
       oh-my-zsh = {
         enable = true;
         theme = "robbyrussell";
         custom = "$HOME/.oh-my-zsh/custom";
-        plugins = ["git" "npm" "golang" "docker" "docker-compose" "python" "node"];
+        plugins =
+          [ "git" "npm" "golang" "docker" "docker-compose" "python" "node" ];
       };
-      plugins = [];
+      plugins = [ ];
       shellAliases = {
         cat = "bat";
         dc = "docker compose";

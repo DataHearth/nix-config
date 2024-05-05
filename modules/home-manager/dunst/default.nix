@@ -4,11 +4,8 @@ let
   cfg = config.hm.dunst;
 
   enable = mkEnableOption "dunst";
-in
-{
-  options.hm.dunst = {
-    inherit enable;
-  };
+in {
+  options.hm.dunst = { inherit enable; };
 
   config = mkIf cfg.enable {
     services.dunst = {

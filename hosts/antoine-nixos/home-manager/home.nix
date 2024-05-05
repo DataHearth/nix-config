@@ -1,8 +1,7 @@
-{ pkgs, hyprlock, hypridle, ... }:
-{
-  imports = let 
+{ pkgs, hyprlock, hypridle, ... }: {
+  imports = let
     modules_base_path = ../../../modules;
-    modules_hm_path = modules_base_path + "/home-manager"; 
+    modules_hm_path = modules_base_path + "/home-manager";
   in [
     "${modules_hm_path}/looking-glass"
     "${modules_hm_path}/vscode"
@@ -88,12 +87,12 @@
       lockBackgroundImage = "~/Pictures/wallpapers/lock2.png";
       defaultDisplay = "DP-2";
     };
-    
+
     git = {
       enable = true;
       signingKey = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
     };
-    
+
     zellij = {
       enable = false;
       copy_command = "wl-copy";
@@ -113,10 +112,8 @@
         "8, monitor:HDMI-A-1"
         "10, monitor:HDMI-A-1"
       ];
-      monitorSettings = [
-        "DP-2,preferred,0x0,2"
-        "HDMI-A-1,preferred,1920x0,1"
-      ];
+      monitorSettings =
+        [ "DP-2,preferred,0x0,2" "HDMI-A-1,preferred,1920x0,1" ];
       nvidia = true;
     };
   };

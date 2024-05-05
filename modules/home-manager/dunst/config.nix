@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   global = {
     monitor = 0;
     follow = "none";
@@ -29,7 +28,10 @@
     font = "Mononoki Nerd Font 8";
     line_height = 3;
     markup = "full";
-    format = "󰟪 %a\n<b>󰋑 %s</b>\n%b";
+    format = ''
+      󰟪 %a
+      <b>󰋑 %s</b>
+      %b'';
     alignment = "left";
     vertical_alignment = "center";
     show_age_threshold = 60;
@@ -56,9 +58,7 @@
     mouse_middle_click = "do_action, close_current";
     mouse_right_click = "close_all";
   };
-  experimental = {
-    per_monitor_dpi = false;
-  };
+  experimental = { per_monitor_dpi = false; };
   urgency_low = {
     background = "#22232A";
     foreground = "#E2DFD1";
@@ -83,6 +83,8 @@
   };
   "Type-2" = {
     summary = "t2";
-    format = "<span size=\"250%\">%a</span>\n%b";
+    format = ''
+      <span size="250%">%a</span>
+      %b'';
   };
 }

@@ -1,4 +1,4 @@
-{ lib, config, ...}:
+{ lib, config, ... }:
 with lib;
 let
   cfg = config.hm.zellij;
@@ -10,9 +10,7 @@ let
     example = "wl-copy";
   };
 in {
-  options.hm.zellij = {
-    inherit enable copy_command;
-  };
+  options.hm.zellij = { inherit enable copy_command; };
 
   config = mkIf cfg.enable {
     programs.zellij = {

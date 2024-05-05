@@ -1,4 +1,4 @@
-{ config, options, lib, ...}:
+{ config, options, lib, ... }:
 with lib;
 let
   cfg = config.hm.hypridle;
@@ -48,11 +48,8 @@ let
       default = 300;
     };
   };
-in
-{
-  options.hm.hypridle = {
-    inherit enable timeouts enabledListeners;
-  };
+in {
+  options.hm.hypridle = { inherit enable timeouts enabledListeners; };
 
   config = mkIf cfg.enable {
     services.hypridle = {

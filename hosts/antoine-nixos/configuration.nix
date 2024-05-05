@@ -1,5 +1,4 @@
-{ pkgs, lib, hyprlock, hypridle, ... }:
-{
+{ pkgs, lib, hyprlock, hypridle, ... }: {
   imports = [
     # Modules
     ../../modules/linux/passthrough.nix
@@ -48,7 +47,7 @@
       driSupport = true;
     };
   };
-  
+
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
@@ -63,22 +62,18 @@
       LC_TIME = "fr_FR.UTF-8";
     };
   };
-  
+
   security = {
     rtkit.enable = true;
     polkit.enable = true;
 
     pam.services = {
-      swaylock = {};
-      hyprlock = {};
+      swaylock = { };
+      hyprlock = { };
     };
   };
 
-  xdg = {
-    portal = {
-      enable = true;
-    };
-  };
+  xdg = { portal = { enable = true; }; };
 
   users = {
     defaultUserShell = pkgs.zsh;
@@ -111,9 +106,7 @@
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override {
-      fonts = ["FiraCode" "Mononoki"];
-    })
+    (nerdfonts.override { fonts = [ "FiraCode" "Mononoki" ]; })
     corefonts
   ];
 
@@ -121,31 +114,27 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = { inherit hyprlock hypridle; };
-    users = {
-      "datahearth" = import ./home-manager/home.nix;
-    };
+    users = { "datahearth" = import ./home-manager/home.nix; };
   };
-  
+
   programs = {
     steam.enable = true;
     hyprland.enable = true;
     zsh.enable = true;
     wireshark.enable = true;
   };
-  
-  custom = {
-    neovim.enable = true;
-  };
 
-  systemd.tmpfiles.rules = [
-    "f /dev/shm/looking-glass 0660 datahearth libvirtd -"
-  ];
+  custom = { neovim.enable = true; };
+
+  systemd.tmpfiles.rules =
+    [ "f /dev/shm/looking-glass 0660 datahearth libvirtd -" ];
 
   fileSystems = let
-      # this line prevents hanging on network split
-      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-      smb_secrets = "/home/datahearth/.config/nix-config/smb-secrets";
-    in {
+    # this line prevents hanging on network split
+    automount_opts =
+      "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    smb_secrets = "/home/datahearth/.config/nix-config/smb-secrets";
+  in {
     "/mnt/cronos/medias" = lib.mkForce {
       device = "//10.0.0.2/medias";
       fsType = "cifs";

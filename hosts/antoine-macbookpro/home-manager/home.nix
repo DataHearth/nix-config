@@ -1,5 +1,4 @@
-{ pkgs, hyprlock, hypridle, mac-app-util, ... }: 
-{
+{ pkgs, hyprlock, hypridle, mac-app-util, ... }: {
   imports = [
     ../../shared/hm.nix
 
@@ -8,9 +7,7 @@
     mac-app-util.homeManagerModules.default
   ] ++ (import ../../../modules/home-manager);
 
-  home.packages = with pkgs; [
-    pinentry_mac
-  ];
+  home.packages = with pkgs; [ pinentry_mac ];
 
   hm = {
     ssh.enable = true;
@@ -21,9 +18,7 @@
     };
   };
 
-  programs = {
-    bash.enable = true;
-  };
+  programs = { bash.enable = true; };
 
   home.stateVersion = "24.05";
 }

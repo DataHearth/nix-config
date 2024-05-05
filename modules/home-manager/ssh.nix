@@ -11,11 +11,8 @@ let
     default = "yes";
     description = "Add automatically private SSH keys to ssh-agent";
   };
-in
-{
-  options.hm.ssh = {
-    inherit enable addKeysToAgent;
-  };
+in {
+  options.hm.ssh = { inherit enable addKeysToAgent; };
 
   config = mkIf cfg.enable {
     programs.ssh = {
@@ -61,14 +58,14 @@ in
         "bap-dev" = {
           hostname = "dev.app.bienaporter.com";
           user = "service_deploy";
-          identityFile =  "~/.ssh/${keyNamePrefix}_bap-dev";
+          identityFile = "~/.ssh/${keyNamePrefix}_bap-dev";
           identitiesOnly = true;
           port = 5022;
         };
         "bap-prod" = {
           hostname = "prod.app.bienaporter.com";
           user = "service_deploy";
-          identityFile =  "~/.ssh/${keyNamePrefix}_bap-prod";
+          identityFile = "~/.ssh/${keyNamePrefix}_bap-prod";
           identitiesOnly = true;
           port = 5022;
         };

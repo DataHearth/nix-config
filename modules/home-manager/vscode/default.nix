@@ -1,5 +1,4 @@
-{ pkgs, lib, ... }:
-{
+{ pkgs, lib, ... }: {
   programs.vscode = {
     enable = true;
     enableUpdateCheck = false;
@@ -53,8 +52,6 @@
       samuelcolvin.jinjahtml
     ];
     userSettings = lib.importJSON ./settings.json;
-    languageSnippets = {
-      go = lib.importJSON ./snippets/go.json;
-    };
+    languageSnippets = { go = lib.importJSON ./snippets/go.json; };
   };
 }

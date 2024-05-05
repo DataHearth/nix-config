@@ -3,14 +3,13 @@
   servers = {
     bashls.enable = true;
     dockerls.enable = true;
+    eslint.enable = true;
     gopls = {
       enable = true;
       extraOptions = {
         staticcheck = true;
         gofumpt = true;
-        analyses = {
-          unusedvariable = true;
-        };
+        analyses = { unusedvariable = true; };
       };
     };
     html.enable = true;
@@ -34,7 +33,6 @@
   keymaps = {
     lspBuf = {
       "<S-k>" = "hover";
-      "<leader>f" = "format";
       "<leader>a" = "code_action";
       "<leader>r" = "rename";
       "<leader>gd" = "declaration";

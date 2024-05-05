@@ -1,4 +1,4 @@
-{ lib, config, options, pkgs, ...}:
+{ lib, config, pkgs, ... }:
 with lib;
 let
   cfg = config.custom.neovim;
@@ -14,14 +14,24 @@ let
     description = "Neovim colorscheme";
     default = "catppuccin";
   };
-in
-{
-  options.custom.neovim = {
-    inherit enable colorscheme defaultEditor;
-  };
+in {
+  options.custom.neovim = { inherit enable colorscheme defaultEditor; };
 
   config = mkIf cfg.enable {
-    environment.variables.EDITOR = mkIf cfg.defaultEditor "nvim";
+    environment = {
+      variables.EDITOR = mkIf cfg.defaultEditor "nvim";
+      systemPackages = with pkgs; [
+        prettierd
+        eslint_d
+        gofumpt
+        golines
+        ruff
+        stylua
+        nixfmt-classic
+        taplo
+        rustfmt
+      ];
+    };
 
     programs.nixvim = {
       enable = true;
@@ -29,9 +39,7 @@ in
       viAlias = true;
       vimAlias = true;
       colorscheme = cfg.colorscheme;
-      globals = {
-        mapleader = " ";
-      };
+      globals = { mapleader = " "; };
       opts = {
         tabstop = 2;
         expandtab = true;
@@ -72,11 +80,7 @@ in
         lualine.enable = true;
         luasnip = {
           enable = true;
-          fromVscode = [
-            {
-              paths = ./snippets;
-            }
-          ];
+          fromVscode = [{ paths = ./snippets; }];
         };
         nix.enable = true;
         nvim-autopairs.enable = true;
@@ -99,33 +103,54 @@ in
           };
         };
       };
-      extraPlugins = [
-        {
-          config = ''
-          lua require("gotests").setup()
-          '';
-          plugin = pkgs.vimUtils.buildVimPlugin {
-            name = "gotests.nvim";
-            src = pkgs.fetchFromGitHub {
-              owner = "yanskun";
-              repo = "gotests.nvim";
-              rev = "2ddd2a3d43a7ab92cc14f6a2f84291d991a30c2d";
-              hash = "sha256-OHUK2pv9VHKzSuFRo3e1Y7Akjmjbs+jjxi6NaXHqeCk=";
-            };
-          };
+      extraConfigLua = ''
+        require("formatter").setup {
+          logging = true,
+          log_level = vim.log.levels.WARN,
+          filetype = {
+            css = {
+              require("formatter.filetypes.css").prettierd,
+              require("formatter.filetypes.css").eslint_d,
+            },
+            go = {
+              require("formatter.filetypes.go").gofumpt,
+              require("formatter.filetypes.go").golines,
+            },
+            html = {
+              require("formatter.filetypes.html").prettierd,
+            },
+            javascript = {
+              require("formatter.filetypes.javascript").prettierd,
+              require("formatter.filetypes.javascript").eslint_d,
+            },
+            json = {
+              require("formatter.filetypes.json").prettierd,
+            },
+            lua = {
+              require("formatter.filetypes.lua").stylua,
+            },
+            nix = {
+              require("formatter.filetypes.nix").nixfmt,
+            },
+            python = {
+              require("formatter.filetypes.python").ruff,
+            },
+            rust = {
+              require("formatter.filetypes.rust").rustfmt,
+            },
+            toml = {
+              require("formatter.filetypes.toml").taplo,
+            },
+            typescript = {
+              require("formatter.filetypes.typescript").prettierd,
+            },
+            ["*"] = {
+              require("formatter.filetypes.any").remove_trailing_whitespace
+            }
+          }
         }
-        {
-          plugin = pkgs.vimUtils.buildVimPlugin {
-            name = "vim-go-impl";
-            src = pkgs.fetchFromGitHub {
-              owner = "rhysd";
-              repo = "vim-go-impl";
-              rev = "74988dc3958f68355b9d4a3ffaa97a74d0006248";
-              hash = "sha256-oPjULtIQpIf5qrCbaiybOCaB4zJDmrBuCretyXPViCM=";
-            };
-          };
-        }
-      ];
+      '';
+      extraPlugins = with pkgs.vimPlugins; [ formatter-nvim ];
     };
   };
 }
