@@ -1,4 +1,4 @@
-{ pkgs, lib, hyprlock, hypridle, ... }: {
+{ pkgs, lib, inputs, ... }: {
   imports = [
     # Modules
     ../../modules/linux/passthrough.nix
@@ -86,9 +86,6 @@
 
   environment = {
     shells = with pkgs; [ zsh bash ];
-    # variables = {
-    #   KWIN_DRM_USE_MODIFIERS = "0";
-    # };
     systemPackages = with pkgs; [
       networkmanagerapplet
       pinentry
@@ -113,7 +110,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit hyprlock hypridle; };
+    extraSpecialArgs = { inherit inputs; };
     users = { "datahearth" = import ./home-manager/home.nix; };
   };
 

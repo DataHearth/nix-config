@@ -20,29 +20,14 @@
       url = "github:hyprwm/hyprlock";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hypridle = {
-      url = "github:hyprwm/hypridle";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mac-app-util.url = "github:hraban/mac-app-util";
   };
 
-  outputs = inputs@{ 
-    self,
-    nixpkgs,
-    nix-darwin,
-    home-manager,
-    nixvim,
-    hyprlock,
-    hypridle,
-    mac-app-util,
-    ... 
-  }:
-  {
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nixvim, ... }: {
     nixosConfigurations = {
       antoine-nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit hyprlock hypridle; };
+        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/antoine-nixos/configuration.nix
           home-manager.nixosModules.home-manager
@@ -50,11 +35,11 @@
         ];
       };
     };
-  
+
     darwinConfigurations = {
       antoine-macbookpro = nix-darwin.lib.darwinSystem {
         system = "x86_64-darwin";
-        specialArgs = { inherit inputs hyprlock hypridle mac-app-util; };
+        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/antoine-macbookpro/configuration.nix
           home-manager.darwinModules.home-manager

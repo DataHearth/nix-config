@@ -1,10 +1,9 @@
-{ pkgs, hyprlock, hypridle, mac-app-util, ... }: {
+{ pkgs, inputs, ... }: {
   imports = [
     ../../shared/hm.nix
 
-    hyprlock.homeManagerModules.default
-    hypridle.homeManagerModules.default
-    mac-app-util.homeManagerModules.default
+    inputs.mac-app-util.homeManagerModules.default
+    inputs.hyprlock.homeManagerModules.default
   ] ++ (import ../../../modules/home-manager);
 
   home.packages = with pkgs; [ pinentry_mac ];

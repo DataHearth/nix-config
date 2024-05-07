@@ -1,15 +1,15 @@
-{ pkgs, hyprlock, hypridle, ... }: {
+{ pkgs, inputs, ... }: {
   imports = let
     modules_base_path = ../../../modules;
     modules_hm_path = modules_base_path + "/home-manager";
   in [
+    inputs.hyprlock.homeManagerModules.default
+
     "${modules_hm_path}/looking-glass"
     "${modules_hm_path}/vscode"
 
     ../../shared/hm.nix
     ./services.nix
-    hyprlock.homeManagerModules.default
-    hypridle.homeManagerModules.default
   ] ++ (import ../../../modules/home-manager);
 
   qt = {

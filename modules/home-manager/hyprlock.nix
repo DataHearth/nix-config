@@ -1,16 +1,15 @@
-{ config, options, lib, ... }:
-with lib;
+{ config, lib, ... }:
 let
   cfg = config.hm.hyprlock;
 
-  enable = mkEnableOption "hyprlock";
-  lockBackgroundImage = mkOption {
-    type = types.str;
+  enable = lib.mkEnableOption "hyprlock";
+  lockBackgroundImage = lib.mkOption {
+    type = lib.types.str;
     description = "Path to background image for lock screen";
     default = "";
   };
-  defaultDisplay = mkOption {
-    type = types.str;
+  defaultDisplay = lib.mkOption {
+    type = lib.types.str;
     description =
       "Default display will have all labels and input-labels written on.";
     default = "";
@@ -18,13 +17,13 @@ let
 in {
   options.hm.hyprlock = { inherit enable lockBackgroundImage defaultDisplay; };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.hyprlock = {
       enable = true;
       general.disable_loading_bar = true;
 
       backgrounds = [{
-        path = mkIf (cfg.lockBackgroundImage != "") cfg.lockBackgroundImage;
+        path = lib.mkIf (cfg.lockBackgroundImage != "") cfg.lockBackgroundImage;
         blur_passes = 3;
         contrast = 0.8916;
         brightness = 0.8172;
@@ -33,7 +32,7 @@ in {
       }];
 
       input-fields = [{
-        monitor = mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+        monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
         size = {
           width = 250;
           height = 60;
@@ -54,7 +53,7 @@ in {
 
       labels = [
         {
-          monitor = mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+          monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
           text = ''cmd[update:1000] echo "$TIME"'';
           font_family = "Mononoki Nerd Font";
           color = "rgba(255, 255, 255, 0.6)";
@@ -66,7 +65,7 @@ in {
           valign = "top";
         }
         {
-          monitor = mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+          monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
           text = "Hello there, $USER";
           font_family = "Mononoki Nerd Font";
           color = "rgba(255, 255, 255, 0.6)";
@@ -77,7 +76,7 @@ in {
           };
         }
         {
-          monitor = mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+          monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
           text = ''
             cmd[update:1000] playerctl metadata --format "{{ artist }} - {{ album }} - {{ title }}"'';
           color = "rgba(255, 255, 255, 0.6)";

@@ -1,49 +1,48 @@
-{ config, options, lib, ... }:
-with lib;
+{ config, lib, ... }:
 let
   cfg = config.hm.hypridle;
 
-  enable = mkEnableOption "hypridle";
+  enable = lib.mkEnableOption "hypridle";
   enabledListeners = {
-    brightness = mkOption {
-      type = types.bool;
+    brightness = lib.mkOption {
+      type = lib.types.bool;
       description = "Enable brightness control";
       default = true;
     };
-    lock = mkOption {
-      type = types.bool;
+    lock = lib.mkOption {
+      type = lib.types.bool;
       description = "Enable lock control";
       default = true;
     };
-    monitors = mkOption {
-      type = types.bool;
+    monitors = lib.mkOption {
+      type = lib.types.bool;
       description = "Enable monitors control";
       default = true;
     };
-    suspend = mkOption {
-      type = types.bool;
+    suspend = lib.mkOption {
+      type = lib.types.bool;
       description = "Enable suspend control";
       default = true;
     };
   };
   timeouts = {
-    lowerBrightness = mkOption {
-      type = types.int;
+    lowerBrightness = lib.mkOption {
+      type = lib.types.int;
       description = "Duration before screens brightness is lowered";
       default = 120;
     };
-    lock = mkOption {
-      type = types.int;
+    lock = lib.mkOption {
+      type = lib.types.int;
       description = "Duration before locking session";
       default = 180;
     };
-    displaysOff = mkOption {
-      type = types.int;
+    displaysOff = lib.mkOption {
+      type = lib.types.int;
       description = "Duration before screens are turned off";
       default = 210;
     };
-    suspend = mkOption {
-      type = types.int;
+    suspend = lib.mkOption {
+      type = lib.types.int;
       description = "Duration before suspendind sessions";
       default = 300;
     };
@@ -51,33 +50,35 @@ let
 in {
   options.hm.hypridle = { inherit enable timeouts enabledListeners; };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.hypridle = {
       enable = true;
-      lockCmd = "pidof hyprlock || hyprlock";
-      unlockCmd = "";
-      beforeSleepCmd = "loginctl lock-session";
-      afterSleepCmd = "hyprctl dispatch dpms on";
-      listeners = [
-        (mkIf cfg.enabledListeners.brightness {
-          timeout = cfg.timeouts.lowerBrightness;
-          onTimeout = "brightnessctl -s set 10";
-          onResume = "brightnessctl -r";
-        })
-        (mkIf cfg.enabledListeners.lock {
-          timeout = cfg.timeouts.lock;
-          onTimeout = "pidof hyprlock || hyprlock";
-        })
-        (mkIf cfg.enabledListeners.monitors {
-          timeout = cfg.timeouts.displaysOff;
-          onTimeout = "hyprctl dispatch dpms off";
-          onResume = "hyprctl dispatch dpms on";
-        })
-        (mkIf cfg.enabledListeners.suspend {
-          timeout = cfg.timeouts.suspend;
-          onTimeout = "systemctl suspend";
-        })
-      ];
+      settings = {
+        lock_cmd = "pidof hyprlock || hyprlock";
+        unlock_cmd = "";
+        before_sleep_cmd = "loginctl lock-session";
+        after_sleep_cmd = "hyprctl dispatch dpms on";
+        listeners = [
+          (lib.mkIf cfg.enabledListeners.brightness {
+            timeout = cfg.timeouts.lowerBrightness;
+            on_timeout = "brightnessctl -s set 10";
+            on_resume = "brightnessctl -r";
+          })
+          (lib.mkIf cfg.enabledListeners.lock {
+            timeout = cfg.timeouts.lock;
+            on_timeout = "pidof hyprlock || hyprlock";
+          })
+          (lib.mkIf cfg.enabledListeners.monitors {
+            timeout = cfg.timeouts.displaysOff;
+            on_timeout = "hyprctl dispatch dpms off";
+            on_resume = "hyprctl dispatch dpms on";
+          })
+          (lib.mkIf cfg.enabledListeners.suspend {
+            timeout = cfg.timeouts.suspend;
+            on_timeout = "systemctl suspend";
+          })
+        ];
+      };
     };
   };
 }

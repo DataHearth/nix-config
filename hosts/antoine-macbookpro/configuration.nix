@@ -1,17 +1,15 @@
-{ inputs, pkgs, lib, hyprlock, hypridle, mac-app-util, ... }: {
+{ pkgs, lib, inputs, ... }: {
   imports = [ ./services.nix ../../modules/neovim ];
 
   # Nix
   nix.settings.experimental-features = "nix-command flakes";
   nixpkgs.hostPlatform = "x86_64-darwin";
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [ "nix-2.16.2" ];
 
   # System
   system.stateVersion = 4;
   system.configurationRevision = inputs.rev or inputs.dirtyRev or null;
 
-  environment.systemPackages = with pkgs; [ ];
   environment.shells = with pkgs; [ zsh ];
 
   users.users.antoine = {
@@ -20,7 +18,7 @@
     shell = pkgs.zsh;
   };
   home-manager = {
-    extraSpecialArgs = { inherit inputs hyprlock hypridle mac-app-util; };
+    extraSpecialArgs = { inherit inputs; };
     useGlobalPkgs = true;
     useUserPackages = true;
     users = { "antoine" = import ./home-manager/home.nix; };
