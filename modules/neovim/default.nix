@@ -1,27 +1,26 @@
 { lib, config, pkgs, ... }:
-with lib;
 let
   cfg = config.custom.neovim;
 
-  enable = mkEnableOption "neovim";
-  defaultEditor = mkOption {
-    type = types.bool;
+  enable = lib.mkEnableOption "neovim";
+  defaultEditor = lib.mkOption {
+    type = lib.types.bool;
     description = "Make NeoVim the default editor";
     default = true;
   };
-  colorscheme = mkOption {
-    type = types.str;
+  colorscheme = lib.mkOption {
+    type = lib.types.str;
     description = "Neovim colorscheme";
     default = "catppuccin";
   };
 in {
   options.custom.neovim = { inherit enable colorscheme defaultEditor; };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     environment = {
-      variables.EDITOR = mkIf cfg.defaultEditor "nvim";
+      variables.EDITOR = lib.mkIf cfg.defaultEditor "nvim";
       systemPackages = with pkgs; [
-        prettierd
+        nodePackages.prettier
         eslint_d
         gofumpt
         golines
@@ -40,12 +39,16 @@ in {
       vimAlias = true;
       colorscheme = cfg.colorscheme;
       globals = { mapleader = " "; };
+      autoGroups."__formatter__".clear = true;
       opts = {
         tabstop = 2;
         expandtab = true;
         softtabstop = 2;
         shiftwidth = 2;
         number = true;
+        foldmethod = "expr";
+        foldlevel = 20;
+        foldexpr = "nvim_treesitter#foldexpr()";
       };
       colorschemes.catppuccin = {
         enable = true;
@@ -56,8 +59,8 @@ in {
       };
       keymaps = import ./keymaps;
       plugins = {
-        barbecue.enable = true;
-        chadtree.enable = true;
+        barbecue.enable = true; # Symbol bar
+        chadtree.enable = true; # Tree navigation
         cmp = import ./plugins/cmp.nix { lib = lib; };
         cmp-buffer.enable = true;
         cmp-nvim-lsp-signature-help.enable = true;
@@ -65,29 +68,26 @@ in {
         cmp-nvim-lua.enable = true;
         cmp-path.enable = true;
         cmp_luasnip.enable = true;
-        comment.enable = true;
-        copilot-cmp.enable = true;
-        copilot-lua = import ./plugins/copilot-lua.nix;
-        crates-nvim.enable = true;
-        dashboard = import ./plugins/dashboard.nix;
-        diffview.enable = true;
-        gitsigns = import ./plugins/gitsigns.nix;
-        illuminate.enable = true;
+        comment.enable = true; # Comment code
+        conform-nvim = import ./plugins/conform-nvim.nix; # Formatting
+        crates-nvim.enable = true; # Crate auto-complete and verification
+        diffview.enable = true; # Git diff view
+        gitsigns = import ./plugins/gitsigns.nix; # Git signs in status line
+        illuminate.enable = true; # Highlight words
         indent-blankline = import ./plugins/indent-blankline.nix;
-        leap.enable = true;
         lsp = import ./plugins/lsp.nix;
-        lspkind.enable = true;
-        lualine.enable = true;
+        lspkind.enable = true; # Beautify LSP
+        lualine.enable = true; # Status line
         luasnip = {
           enable = true;
           fromVscode = [{ paths = ./snippets; }];
-        };
+        }; # Snippets
         nix.enable = true;
-        nvim-autopairs.enable = true;
-        telescope = import ./plugins/telescope.nix;
-        todo-comments.enable = true;
+        nvim-autopairs.enable = true; # Auto close symbols
+        telescope = import ./plugins/telescope.nix; # Find files
+        todo-comments.enable = true; # Comments highlighting
         treesitter.enable = true;
-        trouble = import ./plugins/trouble.nix;
+        trouble = import ./plugins/trouble.nix; # Diagnotic
 
         # Custom
         harpoon = {
@@ -103,66 +103,6 @@ in {
           };
         };
       };
-      extraConfigLua = ''
-        require("formatter").setup {
-          logging = true,
-          log_level = vim.log.levels.WARN,
-          filetype = {
-            css = {
-              require("formatter.filetypes.css").prettierd,
-              require("formatter.filetypes.css").eslint_d,
-            },
-            go = {
-              require("formatter.filetypes.go").gofumpt,
-              require("formatter.filetypes.go").golines,
-            },
-            html = {
-              require("formatter.filetypes.html").prettierd,
-            },
-            javascript = {
-              require("formatter.filetypes.javascript").prettierd,
-              require("formatter.filetypes.javascript").eslint_d,
-            },
-            json = {
-              require("formatter.filetypes.json").prettierd,
-            },
-            lua = {
-              require("formatter.filetypes.lua").stylua,
-            },
-            nix = {
-              require("formatter.filetypes.nix").nixfmt,
-            },
-            python = {
-              require("formatter.filetypes.python").ruff,
-            },
-            rust = {
-              require("formatter.filetypes.rust").rustfmt,
-            },
-            svelte = {
-              require("formatter.filetypes.svelte").prettier,
-            },
-            toml = {
-              require("formatter.filetypes.toml").taplo,
-            },
-            typescript = {
-              require("formatter.filetypes.typescript").prettierd,
-            },
-            ["*"] = {
-              require("formatter.filetypes.any").remove_trailing_whitespace,
-              vim.lsp.buf.format,
-            }
-          }
-        }
-
-        local augroup = vim.api.nvim_create_augroup
-        local autocmd = vim.api.nvim_create_autocmd
-        augroup("__formatter__", { clear = true })
-        autocmd("BufWritePost", {
-          group = "__formatter__",
-          command = ":FormatWrite",
-        })
-      '';
-      extraPlugins = with pkgs.vimPlugins; [ formatter-nvim ];
     };
   };
 }

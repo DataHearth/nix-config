@@ -39,4 +39,10 @@
       "<leader>gr" = "references";
     };
   };
+  postConfig = ''
+    local lsp = vim.lsp;
+    lsp.handlers["textDocument/hover"] = lsp.with(vim.lsp.handlers.hover, {
+      border = "rounded",
+    })
+  '';
 }
