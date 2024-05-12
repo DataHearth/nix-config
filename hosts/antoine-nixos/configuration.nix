@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, ... }: {
+{ pkgs, lib, ... }: {
   imports = [
     # Modules
     ../../modules/linux/passthrough.nix
@@ -110,7 +110,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = { };
     users = { "datahearth" = import ./home-manager/home.nix; };
   };
 

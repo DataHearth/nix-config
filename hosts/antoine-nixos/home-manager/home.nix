@@ -1,10 +1,8 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, ... }: {
   imports = let
     modules_base_path = ../../../modules;
     modules_hm_path = modules_base_path + "/home-manager";
   in [
-    inputs.hyprlock.homeManagerModules.default
-
     "${modules_hm_path}/looking-glass"
     "${modules_hm_path}/vscode"
 

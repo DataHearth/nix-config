@@ -16,10 +16,6 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprlock = {
-      url = "github:hyprwm/hyprlock";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mac-app-util.url = "github:hraban/mac-app-util";
   };
 
@@ -27,7 +23,7 @@
     nixosConfigurations = {
       antoine-nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit inputs; };
+        specialArgs = { };
         modules = [
           ./hosts/antoine-nixos/configuration.nix
           home-manager.nixosModules.home-manager
