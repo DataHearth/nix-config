@@ -58,7 +58,7 @@ case ${chosen} in
     systemctl suspend
     ;;
   "$logout")
-    if [[ $(confirm_exit) == "$no" ]]; then
+    if [[ $(confirm_exit) == "$yes" ]]; then
       hyprctl dispatch exit
     fi
     ;;

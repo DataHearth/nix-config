@@ -70,10 +70,11 @@
   # Custom modules (./modules/home-manager)
   hm = {
     alacritty.enable = true;
-    dunst.enable = true;
+    # dunst.enable = true;
     waybar.enable = true;
     ssh.enable = true;
     rofi-wayland.enable = true;
+    swaync.enable = true;
 
     hypridle = {
       enable = false;

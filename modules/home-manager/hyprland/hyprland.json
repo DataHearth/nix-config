@@ -63,7 +63,6 @@
     "$mod SHIFT, up, movewindow, u",
     "$mod SHIFT, down, movewindow, d",
 
-
     "$mod SHIFT, J, movewindoworgroup, l",
     "$mod SHIFT, K, movewindoworgroup, r",
 
@@ -74,10 +73,7 @@
     ", XF86AudioPrev, exec, playerctl previous",
     ", XF86AudioNext, exec, playerctl next"
   ],
-  "bindm": [
-    "$mod, mouse:272, movewindow",
-    "$mod, mouse:273, resizewindow"
-  ],
+  "bindm": ["$mod, mouse:272, movewindow", "$mod, mouse:273, resizewindow"],
   "decoration": {
     "blur": {
       "enabled": true,
@@ -101,7 +97,7 @@
     "wl-paste --type text --watch cliphist store; wl-paste --type image --watch cliphist store",
     "nm-applet --indicator",
     "waybar",
-    "dunst",
+    "swaync",
     "signal-desktop",
     "Discord",
     "alacritty",

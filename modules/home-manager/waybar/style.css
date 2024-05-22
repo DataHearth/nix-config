@@ -1,12 +1,12 @@
 @define-color trayc rgba(61, 61, 61, 0.8);
 
 * {
-    border: none;
-    border-radius: 0;
-    font-family: Mononoki Nerd Font;
-    font-size: 14px;
-    font-weight: bold;
-    min-height: 0;
+  border: none;
+  border-radius: 0;
+  font-family: Mononoki Nerd Font;
+  font-size: 14px;
+  font-weight: bold;
+  min-height: 0;
 }
 
 window#waybar {
@@ -15,18 +15,18 @@ window#waybar {
   border-bottom: 0px solid rgba(100, 114, 125, 0.5);
   color: #ffffff;
   transition-property: background-color;
-  transition-duration: .5s;
+  transition-duration: 0.5s;
 }
 
 window#waybar.hidden {
-    opacity: 0.2;
+  opacity: 0.2;
 }
 
 window#waybar.empty {
-    background-color: transparent;
+  background-color: transparent;
 }
 window#waybar.solo {
-    background-color: #000000;
+  background-color: #000000;
 }
 
 #workspaces button {
@@ -37,17 +37,17 @@ window#waybar.solo {
 }
 
 #workspaces button.active {
-    background-color: #64727D;
-    box-shadow: inset 0 -2px #ffffff;
+  background-color: #64727d;
+  box-shadow: inset 0 -2px #ffffff;
 }
 
 #workspaces button.urgent {
-    background-color: #eb4d4b;
+  background-color: #eb4d4b;
 }
 
 #mode {
-    background-color: #64727D;
-    border-bottom: 3px solid #ffffff;
+  background-color: #64727d;
+  border-bottom: 3px solid #ffffff;
 }
 
 window#modules-right {
@@ -83,24 +83,25 @@ window#modules-right {
 
 #window,
 #workspaces {
-    margin: 0 0px;
+  margin: 0 0px;
 }
 
 /* If workspaces is the leftmost module, omit left margin */
 .modules-left > widget:first-child > #workspaces {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 /* If workspaces is the rightmost module, omit right margin */
 .modules-right > widget:last-child > #workspaces {
-    margin-right: 0;
+  margin-right: 0;
 }
 
 label:focus {
-    background-color: #000000;
+  background-color: #000000;
 }
 
-#custom-lock, #custom-power {
+#custom-lock,
+#custom-power {
   color: #ff0000;
   padding-top: 6px;
   padding-bottom: 4px;
@@ -115,11 +116,13 @@ label:focus {
   padding-left: 10px;
 }
 
-#custom-leftend, #custom-rightend {
+#custom-leftend,
+#custom-rightend {
   padding-left: 8px;
 }
 
-#custom-leftend, #custom-rightend {
+#custom-leftend,
+#custom-rightend {
   border-top-left-radius: 7px;
   border-bottom-left-radius: 7px;
 }
@@ -134,7 +137,8 @@ label:focus {
   padding-right: 2px;
 }
 
-#pulseaudio.muted, #pulseaudio.microphone.muted {
+#pulseaudio.muted,
+#pulseaudio.microphone.muted {
   color: #ff0b0b;
 }
 
@@ -149,36 +153,43 @@ label:focus {
 }
 
 #backlight {
-    color: rgb(200, 141, 252);
-    border-bottom: 2px solid rgb(200, 141, 252);
+  color: rgb(200, 141, 252);
+  border-bottom: 2px solid rgb(200, 141, 252);
 }
 
 #disk {
-    color: rgb(250, 135, 190);
-    border-bottom: 2px solid rgb(250, 135, 190);
+  color: rgb(250, 135, 190);
+  border-bottom: 2px solid rgb(250, 135, 190);
 }
 
 #tray {
-    border-bottom: 2px solid rgb(246, 169, 78);
+  border-bottom: 2px solid rgb(246, 169, 78);
 }
 
 #tray > .passive {
-    -gtk-icon-effect: dim;
+  -gtk-icon-effect: dim;
+}
+
+#custom-notification {
+  color: rgb(85, 166, 48);
+  border-bottom: 2px solid rgb(85, 166, 48);
+  padding-right: 5px;
 }
 
 #tray > .needs-attention {
-    -gtk-icon-effect: highlight;
-    background-color: #eb4d4b;
+  -gtk-icon-effect: highlight;
+  background-color: #eb4d4b;
 }
 
 #battery {
-    color: #ffffff;
-    border-bottom: 1px solid rgb(255, 255, 255);
+  color: #ffffff;
+  border-bottom: 1px solid rgb(255, 255, 255);
 }
 
-#battery.charging, #battery.plugged {
-    color: #34ff88;
-    border-bottom: 1px solid #34ff88;
+#battery.charging,
+#battery.plugged {
+  color: #34ff88;
+  border-bottom: 1px solid #34ff88;
 }
 
 @keyframes blink {
@@ -205,7 +216,8 @@ label:focus {
   text-shadow: 2px 2px 4px black;
 }
 
-#cpu, #memory {
+#cpu,
+#memory {
   color: #41ba9b;
   border-bottom: 2px solid #41ba9b;
 }
@@ -219,9 +231,9 @@ label:focus {
 }
 
 #keyboard-state > label {
-    padding: 0 5px;
+  padding: 0 5px;
 }
 
 #keyboard-state > label.locked {
-    background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }

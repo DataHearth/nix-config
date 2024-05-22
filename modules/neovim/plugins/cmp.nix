@@ -63,6 +63,21 @@
         side_padding = 0;
         border = "rounded";
       };
+      window = let
+        bordered = {
+          border = "rounded";
+          col_offset = 0;
+          scrollbar = true;
+          scrolloff = 0;
+          side_padding = 1;
+          winhighlight =
+            "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None";
+          zindex = 1001;
+        };
+      in {
+        completion = bordered;
+        documentation = bordered;
+      };
     };
   };
 }

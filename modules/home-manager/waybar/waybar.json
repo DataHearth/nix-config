@@ -4,23 +4,23 @@
   "position": "top",
   "modules-left": [
     "hyprland/workspaces",
-    "custom/spacer", 
+    "custom/spacer",
     "cpu",
-    "custom/spacer", 
+    "custom/spacer",
     "memory"
   ],
-  "modules-center": [
-    "clock"
-  ],
+  "modules-center": ["clock"],
   "modules-right": [
-    "custom/leftend", 
-    "pulseaudio", 
-    "pulseaudio#microphone", 
-    "custom/spacer", 
-    "network", 
-    "custom/spacer", 
-    "disk", 
-    "custom/spacer", 
+    "custom/leftend",
+    "pulseaudio",
+    "pulseaudio#microphone",
+    "custom/spacer",
+    "network",
+    "custom/spacer",
+    "disk",
+    "custom/spacer",
+    "custom/notification",
+    "custom/spacer",
     "tray",
     "custom/rightend"
   ]

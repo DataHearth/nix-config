@@ -82,6 +82,7 @@ in {
           enable = true;
           fromVscode = [{ paths = ./snippets; }];
         }; # Snippets
+        neogit.enable = true;
         nix.enable = true;
         nvim-autopairs.enable = true; # Auto close symbols
         telescope = import ./plugins/telescope.nix; # Find files
