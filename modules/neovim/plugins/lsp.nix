@@ -35,7 +35,8 @@
       "<S-k>" = "hover";
       "<leader>a" = "code_action";
       "<leader>r" = "rename";
-      "<leader>gd" = "declaration";
+      "<leader>gd" = "definition";
+      "<leader>gD" = "declaration";
       "<leader>gr" = "references";
     };
   };

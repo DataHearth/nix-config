@@ -43,6 +43,11 @@
     eza.enable = true;
     fzf.enable = true;
 
+    yazi = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
     bash = {
       enable = true;
       enableCompletion = true;
