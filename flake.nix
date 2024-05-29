@@ -30,6 +30,15 @@
           nixvim.nixosModules.nixvim
         ];
       };
+      antoine-laptop = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+	specialArgs = { };
+	modules = [
+	  ./hosts/antoine-laptop/configuration.nix
+	  home-manager.nixosModules.home-manager
+	  nixvim.nixosModules.nixvim
+	];
+      };
     };
 
     darwinConfigurations = {
