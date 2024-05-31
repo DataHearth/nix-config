@@ -55,10 +55,6 @@ window#modules-right {
   border-color: #ff0000;
 }
 
-#workspaces {
-  background-color: rgba(50, 50, 50, 0.8);
-}
-
 #clock,
 #battery,
 #disk,
@@ -70,6 +66,7 @@ window#modules-right {
 #idle_inhibitor,
 #cpu,
 #memory,
+#custom-notification,
 #custom-leftend,
 #custom-spacer,
 #custom-rightend,
