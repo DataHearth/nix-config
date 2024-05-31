@@ -1,6 +1,6 @@
 [
   {
-    action = ''
+    action.__raw = ''
       function()
         local conf = require("telescope.config").values
         local file_paths = {}
@@ -19,26 +19,21 @@
       end
     '';
     key = "<leader>e";
-    lua = true;
   }
   {
-    action = "function() require('harpoon'):list():append() end";
+    action.__raw = "function() require('harpoon'):list():append() end";
     key = "<leader>ha";
-    lua = true;
   }
   {
-    action = "function() require('harpoon'):list():prev() end";
+    action.__raw = "function() require('harpoon'):list():prev() end";
     key = "<leader>hp";
-    lua = true;
   }
   {
-    action = "function() require('harpoon'):list():next() end";
+    action.__raw = "function() require('harpoon'):list():next() end";
     key = "<leader>hn";
-    lua = true;
   }
   {
-    action = "function() require('harpoon'):list():clear() end";
+    action.__raw = "function() require('harpoon'):list():clear() end";
     key = "<leader>hc";
-    lua = true;
   }
 ]
