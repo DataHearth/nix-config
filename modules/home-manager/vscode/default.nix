@@ -6,8 +6,6 @@
     mutableExtensionsDir = false;
     extensions = with pkgs.vscode-extensions; [
       github.github-vscode-theme
-      github.copilot-chat
-      github.copilot
 
       redhat.vscode-yaml
       redhat.vscode-xml
