@@ -7,8 +7,4 @@
     action = "<cmd>TroubleToggle<cr>";
     key = "<C-S-t>";
   }
-  {
-    action = "<cmd>FormatWrite<CR>";
-    key = "<leader>f";
-  }
 ]

@@ -8,15 +8,15 @@
   formattersByFt = {
     lua = [ "stylua" ];
     go = [ "gofumpt" "golines" ];
-    javascript = [ "prettier" "eslint_d" ];
-    typescript = [ "prettier" "eslint_d" ];
-    css = [ "prettier" ];
-    html = [ "prettier" ];
-    json = [ "prettier" ];
+    javascript = [ "prettierd" "eslint_d" ];
+    typescript = [ "prettierd" "eslint_d" ];
+    css = [ "prettierd" ];
+    html = [ "prettierd" ];
+    json = [ "prettierd" ];
     nix = [ "nixfmt" ];
     python = [ "ruff_format" ];
     rust = [ "rustfmt" ];
-    svelte = [ "prettier" "eslint_d" ];
+    svelte = [ "prettierd" "eslint_d" ];
     toml = [ "taplo" ];
     "_" = [ "trim_whitespace" ];
   };
