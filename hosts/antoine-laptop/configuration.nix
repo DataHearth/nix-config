@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   imports = [
     # Modules
     ../../modules/neovim
@@ -8,12 +8,20 @@
     ./services.nix
   ];
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.stateVersion = "24.05";
   time.timeZone = "Europe/Paris";
   console.keyMap = "fr";
   sound.enable = true;
   virtualisation.docker.enable = true;
+
+  nix = {
+    settings.experimental-features = [ "nix-command" "flakes" ];
+    nixPath = [
+      "nixos-config=${config.users.users.datahearth.home}/.config/nix-config/hosts/antoine-laptop/configuration.nix"
+      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+      "/nix/var/nix/profiles/per-user/root/channels"
+    ];
+  };
 
   boot.loader.grub = {
     enable = true;

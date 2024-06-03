@@ -38,6 +38,7 @@ in {
       type = "lua";
       viAlias = true;
       vimAlias = true;
+      globals = { mapleader = " "; };
       colorscheme = cfg.colorscheme;
       opts = {
         tabstop = 2;
