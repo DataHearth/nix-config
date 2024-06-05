@@ -16,7 +16,6 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, nixvim, ... }: {
@@ -32,12 +31,12 @@
       };
       antoine-laptop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-	specialArgs = { };
-	modules = [
-	  ./hosts/antoine-laptop/configuration.nix
-	  home-manager.nixosModules.home-manager
-	  nixvim.nixosModules.nixvim
-	];
+        specialArgs = { };
+        modules = [
+          ./hosts/antoine-laptop/configuration.nix
+          home-manager.nixosModules.home-manager
+          nixvim.nixosModules.nixvim
+        ];
       };
     };
 
