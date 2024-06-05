@@ -151,6 +151,7 @@ label:focus {
 #backlight {
   color: rgb(200, 141, 252);
   border-bottom: 2px solid rgb(200, 141, 252);
+  padding-right: 5px;
 }
 
 #disk {

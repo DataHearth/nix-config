@@ -55,7 +55,6 @@
       swaynotificationcenter
       swww
       tofi
-      waybar
       wl-clipboard
       iotop
       nix-du
@@ -69,11 +68,29 @@
   # Custom modules (./modules/home-manager)
   hm = {
     alacritty.enable = true;
-    # dunst.enable = true;
-    waybar.enable = true;
     ssh.enable = true;
     rofi-wayland.enable = true;
     swaync.enable = true;
+
+    waybar = {
+      enable = true;
+      right = [
+        "custom/leftend"
+        "pulseaudio"
+        "pulseaudio#microphone"
+        "custom/spacer"
+        "disk"
+        "custom/spacer"
+        "custom/notification"
+        "custom/spacer"
+        "battery"
+        "custom/spacer"
+        "backlight"
+        "custom/spacer"
+        "tray"
+        "custom/rightend"
+      ];
+    };
 
     hypridle = {
       enable = false;

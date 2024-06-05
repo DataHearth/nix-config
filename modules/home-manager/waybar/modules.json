@@ -30,24 +30,8 @@
     "format": "{:%a %d %b - %H:%M}"
   },
   "backlight": {
-    "format": "{icon} {percent}%",
-    "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
+    "format": "{icon}",
+    "format-icons": ["󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"]
   },
   "battery": {
     "states": {
@@ -55,14 +39,12 @@
       "warning": 30,
       "critical": 15
     },
-    "format": " {icon} {capacity}%   {time}",
+    "full-at": 100,
+    "format": "{capacity}% {icon} ",
     "format-charging": " {capacity}%",
     "format-plugged": "{capacity}% ",
     "format-alt": "{icon} {time}",
     "format-icons": ["", "", "", "", ""]
-  },
-  "battery#bat2": {
-    "bat": "BAT2"
   },
   "network": {
     "format-wifi": " ({signalStrength}%)",

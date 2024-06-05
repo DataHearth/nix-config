@@ -15,8 +15,6 @@
     "pulseaudio",
     "pulseaudio#microphone",
     "custom/spacer",
-    "network",
-    "custom/spacer",
     "disk",
     "custom/spacer",
     "custom/notification",
