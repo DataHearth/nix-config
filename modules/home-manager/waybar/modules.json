@@ -40,7 +40,7 @@
       "critical": 15
     },
     "full-at": 100,
-    "format": "{capacity}% {icon} ",
+    "format": "{capacity}% {icon}",
     "format-charging": " {capacity}%",
     "format-plugged": "{capacity}% ",
     "format-alt": "{icon} {time}",
@@ -80,16 +80,6 @@
     "interval": 2
   },
 
-  "custom/lock": {
-    "format": "󰌾",
-    "interval": 86400,
-    "on-click": "~/.config/tofi/exec.sh lock"
-  },
-  "custom/power": {
-    "format": "⏻",
-    "on-click": "~/.config/tofi/exec.sh powermenu",
-    "interval": 86400
-  },
   "custom/notification": {
     "tooltip": false,
     "format": "{icon}",

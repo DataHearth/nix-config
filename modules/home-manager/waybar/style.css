@@ -1,4 +1,5 @@
 @define-color trayc rgba(61, 61, 61, 0.8);
+@define-color error #ff0b0b;
 
 * {
   border: none;
@@ -96,18 +97,6 @@ label:focus {
   background-color: #000000;
 }
 
-#custom-lock,
-#custom-power {
-  color: #ff0000;
-  padding-top: 6px;
-  padding-bottom: 4px;
-  padding-right: 1px;
-  font-size: 14px;
-  margin: 0px;
-  background-color: @trayc;
-  border-bottom: 2px solid rgb(252, 15, 15);
-}
-
 #custom-spacer {
   padding-left: 10px;
 }
@@ -127,22 +116,26 @@ label:focus {
   color: rgb(240, 251, 119);
   border-bottom: 2px solid rgb(240, 251, 119);
 }
-
 #pulseaudio.microphone {
   padding-left: 7px;
   padding-right: 2px;
 }
-
+#pulseaudio.microphone.source-muted {
+  padding-left: 7px;
+  padding-right: 7px;
+}
 #pulseaudio.muted,
-#pulseaudio.microphone.muted {
-  color: #ff0b0b;
+#pulseaudio.microphone.source-muted {
+  color: @error;
+}
+#pulseaudio.muted {
+  padding-right: 4px;
 }
 
 #network {
   color: rgb(148, 200, 255);
   border-bottom: 2px solid rgb(148, 200, 255);
 }
-
 #network.disconnected {
   color: #f53c3c;
   border-bottom: 2px solid #f53c3c;
@@ -181,21 +174,13 @@ label:focus {
 #battery {
   color: #ffffff;
   border-bottom: 1px solid rgb(255, 255, 255);
+  padding-right: 9px;
 }
-
 #battery.charging,
 #battery.plugged {
   color: #34ff88;
   border-bottom: 1px solid #34ff88;
 }
-
-@keyframes blink {
-  to {
-    background-color: #ffffff;
-    color: #000000;
-  }
-}
-
 #battery.critical:not(.charging) {
   background-color: #f53c3c;
   color: #ffffff;
@@ -204,6 +189,13 @@ label:focus {
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-direction: alternate;
+}
+
+@keyframes blink {
+  to {
+    background-color: #ffffff;
+    color: #000000;
+  }
 }
 
 #clock {
