@@ -46,6 +46,10 @@
       enable = true;
       driSupport = true;
     };
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
   };
 
   i18n = {

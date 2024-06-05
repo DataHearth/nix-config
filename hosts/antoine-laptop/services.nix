@@ -30,5 +30,6 @@
     deluge.enable = true;
     gnome.gnome-keyring.enable = true;
     tailscale.enable = true;
+    blueman.enable = true;
   };
 }
