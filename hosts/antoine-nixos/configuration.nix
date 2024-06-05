@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, config, ... }: {
   imports = [
     # Modules
     ../../modules/linux/passthrough.nix
@@ -10,12 +10,20 @@
     ./services.nix
   ];
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.stateVersion = "24.05";
   time.timeZone = "Europe/Paris";
   console.keyMap = "fr";
   sound.enable = true;
   virtualisation.docker.enable = true;
+
+  nix = {
+    settings.experimental-features = [ "nix-command" "flakes" ];
+    nixPath = [
+      "nixos-config=${config.users.users.datahearth.home}/.config/nix-config/hosts/antoine-laptop/configuration.nix"
+      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+      "/nix/var/nix/profiles/per-user/root/channels"
+    ];
+  };
 
   boot.loader.grub = {
     enable = true;
@@ -67,10 +75,7 @@
     rtkit.enable = true;
     polkit.enable = true;
 
-    pam.services = {
-      swaylock = { };
-      hyprlock = { };
-    };
+    pam.services = { hyprlock = { }; };
   };
 
   xdg = { portal = { enable = true; }; };
