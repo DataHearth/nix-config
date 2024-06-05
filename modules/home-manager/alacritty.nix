@@ -1,28 +1,27 @@
 { config, lib, ... }:
-with lib;
 let
   cfg = config.hm.alacritty;
 
-  enable = mkEnableOption "alacritty";
-  themes = mkOption {
-    type = types.listOf types.path;
+  enable = lib.mkEnableOption "alacritty";
+  themes = lib.mkOption {
+    type = lib.types.listOf lib.types.path;
     default = [ ];
     description = "List of themes to install";
     example = [
       (builtins.fetchurl {
         url = "https://example.com/theme.toml";
-        sha256 = fakeSha256;
+        sha256 = lib.fakeSha256;
       })
     ];
   };
-  opacity = mkOption {
-    type = types.float;
+  opacity = lib.mkOption {
+    type = lib.types.float;
     default = 0.9;
     description = "Window opacity";
     example = 1.0;
   };
-  fontSize = mkOption {
-    type = types.int;
+  fontSize = lib.mkOption {
+    type = lib.types.int;
     default = 12;
     description = "Font size";
     example = 14;
@@ -30,7 +29,7 @@ let
 in {
   options.hm.alacritty = { inherit enable themes opacity fontSize; };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.alacritty = {
       enable = true;
       settings = {

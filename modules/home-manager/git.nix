@@ -1,36 +1,35 @@
-{ config, lib, options, ... }:
-with lib;
+{ config, lib, ... }:
 let
   cfg = config.hm.git;
 
-  enable = mkEnableOption "git";
-  signingKey = mkOption {
-    type = types.nonEmptyStr;
+  enable = lib.mkEnableOption "git";
+  signingKey = lib.mkOption {
+    type = lib.types.nonEmptyStr;
     description = "The GPG key to use for signing commits";
     example = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
   };
-  user = mkOption {
-    type = types.attrs;
+  user = lib.mkOption {
+    type = lib.types.attrs;
     description = "user information for git";
     default = {
       name = "DataHearth";
       email = "dev@antoine-langlois.net";
     };
   };
-  extraConfig = mkOption {
-    type = types.attrs;
+  extraConfig = lib.mkOption {
+    type = lib.types.attrs;
     description = "Extra git configuration";
     default = { };
   };
-  extraAliases = mkOption {
-    type = types.attrs;
+  extraAliases = lib.mkOption {
+    type = lib.types.attrs;
     description = "Extra git aliases";
     default = { };
   };
 in {
   options.hm.git = { inherit enable signingKey user extraConfig extraAliases; };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
       aliases = {
@@ -44,7 +43,7 @@ in {
       } // cfg.extraAliases;
       difftastic.enable = true;
       lfs.enable = true;
-      signing = mkIf (builtins.hasAttr "signingKey" cfg) {
+      signing = lib.mkIf (builtins.hasAttr "signingKey" cfg) {
         signByDefault = true;
         key = cfg.signingKey;
       };

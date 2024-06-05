@@ -1,20 +1,19 @@
 { config, lib, ... }:
-with lib;
 let
   keyNamePrefix = "id_ed25519";
 
   cfg = config.hm.ssh;
 
-  enable = mkEnableOption "ssh";
-  addKeysToAgent = mkOption {
-    type = types.enum [ "yes" "no" "confirm" "ask" ];
+  enable = lib.mkEnableOption "ssh";
+  addKeysToAgent = lib.mkOption {
+    type = lib.types.enum [ "yes" "no" "confirm" "ask" ];
     default = "yes";
     description = "Add automatically private SSH keys to ssh-agent";
   };
 in {
   options.hm.ssh = { inherit enable addKeysToAgent; };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.ssh = {
       enable = true;
       addKeysToAgent = cfg.addKeysToAgent;
