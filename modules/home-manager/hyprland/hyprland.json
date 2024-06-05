@@ -71,7 +71,9 @@
     ", XF86AudioMute, exec, amixer sset Master toggle",
     ", XF86AudioPlay, exec, playerctl play-pause",
     ", XF86AudioPrev, exec, playerctl previous",
-    ", XF86AudioNext, exec, playerctl next"
+    ", XF86AudioNext, exec, playerctl next",
+    ", XF86MonBrightnessUp, exec, brightnessctl set +2%",
+    ", XF86MonBrightnessDown, exec, brightnessctl set 2%-"
   ],
   "bindm": ["$mod, mouse:272, movewindow", "$mod, mouse:273, resizewindow"],
   "decoration": {

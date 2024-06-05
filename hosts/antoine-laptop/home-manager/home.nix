@@ -58,6 +58,7 @@
       wl-clipboard
       iotop
       nix-du
+      brightnessctl
 
       # Libraries
       libnotify
