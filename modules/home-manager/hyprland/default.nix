@@ -36,6 +36,7 @@ in {
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = cfg.enableXWayland;
+
       settings = hyprlandSettings // {
         env = hyprlandSettings.env ++ (if cfg.nvidia then [
           "WLR_NO_HARDWARE_CURSORS,1"
@@ -44,7 +45,7 @@ in {
         ] else
           [ ]) ++ cfg.envVariables;
         exec-once = hyprlandSettings.exec-once ++ [
-          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+          "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
         ];
         monitor = lib.mkIf (cfg.monitorSettings != [ ]) cfg.monitorSettings;
         workspace =
