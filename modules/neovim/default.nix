@@ -20,8 +20,6 @@ in {
     environment = {
       variables.EDITOR = lib.mkIf cfg.defaultEditor "nvim";
       systemPackages = with pkgs; [
-        nodePackages.prettier
-        eslint_d
         gofumpt
         golines
         ruff
@@ -30,6 +28,7 @@ in {
         taplo
         rustfmt
         prettierd
+        nodePackages_latest.eslint
       ];
     };
 
@@ -40,6 +39,16 @@ in {
       vimAlias = true;
       globals = { mapleader = " "; };
       colorscheme = cfg.colorscheme;
+      autoCmd = [{
+        event = "BufWritePre";
+        pattern = "*";
+        callback.__raw = ''
+          function(args)
+            require("conform").format({ bufnr = args.buf, async = true })
+          end
+        '';
+        desc = "Format on save";
+      }];
       opts = {
         tabstop = 2;
         expandtab = true;

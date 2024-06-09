@@ -6,8 +6,12 @@
       options.desc = "Find files in workspace";
     };
     "<leader>fg" = {
+      action = "git_files";
+      options.desc = "Find files in git files";
+    };
+    "<leader>fc" = {
       action = "live_grep";
-      options.desc = "Find files in workspace - regex";
+      options.desc = "Find files containing a code pattern - regex";
     };
     "<leader>fb" = {
       action = "buffers";
