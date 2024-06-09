@@ -9,24 +9,30 @@
     ../../shared/hm.nix
     ./services.nix
   ] ++ (import ../../../modules/home-manager);
+  xdg = {
+    enable = true;
+    dataFile = {
+      "icons/breeze" = {
+        source = "${pkgs.kdePackages.breeze-icons}/share/icons/breeze";
+        recursive = true;
+      };
+      "icons/breeze-dark" = {
+        source = "${pkgs.kdePackages.breeze-icons}/share/icons/breeze-dark";
+        recursive = true;
+      };
+    };
+  };
 
   qt = {
     enable = true;
     platformTheme.name = "qtct";
+    style.name = "breeze";
   };
 
-  # Almost static information
   home = {
     username = "datahearth";
     homeDirectory = "/home/datahearth";
     stateVersion = "24.05";
-
-    sessionVariables = {
-      XDG_CACHE_HOME = "$HOME/.cache";
-      XDG_CONFIG_HOME = "$HOME/.config";
-      XDG_DATA_HOME = "$HOME/.local/share";
-      XDG_STATE_HOME = "$HOME/.local/state";
-    };
 
     packages = with pkgs; [
       # GUI Applications
@@ -43,7 +49,12 @@
       qalculate-gtk
       insomnia
       obs-studio
+
+      # KDE
       kdePackages.dolphin
+      kdePackages.okular
+      kdePackages.breeze-grub
+      kdePackages.qtwayland
 
       # CLI tools
       cliphist
@@ -63,7 +74,7 @@
 
       # Libraries
       libnotify
-      libsForQt5.breeze-icons
+      libsForQt5.qt5.qtwayland
     ];
   };
 

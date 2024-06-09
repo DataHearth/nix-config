@@ -15,6 +15,7 @@
   console.keyMap = "fr";
   sound.enable = true;
   virtualisation.docker.enable = true;
+  xdg.portal.enable = true;
 
   nix = {
     settings.experimental-features = [ "nix-command" "flakes" ];
@@ -78,8 +79,6 @@
     pam.services = { hyprlock = { }; };
   };
 
-  xdg = { portal = { enable = true; }; };
-
   users = {
     defaultUserShell = pkgs.zsh;
     users.datahearth = {
@@ -98,13 +97,9 @@
       docker
       looking-glass-client
       playerctl
-      kdePackages.okular
       wireshark
-
-      # Libraries
-      kdePackages.qtwayland
-      libsForQt5.qt5.qtwayland
     ];
+    variables = { QT_QPA_PLATFORMTHEME = "qt5ct"; };
   };
 
   fonts.packages = with pkgs; [
