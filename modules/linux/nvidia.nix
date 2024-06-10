@@ -1,12 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let cfg = config.services.nvidia;
-in with lib; {
+in {
   options.services.nvidia = {
-    enable = mkEnableOption "nvidia";
-    sleepIssue = mkEnableOption "nvidia-sleep";
+    enable = lib.mkEnableOption "nvidia";
+    sleepIssue = lib.mkEnableOption "nvidia-sleep";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.xserver.videoDrivers = [ "nvidia" ];
     boot.kernelParams = [ ] ++ (if cfg.sleepIssue then
       [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ]

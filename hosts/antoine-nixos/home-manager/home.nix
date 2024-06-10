@@ -9,25 +9,7 @@
     ../../shared/hm.nix
     ./services.nix
   ] ++ (import ../../../modules/home-manager);
-  xdg = {
-    enable = true;
-    dataFile = {
-      "icons/breeze" = {
-        source = "${pkgs.kdePackages.breeze-icons}/share/icons/breeze";
-        recursive = true;
-      };
-      "icons/breeze-dark" = {
-        source = "${pkgs.kdePackages.breeze-icons}/share/icons/breeze-dark";
-        recursive = true;
-      };
-    };
-  };
-
-  qt = {
-    enable = true;
-    platformTheme.name = "qtct";
-    style.name = "breeze";
-  };
+  xdg.enable = true;
 
   home = {
     username = "datahearth";
@@ -36,25 +18,15 @@
 
     packages = with pkgs; [
       # GUI Applications
-      firefox
-      discord
-      spotify
       gparted
       satty
       nextcloud-client
       signal-desktop
-      vlc
       protonmail-bridge
       nosql-workbench
       qalculate-gtk
-      insomnia
       obs-studio
-
-      # KDE
-      kdePackages.dolphin
-      kdePackages.okular
-      kdePackages.breeze-grub
-      kdePackages.qtwayland
+      gnome.nautilus
 
       # CLI tools
       cliphist
@@ -74,7 +46,6 @@
 
       # Libraries
       libnotify
-      libsForQt5.qt5.qtwayland
     ];
   };
 

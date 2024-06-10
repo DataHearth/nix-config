@@ -23,7 +23,6 @@
     rclone
     restic
     ripgrep
-    ruff
     rustup
     sd
     syft
@@ -34,6 +33,13 @@
     yq-go
     zellij
     zip
+
+    # GUI
+    firefox
+    discord
+    spotify
+    vlc
+    insomnia
   ];
   home.sessionPath = [ "$(go env GOBIN)" "$HOME/.cargo/bin" ];
 

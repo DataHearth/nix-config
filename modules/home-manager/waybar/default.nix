@@ -38,8 +38,8 @@ in {
       enable = true;
       style = builtins.readFile ./style.css;
     };
-    home.file = {
-      ".config/waybar/config".text = builtins.toJSON {
+    xdg.configFile = {
+      "waybar/config".text = builtins.toJSON {
         include = "~/.config/waybar/modules.json";
         layer = "top";
         position = "top";
@@ -47,7 +47,7 @@ in {
         modules-center = cfg.center;
         modules-right = cfg.right;
       };
-      ".config/waybar/modules.json".source = ./modules.json;
+      "waybar/modules.json".source = ./modules.json;
     };
   };
 }

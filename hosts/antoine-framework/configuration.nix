@@ -76,7 +76,7 @@
     rtkit.enable = true;
     polkit.enable = true;
 
-    pam.services = { hyprlock = { }; };
+    pam.services = { hyprlock = { enableGnomeKeyring = true; }; };
   };
 
   xdg = { portal = { enable = true; }; };
@@ -93,13 +93,10 @@
   environment = {
     shells = with pkgs; [ zsh bash ];
     systemPackages = with pkgs; [
-      networkmanagerapplet
       pinentry
       home-manager
       docker
       looking-glass-client
-      playerctl
-      kdePackages.okular
       wireshark
     ];
   };

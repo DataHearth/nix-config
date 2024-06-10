@@ -1,17 +1,19 @@
 { pkgs, ... }: {
-  imports = let
-    modules_base_path = ../../../modules;
-    modules_hm_path = modules_base_path + "/home-manager";
-  in [
-    "${modules_hm_path}/vscode"
+  imports =
+    [ ../../../modules/home-manager/vscode ../../shared/hm.nix ./services.nix ]
+    ++ (import ../../../modules/home-manager);
+  xdg.enable = true;
 
-    ../../shared/hm.nix
-    ./services.nix
-  ] ++ (import ../../../modules/home-manager);
-
-  qt = {
+  gtk = {
     enable = true;
-    platformTheme.name = "qtct";
+    iconTheme = {
+      package = pkgs.gnome.adwaita-icon-theme;
+      name = "Adwaita";
+    };
+    theme = {
+      name = "Adwaita";
+      package = pkgs.gnome.gnome-themes-extra;
+    };
   };
 
   # Almost static information
@@ -20,49 +22,27 @@
     homeDirectory = "/home/datahearth";
     stateVersion = "24.05";
 
-    sessionVariables = {
-      XDG_CACHE_HOME = "$HOME/.cache";
-      XDG_CONFIG_HOME = "$HOME/.config";
-      XDG_DATA_HOME = "$HOME/.local/share";
-      XDG_STATE_HOME = "$HOME/.local/state";
-    };
-
     packages = with pkgs; [
       # GUI Applications
-      firefox
-      discord
-      spotify
       gparted
       satty
       nextcloud-client
       signal-desktop
-      vlc
       protonmail-bridge
       nosql-workbench
       qalculate-gtk
-      insomnia
       obs-studio
-      kdePackages.dolphin
+      gnome.nautilus
 
       # CLI tools
-      cliphist
       gnupg
-      grim
-      hyprshot
       pciutils
-      python3
-      slurp
-      swaynotificationcenter
-      swww
       tofi
-      wl-clipboard
       iotop
       nix-du
-      brightnessctl
 
       # Libraries
       libnotify
-      libsForQt5.breeze-icons
     ];
   };
 
@@ -91,11 +71,6 @@
         "tray"
         "custom/rightend"
       ];
-    };
-
-    hypridle = {
-      enable = false;
-      enabledListeners.brightness = false;
     };
 
     hyprlock = {
@@ -127,6 +102,7 @@
         "8, monitor:eDP-1"
         "10, monitor:eDP-1"
       ];
+      wallpaper = "~/Pictures/wallpaper.jpg";
     };
   };
 

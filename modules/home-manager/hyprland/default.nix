@@ -26,13 +26,48 @@ let
     default = [ "XCURSOR_SIZER,24" ];
   };
   nvidia = lib.mkEnableOption "nvidia";
+  wallpaper = lib.mkOption {
+    type = lib.types.nullOr lib.types.nonEmptyStr;
+    description = "Setting wallpaper";
+    example = "~/Pictures/wallpaper.jpg";
+    default = null;
+  };
+  execOnce = lib.mkOption {
+    type = lib.types.listOf lib.types.nonEmptyStr;
+    description = "List of process to launch at hyprland's startup";
+    default = [
+      "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store; ${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store"
+      "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator"
+      "${pkgs.waybar}/bin/waybar"
+      "${pkgs.swaynotificationcenter}/bin/swaync"
+      "${pkgs.signal-desktop}/bin/signal-desktop"
+      "${pkgs.discord}/bin/Discord"
+      "${pkgs.alacritty}/bin/alacritty"
+      "${pkgs.firefox}/bin/firefox"
+      "${pkgs.spotify}/bin/spotify"
+    ];
+  };
 in {
   options.hm.hyprland = {
     inherit enable enableXWayland workspaceSettings monitorSettings nvidia
-      envVariables;
+      envVariables execOnce wallpaper;
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [
+      alsa-utils
+      playerctl
+      brightnessctl
+      wl-clipboard
+      cliphist
+      waybar
+      hyprlock
+      grim
+      slurp
+      satty
+      hyprshot
+    ];
+
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = cfg.enableXWayland;
@@ -44,9 +79,13 @@ in {
           "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         ] else
           [ ]) ++ cfg.envVariables;
-        exec-once = hyprlandSettings.exec-once ++ [
-          "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
-        ];
+        exec-once = cfg.execOnce ++ (if cfg.wallpaper != "" then [
+          "${pkgs.swww}/bin/swww-daemon"
+          "${pkgs.swww}/bin/swww img ${cfg.wallpaper}"
+        ] else
+          [ "${pkgs.swww}/bin/swww init" ]) ++ [
+            "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+          ];
         monitor = lib.mkIf (cfg.monitorSettings != [ ]) cfg.monitorSettings;
         workspace =
           lib.mkIf (cfg.workspaceSettings != [ ]) cfg.workspaceSettings;

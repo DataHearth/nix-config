@@ -94,18 +94,6 @@
     "preserve_split": "yes",
     "pseudotile": "yes"
   },
-  "exec-once": [
-    "swww init; swww img ~/Pictures/wallpapers/wallpaper1.jpg",
-    "wl-paste --type text --watch cliphist store; wl-paste --type image --watch cliphist store",
-    "nm-applet --indicator",
-    "waybar",
-    "swaync",
-    "signal-desktop",
-    "Discord",
-    "alacritty",
-    "firefox",
-    "spotify"
-  ],
   "general": {
     "allow_tearing": false,
     "col.active_border": "rgba(33ccffee) rgba(00ff99ee) 45deg",
@@ -139,9 +127,5 @@
     "workspace 4,class:(signal)",
     "workspace 6,title:(Spotify Premium)"
   ],
-  "env": [
-    "XDG_SESSION_TYPE,wayland",
-    "NIXOS_OZONE_WL,1",
-    "QT_QPA_PLATFORM,wayland"
-  ]
+  "env": ["XDG_SESSION_TYPE,wayland", "NIXOS_OZONE_WL,1"]
 }

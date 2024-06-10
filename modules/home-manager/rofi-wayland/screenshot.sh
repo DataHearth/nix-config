@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-## Author  : Aditya Shakya (adi1090x)
-## Github  : @adi1090x
-#
-## Applets : Screenshot
-
 theme="$HOME/.config/rofi/screenshot.rasi"
 out_dir="$HOME/Pictures/screenshots"
 filename=$(date '+%Y%m%d-%H:%M:%S').png
