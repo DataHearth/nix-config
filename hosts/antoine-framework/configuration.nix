@@ -29,14 +29,20 @@
   };
 
   networking = {
+    wireless.enable = false;
+    hostName = "antoine-framework";
     networkmanager = {
       enable = true;
       dns = "none";
     };
-    hostName = "antoine-framework";
-    nameservers =
-      [ "1.1.1.1" "1.0.0.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
-    wireless.enable = false;
+    nameservers = [
+      "100.65.209.18"
+      "fd7a:115c:a1e0::4641:d112"
+      "1.1.1.1"
+      "1.0.0.1"
+      "2606:4700:4700::1111"
+      "2606:4700:4700::1001"
+    ];
   };
 
   hardware = {
@@ -70,9 +76,7 @@
     rtkit.enable = true;
     polkit.enable = true;
 
-    pam.services = {
-      hyprlock = { };
-    };
+    pam.services = { hyprlock = { }; };
   };
 
   xdg = { portal = { enable = true; }; };

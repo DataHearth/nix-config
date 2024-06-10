@@ -26,7 +26,8 @@
       };
     };
 
-    power-profiles-daemon.enable = false;
+    fprintd.enable = true;
+    tlp.enable = true;
     deluge.enable = true;
     gnome.gnome-keyring.enable = true;
     tailscale.enable = true;
