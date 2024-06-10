@@ -44,7 +44,7 @@ in {
         pattern = "*";
         callback.__raw = ''
           function(args)
-            require("conform").format({ bufnr = args.buf, async = true })
+            require("conform").format({ bufnr = args.buf })
           end
         '';
         desc = "Format on save";
