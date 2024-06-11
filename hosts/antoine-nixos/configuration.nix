@@ -1,4 +1,6 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, ... }:
+let hostname = "antoine-nixos";
+in {
   imports = let
     modules = ../../modules;
     shared = ../shared;
@@ -6,27 +8,17 @@
     "${modules}/passthrough.nix"
     "${modules}/nvidia.nix"
     "${modules}/neovim"
+
     "${shared}/i18n.nix"
+    "${shared}/nix.nix"
+    "${shared}/options.nix"
+    "${shared}/security.nix"
+    "${shared}/services.nix"
 
     ./hardware-configuration.nix
     ./services.nix
   ];
-  nixpkgs.config.allowUnfree = true;
   system.stateVersion = "24.05";
-  time.timeZone = "Europe/Paris";
-  console.keyMap = "fr";
-  sound.enable = true;
-  virtualisation.docker.enable = true;
-  xdg.portal.enable = true;
-
-  nix = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
-    nixPath = [
-      "nixos-config=${config.users.users.datahearth.home}/.config/nix-config/hosts/antoine-laptop/configuration.nix"
-      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "/nix/var/nix/profiles/per-user/root/channels"
-    ];
-  };
 
   boot.loader.grub = {
     enable = true;
@@ -39,31 +31,22 @@
       enable = true;
       dns = "none";
     };
-    hostName = "antoine-nixos";
+    hostName = hostname;
     nameservers = [
-      "10.0.0.2"
-      "fe80::1ac0:4dff:fe8f:ad21"
+      "100.65.209.18"
+      "fd7a:115c:a1e0::4641:d112"
       "1.1.1.1"
       "1.0.0.1"
       "2606:4700:4700::1111"
       "2606:4700:4700::1001"
     ];
-    wireless.enable = false;
   };
 
   hardware = {
-    pulseaudio.enable = false;
     opengl = {
       enable = true;
       driSupport = true;
     };
-  };
-
-  security = {
-    rtkit.enable = true;
-    polkit.enable = true;
-
-    pam.services = { hyprlock = { enableGnomeKeyring = true; }; };
   };
 
   users = {

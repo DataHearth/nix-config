@@ -37,7 +37,6 @@ let
     description = "List of process to launch at hyprland's startup";
     default = [
       "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store; ${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store"
-      "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator"
       "${pkgs.waybar}/bin/waybar"
       "${pkgs.swaynotificationcenter}/bin/swaync"
       "${pkgs.signal-desktop}/bin/signal-desktop"

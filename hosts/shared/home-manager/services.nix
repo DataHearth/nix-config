@@ -3,6 +3,7 @@
     playerctld.enable = true;
     ssh-agent.enable = true;
     blueman-applet.enable = lib.mkDefault true;
+    network-manager-applet.enable = true;
 
     nextcloud-client = {
       enable = true;

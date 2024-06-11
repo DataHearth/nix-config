@@ -1,27 +1,20 @@
-{ pkgs, config, ... }: {
-  imports = let modules = ../shared;
+{ pkgs, ... }: {
+  imports = let
+    shared = ../shared;
+    modules = ../../modules;
   in [
-    "${modules}/i18n.nix"
     "${modules}/neovim"
+
+    "${shared}/i18n.nix"
+    "${shared}/nix.nix"
+    "${shared}/options.nix"
+    "${shared}/services.nix"
+    "${shared}/security.nix"
 
     ./hardware-configuration.nix
     ./services.nix
   ];
-  nixpkgs.config.allowUnfree = true;
   system.stateVersion = "24.05";
-  time.timeZone = "Europe/Paris";
-  console.keyMap = "fr";
-  sound.enable = true;
-  virtualisation.docker.enable = true;
-
-  nix = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
-    nixPath = [
-      "nixos-config=${config.users.users.datahearth.home}/.config/nix-config/hosts/antoine-framework/configuration.nix"
-      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "/nix/var/nix/profiles/per-user/root/channels"
-    ];
-  };
 
   boot.loader = {
     systemd-boot.enable = true;
@@ -29,7 +22,6 @@
   };
 
   networking = {
-    wireless.enable = false;
     hostName = "antoine-framework";
     networkmanager = {
       enable = true;
@@ -46,7 +38,6 @@
   };
 
   hardware = {
-    pulseaudio.enable = false;
     opengl = {
       enable = true;
       driSupport = true;
@@ -56,15 +47,6 @@
       powerOnBoot = true;
     };
   };
-
-  security = {
-    rtkit.enable = true;
-    polkit.enable = true;
-
-    pam.services = { hyprlock = { enableGnomeKeyring = true; }; };
-  };
-
-  xdg = { portal = { enable = true; }; };
 
   users = {
     defaultUserShell = pkgs.zsh;

@@ -1,52 +1,56 @@
 { pkgs, ... }: {
-  home.packages = with pkgs; [
-    asciinema
-    awscli2
-    corepack
-    difftastic
-    fd
-    gh
-    git-chglog
-    git-lfs
-    gitoxide
-    glow
-    goreleaser
-    grype
-    hyperfine
-    iftop
-    jq
-    just
-    neofetch
-    nix-index
-    nodejs
-    python3
-    rclone
-    restic
-    ripgrep
-    rustup
-    sd
-    syft
-    tokei
-    unzip
-    wget
-    xh
-    yq-go
-    zellij
-    zip
-    nix-du
+  home = {
+    packages = with pkgs; [
+      asciinema
+      awscli2
+      corepack
+      difftastic
+      fd
+      gh
+      git-chglog
+      git-lfs
+      gitoxide
+      glow
+      goreleaser
+      grype
+      hyperfine
+      iftop
+      jq
+      just
+      neofetch
+      nix-du
+      nix-index
+      nodejs
+      python3
+      rclone
+      restic
+      ripgrep
+      rustup
+      sd
+      syft
+      tokei
+      unzip
+      wget
+      xh
+      yq-go
+      zip
 
-    # GUI
-    firefox
-    discord
-    spotify
-    vlc
-    insomnia
-    gnome.nautilus
-    qalculate-gtk
-    protonmail-bridge
+      # GUI
+      discord
+      firefox
+      gnome.eog
+      gnome.nautilus
+      insomnia
+      nextcloud-client
       obs-studio
-  ];
-  home.sessionPath = [ "$(go env GOBIN)" "$HOME/.cargo/bin" ];
+      protonmail-bridge
+      qalculate-gtk
+      signal-desktop
+      spotify
+      vlc
+    ];
+    sessionPath = [ "$(go env GOBIN)" "$HOME/.cargo/bin" ];
+  };
 
   programs = {
     zoxide.enable = true;
@@ -67,6 +71,7 @@
         ms-vscode.cpptools
       ];
     };
+
     yazi = {
       enable = true;
       enableZshIntegration = true;
@@ -121,7 +126,6 @@
       shellAliases = {
         cat = "bat";
         dc = "docker compose";
-        pnpm-upgrade = "pnpm add -g pnpm";
         cd = "z";
       };
       initExtra = ''

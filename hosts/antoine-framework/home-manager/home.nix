@@ -3,11 +3,11 @@
     modules = ../../../modules/home-manager;
     shared = ../../shared/home-manager;
   in [
-    "${shared}/packages.nix"
     "${shared}/gtk.nix"
-    "${shared}/options.nix"
-    "${shared}/services.nix"
     "${shared}/modules.nix"
+    "${shared}/options.nix"
+    "${shared}/packages.nix"
+    "${shared}/services.nix"
   ] ++ (import modules);
   home = {
     username = "datahearth";
