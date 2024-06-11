@@ -15,17 +15,6 @@
       };
     };
 
-    tlp = {
-      enable = true;
-      settings = {
-        TLP_DEFAULT_MODE = "AC";
-        TLP_PERSISTENT_DEFAULT = 1;
-        INTEL_GPU_MIN_FREQ_ON_AC = 500;
-        CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-        CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      };
-    };
-
     greetd = {
       enable = true;
       settings = {
@@ -37,7 +26,6 @@
       };
     };
 
-    power-profiles-daemon.enable = false;
     deluge.enable = true;
     gnome.gnome-keyring.enable = true;
     tailscale.enable = true;

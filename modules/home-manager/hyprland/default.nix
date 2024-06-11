@@ -79,7 +79,7 @@ in {
           "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         ] else
           [ ]) ++ cfg.envVariables;
-        exec-once = cfg.execOnce ++ (if cfg.wallpaper != "" then [
+        exec-once = cfg.execOnce ++ (if cfg.wallpaper != null then [
           "${pkgs.swww}/bin/swww-daemon"
           "${pkgs.swww}/bin/swww img ${cfg.wallpaper}"
         ] else

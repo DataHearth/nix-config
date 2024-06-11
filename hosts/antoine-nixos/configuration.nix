@@ -1,11 +1,13 @@
 { pkgs, lib, config, ... }: {
-  imports = [
-    # Modules
-    ../../modules/linux/passthrough.nix
-    ../../modules/linux/nvidia.nix
-    ../../modules/neovim
+  imports = let
+    modules = ../../modules;
+    shared = ../shared;
+  in [
+    "${modules}/passthrough.nix"
+    "${modules}/nvidia.nix"
+    "${modules}/neovim"
+    "${shared}/i18n.nix"
 
-    # Host specific
     ./hardware-configuration.nix
     ./services.nix
   ];
@@ -57,26 +59,11 @@
     };
   };
 
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings = {
-      LC_ADDRESS = "fr_FR.UTF-8";
-      LC_IDENTIFICATION = "fr_FR.UTF-8";
-      LC_MEASUREMENT = "fr_FR.UTF-8";
-      LC_MONETARY = "fr_FR.UTF-8";
-      LC_NAME = "fr_FR.UTF-8";
-      LC_NUMERIC = "fr_FR.UTF-8";
-      LC_PAPER = "fr_FR.UTF-8";
-      LC_TELEPHONE = "fr_FR.UTF-8";
-      LC_TIME = "fr_FR.UTF-8";
-    };
-  };
-
   security = {
     rtkit.enable = true;
     polkit.enable = true;
 
-    pam.services = { hyprlock = { }; };
+    pam.services = { hyprlock = { enableGnomeKeyring = true; }; };
   };
 
   users = {
@@ -91,15 +78,11 @@
   environment = {
     shells = with pkgs; [ zsh bash ];
     systemPackages = with pkgs; [
-      networkmanagerapplet
       pinentry
       home-manager
       docker
       looking-glass-client
-      playerctl
-      wireshark
     ];
-    variables = { QT_QPA_PLATFORMTHEME = "qt5ct"; };
   };
 
   fonts.packages = with pkgs; [

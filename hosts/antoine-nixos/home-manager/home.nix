@@ -1,16 +1,18 @@
 { pkgs, ... }: {
   imports = let
-    modules_base_path = ../../../modules;
-    modules_hm_path = modules_base_path + "/home-manager";
+    modules = ../../../modules/home-manager;
+    shared = ../../shared/home-manager;
   in [
-    "${modules_hm_path}/looking-glass"
-    "${modules_hm_path}/vscode"
+    "${modules}/looking-glass"
 
-    ../../shared/hm.nix
+    "${shared}/gtk.nix"
+    "${shared}/modules.nix"
+    "${shared}/options.nix"
+    "${shared}/packages.nix"
+    "${shared}/services.nix"
+
     ./services.nix
-  ] ++ (import ../../../modules/home-manager);
-  xdg.enable = true;
-
+  ] ++ (import modules);
   home = {
     username = "datahearth";
     homeDirectory = "/home/datahearth";
@@ -20,49 +22,12 @@
       # GUI Applications
       gparted
       satty
-      nextcloud-client
-      signal-desktop
-      protonmail-bridge
       nosql-workbench
-      qalculate-gtk
-      obs-studio
-      gnome.nautilus
-
-      # CLI tools
-      cliphist
-      gnupg
-      grim
-      hyprshot
-      pciutils
-      python3
-      slurp
-      swaynotificationcenter
-      swww
-      tofi
-      waybar
-      wl-clipboard
-      iotop
-      nix-du
-
-      # Libraries
-      libnotify
     ];
   };
 
   # Custom modules (./modules/home-manager)
   hm = {
-    alacritty.enable = true;
-    # dunst.enable = true;
-    waybar.enable = true;
-    ssh.enable = true;
-    rofi-wayland.enable = true;
-    swaync.enable = true;
-
-    hypridle = {
-      enable = false;
-      enabledListeners.brightness = false;
-    };
-
     hyprlock = {
       enable = true;
       lockBackgroundImage = "~/Pictures/wallpapers/lock2.png";
@@ -72,11 +37,6 @@
     git = {
       enable = true;
       signingKey = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
-    };
-
-    zellij = {
-      enable = false;
-      copy_command = "wl-copy";
     };
 
     hyprland = {
@@ -96,24 +56,7 @@
       monitorSettings =
         [ "DP-2,preferred,0x0,2" "HDMI-A-1,preferred,1920x0,1" ];
       nvidia = true;
-    };
-  };
-
-  programs = {
-    home-manager.enable = true;
-    cava.enable = true;
-
-    gpg = {
-      enable = true;
-      mutableKeys = true;
-      mutableTrust = true;
-    };
-
-    vscode = {
-      extensions = with pkgs.vscode-extensions; [
-        ms-vsliveshare.vsliveshare
-        ms-vscode.cpptools
-      ];
+      wallpaper = "~/Pictures/wallpapers/wallpaper3.jpg";
     };
   };
 }

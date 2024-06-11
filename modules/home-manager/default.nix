@@ -10,4 +10,5 @@
   ./hyprland
   ./dunst
   ./waybar
+  ./vscode
 ]

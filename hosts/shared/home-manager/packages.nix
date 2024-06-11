@@ -33,6 +33,7 @@
     yq-go
     zellij
     zip
+    nix-du
 
     # GUI
     firefox
@@ -40,6 +41,10 @@
     spotify
     vlc
     insomnia
+    gnome.nautilus
+    qalculate-gtk
+    protonmail-bridge
+      obs-studio
   ];
   home.sessionPath = [ "$(go env GOBIN)" "$HOME/.cargo/bin" ];
 
@@ -48,7 +53,20 @@
     btop.enable = true;
     eza.enable = true;
     fzf.enable = true;
+    home-manager.enable = true;
 
+    gpg = {
+      enable = true;
+      mutableKeys = true;
+      mutableTrust = true;
+    };
+
+    vscode = {
+      extensions = with pkgs.vscode-extensions; [
+        ms-vsliveshare.vsliveshare
+        ms-vscode.cpptools
+      ];
+    };
     yazi = {
       enable = true;
       enableZshIntegration = true;

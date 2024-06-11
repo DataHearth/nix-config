@@ -1,8 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   services = {
     playerctld.enable = true;
     ssh-agent.enable = true;
-    blueman-applet.enable = true;
+    blueman-applet.enable = lib.mkDefault true;
 
     nextcloud-client = {
       enable = true;
