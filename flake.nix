@@ -11,9 +11,13 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, nixvim, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, nixvim, lanzaboote, ... }: {
     nixosConfigurations = {
       antoine-nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -24,21 +28,13 @@
           nixvim.nixosModules.nixvim
         ];
       };
-      antoine-laptop = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { };
-        modules = [
-          ./hosts/antoine-laptop/configuration.nix
-          home-manager.nixosModules.home-manager
-          nixvim.nixosModules.nixvim
-        ];
-      };
       antoine-framework = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./hosts/antoine-framework/configuration.nix
           home-manager.nixosModules.home-manager
           nixvim.nixosModules.nixvim
+          lanzaboote.nixosModules.lanzaboote
         ];
       };
     };

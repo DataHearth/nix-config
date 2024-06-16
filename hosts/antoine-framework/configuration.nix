@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   imports = let
     shared = ../shared;
     modules = ../../modules;
@@ -17,8 +17,12 @@
   system.stateVersion = "24.05";
 
   boot.loader = {
-    systemd-boot.enable = true;
+    systemd-boot.enable = lib.mkForce false;
     efi.canTouchEfiVariables = true;
+  };
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/etc/secureboot";
   };
 
   networking = {
@@ -64,6 +68,7 @@
       home-manager
       docker
       looking-glass-client
+      sbctl
     ];
   };
 
