@@ -16,13 +16,17 @@
   ];
   system.stateVersion = "24.05";
 
-  boot.loader = {
-    systemd-boot.enable = lib.mkForce false;
-    efi.canTouchEfiVariables = true;
-  };
-  boot.lanzaboote = {
-    enable = true;
-    pkiBundle = "/etc/secureboot";
+  boot = {
+    loader = {
+      systemd-boot.enable = lib.mkForce false;
+      efi.canTouchEfiVariables = true;
+    };
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
+    # https://community.frame.work/t/solved-fw16-not-powering-down/52659/4
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   networking = {
