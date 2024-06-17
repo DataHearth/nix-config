@@ -65,6 +65,7 @@ in {
       home-manager
       docker
       looking-glass-client
+      ntfs3g
     ];
   };
 

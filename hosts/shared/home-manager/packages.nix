@@ -72,11 +72,6 @@
       ];
     };
 
-    yazi = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-
     bash = {
       enable = true;
       enableCompletion = true;

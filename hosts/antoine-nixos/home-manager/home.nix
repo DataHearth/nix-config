@@ -23,6 +23,8 @@
       gparted
       satty
       nosql-workbench
+      unetbootin
+      woeusb
     ];
   };
 
