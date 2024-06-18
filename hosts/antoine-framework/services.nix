@@ -1,8 +1,9 @@
 { ... }: {
   services = {
     fprintd.enable = true;
+    power-profiles-daemon.enable = true;
     tlp = {
-      enable = true;
+      enable = false;
       settings = {
         TLP_DEFAULT_MODE = "BAT";
         CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
