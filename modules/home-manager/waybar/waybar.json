@@ -11,7 +11,7 @@
   ],
   "modules-center": ["clock"],
   "modules-right": [
-    "custom/leftend",
+    "custom/spacer",
     "pulseaudio",
     "pulseaudio#microphone",
     "custom/spacer",
@@ -20,6 +20,6 @@
     "custom/notification",
     "custom/spacer",
     "tray",
-    "custom/rightend"
+    "custom/spacer"
   ]
 }

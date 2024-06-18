@@ -34,24 +34,17 @@
     "format-icons": ["󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"]
   },
   "battery": {
+    "interval": 10,
     "states": {
-      "good": 95,
+      "good": 90,
       "warning": 30,
       "critical": 15
     },
     "full-at": 100,
-    "format": "{capacity}% {icon}",
+    "format": "{icon} {capacity}%",
     "format-charging": " {capacity}%",
-    "format-plugged": "{capacity}% ",
-    "format-alt": "{icon} {time}",
+    "format-plugged": " {capacity}%",
     "format-icons": ["", "", "", "", ""]
-  },
-  "network": {
-    "format-wifi": " ({signalStrength}%)",
-    "format-ethernet": "󱎔 {ifname}: {ipaddr}/{cidr}",
-    "format-linked": "{ifname} (No IP) 󱎔",
-    "format-disconnected": "Disconnected ⚠",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}"
   },
   "disk": {
     "interval": 30,
@@ -101,12 +94,6 @@
     "escape": true
   },
   "custom/spacer": {
-    "format": " "
-  },
-  "custom/leftend": {
-    "format": " "
-  },
-  "custom/rightend": {
     "format": " "
   }
 }
