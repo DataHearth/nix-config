@@ -45,7 +45,7 @@
 
     hyprlock = {
       enable = true;
-      lockBackgroundImage = "~/Pictures/lock.png";
+      lockBackgroundImage = "~/Pictures/wallpapers/wallpaper2.jpg";
     };
 
     git = {

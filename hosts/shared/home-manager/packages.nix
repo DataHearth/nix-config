@@ -109,23 +109,22 @@
       enable = true;
       enableCompletion = true;
       autosuggestion.enable = true;
-      syntaxHighlighting = { enable = true; };
-      oh-my-zsh = {
-        enable = true;
-        theme = "robbyrussell";
-        custom = "$HOME/.oh-my-zsh/custom";
-        plugins =
-          [ "git" "npm" "golang" "docker" "docker-compose" "python" "node" ];
-      };
-      plugins = [ ];
+      syntaxHighlighting.enable = true;
+      oh-my-zsh.enable = true;
+      plugins = [{
+        name = "zsh-autopair";
+        src = pkgs.fetchFromGitHub {
+          owner = "hlissner";
+          repo = "zsh-autopair";
+          rev = "376b586c9739b0a044192747b337f31339d548fd";
+          hash = "sha256-mtDrt4Q5kbddydq/pT554ph0hAd5DGk9jci9auHx0z0=";
+        };
+      }];
       shellAliases = {
         cat = "bat";
         dc = "docker compose";
         cd = "z";
       };
-      initExtra = ''
-        neofetch
-      '';
     };
 
     direnv = {
