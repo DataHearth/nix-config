@@ -25,6 +25,7 @@
       nosql-workbench
       unetbootin
       woeusb
+      prismlauncher
     ];
   };
 
