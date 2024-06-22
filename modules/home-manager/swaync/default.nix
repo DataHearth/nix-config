@@ -9,8 +9,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.swaync = {
       enable = true;
-      settings = { };
-      style = null;
+      style = ./style.css;
     };
   };
 }

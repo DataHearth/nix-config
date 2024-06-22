@@ -5,7 +5,7 @@
   ./hyprlock.nix
   ./hypridle.nix
   ./zellij.nix
-  ./swaync.nix
+  ./swaync
   ./rofi-wayland
   ./hyprland
   ./dunst
