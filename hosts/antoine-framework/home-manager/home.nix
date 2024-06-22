@@ -26,20 +26,16 @@
   hm = {
     waybar = {
       right = [
-        "custom/leftend"
         "pulseaudio"
         "pulseaudio#microphone"
         "custom/spacer"
-        "disk"
-        "custom/spacer"
-        "custom/notification"
+        "backlight"
         "custom/spacer"
         "battery"
         "custom/spacer"
-        "backlight"
+        "custom/notification"
         "custom/spacer"
         "tray"
-        "custom/rightend"
       ];
     };
 
@@ -67,7 +63,7 @@
         "8, monitor:eDP-1"
         "10, monitor:eDP-1"
       ];
-      wallpaper = "~/Pictures/wallpaper.jpg";
+      wallpaper = "~/Pictures/wallpapers/wallpaper.jpg";
     };
   };
 }

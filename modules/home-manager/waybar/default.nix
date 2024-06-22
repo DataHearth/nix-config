@@ -11,8 +11,6 @@ let
       "pulseaudio"
       "pulseaudio#microphone"
       "custom/spacer"
-      "disk"
-      "custom/spacer"
       "custom/notification"
       "custom/spacer"
       "tray"
@@ -22,8 +20,15 @@ let
   left = lib.mkOption {
     description = "List of modules to include in the left part of waybar";
     type = lib.types.listOf lib.types.str;
-    default =
-      [ "hyprland/workspaces" "custom/spacer" "cpu" "custom/spacer" "memory" ];
+    default = [
+      "hyprland/workspaces"
+      "custom/spacer"
+      "cpu"
+      "custom/spacer"
+      "memory"
+      "custom/spacer"
+      "disk"
+    ];
   };
   center = lib.mkOption {
     description = "List of modules to include in the center part of waybar";

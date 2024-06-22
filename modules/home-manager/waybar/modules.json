@@ -13,15 +13,6 @@
       "10": "10"
     }
   },
-  "keyboard-state": {
-    "numlock": true,
-    "capslock": true,
-    "format": "{name} {icon}",
-    "format-icons": {
-      "locked": "",
-      "unlocked": ""
-    }
-  },
   "tray": {
     "spacing": 10
   },

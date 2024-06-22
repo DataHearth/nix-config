@@ -1,9 +1,33 @@
-@define-color trayc rgba(61, 61, 61, 0.8);
-@define-color error #ff0b0b;
+/* Catpuccin Macchiato */
+@define-color rosewater #f4dbd6;
+@define-color flamingo #f0c6c6;
+@define-color pink #f5bde6;
+@define-color mauve #c6a0f6;
+@define-color red #ed8796;
+@define-color maroon #ee99a0;
+@define-color peach #f5a97f;
+@define-color yellow #eed49f;
+@define-color green #a6da95;
+@define-color teal #8bd5ca;
+@define-color sky #91d7e3;
+@define-color sapphire #7dc4e4;
+@define-color blue #8aadf4;
+@define-color lavender #b7bdf8;
+@define-color text #cad3f5;
+@define-color subtext1 #b8c0e0;
+@define-color subtext0 #a5adcb;
+@define-color overlay2 #939ab7;
+@define-color overlay1 #8087a2;
+@define-color overlay0 #6e738d;
+@define-color surface2 #5b6078;
+@define-color surface1 #494d64;
+@define-color surface0 #363a4f;
+@define-color base #24273a;
+@define-color mantle #1e2030;
+@define-color crust #181926;
 
 * {
-  border: none;
-  border-radius: 0;
+  color: @text;
   font-family: Mononoki Nerd Font;
   font-size: 14px;
   font-weight: bold;
@@ -11,12 +35,10 @@
 }
 
 window#waybar {
-  background-color: rgba(43, 48, 59, 0.6);
-  border-radius: 0;
-  border-bottom: 0px solid rgba(100, 114, 125, 0.5);
-  color: #ffffff;
-  transition-property: background-color;
+  background-color: shade(@base, 0.9);
+  border: 2px solid alpha(@crust, 0.3);
   transition-duration: 0.5s;
+  transition-property: background-color;
 }
 
 window#waybar.hidden {
@@ -68,12 +90,9 @@ window#modules-right {
 #cpu,
 #memory,
 #custom-notification,
-#custom-leftend,
 #custom-spacer,
-#custom-rightend,
 #spacer {
   margin: 0 0px;
-  color: #ffffff;
   border-radius: 0;
   padding-top: 4px;
 }
@@ -101,20 +120,9 @@ label:focus {
   padding-left: 10px;
 }
 
-#custom-leftend,
-#custom-rightend {
-  padding-left: 8px;
-}
-
-#custom-leftend,
-#custom-rightend {
-  border-top-left-radius: 7px;
-  border-bottom-left-radius: 7px;
-}
-
 #pulseaudio {
-  color: rgb(240, 251, 119);
-  border-bottom: 2px solid rgb(240, 251, 119);
+  color: @yellow;
+  border-bottom: 2px solid @yellow;
 }
 #pulseaudio.microphone {
   padding-left: 7px;
@@ -126,7 +134,7 @@ label:focus {
 }
 #pulseaudio.muted,
 #pulseaudio.microphone.source-muted {
-  color: @error;
+  color: @red;
 }
 #pulseaudio.muted {
   padding-right: 4px;
@@ -142,18 +150,19 @@ label:focus {
 }
 
 #backlight {
-  color: rgb(200, 141, 252);
-  border-bottom: 2px solid rgb(200, 141, 252);
+  color: @mauve;
+  border-bottom: 2px solid @mauve;
   padding-right: 5px;
 }
 
 #disk {
-  color: rgb(250, 135, 190);
-  border-bottom: 2px solid rgb(250, 135, 190);
+  color: @lavender;
+  border-bottom: 2px solid @lavender;
 }
 
 #tray {
-  border-bottom: 2px solid rgb(246, 169, 78);
+  border-bottom: 2px solid @peach;
+  margin-right: 10px;
 }
 
 #tray > .passive {
@@ -161,9 +170,16 @@ label:focus {
 }
 
 #custom-notification {
-  color: rgb(85, 166, 48);
-  border-bottom: 2px solid rgb(85, 166, 48);
+  color: @pink;
+  border-bottom: 2px solid @pink;
   padding-right: 5px;
+}
+
+#custom-notification.dnd-notification,
+#custom-notification.dnd-none,
+#custom-notification.dnd-inhibited-notification,
+#custom-notification.dnd-inhibited-none {
+  padding-right: 9px;
 }
 
 #tray > .needs-attention {
@@ -172,18 +188,17 @@ label:focus {
 }
 
 #battery {
-  color: #ffffff;
-  border-bottom: 1px solid rgb(255, 255, 255);
-  padding-right: 9px;
+  color: @rosewater;
+  border-bottom: 2px solid @rosewater;
 }
 #battery.charging,
 #battery.plugged {
-  color: #34ff88;
-  border-bottom: 1px solid #34ff88;
+  color: @green;
+  border-bottom: 2px solid @green;
 }
 #battery.critical:not(.charging) {
-  background-color: #f53c3c;
-  color: #ffffff;
+  background-color: @red;
+  color: @red;
   animation-name: blink;
   animation-duration: 0.5s;
   animation-timing-function: linear;
@@ -205,24 +220,12 @@ label:focus {
   text-shadow: 2px 2px 4px black;
 }
 
-#cpu,
+#cpu {
+  color: @sapphire;
+  border-bottom: 2px solid @sapphire;
+}
+
 #memory {
-  color: #41ba9b;
-  border-bottom: 2px solid #41ba9b;
-}
-
-#keyboard-state {
-  background: #97e1ad;
-  color: #000000;
-  padding: 0 0px;
-  margin: 0 5px;
-  min-width: 16px;
-}
-
-#keyboard-state > label {
-  padding: 0 5px;
-}
-
-#keyboard-state > label.locked {
-  background: rgba(0, 0, 0, 0.2);
+  color: @blue;
+  border-bottom: 2px solid @blue;
 }
