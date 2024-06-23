@@ -7,14 +7,12 @@ let
     description = "List of modules to include in the right part of waybar";
     type = lib.types.listOf lib.types.str;
     default = [
-      "custom/leftend"
-      "pulseaudio"
-      "pulseaudio#microphone"
+      "pulseaudio#output"
+      "pulseaudio#input"
       "custom/spacer"
       "custom/notification"
       "custom/spacer"
       "tray"
-      "custom/rightend"
     ];
   };
   left = lib.mkOption {
@@ -28,6 +26,8 @@ let
       "memory"
       "custom/spacer"
       "disk"
+      "custom/spacer"
+      "network#speed"
     ];
   };
   center = lib.mkOption {

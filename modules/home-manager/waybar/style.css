@@ -86,7 +86,6 @@ window#modules-right {
 #pulseaudio,
 #tray,
 #mode,
-#idle_inhibitor,
 #cpu,
 #memory,
 #custom-notification,
@@ -120,33 +119,29 @@ label:focus {
   padding-left: 10px;
 }
 
-#pulseaudio {
+#pulseaudio.output,
+#pulseaudio.input {
   color: @yellow;
   border-bottom: 2px solid @yellow;
 }
-#pulseaudio.microphone {
+#pulseaudio.input {
   padding-left: 7px;
   padding-right: 2px;
 }
-#pulseaudio.microphone.source-muted {
+#pulseaudio.input.source-muted {
+  color: @red;
   padding-left: 7px;
   padding-right: 7px;
 }
-#pulseaudio.muted,
-#pulseaudio.microphone.source-muted {
+#pulseaudio.output.muted {
   color: @red;
-}
-#pulseaudio.muted {
   padding-right: 4px;
 }
 
-#network {
-  color: rgb(148, 200, 255);
-  border-bottom: 2px solid rgb(148, 200, 255);
-}
-#network.disconnected {
-  color: #f53c3c;
-  border-bottom: 2px solid #f53c3c;
+#network.speed {
+  color: @teal;
+  border-bottom: 2px solid @teal;
+  padding-right: 5px;
 }
 
 #backlight {
@@ -164,9 +159,12 @@ label:focus {
   border-bottom: 2px solid @peach;
   margin-right: 10px;
 }
-
 #tray > .passive {
   -gtk-icon-effect: dim;
+}
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: #eb4d4b;
 }
 
 #custom-notification {
@@ -174,17 +172,11 @@ label:focus {
   border-bottom: 2px solid @pink;
   padding-right: 5px;
 }
-
 #custom-notification.dnd-notification,
 #custom-notification.dnd-none,
 #custom-notification.dnd-inhibited-notification,
 #custom-notification.dnd-inhibited-none {
   padding-right: 9px;
-}
-
-#tray > .needs-attention {
-  -gtk-icon-effect: highlight;
-  background-color: #eb4d4b;
 }
 
 #battery {
