@@ -27,9 +27,8 @@ let
   };
   nvidia = lib.mkEnableOption "nvidia";
   wallpaper = lib.mkOption {
-    type = lib.types.nullOr lib.types.nonEmptyStr;
+    type = lib.types.nullOr lib.types.str;
     description = "Setting wallpaper";
-    example = "~/Pictures/wallpaper.jpg";
     default = null;
   };
   execOnce = lib.mkOption {
@@ -65,6 +64,7 @@ in {
       slurp
       satty
       hyprshot
+      swww
     ];
 
     wayland.windowManager.hyprland = {

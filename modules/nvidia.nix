@@ -1,10 +1,10 @@
 { config, lib, ... }:
-let cfg = config.services.nvidia;
+let
+  cfg = config.services.nvidia;
+  enable = lib.mkEnableOption "nvidia";
+  sleepIssue = lib.mkEnableOption "nvidia-sleep";
 in {
-  options.services.nvidia = {
-    enable = lib.mkEnableOption "nvidia";
-    sleepIssue = lib.mkEnableOption "nvidia-sleep";
-  };
+  options.services.nvidia = { inherit enable sleepIssue; };
 
   config = lib.mkIf cfg.enable {
     services.xserver.videoDrivers = [ "nvidia" ];
@@ -13,10 +13,9 @@ in {
     else
       [ ]);
     hardware = {
-      opengl = {
+      graphics = {
         enable = true;
-        driSupport = true;
-        driSupport32Bit = true;
+        enable32Bit = true;
       };
       nvidia = {
         modesetting.enable = true;

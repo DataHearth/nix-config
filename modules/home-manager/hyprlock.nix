@@ -4,9 +4,9 @@ let
 
   enable = lib.mkEnableOption "hyprlock";
   lockBackgroundImage = lib.mkOption {
-    type = lib.types.str;
+    type = lib.types.nullOr lib.types.str;
     description = "Path to background image for lock screen";
-    default = "";
+    default = null;
   };
   defaultDisplay = lib.mkOption {
     type = lib.types.str;
@@ -32,7 +32,7 @@ in {
 
         background = [{
           path =
-            lib.mkIf (cfg.lockBackgroundImage != "") cfg.lockBackgroundImage;
+            lib.mkIf (cfg.lockBackgroundImage != null) cfg.lockBackgroundImage;
           blur_passes = 3;
           blur_size = 8;
           contrast = 0.8916;

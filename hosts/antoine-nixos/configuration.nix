@@ -19,6 +19,7 @@ in {
     ./services.nix
   ];
   system.stateVersion = "24.05";
+  hardware.graphics.enable = true;
 
   boot.loader.grub = {
     enable = true;
@@ -40,13 +41,6 @@ in {
       "2606:4700:4700::1111"
       "2606:4700:4700::1001"
     ];
-  };
-
-  hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-    };
   };
 
   users = {

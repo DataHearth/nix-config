@@ -1,3 +1,1 @@
-{...}: {
-  xdg.enable = true;
-}
+{ ... }: { xdg.enable = true; }

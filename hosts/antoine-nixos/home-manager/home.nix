@@ -18,6 +18,11 @@
     homeDirectory = "/home/datahearth";
     stateVersion = "24.05";
 
+    file."Pictures/assets" = {
+      recursive = true;
+      source = ../../../assets;
+    };
+
     packages = with pkgs; [
       # GUI Applications
       gparted
@@ -33,7 +38,7 @@
   hm = {
     hyprlock = {
       enable = true;
-      lockBackgroundImage = "~/Pictures/wallpapers/lock2.png";
+      lockBackgroundImage = "~/Pictures/assets/locks/1.png";
       defaultDisplay = "DP-2";
     };
 
@@ -59,7 +64,7 @@
       monitorSettings =
         [ "DP-2,preferred,0x0,2" "HDMI-A-1,preferred,1920x0,1" ];
       nvidia = true;
-      wallpaper = "~/Pictures/wallpapers/wallpaper3.jpg";
+      wallpaper = "~/Pictures/assets/wallpapers/4.png";
     };
   };
 }

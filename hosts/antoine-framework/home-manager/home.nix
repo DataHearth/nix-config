@@ -13,6 +13,10 @@
     username = "datahearth";
     homeDirectory = "/home/datahearth";
     stateVersion = "24.05";
+    file."Pictures/assets" = {
+      recursive = true;
+      source = ../../../assets;
+    };
 
     packages = with pkgs; [
       # GUI Applications
