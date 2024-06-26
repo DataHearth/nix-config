@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 let hostname = "antoine-nixos";
 in {
   imports = let
@@ -71,7 +71,7 @@ in {
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { };
+    extraSpecialArgs = { inherit inputs; };
     users = { "datahearth" = import ./home-manager/home.nix; };
   };
 

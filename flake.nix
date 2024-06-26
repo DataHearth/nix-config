@@ -20,7 +20,7 @@
     nixosConfigurations = {
       antoine-nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { };
+        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/antoine-nixos/configuration.nix
           home-manager.nixosModules.home-manager

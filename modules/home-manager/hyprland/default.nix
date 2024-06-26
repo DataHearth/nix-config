@@ -64,9 +64,7 @@ in {
       slurp
       satty
       hyprshot
-
       inputs.swww.packages.${system}.swww
-
     ];
 
     wayland.windowManager.hyprland = {

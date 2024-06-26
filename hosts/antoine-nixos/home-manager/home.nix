@@ -64,7 +64,7 @@
       monitorSettings =
         [ "DP-2,preferred,0x0,2" "HDMI-A-1,preferred,1920x0,1" ];
       nvidia = true;
-      wallpaper = "~/Pictures/assets/wallpapers/4.png";
+      wallpaper = "~/Pictures/assets/wallpapers/5.jpg";
     };
   };
 }
