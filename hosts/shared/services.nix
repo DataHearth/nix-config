@@ -1,8 +1,12 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, config, ... }: {
   services = {
     deluge.enable = true;
     gnome.gnome-keyring.enable = true;
-    tailscale.enable = true;
+    tailscale = {
+      enable = true;
+      useRoutingFeatures = "both";
+      authKeyFile = "${config.users.users.datahearth.home}/.tskey";
+    };
     blueman.enable = lib.mkDefault true;
 
     xserver = {
