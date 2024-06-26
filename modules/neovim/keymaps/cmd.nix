@@ -4,7 +4,7 @@
     key = "<C-t>";
   }
   {
-    action = "<cmd>TroubleToggle<cr>";
+    action = "<cmd>Trouble diagnostics toggle<cr>";
     key = "<C-S-t>";
   }
 ]
