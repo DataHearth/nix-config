@@ -78,12 +78,13 @@ in {
           "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         ] else
           [ ]) ++ cfg.envVariables;
-        exec-once = cfg.execOnce ++ (if cfg.wallpaper != null then [
-          "${inputs.swww.packages.${pkgs.system}.swww}/bin/swww-daemon"
-          "${
-            inputs.swww.packages.${pkgs.system}.swww
-          }/bin/swww img ${cfg.wallpaper}"
-        ] else
+        exec-once = cfg.execOnce ++ (if cfg.wallpaper != null then
+          [
+            "${inputs.swww.packages.${pkgs.system}.swww}/bin/swww-daemon; ${
+              inputs.swww.packages.${pkgs.system}.swww
+            }/bin/swww img ${cfg.wallpaper}"
+          ]
+        else
           [ "${pkgs.swww}/bin/swww init" ]) ++ [
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
           ];

@@ -13,6 +13,7 @@
     username = "datahearth";
     homeDirectory = "/home/datahearth";
     stateVersion = "24.05";
+
     file."Pictures/assets" = {
       recursive = true;
       source = ../../../assets;
@@ -67,7 +68,7 @@
         "8, monitor:eDP-1"
         "10, monitor:eDP-1"
       ];
-      wallpaper = "~/Pictures/assets/wallpapers/4.png";
+      wallpaper = "~/Pictures/assets/wallpapers/5.jpg";
     };
   };
 }
