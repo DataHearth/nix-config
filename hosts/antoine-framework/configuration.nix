@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, inputs, ... }: {
   imports = let
     shared = ../shared;
     modules = ../../modules;
@@ -46,10 +46,7 @@
   };
 
   hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-    };
+    graphics.enable = true;
     bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -84,7 +81,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { };
+    extraSpecialArgs = { inherit inputs; };
     users = { "datahearth" = import ./home-manager/home.nix; };
   };
 

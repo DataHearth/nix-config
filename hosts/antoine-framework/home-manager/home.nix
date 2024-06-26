@@ -30,8 +30,8 @@
   hm = {
     waybar = {
       right = [
-        "pulseaudio"
-        "pulseaudio#microphone"
+        "pulseaudio#output"
+        "pulseaudio#input"
         "custom/spacer"
         "backlight"
         "custom/spacer"
@@ -45,7 +45,7 @@
 
     hyprlock = {
       enable = true;
-      lockBackgroundImage = "~/Pictures/wallpapers/wallpaper2.jpg";
+      lockBackgroundImage = "~/Pictures/assets/locks/1.png";
     };
 
     git = {
@@ -67,7 +67,7 @@
         "8, monitor:eDP-1"
         "10, monitor:eDP-1"
       ];
-      wallpaper = "~/Pictures/wallpapers/wallpaper.jpg";
+      wallpaper = "~/Pictures/assets/wallpapers/4.png";
     };
   };
 }

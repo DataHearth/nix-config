@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
   hyprlandSettings = builtins.fromJSON (builtins.readFile ./hyprland.json);
   cfg = config.hm.hyprland;
@@ -64,7 +64,9 @@ in {
       slurp
       satty
       hyprshot
-      swww
+
+      inputs.swww.packages.${system}.swww
+
     ];
 
     wayland.windowManager.hyprland = {
@@ -79,8 +81,10 @@ in {
         ] else
           [ ]) ++ cfg.envVariables;
         exec-once = cfg.execOnce ++ (if cfg.wallpaper != null then [
-          "${pkgs.swww}/bin/swww-daemon"
-          "${pkgs.swww}/bin/swww img ${cfg.wallpaper}"
+          "${inputs.swww.packages.${pkgs.system}.swww}/bin/swww-daemon"
+          "${
+            inputs.swww.packages.${pkgs.system}.swww
+          }/bin/swww img ${cfg.wallpaper}"
         ] else
           [ "${pkgs.swww}/bin/swww init" ]) ++ [
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
