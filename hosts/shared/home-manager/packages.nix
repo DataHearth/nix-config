@@ -65,13 +65,6 @@
       mutableTrust = true;
     };
 
-    vscode = {
-      extensions = with pkgs.vscode-extensions; [
-        ms-vsliveshare.vsliveshare
-        ms-vscode.cpptools
-      ];
-    };
-
     bash = {
       enable = true;
       enableCompletion = true;
