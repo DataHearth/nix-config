@@ -65,5 +65,10 @@
       ];
       wallpaper = "~/Pictures/assets/wallpapers/5.jpg";
     };
+
+    zellij = {
+      enable = false;
+      copy_command = "wl-copy";
+    };
   };
 }
