@@ -3,12 +3,10 @@
   ./alacritty.nix
   ./ssh.nix
   ./hyprlock.nix
-  ./hypridle.nix
   ./zellij.nix
   ./swaync
   ./rofi-wayland
   ./hyprland
-  ./dunst
   ./waybar
   ./vscode
 ]
