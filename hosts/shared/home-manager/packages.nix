@@ -117,6 +117,8 @@
         cat = "bat";
         dc = "docker compose";
         cd = "z";
+        td = "sudo tailscale down";
+        tu = "sudo tailscale up";
       };
     };
 
