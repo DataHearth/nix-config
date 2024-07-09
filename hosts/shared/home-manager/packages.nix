@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   home = {
     packages = with pkgs; [
       asciinema
@@ -119,6 +119,12 @@
         cd = "z";
         td = "sudo tailscale down";
         tu = "sudo tailscale up";
+        nixos-switch =
+          "sudo nixos-rebuild switch --flake ${config.xdg.configHome}/nix-config#$HOST";
+        nixos-test =
+          "sudo nixos-rebuild test --flake ${config.xdg.configHome}/nix-config#$HOST";
+        nixos-cleanup =
+          "sudo nix-collect-garbage -d; nix-collect-garbage -d; nix-store --optimise";
       };
     };
 
