@@ -64,7 +64,7 @@ in {
       slurp
       satty
       hyprshot
-      inputs.swww.packages.${system}.swww
+      swww
     ];
 
     wayland.windowManager.hyprland = {
@@ -80,12 +80,10 @@ in {
           [ ]) ++ cfg.envVariables;
         exec-once = cfg.execOnce ++ (if cfg.wallpaper != null then
           [
-            "${inputs.swww.packages.${pkgs.system}.swww}/bin/swww-daemon; ${
-              inputs.swww.packages.${pkgs.system}.swww
-            }/bin/swww img ${cfg.wallpaper}"
+            "${pkgs.swww}/bin/swww-daemon; ${pkgs.swww}/bin/swww img ${cfg.wallpaper}"
           ]
         else
-          [ "${pkgs.swww}/bin/swww init" ]) ++ [
+          [ "${pkgs.swww}/bin/swww-daemon" ]) ++ [
             "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
           ];
         monitor = lib.mkIf (cfg.monitorSettings != [ ]) cfg.monitorSettings;

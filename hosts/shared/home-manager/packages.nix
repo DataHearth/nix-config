@@ -1,7 +1,8 @@
 { config, pkgs, ... }: {
   home = {
     packages = with pkgs; [
-      asciinema
+      # asciinema <-- temp disabled because of python3.12
+      # neofetch <-- temp disabled because of python3.12
       awscli2
       corepack
       difftastic
@@ -17,7 +18,6 @@
       iftop
       jq
       just
-      neofetch
       nix-du
       nix-index
       nodejs
@@ -38,8 +38,8 @@
       # GUI
       discord
       firefox
-      gnome.eog
-      gnome.nautilus
+      eog
+      nautilus
       insomnia
       nextcloud-client
       obs-studio
