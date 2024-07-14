@@ -4,16 +4,16 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
     home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      url = "github:nix-community/home-manager/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      url = "github:nix-community/nixvim/nixos-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -28,24 +28,24 @@
           };
         };
       in {
-        antoine-nixos = nixpkgs-unstable.lib.nixosSystem {
+        antoine-nixos = nixpkgs.lib.nixosSystem {
           inherit system;
 
           specialArgs = { inherit inputs; };
           modules = [
-            # ({ ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
+            ({ ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
             ./hosts/antoine-nixos/configuration.nix
             home-manager.nixosModules.home-manager
             nixvim.nixosModules.nixvim
             sops-nix.nixosModules.sops
           ];
         };
-        antoine-framework = nixpkgs-unstable.lib.nixosSystem {
+        antoine-framework = nixpkgs.lib.nixosSystem {
           inherit system;
 
           specialArgs = { inherit inputs; };
           modules = [
-            # ({ ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
+            ({ ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
             ./hosts/antoine-framework/configuration.nix
             home-manager.nixosModules.home-manager
             nixvim.nixosModules.nixvim

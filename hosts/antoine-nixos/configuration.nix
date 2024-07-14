@@ -19,7 +19,13 @@ in {
     ./services.nix
   ];
   system.stateVersion = "24.05";
-  hardware.graphics.enable = true;
+
+  hardware = {
+    opengl = {
+      enable = true;
+      driSupport = true;
+    };
+  };
 
   boot.loader.grub = {
     enable = true;

@@ -38,8 +38,8 @@
       # GUI
       discord
       firefox
-      eog
-      nautilus
+      gnome.eog
+      gnome.nautilus
       insomnia
       nextcloud-client
       obs-studio

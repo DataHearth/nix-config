@@ -13,9 +13,10 @@ in {
     else
       [ ]);
     hardware = {
-      graphics = {
+      opengl = {
         enable = true;
-        enable32Bit = true;
+        driSupport = true;
+        driSupport32Bit = true;
       };
       nvidia = {
         modesetting.enable = true;
