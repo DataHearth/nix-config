@@ -98,6 +98,7 @@ in {
         todo-comments.enable = true; # Comments highlighting
         treesitter.enable = true;
         trouble = import ./plugins/trouble.nix; # Diagnotic
+        which-key.enable = true;
 
         # Custom
         harpoon = {
