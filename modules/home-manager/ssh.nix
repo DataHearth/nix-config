@@ -41,14 +41,8 @@ in {
 
         # Servers
         "cronos" = {
-          hostname = "10.0.0.2";
+          hostname = "cronos.internal";
           user = "root";
-          identityFile = "~/.ssh/${keyNamePrefix}";
-          identitiesOnly = true;
-        };
-        "cronos-debian" = {
-          hostname = "10.0.0.3";
-          user = "antoine";
           identityFile = "~/.ssh/${keyNamePrefix}";
           identitiesOnly = true;
         };
