@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 let
   hyprlandSettings = builtins.fromJSON (builtins.readFile ./hyprland.json);
   cfg = config.hm.hyprland;

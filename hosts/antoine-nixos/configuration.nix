@@ -83,7 +83,11 @@ in {
 
   programs = {
     steam.enable = true;
-    hyprland.enable = true;
+    hyprland = {
+      enable = true;
+      portalPackage =
+        inputs.xdg-desktop-portal-hyprland.packages.${pkgs.system}.default;
+    };
     zsh.enable = true;
     wireshark.enable = true;
   };
