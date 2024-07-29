@@ -1,8 +1,8 @@
 { config, pkgs, ... }: {
   home = {
     packages = with pkgs; [
-      # asciinema <-- temp disabled because of python3.12
-      # neofetch <-- temp disabled because of python3.12
+      asciinema
+      neofetch
       awscli2
       corepack
       difftastic
