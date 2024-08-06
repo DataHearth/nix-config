@@ -1,6 +1,4 @@
-{ pkgs, lib, inputs, ... }:
-let hostname = "antoine-nixos";
-in {
+{ pkgs, lib, inputs, ... }: {
   imports = let
     modules = ../../modules;
     shared = ../shared;
@@ -20,34 +18,13 @@ in {
   ];
   system.stateVersion = "24.05";
 
-  hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-    };
-  };
-
   boot.loader.grub = {
     enable = true;
     device = "/dev/nvme0n1";
     useOSProber = true;
   };
 
-  networking = {
-    networkmanager = {
-      enable = true;
-      dns = "none";
-    };
-    hostName = hostname;
-    nameservers = [
-      "100.65.209.18"
-      "fd7a:115c:a1e0::4641:d112"
-      "1.1.1.1"
-      "1.0.0.1"
-      "2606:4700:4700::1111"
-      "2606:4700:4700::1001"
-    ];
-  };
+  networking = { hostName = "antoine-nixos"; };
 
   users = {
     defaultUserShell = pkgs.zsh;
@@ -58,22 +35,6 @@ in {
     };
   };
 
-  environment = {
-    shells = with pkgs; [ zsh bash ];
-    systemPackages = with pkgs; [
-      pinentry
-      home-manager
-      docker
-      looking-glass-client
-      ntfs3g
-    ];
-  };
-
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "Mononoki" ]; })
-    corefonts
-  ];
-
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
@@ -81,18 +42,7 @@ in {
     users = { "datahearth" = import ./home-manager/home.nix; };
   };
 
-  programs = {
-    steam.enable = true;
-    hyprland = {
-      enable = true;
-      portalPackage =
-        inputs.xdg-desktop-portal-hyprland.packages.${pkgs.system}.default;
-    };
-    zsh.enable = true;
-    wireshark.enable = true;
-  };
-
-  custom = { neovim.enable = true; };
+  programs = { steam.enable = true; };
 
   systemd.tmpfiles.rules =
     [ "f /dev/shm/looking-glass 0660 datahearth libvirtd -" ];

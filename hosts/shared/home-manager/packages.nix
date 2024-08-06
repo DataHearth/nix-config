@@ -48,6 +48,7 @@
       signal-desktop
       spotify
       vlc
+      gimp
     ];
     sessionPath = [ "$(go env GOBIN)" "$HOME/.cargo/bin" ];
   };

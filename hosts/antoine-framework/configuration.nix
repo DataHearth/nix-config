@@ -29,28 +29,9 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  networking = {
-    hostName = "antoine-framework";
-    networkmanager = {
-      enable = true;
-      dns = "none";
-    };
-    nameservers = [
-      "100.65.209.18"
-      "fd7a:115c:a1e0::4641:d112"
-      "1.1.1.1"
-      "1.0.0.1"
-      "2606:4700:4700::1111"
-      "2606:4700:4700::1001"
-    ];
-  };
+  networking = { hostName = "antoine-framework"; };
 
   hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-    };
     bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -66,21 +47,7 @@
     };
   };
 
-  environment = {
-    shells = with pkgs; [ zsh bash ];
-    systemPackages = with pkgs; [
-      pinentry
-      home-manager
-      docker
-      looking-glass-client
-      sbctl
-    ];
-  };
-
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "Mononoki" ]; })
-    corefonts
-  ];
+  environment = { systemPackages = with pkgs; [ sbctl ]; };
 
   home-manager = {
     useGlobalPkgs = true;
@@ -88,16 +55,4 @@
     extraSpecialArgs = { inherit inputs; };
     users = { "datahearth" = import ./home-manager/home.nix; };
   };
-
-  programs = {
-    hyprland = {
-      enable = true;
-      portalPackage =
-        inputs.xdg-desktop-portal-hyprland.packages.${pkgs.system}.default;
-    };
-    zsh.enable = true;
-    wireshark.enable = true;
-  };
-
-  custom = { neovim.enable = true; };
 }

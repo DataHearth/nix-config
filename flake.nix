@@ -15,19 +15,18 @@
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    xdg-desktop-portal-hyprland.url =
-      "github:hyprwm/xdg-desktop-portal-hyprland/v1.3.3"; # Security update
   };
 
   outputs = inputs@{ nixpkgs, nixpkgs-unstable, sops-nix, home-manager, nixvim
     , lanzaboote, ... }: {
       nixosConfigurations = let
         system = "x86_64-linux";
+        unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
         overlay-unstable = _: _: {
-          unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-          };
+          xdg-desktop-portal-hyprland = unstable.xdg-desktop-portal-hyprland;
         };
       in {
         antoine-nixos = nixpkgs.lib.nixosSystem {
