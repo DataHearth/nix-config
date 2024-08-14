@@ -35,6 +35,7 @@
           user = "datahearth";
         };
       };
+      vt = 9; # Fix lines on screen
     };
   };
 }
