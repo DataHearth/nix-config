@@ -17,6 +17,7 @@
     ./services.nix
   ];
   system.stateVersion = "24.05";
+  virtualisation.docker.enableNvidia = true;
 
   boot.loader.grub = {
     enable = true;

@@ -4,14 +4,12 @@
   console.keyMap = "fr";
   virtualisation.docker.enable = true;
   xdg.portal.enable = true;
-  custom = { neovim.enable = true; };
+  custom.neovim.enable = true;
 
-  hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-    };
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
   };
 
   networking = {
