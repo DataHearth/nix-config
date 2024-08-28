@@ -19,13 +19,6 @@ in {
       addKeysToAgent = cfg.addKeysToAgent;
       matchBlocks = {
         # Git servers
-        "gitea.antoine-langlois.net" = {
-          hostname = "gitea.antoine-langlois.net";
-          user = "git";
-          identityFile = "~/.ssh/${keyNamePrefix}_git";
-          port = 58964;
-          identitiesOnly = true;
-        };
         "github.com" = {
           hostname = "github.com";
           user = "git";
@@ -40,9 +33,9 @@ in {
         };
 
         # Servers
-        "cronos" = {
-          hostname = "cronos.internal";
-          user = "root";
+        "valinor" = {
+          hostname = "valinor.internal";
+          user = "datahearth";
           identityFile = "~/.ssh/${keyNamePrefix}";
           identitiesOnly = true;
         };
@@ -66,14 +59,6 @@ in {
           hostname = "51.91.11.36";
           user = "gitlab-runner";
           identityFile = "~/.ssh/${keyNamePrefix}_bap-runner";
-          identitiesOnly = true;
-        };
-
-        # Wyll
-        "github-wyll" = {
-          hostname = "github.com";
-          user = "git";
-          identityFile = "~/.ssh/id_ed25519_wyll";
           identitiesOnly = true;
         };
       };
