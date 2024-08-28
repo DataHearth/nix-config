@@ -18,8 +18,8 @@
       dns = "none";
     };
     nameservers = [
-      "100.65.209.18"
-      "fd7a:115c:a1e0::4641:d112"
+      "100.116.195.57"
+      "fd7a:115c:a1e0::f201:c339"
       "1.1.1.1"
       "1.0.0.1"
       "2606:4700:4700::1111"
@@ -43,6 +43,7 @@
       ntfs3g
       libheif
       libheif.out
+      dig
     ];
     pathsToLink = [ "share/thumbnailers" "/share/zsh" ];
   };

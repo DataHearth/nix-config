@@ -7,7 +7,7 @@
       useRoutingFeatures = "both";
       authKeyFile = "${config.users.users.datahearth.home}/.tskey";
       extraUpFlags =
-        [ "--exit-node-allow-lan-access" "--exit-node" "100.65.209.18" ];
+        [ "--exit-node-allow-lan-access" "--exit-node" "100.116.195.57" ];
     };
     blueman.enable = lib.mkDefault true;
 
