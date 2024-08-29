@@ -1,7 +1,11 @@
-{ pkgs, lib, config, ... }: {
+{ config, pkgs, ... }: {
   services = {
+    fprintd.enable = true;
+    power-profiles-daemon.enable = true;
     deluge.enable = true;
     gnome.gnome-keyring.enable = true;
+    blueman.enable = true;
+
     tailscale = {
       enable = true;
       useRoutingFeatures = "both";
@@ -12,7 +16,6 @@
         "--accept-dns=false"
       ];
     };
-    blueman.enable = lib.mkDefault true;
 
     xserver = {
       enable = true;
@@ -31,6 +34,7 @@
 
     greetd = {
       enable = true;
+
       settings = {
         default_session = {
           command = ''

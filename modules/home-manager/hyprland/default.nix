@@ -80,7 +80,7 @@ in {
           [ ]) ++ cfg.envVariables;
         exec-once = cfg.execOnce ++ (if cfg.wallpaper != null then
           [
-            "${pkgs.swww}/bin/swww-daemon; ${pkgs.swww}/bin/swww img ${cfg.wallpaper}"
+            "${pkgs.swww}/bin/swww-daemon; sleep 1; ${pkgs.swww}/bin/swww img ${cfg.wallpaper}"
           ]
         else
           [ "${pkgs.swww}/bin/swww-daemon" ]) ++ [

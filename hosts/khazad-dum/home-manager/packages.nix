@@ -34,6 +34,7 @@
       xh
       yq-go
       zip
+      libnotify
 
       # GUI
       discord
@@ -49,6 +50,7 @@
       spotify
       vlc
       gimp
+      satty
     ];
     sessionPath = [ "$(go env GOBIN)" "$HOME/.cargo/bin" ];
   };
