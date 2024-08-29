@@ -37,7 +37,7 @@ in {
         ms-vscode.makefile-tools
         ms-azuretools.vscode-docker
         ms-python.vscode-pylance
-        ms-vsliveshare.vsliveshare
+        # ms-vsliveshare.vsliveshare
         ms-vscode.cpptools
 
         njpwerner.autodocstring
