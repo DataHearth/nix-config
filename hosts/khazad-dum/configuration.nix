@@ -110,6 +110,10 @@
       dig
     ];
     pathsToLink = [ "share/thumbnailers" "/share/zsh" ];
+    variables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
   };
 
   fonts.packages = with pkgs; [

@@ -45,5 +45,10 @@
           ];
         };
       };
+      homeConfigurations.valinor = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages."x86_64-linux";
+
+        modules = [ ./hosts/valinor/home.nix nixvim.homeManagerModules.nixvim ];
+      };
     };
 }
