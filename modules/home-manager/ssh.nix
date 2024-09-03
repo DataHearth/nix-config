@@ -34,7 +34,7 @@ in {
 
         # Servers
         "valinor" = {
-          hostname = "valinor.internal";
+          hostname = "10.0.0.2";
           user = "datahearth";
           identityFile = "~/.ssh/${keyNamePrefix}";
           identitiesOnly = true;
