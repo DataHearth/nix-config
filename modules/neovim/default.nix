@@ -104,8 +104,31 @@ in {
             };
           };
         };
+        # "earthly.vim" = {
+        #   enable = true;
+        #   package = pkgs.vimUtils.buildVimPlugin {
+        #     name = "earthly.vim";
+        #     src = pkgs.fetchFromGitHub {
+        #       owner = "earthly";
+        #       repo = "earthly.vim";
+        #       rev = "cb0440a357a09fb9234ece56a6b09e04d25c1b1d";
+        #       hash = lib.fashHash;
+        #     };
+        #   };
+        # };
       };
-      extraPlugins = with pkgs.vimPlugins; [ nvim-ts-autotag ];
+      extraPlugins = with pkgs; [ 
+        vimPlugins.nvim-ts-autotag 
+        (vimUtils.buildVimPlugin {
+          name = "earthly.vim";
+          src = fetchFromGitHub {
+            owner = "earthly";
+            repo = "earthly.vim";
+            rev = "cb0440a357a09fb9234ece56a6b09e04d25c1b1d";
+            hash = "sha256-myMGiOiU9/xmdMJOvaJySLBvXS/xTAMULVaKGaVODw0=";
+          };
+        }) 
+      ];
       extraConfigLua = ''
         require('nvim-ts-autotag').setup()
       '';
