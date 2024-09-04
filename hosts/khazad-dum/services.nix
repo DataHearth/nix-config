@@ -13,7 +13,7 @@
       extraUpFlags = [
         "--exit-node-allow-lan-access"
         "--exit-node=100.116.195.57"
-        "--accept-dns=false"
+        "--accept-dns"
       ];
     };
 

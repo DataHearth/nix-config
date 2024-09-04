@@ -35,6 +35,7 @@
       yq-go
       zip
       libnotify
+      kanshi
 
       # GUI
       discord
