@@ -1,6 +1,6 @@
 {
   enable = true;
-  logLevel = "error";
+  logLevel = "error"; 
   formattersByFt = {
     lua = [ "stylua" ];
     go = [ "gofumpt" "golines" ];
@@ -16,5 +16,5 @@
     toml = [ "taplo" ];
     "_" = [ "trim_whitespace" ];
   };
-
+  formatOnSave = {};
 }

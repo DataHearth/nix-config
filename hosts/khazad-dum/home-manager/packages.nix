@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   home = {
     packages = with pkgs; [
       asciinema
@@ -54,7 +55,10 @@
       satty
       dbeaver-bin
     ];
-    sessionPath = [ "$(go env GOBIN)" "$HOME/.cargo/bin" ];
+    sessionPath = [
+      "$(go env GOBIN)"
+      "$HOME/.cargo/bin"
+    ];
   };
 
   programs = {
@@ -83,7 +87,9 @@
 
     bat = {
       enable = true;
-      config = { theme = "catppuccin_macchiato"; };
+      config = {
+        theme = "catppuccin_macchiato";
+      };
       themes = {
         catppuccin_macchiato = {
           src = pkgs.fetchFromGitHub {
@@ -109,38 +115,37 @@
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       oh-my-zsh.enable = true;
-      plugins = [{
-        name = "zsh-autopair";
-        src = pkgs.fetchFromGitHub {
-          owner = "hlissner";
-          repo = "zsh-autopair";
-          rev = "376b586c9739b0a044192747b337f31339d548fd";
-          hash = "sha256-mtDrt4Q5kbddydq/pT554ph0hAd5DGk9jci9auHx0z0=";
-        };
-      }];
+      plugins = [
+        {
+          name = "zsh-autopair";
+          src = pkgs.fetchFromGitHub {
+            owner = "hlissner";
+            repo = "zsh-autopair";
+            rev = "376b586c9739b0a044192747b337f31339d548fd";
+            hash = "sha256-mtDrt4Q5kbddydq/pT554ph0hAd5DGk9jci9auHx0z0=";
+          };
+        }
+      ];
       shellAliases = {
         cat = "bat";
         dc = "docker compose";
         cd = "z";
         td = "sudo tailscale down";
         tu = "sudo tailscale up";
-        nixos-switch =
-          "sudo nixos-rebuild switch --flake ${config.xdg.configHome}/nix-config#$HOST";
-        nixos-test =
-          "sudo nixos-rebuild test --flake ${config.xdg.configHome}/nix-config#$HOST";
-        nixos-cleanup =
-          "sudo nix-collect-garbage -d; nix-collect-garbage -d; nix-store --optimise";
+        nixos-switch = "sudo nixos-rebuild switch --flake ${config.xdg.configHome}/nix-config#$HOST";
+        nixos-test = "sudo nixos-rebuild test --flake ${config.xdg.configHome}/nix-config#$HOST";
+        nixos-cleanup = "sudo nix-collect-garbage -d; nix-collect-garbage -d; nix-store --optimise";
       };
       initExtra = ''
-      url-sri() {
-        nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
-      }
-      review-pr() {
-        nix-shell -p nixpkgs-review --run "nixpkgs-review pr $1"
-      }
-      review-head() {
-        nix-shell -p nixpkgs-review --run "nixpkgs-review rev HEAD"
-      }
+        url-sri() {
+          nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
+        }
+        review-pr() {
+          nix-shell -p nixpkgs-review --run "nixpkgs-review pr $1"
+        }
+        review-head() {
+          nix-shell -p nixpkgs-review --run "nixpkgs-review rev HEAD"
+        }
       '';
     };
 

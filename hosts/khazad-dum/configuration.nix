@@ -1,6 +1,12 @@
-{ config, pkgs, lib, inputs, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
+{
   imports = [
-    ../../modules/neovim
     ./i18n.nix
     ./hardware-configuration.nix
     ./services.nix
@@ -13,7 +19,10 @@
 
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       auto-optimise-store = true;
     };
     nixPath = [
@@ -58,15 +67,24 @@
     users.datahearth = {
       isNormalUser = true;
       description = "Antoine Langlois";
-      extraGroups = [ "networkmanager" "wheel" "docker" "wireshark" ];
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "docker"
+        "wireshark"
+      ];
     };
   };
 
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit inputs; };
-    users = { "datahearth" = import ./home-manager/home.nix; };
+    extraSpecialArgs = {
+      inherit inputs;
+    };
+    users = {
+      "datahearth" = import ./home-manager/home.nix;
+    };
   };
 
   security = {
@@ -97,7 +115,10 @@
   };
 
   environment = {
-    shells = with pkgs; [ zsh bash ];
+    shells = with pkgs; [
+      zsh
+      bash
+    ];
     systemPackages = with pkgs; [
       sbctl
       pinentry
@@ -108,8 +129,22 @@
       libheif
       libheif.out
       dig
+
+      # Nixvim conform.nvim formatters
+      nixfmt-rfc-style
+      gofumpt
+      stylua
+      golines
+      prettierd
+      rustfmt
+      nodePackages_latest.eslint
+      taplo
+      ruff
     ];
-    pathsToLink = [ "share/thumbnailers" "/share/zsh" ];
+    pathsToLink = [
+      "share/thumbnailers"
+      "/share/zsh"
+    ];
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
@@ -117,7 +152,12 @@
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "Mononoki" ]; })
+    (nerdfonts.override {
+      fonts = [
+        "FiraCode"
+        "Mononoki"
+      ];
+    })
     corefonts
   ];
 }

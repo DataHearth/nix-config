@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   cfg = config.custom.neovim;
 
@@ -15,31 +20,32 @@ let
   };
   hm = lib.mkOption {
     type = lib.types.bool;
-    description =
-      "Wether to deactive certain features related to NixOS (default editor via 'variables.EDITOR' & packages via systemPackages)";
+    description = "Wether to deactive certain features related to NixOS (default editor via 'variables.EDITOR' & packages via systemPackages)";
     default = false;
   };
-in {
-  options.custom.neovim = { inherit enable colorscheme defaultEditor hm; };
+in
+{
+  options.custom.neovim = {
+    inherit
+      enable
+      colorscheme
+      defaultEditor
+      hm
+      ;
+  };
 
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [ ];
+
     programs.nixvim = {
       enable = true;
       type = "lua";
       viAlias = true;
       vimAlias = true;
-      globals = { mapleader = " "; };
+      globals = {
+        mapleader = " ";
+      };
       colorscheme = cfg.colorscheme;
-      autoCmd = [{
-        event = "BufWritePre";
-        pattern = "*";
-        callback.__raw = ''
-          function(args)
-            require("conform").format({ bufnr = args.buf })
-          end
-        '';
-        desc = "Format on save";
-      }];
       opts = {
         tabstop = 2;
         expandtab = true;
@@ -61,7 +67,6 @@ in {
       plugins = {
         barbecue.enable = true; # Symbol bar
         chadtree.enable = true; # Tree navigation
-        cmp = import ./plugins/cmp.nix { lib = lib; };
         cmp-buffer.enable = true;
         cmp-nvim-lsp-signature-help.enable = true;
         cmp-nvim-lsp.enable = true;
@@ -69,27 +74,29 @@ in {
         cmp-path.enable = true;
         cmp_luasnip.enable = true;
         comment.enable = true; # Comment code
-        conform-nvim = import ./plugins/conform-nvim.nix; # Formatting
+        indent-blankline.enable = true;
+        todo-comments.enable = true; # Comments highlighting
+        treesitter.enable = true;
         crates-nvim.enable = true; # Crate auto-complete and verification
         diffview.enable = true; # Git diff view
-        gitsigns = import ./plugins/gitsigns.nix; # Git signs in status line
         illuminate.enable = true; # Highlight words
-        indent-blankline = import ./plugins/indent-blankline.nix;
-        lsp = import ./plugins/lsp.nix;
         lspkind.enable = true; # Beautify LSP
         lualine.enable = true; # Status line
         luasnip = {
           enable = true;
-          fromVscode = [{ paths = ./snippets; }];
+          fromVscode = [ { paths = ./snippets; } ];
         }; # Snippets
         neogit.enable = true;
         nix.enable = true;
         nvim-autopairs.enable = true; # Auto close symbols
-        telescope = import ./plugins/telescope.nix; # Find files
-        todo-comments.enable = true; # Comments highlighting
-        treesitter.enable = true;
-        trouble = import ./plugins/trouble.nix; # Diagnotic
         which-key.enable = true;
+
+        cmp = import ./plugins/cmp.nix { lib = lib; };
+        conform-nvim = import ./plugins/conform-nvim.nix; # Formatting
+        gitsigns = import ./plugins/gitsigns.nix; # Git signs in status line
+        lsp = import ./plugins/lsp.nix;
+        telescope = import ./plugins/telescope.nix; # Find files
+        trouble = import ./plugins/trouble.nix; # Diagnotic
 
         # Custom
         harpoon = {
@@ -104,21 +111,9 @@ in {
             };
           };
         };
-        # "earthly.vim" = {
-        #   enable = true;
-        #   package = pkgs.vimUtils.buildVimPlugin {
-        #     name = "earthly.vim";
-        #     src = pkgs.fetchFromGitHub {
-        #       owner = "earthly";
-        #       repo = "earthly.vim";
-        #       rev = "cb0440a357a09fb9234ece56a6b09e04d25c1b1d";
-        #       hash = lib.fashHash;
-        #     };
-        #   };
-        # };
       };
-      extraPlugins = with pkgs; [ 
-        vimPlugins.nvim-ts-autotag 
+      extraPlugins = with pkgs; [
+        vimPlugins.nvim-ts-autotag
         (vimUtils.buildVimPlugin {
           name = "earthly.vim";
           src = fetchFromGitHub {
@@ -127,7 +122,7 @@ in {
             rev = "cb0440a357a09fb9234ece56a6b09e04d25c1b1d";
             hash = "sha256-myMGiOiU9/xmdMJOvaJySLBvXS/xTAMULVaKGaVODw0=";
           };
-        }) 
+        })
       ];
       extraConfigLua = ''
         require('nvim-ts-autotag').setup()

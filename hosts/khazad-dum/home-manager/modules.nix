@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   hm = {
     alacritty.enable = true;
     ssh.enable = true;

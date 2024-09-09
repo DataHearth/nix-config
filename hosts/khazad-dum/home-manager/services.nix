@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   services = {
     playerctld.enable = true;
     ssh-agent.enable = true;
@@ -26,7 +27,7 @@
           profile.exec = [
             "notify-send -i $HOME/Pictures/icons/docked.svg 'Docked mode' 'Hyprland displays switched to docked configuration' -a 'Kanshi' -t 4000"
           ];
-          profile.outputs = [{ criteria = "eDP-1"; }];
+          profile.outputs = [ { criteria = "eDP-1"; } ];
         }
         {
           profile.name = "docked";

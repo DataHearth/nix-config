@@ -20,35 +20,57 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, sops-nix, home-manager, nixvim
-    , lanzaboote, ... }: {
-      nixosConfigurations = let
-        system = "x86_64-linux";
-        unstable = import nixpkgs-unstable {
-          inherit system;
+  outputs =
+    inputs@{
+      nixpkgs,
+      nixpkgs-unstable,
+      sops-nix,
+      home-manager,
+      nixvim,
+      lanzaboote,
+      ...
+    }:
+    {
+      nixosConfigurations =
+        let
+          system = "x86_64-linux";
+          unstable = import nixpkgs-unstable {
+            inherit system;
 
-          config.allowUnfree = true;
-        };
-        overlay-unstable = _: _: { };
-      in {
-        khazad-dum = nixpkgs.lib.nixosSystem {
-          inherit system;
+            config.allowUnfree = true;
+          };
+          overlay-unstable = _: _: { };
+        in
+        {
+          khazad-dum = nixpkgs.lib.nixosSystem {
+            inherit system;
 
-          specialArgs = { inherit inputs; };
-          modules = [
-            ({ ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
-            ./hosts/khazad-dum/configuration.nix
-            home-manager.nixosModules.home-manager
-            nixvim.nixosModules.nixvim
-            lanzaboote.nixosModules.lanzaboote
-            sops-nix.nixosModules.sops
-          ];
+            specialArgs = {
+              inherit inputs;
+            };
+            modules = [
+              (
+                { ... }:
+                {
+                  nixpkgs.overlays = [ overlay-unstable ];
+                }
+              )
+              ./hosts/khazad-dum/configuration.nix
+              ./modules/neovim
+              home-manager.nixosModules.home-manager
+              nixvim.nixosModules.nixvim
+              lanzaboote.nixosModules.lanzaboote
+              sops-nix.nixosModules.sops
+            ];
+          };
         };
-      };
       homeConfigurations.valinor = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
 
-        modules = [ ./hosts/valinor/home.nix nixvim.homeManagerModules.nixvim ];
+        modules = [
+          ./hosts/valinor/home.nix
+          nixvim.homeManagerModules.nixvim
+        ];
       };
     };
 }

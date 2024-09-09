@@ -1,6 +1,10 @@
-{ pkgs, ... }: {
-  imports = [ ./modules.nix ./packages.nix ./services.nix ]
-    ++ (import ../../../modules/home-manager);
+{ pkgs, ... }:
+{
+  imports = [
+    ./modules.nix
+    ./packages.nix
+    ./services.nix
+  ] ++ (import ../../../modules/home-manager);
   home = {
     username = "datahearth";
     homeDirectory = "/home/datahearth";
