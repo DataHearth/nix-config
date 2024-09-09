@@ -52,6 +52,7 @@
       vlc
       gimp
       satty
+      dbeaver-bin
     ];
     sessionPath = [ "$(go env GOBIN)" "$HOME/.cargo/bin" ];
   };
@@ -130,6 +131,17 @@
         nixos-cleanup =
           "sudo nix-collect-garbage -d; nix-collect-garbage -d; nix-store --optimise";
       };
+      initExtra = ''
+      url-sri() {
+        nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
+      }
+      review-pr() {
+        nix-shell -p nixpkgs-review --run "nixpkgs-review pr $1"
+      }
+      review-head() {
+        nix-shell -p nixpkgs-review --run "nixpkgs-review rev HEAD"
+      }
+      '';
     };
 
     direnv = {
