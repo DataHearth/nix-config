@@ -37,6 +37,7 @@
       zip
       libnotify
       kanshi
+      dogdns
 
       # GUI
       discord
