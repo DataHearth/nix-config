@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   hyprlandSettings = builtins.fromJSON (builtins.readFile ./hyprland.json);
   cfg = config.hm.hyprland;
@@ -42,13 +47,21 @@ let
       "${pkgs.discord}/bin/Discord"
       "${pkgs.alacritty}/bin/alacritty"
       "${pkgs.firefox}/bin/firefox"
-      "${pkgs.spotify}/bin/spotify"
     ];
   };
-in {
+in
+{
   options.hm.hyprland = {
-    inherit enable enableXWayland workspaceSettings monitorSettings nvidia
-      envVariables execOnce wallpaper;
+    inherit
+      enable
+      enableXWayland
+      workspaceSettings
+      monitorSettings
+      nvidia
+      envVariables
+      execOnce
+      wallpaper
+      ;
   };
 
   config = lib.mkIf cfg.enable {
@@ -72,23 +85,30 @@ in {
       xwayland.enable = cfg.enableXWayland;
 
       settings = hyprlandSettings // {
-        env = hyprlandSettings.env ++ (if cfg.nvidia then [
-          "WLR_NO_HARDWARE_CURSORS,1"
-          "LIBVA_DRIVER_NAME,nvidia"
-          "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-        ] else
-          [ ]) ++ cfg.envVariables;
-        exec-once = cfg.execOnce ++ (if cfg.wallpaper != null then
-          [
-            "${pkgs.swww}/bin/swww-daemon; sleep 1; ${pkgs.swww}/bin/swww img ${cfg.wallpaper}"
-          ]
-        else
-          [ "${pkgs.swww}/bin/swww-daemon" ]) ++ [
-            "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-          ];
+        env =
+          hyprlandSettings.env
+          ++ (
+            if cfg.nvidia then
+              [
+                "WLR_NO_HARDWARE_CURSORS,1"
+                "LIBVA_DRIVER_NAME,nvidia"
+                "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+              ]
+            else
+              [ ]
+          )
+          ++ cfg.envVariables;
+        exec-once =
+          cfg.execOnce
+          ++ (
+            if cfg.wallpaper != null then
+              [ "${pkgs.swww}/bin/swww-daemon; sleep 1; ${pkgs.swww}/bin/swww img ${cfg.wallpaper}" ]
+            else
+              [ "${pkgs.swww}/bin/swww-daemon" ]
+          )
+          ++ [ "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" ];
         monitor = lib.mkIf (cfg.monitorSettings != [ ]) cfg.monitorSettings;
-        workspace =
-          lib.mkIf (cfg.workspaceSettings != [ ]) cfg.workspaceSettings;
+        workspace = lib.mkIf (cfg.workspaceSettings != [ ]) cfg.workspaceSettings;
       };
     };
   };

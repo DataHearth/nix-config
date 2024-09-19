@@ -1,0 +1,23 @@
+{
+  "name": "my-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "language": "go",
+        "path": "./go.json"
+      },
+      {
+        "language": "html",
+        "path": "./html.json"
+      },
+      {
+        "language": "nix",
+        "path": "./nix.json"
+      },
+      {
+        "language": "license",
+        "path": "./license.json"
+      }
+    ]
+  }
+}

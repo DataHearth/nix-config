@@ -9,6 +9,15 @@
     username = "datahearth";
     homeDirectory = "/home/datahearth";
     stateVersion = "24.05";
+    pointerCursor = {
+      gtk.enable = true;
+      package = pkgs.vanilla-dmz;
+      name = "Vanilla-DMZ";
+    };
+    sessionPath = [
+      "$(go env GOBIN)"
+      "$HOME/.cargo/bin"
+    ];
   };
 
   xdg.enable = true;

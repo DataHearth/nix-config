@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.hm.vscode;
 
@@ -8,8 +13,11 @@ let
     description = "List of additional extensions to install";
     example = [ (lib.literalExpression "pkgs.vscode-extensions.golang.go") ];
   };
-in {
-  options.hm.vscode = { inherit enable additional_extensions; };
+in
+{
+  options.hm.vscode = {
+    inherit enable additional_extensions;
+  };
 
   config = lib.mkIf cfg.enable {
     programs.vscode = {
@@ -37,7 +45,6 @@ in {
         ms-vscode.makefile-tools
         ms-azuretools.vscode-docker
         ms-python.vscode-pylance
-        # ms-vsliveshare.vsliveshare
         ms-vscode.cpptools
 
         njpwerner.autodocstring
@@ -65,8 +72,9 @@ in {
         samuelcolvin.jinjahtml
       ];
       userSettings = lib.importJSON ./settings.json;
-      languageSnippets = { go = lib.importJSON ./snippets/go.json; };
-
+      languageSnippets = {
+#        go = lib.importJSON ./snippets/go.json;
+      };
     };
   };
 }

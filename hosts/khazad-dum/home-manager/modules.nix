@@ -26,6 +26,7 @@
     hyprlock = {
       enable = true;
       lockBackgroundImage = "~/Pictures/assets/locks/1.png";
+      defaultDisplay = "eDP-1";
     };
 
     git = {

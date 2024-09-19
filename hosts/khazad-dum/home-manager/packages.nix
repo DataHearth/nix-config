@@ -50,15 +50,10 @@
       protonmail-bridge
       qalculate-gtk
       signal-desktop
-      spotify
       vlc
       gimp
       satty
       dbeaver-bin
-    ];
-    sessionPath = [
-      "$(go env GOBIN)"
-      "$HOME/.cargo/bin"
     ];
   };
 
@@ -141,7 +136,7 @@
         url-sri() {
           nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
         }
-        review-pr() {
+        pr-review() {
           nix-shell -p nixpkgs-review --run "nixpkgs-review pr $1"
         }
         review-head() {
@@ -154,5 +149,55 @@
       enable = true;
       nix-direnv.enable = true;
     };
+
+    ssh.matchBlocks =
+      let
+        keyNamePrefix = "id_ed25519";
+      in
+      {
+        # Git servers
+        "github.com" = {
+          hostname = "github.com";
+          user = "git";
+          identityFile = "~/.ssh/${keyNamePrefix}_git";
+          identitiesOnly = true;
+        };
+        "gitlab.com" = {
+          hostname = "gitlab.com";
+          user = "git";
+          identityFile = "~/.ssh/${keyNamePrefix}_git";
+          identitiesOnly = true;
+        };
+
+        # Servers
+        "valinor" = {
+          hostname = "10.0.0.2";
+          user = "datahearth";
+          identityFile = "~/.ssh/${keyNamePrefix}";
+          identitiesOnly = true;
+        };
+
+        # BAP
+        "bap-dev" = {
+          hostname = "dev.app.bienaporter.com";
+          user = "service_deploy";
+          identityFile = "~/.ssh/${keyNamePrefix}_bap-dev";
+          identitiesOnly = true;
+          port = 5022;
+        };
+        "bap-prod" = {
+          hostname = "prod.app.bienaporter.com";
+          user = "service_deploy";
+          identityFile = "~/.ssh/${keyNamePrefix}_bap-prod";
+          identitiesOnly = true;
+          port = 5022;
+        };
+        "bap-runner" = {
+          hostname = "51.91.11.36";
+          user = "gitlab-runner";
+          identityFile = "~/.ssh/${keyNamePrefix}_bap-runner";
+          identitiesOnly = true;
+        };
+      };
   };
 }

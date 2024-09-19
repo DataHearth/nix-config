@@ -23,7 +23,6 @@
   outputs =
     inputs@{
       nixpkgs,
-      nixpkgs-unstable,
       sops-nix,
       home-manager,
       nixvim,
@@ -34,27 +33,13 @@
       nixosConfigurations =
         let
           system = "x86_64-linux";
-          unstable = import nixpkgs-unstable {
-            inherit system;
-
-            config.allowUnfree = true;
-          };
-          overlay-unstable = _: _: { };
         in
         {
           khazad-dum = nixpkgs.lib.nixosSystem {
             inherit system;
 
-            specialArgs = {
-              inherit inputs;
-            };
+            specialArgs = { };
             modules = [
-              (
-                { ... }:
-                {
-                  nixpkgs.overlays = [ overlay-unstable ];
-                }
-              )
               ./hosts/khazad-dum/configuration.nix
               ./modules/neovim
               home-manager.nixosModules.home-manager

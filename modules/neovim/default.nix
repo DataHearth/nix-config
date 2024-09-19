@@ -18,25 +18,13 @@ let
     description = "Neovim colorscheme";
     default = "catppuccin";
   };
-  hm = lib.mkOption {
-    type = lib.types.bool;
-    description = "Wether to deactive certain features related to NixOS (default editor via 'variables.EDITOR' & packages via systemPackages)";
-    default = false;
-  };
 in
 {
   options.custom.neovim = {
-    inherit
-      enable
-      colorscheme
-      defaultEditor
-      hm
-      ;
+    inherit enable colorscheme defaultEditor;
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ ];
-
     programs.nixvim = {
       enable = true;
       type = "lua";

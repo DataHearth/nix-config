@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  inputs,
   ...
 }:
 {
@@ -12,10 +11,14 @@
     ./services.nix
   ];
   system.stateVersion = "24.05";
-  virtualisation.docker.enable = true;
   xdg.portal.enable = true;
   custom.neovim.enable = true;
   nixpkgs.config.allowUnfree = true;
+
+  virtualisation = {
+    docker.enable = true;
+    libvirtd.enable = true;
+  };
 
   nix = {
     settings = {
@@ -72,6 +75,7 @@
         "wheel"
         "docker"
         "wireshark"
+        "libvirtd"
       ];
     };
   };
@@ -79,9 +83,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = {
-      inherit inputs;
-    };
+    extraSpecialArgs = { };
     users = {
       "datahearth" = import ./home-manager/home.nix;
     };
@@ -97,12 +99,6 @@
     hostName = "khazad-dum";
     networkmanager = {
       enable = true;
-      # insertNameservers = [
-      #   "1.1.1.1"
-      #   "1.0.0.1"
-      #   "2606:4700:4700::1111"
-      #   "2606:4700:4700::1001"
-      # ];
       dns = "none";
     };
   };
@@ -111,6 +107,7 @@
     hyprland.enable = true;
     zsh.enable = true;
     wireshark.enable = true;
+    virt-manager.enable = true;
   };
 
   environment = {
