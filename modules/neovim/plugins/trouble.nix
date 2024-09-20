@@ -1,4 +1,8 @@
 {
-  enable = true;
-  settings = { auto_close = true; };
+  plugins.trouble = {
+    enable = true;
+    settings = {
+      auto_close = true;
+    };
+  };
 }

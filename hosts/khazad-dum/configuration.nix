@@ -12,7 +12,6 @@
   ];
   system.stateVersion = "24.05";
   xdg.portal.enable = true;
-  custom.neovim.enable = true;
   nixpkgs.config.allowUnfree = true;
 
   virtualisation = {

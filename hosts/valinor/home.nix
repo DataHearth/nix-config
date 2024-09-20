@@ -1,7 +1,5 @@
 { config, pkgs, ... }:
 {
-  imports = [ ../../modules/neovim ];
-
   home.username = "datahearth";
   home.homeDirectory = "/home/datahearth";
   home.stateVersion = "24.05";
@@ -39,8 +37,6 @@
     taplo
     ruff
   ];
-  custom.neovim.enable = true;
-  custom.neovim.hm = true;
 
   home.file = { };
 
