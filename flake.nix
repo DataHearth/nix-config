@@ -57,6 +57,7 @@
                     taplo
                     ruff
                     eslint_d
+                    yazi
                   ];
                 }
               )
