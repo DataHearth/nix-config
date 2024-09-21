@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   home = {
     packages = with pkgs; [
@@ -128,8 +128,8 @@
         cd = "z";
         td = "sudo tailscale down";
         tu = "sudo tailscale up";
-        nixos-switch = "sudo nixos-rebuild switch --flake ${config.xdg.configHome}/nix-config#$HOST";
-        nixos-test = "sudo nixos-rebuild test --flake ${config.xdg.configHome}/nix-config#$HOST";
+        nixos-switch = "sudo nixos-rebuild switch --flake $HOME/.config/nix-config#khazad-dum";
+        nixos-test = "sudo nixos-rebuild test --flake $HOME/.config/nix-config#khazad-dum";
         nixos-cleanup = "sudo nix-collect-garbage -d; nix-collect-garbage -d; nix-store --optimise";
       };
       initExtra = ''

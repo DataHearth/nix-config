@@ -45,7 +45,7 @@ in
         ms-vscode.makefile-tools
         ms-azuretools.vscode-docker
         ms-python.vscode-pylance
-        ms-vscode.cpptools
+        # ms-vscode.cpptools
 
         njpwerner.autodocstring
         mikestead.dotenv
