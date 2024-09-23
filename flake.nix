@@ -16,62 +16,65 @@
     };
   };
 
-  outputs =
-    inputs@{
-      nixpkgs,
-      nixpkgs-unstable,
-      sops-nix,
-      home-manager,
-      nixvim,
-      lanzaboote,
-      ...
-    }:
-    {
-      nixosConfigurations =
-        let
-          system = "x86_64-linux";
-        in
-        {
-          khazad-dum = nixpkgs.lib.nixosSystem {
-            inherit system;
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, sops-nix, home-manager, nixvim
+    , lanzaboote, ... }: {
+      nixosConfigurations = let system = "x86_64-linux";
+      in {
+        khazad-dum = nixpkgs.lib.nixosSystem {
+          inherit system;
 
-            specialArgs = {
-              pkgs-unstable = import nixpkgs-unstable {
-                inherit system;
-                config.allowUnfree = true;
-              };
+          specialArgs = {
+            pkgs-unstable = import nixpkgs-unstable {
+              inherit system;
+              config.allowUnfree = true;
             };
-
-            modules = [
-              (
-                { pkgs-unstable, ... }:
-                {
-                  environment.systemPackages = with pkgs-unstable; [
-                    nixvim.packages.${system}.default
-                    nixfmt-rfc-style
-                    gofumpt
-                    stylua
-                    golines
-                    prettierd
-                    rustfmt
-                    taplo
-                    ruff
-                    eslint_d
-                    yazi
-                  ];
-                }
-              )
-              ./hosts/khazad-dum/configuration.nix
-              home-manager.nixosModules.home-manager
-              lanzaboote.nixosModules.lanzaboote
-              sops-nix.nixosModules.sops
-            ];
           };
-        };
-      homeConfigurations.valinor = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages."x86_64-linux";
 
-        modules = [ ./hosts/valinor/home.nix ];
+          modules = [
+            ({ pkgs-unstable, ... }: {
+              environment.systemPackages = with pkgs-unstable; [
+                nixvim.packages.${system}.default
+                nixfmt-rfc-style
+                gofumpt
+                stylua
+                golines
+                prettierd
+                rustfmt
+                taplo
+                ruff
+                eslint_d
+                yazi
+              ];
+            })
+            ./hosts/khazad-dum/configuration.nix
+            home-manager.nixosModules.home-manager
+            lanzaboote.nixosModules.lanzaboote
+            sops-nix.nixosModules.sops
+          ];
+        };
+      };
+      homeConfigurations.valinor = let system = "x86_64-linux";
+      in home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${system};
+
+        modules = [
+          ({ pkgs, ... }: {
+            home.packages = with pkgs; [
+              nixvim.packages.${system}.default
+              nixfmt-rfc-style
+              gofumpt
+              stylua
+              golines
+              prettierd
+              rustfmt
+              taplo
+              ruff
+              eslint_d
+              yazi
+            ];
+          })
+          ./hosts/valinor/home.nix
+        ];
       };
     };
 }

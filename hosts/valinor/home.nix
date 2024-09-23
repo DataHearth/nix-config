@@ -1,49 +1,29 @@
-{ config, pkgs, ... }:
-{
-  home.username = "datahearth";
-  home.homeDirectory = "/home/datahearth";
-  home.stateVersion = "24.05";
+{ pkgs, ... }: {
+  home = {
+    username = "datahearth";
+    homeDirectory = "/home/datahearth";
+    stateVersion = "24.05";
 
-  home.packages = with pkgs; [
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "Mononoki"
-      ];
-    })
-    neofetch
-    awscli2
-    difftastic
-    gh
-    git-lfs
-    grype
-    hyperfine
-    nix-du
-    nix-index
-    syft
-    tokei
-    xh
-    dust
-    kubo
-
-    # Nixvim conform.nvim formatters
-    nixfmt-rfc-style
-    gofumpt
-    stylua
-    golines
-    prettierd
-    rustfmt
-    nodePackages_latest.eslint
-    taplo
-    ruff
-  ];
-
-  home.file = { };
-
-  home.sessionVariables = { };
+    packages = with pkgs; [
+      (nerdfonts.override { fonts = [ "FiraCode" "Mononoki" ]; })
+      neofetch
+      awscli2
+      difftastic
+      gh
+      git-lfs
+      grype
+      hyperfine
+      nix-du
+      nix-index
+      syft
+      tokei
+      xh
+      dust
+      kubo
+    ];
+  };
 
   programs = {
-    nixvim.defaultEditor = true;
     zoxide.enable = true;
     btop.enable = true;
     eza.enable = true;
@@ -72,9 +52,7 @@
 
     bat = {
       enable = true;
-      config = {
-        theme = "catppuccin_macchiato";
-      };
+      config = { theme = "catppuccin_macchiato"; };
       themes = {
         catppuccin_macchiato = {
           src = pkgs.fetchFromGitHub {
@@ -112,35 +90,28 @@
         source <(tailscale completion zsh)
         source <(hubble completion zsh)
       '';
-      plugins = [
-        {
-          name = "zsh-autopair";
-          src = pkgs.fetchFromGitHub {
-            owner = "hlissner";
-            repo = "zsh-autopair";
-            rev = "376b586c9739b0a044192747b337f31339d548fd";
-            hash = "sha256-mtDrt4Q5kbddydq/pT554ph0hAd5DGk9jci9auHx0z0=";
-          };
-        }
-      ];
+      plugins = [{
+        name = "zsh-autopair";
+        src = pkgs.fetchFromGitHub {
+          owner = "hlissner";
+          repo = "zsh-autopair";
+          rev = "376b586c9739b0a044192747b337f31339d548fd";
+          hash = "sha256-mtDrt4Q5kbddydq/pT554ph0hAd5DGk9jci9auHx0z0=";
+        };
+      }];
       shellAliases = {
         cat = "bat";
         dc = "docker compose";
         cd = "z";
         td = "sudo tailscale down";
         tu = "sudo tailscale up";
-        hm-switch = "home-manager switch --flake ${config.xdg.configHome}/nix-config#$HOST";
-        hm-build = "home-manager build --flake ${config.xdg.configHome}/nix-config#$HOST";
-        hm-cleanup = "sudo nix-collect-garbage -d; nix-collect-garbage -d; nix-store --optimise";
+        hm-switch =
+          "home-manager switch --flake $HOME/.config/nix-config#valinor";
+        hm-build =
+          "home-manager build --flake $HOME/.config/nix-config#valinor";
+        hm-cleanup =
+          "sudo nix-collect-garbage -d; nix-collect-garbage -d; nix-store --optimise";
       };
-    };
-
-    direnv = {
-      enable = true;
-      enableZshIntegration = true;
-      pinentryPackage = pkgs.pinentry-tty;
-      defaultCacheTtl = 86400;
-      maxCacheTtl = 86400;
     };
   };
 }
