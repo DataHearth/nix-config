@@ -38,6 +38,7 @@
       libnotify
       kanshi
       dogdns
+      dust
 
       # GUI
       discord
