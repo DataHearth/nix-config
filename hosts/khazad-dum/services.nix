@@ -9,7 +9,6 @@
 
     tailscale = {
       enable = true;
-      useRoutingFeatures = "both";
       authKeyFile = "${config.users.users.datahearth.home}/.tskey";
       extraUpFlags = [ "--accept-dns" ];
     };
