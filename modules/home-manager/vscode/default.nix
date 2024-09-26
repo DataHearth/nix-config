@@ -73,7 +73,7 @@ in
       ];
       userSettings = lib.importJSON ./settings.json;
       languageSnippets = {
-#        go = lib.importJSON ./snippets/go.json;
+        #        go = lib.importJSON ./snippets/go.json;
       };
     };
   };

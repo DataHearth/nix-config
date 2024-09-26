@@ -26,8 +26,17 @@ let
     description = "Extra git aliases";
     default = { };
   };
-in {
-  options.hm.git = { inherit enable signingKey user extraConfig extraAliases; };
+in
+{
+  options.hm.git = {
+    inherit
+      enable
+      signingKey
+      user
+      extraConfig
+      extraAliases
+      ;
+  };
 
   config = lib.mkIf cfg.enable {
     programs.git = {
@@ -49,7 +58,9 @@ in {
       };
       userName = cfg.user.name;
       userEmail = cfg.user.email;
-      extraConfig = { init.defaultBranch = "main"; } // cfg.extraConfig;
+      extraConfig = {
+        init.defaultBranch = "main";
+      } // cfg.extraConfig;
     };
   };
 }

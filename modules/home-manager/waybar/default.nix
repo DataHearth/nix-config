@@ -35,8 +35,16 @@ let
     type = lib.types.listOf lib.types.str;
     default = [ "clock" ];
   };
-in {
-  options.hm.waybar = { inherit enable right left center; };
+in
+{
+  options.hm.waybar = {
+    inherit
+      enable
+      right
+      left
+      center
+      ;
+  };
 
   config = lib.mkIf cfg.enable {
     programs.waybar = {

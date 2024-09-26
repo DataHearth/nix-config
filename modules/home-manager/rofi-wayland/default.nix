@@ -1,10 +1,18 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.hm.rofi-wayland;
 
   enable = lib.mkEnableOption "rofi-wayland";
-in {
-  options.hm.rofi-wayland = { inherit enable; };
+in
+{
+  options.hm.rofi-wayland = {
+    inherit enable;
+  };
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ rofi-wayland ];

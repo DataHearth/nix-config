@@ -8,8 +8,11 @@ let
     description = "Command to execute when copying text";
     example = "wl-copy";
   };
-in {
-  options.hm.zellij = { inherit enable copy_command; };
+in
+{
+  options.hm.zellij = {
+    inherit enable copy_command;
+  };
 
   config = lib.mkIf cfg.enable {
     xdg.configFile."zellij/layouts" = {
