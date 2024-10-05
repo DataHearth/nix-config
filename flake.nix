@@ -3,7 +3,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
-    nixvim.url = "git+file:./nixvim-config";
+    nixvim.url = "github:DataHearth/nixvim-config";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";

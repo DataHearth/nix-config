@@ -453,15 +453,15 @@
       "locked": {
         "lastModified": 1726918783,
         "narHash": "sha256-8jWBlMikSV5BATa/maXGDMLd2b7HnfH51/8o/HHAjuI=",
-        "ref": "refs/heads/main",
+        "owner": "DataHearth",
+        "repo": "nixvim-config",
         "rev": "f40236b6fc2b2da00dfcab4d6ec709ddc4827fa2",
-        "revCount": 5,
-        "type": "git",
-        "url": "file:./nixvim-config"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:./nixvim-config"
+        "owner": "DataHearth",
+        "repo": "nixvim-config",
+        "type": "github"
       }
     },
     "nixvim_2": {
