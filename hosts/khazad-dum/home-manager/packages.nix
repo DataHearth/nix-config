@@ -172,7 +172,7 @@
 
         # Servers
         "valinor" = {
-          hostname = "10.0.0.2";
+          hostname = "valinor";
           user = "datahearth";
           identityFile = "~/.ssh/${keyNamePrefix}";
           identitiesOnly = true;
