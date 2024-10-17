@@ -48,16 +48,30 @@
                 {
                   environment.systemPackages = with pkgs-unstable; [
                     nixvim.packages.${system}.default
-                    nixfmt-rfc-style
+
+                    # conform-nvim - Golang tools
                     gofumpt
-                    stylua
                     golines
+                    go-tools
+
+                    # conform-nvim - Lua tools
+                    stylua
+
+                    # conform-nvim - Nix tools
+                    nixfmt-rfc-style
+
+                    # conform-nvim - JS/TS/HTML/CSS tools
                     prettierd
-                    rustfmt
-                    taplo
-                    ruff
                     eslint_d
-                    yazi
+
+                    # conform-nvim - Rust tools
+                    rustfmt
+
+                    # conform-nvim - TOML tools
+                    taplo
+
+                    # conform-nvim - Python tools
+                    ruff
                   ];
                 }
               )
