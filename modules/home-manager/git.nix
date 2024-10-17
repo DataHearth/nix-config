@@ -49,6 +49,7 @@ in
         pu = "pull";
         logs = "log --graph --oneline";
         remote-update = "remote update origin --prune";
+        tags = "git tag --list";
       } // cfg.extraAliases;
       difftastic.enable = true;
       lfs.enable = true;
