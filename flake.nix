@@ -61,7 +61,7 @@
                     nixfmt-rfc-style
 
                     # conform-nvim - JS/TS/HTML/CSS tools
-                    prettierd
+                    nodePackages.prettier
                     eslint_d
 
                     # conform-nvim - Rust tools

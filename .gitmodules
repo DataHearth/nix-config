@@ -1,3 +1,0 @@
-[submodule "nixvim-config"]
-	path = nixvim-config
-	url = git@github.com:DataHearth/nixvim-config.git
