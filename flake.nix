@@ -4,6 +4,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
     nixvim.url = "github:DataHearth/nixvim-config";
+    rust-overlay.url = "github:oxalica/rust-overlay";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
@@ -17,15 +18,45 @@
   };
 
   outputs =
-    inputs@{
+    {
       nixpkgs,
       nixpkgs-unstable,
       sops-nix,
       home-manager,
       nixvim,
       lanzaboote,
+      rust-overlay,
       ...
     }:
+    let
+      nixvim-extra =
+        { system, pkgs }:
+        with pkgs;
+        [
+          nixvim.packages.${system}.default
+
+          # conform-nvim - Golang tools
+          gofumpt
+          golines
+          go-tools
+
+          # conform-nvim - Lua tools
+          stylua
+
+          # conform-nvim - Nix tools
+          nixfmt-rfc-style
+
+          # conform-nvim - JS/TS/HTML/CSS tools
+          nodePackages.prettier
+          eslint_d
+
+          # conform-nvim - TOML tools
+          taplo
+
+          # conform-nvim - Python tools
+          ruff
+        ];
+    in
     {
       nixosConfigurations =
         let
@@ -44,35 +75,15 @@
 
             modules = [
               (
-                { pkgs-unstable, ... }:
+                { pkgs-unstable, pkgs, ... }:
                 {
-                  environment.systemPackages = with pkgs-unstable; [
-                    nixvim.packages.${system}.default
-
-                    # conform-nvim - Golang tools
-                    gofumpt
-                    golines
-                    go-tools
-
-                    # conform-nvim - Lua tools
-                    stylua
-
-                    # conform-nvim - Nix tools
-                    nixfmt-rfc-style
-
-                    # conform-nvim - JS/TS/HTML/CSS tools
-                    nodePackages.prettier
-                    eslint_d
-
-                    # conform-nvim - Rust tools
-                    rustfmt
-
-                    # conform-nvim - TOML tools
-                    taplo
-
-                    # conform-nvim - Python tools
-                    ruff
-                  ];
+                  nixpkgs.overlays = [ rust-overlay.overlays.default ];
+                  environment.systemPackages =
+                    (nixvim-extra {
+                      inherit system;
+                      pkgs = pkgs-unstable;
+                    })
+                    ++ [ pkgs.rust-bin.stable.latest.default ];
                 }
               )
               ./hosts/khazad-dum/configuration.nix
@@ -93,19 +104,8 @@
             (
               { pkgs, ... }:
               {
-                home.packages = with pkgs; [
-                  nixvim.packages.${system}.default
-                  nixfmt-rfc-style
-                  gofumpt
-                  stylua
-                  golines
-                  prettierd
-                  rustfmt
-                  taplo
-                  ruff
-                  eslint_d
-                  yazi
-                ];
+                nixpkgs.overlays = [ rust-overlay.overlays.default ];
+                home.packages = nixvim-extra { inherit system pkgs; };
               }
             )
             ./hosts/valinor/home.nix

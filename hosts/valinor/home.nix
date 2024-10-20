@@ -26,6 +26,7 @@
       xh
       dust
       kubo
+      rust-bin.stable.latest.default
     ];
   };
 
@@ -35,6 +36,11 @@
     eza.enable = true;
     fzf.enable = true;
     home-manager.enable = true;
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
 
     gpg = {
       enable = true;
