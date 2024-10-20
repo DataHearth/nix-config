@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  imports = [ ] ++ (import ../../modules/home-manager);
+
   home = {
     username = "datahearth";
     homeDirectory = "/home/datahearth";
@@ -28,6 +30,16 @@
       kubo
       rust-bin.stable.latest.default
     ];
+
+    sessionPath = [
+      "$(go env GOBIN)"
+      "$HOME/.cargo/bin"
+    ];
+  };
+
+  hm = {
+    ssh.enable = true;
+    git.enable = true;
   };
 
   programs = {
@@ -126,5 +138,25 @@
         hm-cleanup = "sudo nix-collect-garbage -d; nix-collect-garbage -d; nix-store --optimise";
       };
     };
+
+    ssh.matchBlocks =
+      let
+        keyNamePrefix = "id_ed25519";
+      in
+      {
+        # Git servers
+        "github.com" = {
+          hostname = "github.com";
+          user = "git";
+          identityFile = "~/.ssh/${keyNamePrefix}_git";
+          identitiesOnly = true;
+        };
+        "gitlab.com" = {
+          hostname = "gitlab.com";
+          user = "git";
+          identityFile = "~/.ssh/${keyNamePrefix}_git";
+          identitiesOnly = true;
+        };
+      };
   };
 }
