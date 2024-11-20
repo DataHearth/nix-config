@@ -1,0 +1,9 @@
+#custom-notification {
+  border-bottom: 2px solid @mauve;
+  color: @mauve;
+}
+
+#custom-notification.empty {
+  border-bottom: 2px solid @surface1;
+  color: @surface1;
+}

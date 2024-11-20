@@ -1,0 +1,4 @@
+#backlight {
+  border-bottom: 2px solid @maroon;
+  color: @maroon;
+}

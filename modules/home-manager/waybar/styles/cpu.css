@@ -1,0 +1,4 @@
+#cpu {
+  border-bottom: 2px solid @blue;
+  color: @blue;
+}

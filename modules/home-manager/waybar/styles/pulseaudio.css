@@ -1,0 +1,25 @@
+#pulseaudio.output {
+  color: @yellow;
+  border-bottom: 2px solid @yellow;
+}
+
+#pulseaudio.input {
+  border-bottom: 2px solid @sapphire;
+  color: @sapphire;
+}
+
+#pulseaudio.input {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+#pulseaudio.input.source-muted {
+  color: @red;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+#pulseaudio.output.muted {
+  color: @red;
+  padding-right: 4px;
+}
