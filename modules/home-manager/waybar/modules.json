@@ -1,0 +1,95 @@
+{
+  "hyprland/workspaces": {
+    "format-icons": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10"
+    }
+  },
+  "tray": {
+    "spacing": 10
+  },
+  "clock": {
+    "timezone": "Europe/Paris",
+    "format": "{:%a %d %b - %H:%M}"
+  },
+  "backlight": {
+    "format": "{icon}",
+    "format-icons": ["󱩎", "󱩏", "󱩐", "󱩑", "󱩒", "󱩓", "󱩔", "󱩕", "󱩖", "󰛨"]
+  },
+  "battery": {
+    "interval": 10,
+    "states": {
+      "good": 90,
+      "warning": 30,
+      "critical": 15
+    },
+    "full-at": 100,
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "disk": {
+    "interval": 30,
+    "format": "󰋊 {free}"
+  },
+  "pulseaudio#output": {
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+      "default": ["", "", "󰕾", ""]
+    },
+    "on-click": "amixer sset Master toggle"
+  },
+  "pulseaudio#input": {
+    "format": "{format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "on-click": "amixer sset Capture toggle"
+  },
+  "cpu": {
+    "format": " {usage}%",
+    "interval": 2
+  },
+  "memory": {
+    "format": "󰾆 {used:0.1f}GB",
+    "interval": 2
+  },
+  "network#speed": {
+    "interval": 2,
+    "format": "{bandwidthUpBytes}  :: {bandwidthDownBytes} ",
+    "max-length": 26
+  },
+
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "",
+      "none": "",
+      "dnd-notification": "",
+      "dnd-none": "",
+      "inhibited-notification": "",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "",
+      "dnd-inhibited-none": ""
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  "custom/spacer": {
+    "format": " "
+  }
+}

@@ -1,0 +1,12 @@
+[
+  ./git.nix
+  ./alacritty.nix
+  ./ssh.nix
+  ./hyprlock.nix
+  ./zellij
+  ./swaync
+  ./rofi-wayland
+  ./hyprland
+  ./waybar
+  ./vscode
+]
