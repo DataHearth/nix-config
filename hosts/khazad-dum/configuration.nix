@@ -8,6 +8,7 @@
     ./i18n.nix
     ./hardware-configuration.nix
     ./services.nix
+    ../../modules/nh.nix
   ];
   system.stateVersion = "24.05";
   xdg.portal.enable = true;
@@ -29,11 +30,6 @@
         "root"
         "datahearth"
       ];
-    };
-    gc = {
-      dates = "weekly";
-      automatic = true;
-      options = "--delete-older-than 2d";
     };
   };
 
@@ -144,4 +140,6 @@
     })
     corefonts
   ];
+
+  nixos_modules.nh.enable = true;
 }

@@ -8,11 +8,29 @@
     ./hardware-configuration.nix
     ./packages.nix
     ./users.nix
-    ./nix.nix
     ./locales.nix
     ./services.nix
     ./systemd.nix
+    ../../modules/nh.nix
   ];
+
+  time.timeZone = "Europe/Paris";
+  virtualisation.docker.enable = true;
+  system.stateVersion = "24.05";
+
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      auto-optimise-store = true;
+      trusted-users = [
+        "root"
+        "datahearth"
+      ];
+    };
+  };
 
   boot =
     let
@@ -62,9 +80,6 @@
       };
   };
 
-  time.timeZone = "Europe/Paris";
-  virtualisation.docker.enable = true;
-
   sops = {
     defaultSopsFile = ../../secrets/secrets.yml;
     defaultSopsFormat = "yaml";
@@ -83,5 +98,5 @@
     VISUAL = "nvim";
   };
 
-  system.stateVersion = "24.05";
+  nixos_modules.nh.enable = true;
 }
