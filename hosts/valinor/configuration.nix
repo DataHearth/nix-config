@@ -93,10 +93,5 @@
     secrets."backups/storj/ping_url" = { };
   };
 
-  environment.variables = {
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-  };
-
   nixos_modules.nh.enable = true;
 }
