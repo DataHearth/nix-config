@@ -25,7 +25,7 @@
 
   programs = {
     zsh.enable = true;
-    bash.enableCompletion = true;
+    bash.completion.enable = true;
 
     git = {
       enable = true;
