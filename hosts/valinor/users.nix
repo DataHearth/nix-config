@@ -1,20 +1,7 @@
 { pkgs, ... }:
 {
   users = {
-    defaultUserShell = pkgs.bash;
-    users = {
-      datahearth = {
-        shell = pkgs.zsh;
-        isNormalUser = true;
-        description = "Antoine Langlois";
-        extraGroups = [
-          "wheel"
-          "docker"
-          "libvirtd"
-          "networkmanager"
-        ];
-      };
-    };
+    defaultUserShell = pkgs.zsh;
     motd = ''
        __     __    _ _                  
        \ \   / /_ _| (_)_ __   ___  _ __ 
@@ -34,16 +21,23 @@
 
       ----------------------------------------------------
     '';
+
+    users.datahearth = {
+      isNormalUser = true;
+      description = "Antoine Langlois";
+      extraGroups = [
+        "wheel"
+        "docker"
+        "libvirtd"
+        "networkmanager"
+      ];
+    };
   };
 
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs =
-      {
-      };
-    users = {
-      "datahearth" = import ./home-manager/home.nix;
-    };
+    extraSpecialArgs = { };
+    users.datahearth = import ./home-manager/home.nix;
   };
 }

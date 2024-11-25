@@ -29,14 +29,12 @@
 
     greetd = {
       enable = true;
-
-      settings = {
-        default_session = {
-          command = ''${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --time --greeting "Speak Friend and Enter" --remember --remember-user-session --asterisks --cmd Hyprland'';
-          user = "datahearth";
-        };
-      };
       vt = 9; # Fix lines on screen
+
+      settings.default_session = {
+        command = ''${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --time --greeting "Speak Friend and Enter" --remember --remember-user-session --asterisks --cmd Hyprland'';
+        user = "datahearth";
+      };
     };
   };
 }

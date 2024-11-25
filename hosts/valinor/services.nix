@@ -6,6 +6,7 @@
         PrintMotd = true;
       };
     };
+
     logrotate = {
       enable = true;
       settings =

@@ -11,16 +11,19 @@ in
     name = cursor_theme;
     size = cursor_size;
   };
+
   gtk = {
     enable = true;
     iconTheme = {
       name = "kora";
       package = pkgs.kora-icon-theme;
     };
+
     theme = {
       name = "Orchis";
       package = pkgs.orchis-theme;
     };
+
     cursorTheme = {
       name = cursor_theme;
       package = cursor_pkg;

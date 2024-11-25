@@ -19,31 +19,31 @@
     libvirtd.enable = true;
   };
 
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      auto-optimise-store = true;
-      trusted-users = [
-        "root"
-        "datahearth"
-      ];
-    };
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [
+      "root"
+      "datahearth"
+    ];
   };
 
   boot = {
+    # https://community.frame.work/t/solved-fw16-not-powering-down/52659/4
+    kernelPackages = pkgs.linuxPackages_latest;
+
     loader = {
       systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
     };
+
     lanzaboote = {
       enable = true;
       pkiBundle = "/etc/secureboot";
     };
-    # https://community.frame.work/t/solved-fw16-not-powering-down/52659/4
-    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   hardware = {
@@ -51,6 +51,7 @@
       enable = true;
       powerOnBoot = true;
     };
+
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -59,6 +60,7 @@
 
   users = {
     defaultUserShell = pkgs.zsh;
+
     users.datahearth = {
       isNormalUser = true;
       description = "Antoine Langlois";
@@ -75,12 +77,8 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs =
-      {
-      };
-    users = {
-      "datahearth" = import ./home-manager/home.nix;
-    };
+    extraSpecialArgs = { };
+    users.datahearth = import ./home-manager/home.nix;
   };
 
   security = {
@@ -91,9 +89,7 @@
 
   networking = {
     hostName = "khazad-dum";
-    networkmanager = {
-      enable = true;
-    };
+    networkmanager.enable = true;
   };
 
   programs = {
@@ -106,13 +102,11 @@
   environment = {
     shells = with pkgs; [
       zsh
-      bash
+      bashInteractive
     ];
     systemPackages = with pkgs; [
       sbctl
       pinentry
-      home-manager
-      docker
       looking-glass-client
       ntfs3g
       libheif

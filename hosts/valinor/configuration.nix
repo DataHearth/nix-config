@@ -18,18 +18,16 @@
   virtualisation.docker.enable = true;
   system.stateVersion = "24.05";
 
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      auto-optimise-store = true;
-      trusted-users = [
-        "root"
-        "datahearth"
-      ];
-    };
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [
+      "root"
+      "datahearth"
+    ];
   };
 
   boot =
@@ -63,6 +61,7 @@
   networking = {
     hostName = "valinor";
     networkmanager.enable = true;
+
     firewall =
       let
         tcp_udp = [
@@ -85,12 +84,14 @@
     defaultSopsFormat = "yaml";
     age.keyFile = "${config.users.users.datahearth.home}/.config/sops/age/keys.txt";
 
-    secrets."backups/gondoline/password" = { };
-    secrets."backups/gondoline/repository" = { };
-    secrets."backups/gondoline/ping_url" = { };
-    secrets."backups/storj/password" = { };
-    secrets."backups/storj/repository" = { };
-    secrets."backups/storj/ping_url" = { };
+    secrets = {
+      "backups/gondoline/password" = { };
+      "backups/gondoline/repository" = { };
+      "backups/gondoline/ping_url" = { };
+      "backups/storj/password" = { };
+      "backups/storj/repository" = { };
+      "backups/storj/ping_url" = { };
+    };
   };
 
   nixos_modules.nh.enable = true;
