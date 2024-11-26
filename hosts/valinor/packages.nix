@@ -47,6 +47,7 @@
       fonts = [
         "Mononoki"
         "FiraCode"
+        "JetBrainsMono"
       ];
     })
   ];
