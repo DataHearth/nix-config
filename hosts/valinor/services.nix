@@ -1,5 +1,11 @@
 {
   services = {
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      authKeyFile = "/run/secrets/tailscale_keys/valinor";
+    };
+
     openssh = {
       enable = true;
       settings = {

@@ -91,6 +91,7 @@
       "backups/storj/password" = { };
       "backups/storj/repository" = { };
       "backups/storj/ping_url" = { };
+      "tailscale_keys/valinor" = { };
     };
   };
 
