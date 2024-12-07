@@ -40,13 +40,13 @@ let
     type = lib.types.listOf lib.types.nonEmptyStr;
     description = "List of process to launch at hyprland's startup";
     default = [
-      "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${pkgs.cliphist}/bin/cliphist store; ${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${pkgs.cliphist}/bin/cliphist store"
-      "${pkgs.waybar}/bin/waybar"
-      "${pkgs.swaynotificationcenter}/bin/swaync"
-      "${pkgs.signal-desktop}/bin/signal-desktop"
-      "${pkgs.discord}/bin/Discord"
-      "${pkgs.alacritty}/bin/alacritty"
-      "${pkgs.firefox}/bin/firefox"
+      "wl-paste --type text --watch cliphist store; bin/wl-paste --type image --watch cliphist store"
+      "waybar"
+      "swaync"
+      "signal-desktop"
+      "Discord"
+      "alacritty"
+      "zen"
     ];
   };
 in
