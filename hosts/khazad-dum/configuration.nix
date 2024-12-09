@@ -10,7 +10,7 @@
     ./services.nix
     ../../modules/nh.nix
   ];
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
   xdg.portal.enable = true;
   nixpkgs.config.allowUnfree = true;
 

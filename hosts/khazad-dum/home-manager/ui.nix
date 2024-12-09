@@ -1,10 +1,12 @@
 { pkgs, ... }:
 let
-  cursor_theme = "volantes_cursors";
+  theme_name = "WhiteSur-Dark";
+  cursor_theme = "WhiteSur-cursors";
   cursor_size = 32;
-  cursor_pkg = pkgs.volantes-cursors;
+  cursor_pkg = pkgs.whitesur-cursors;
 in
 {
+  home.sessionVariables.GTK_THEME = theme_name;
   home.pointerCursor = {
     gtk.enable = true;
     package = cursor_pkg;
@@ -15,13 +17,13 @@ in
   gtk = {
     enable = true;
     iconTheme = {
-      name = "kora";
-      package = pkgs.kora-icon-theme;
+      name = "WhiteSur";
+      package = pkgs.whitesur-icon-theme;
     };
 
     theme = {
-      name = "Orchis";
-      package = pkgs.orchis-theme;
+      name = theme_name;
+      package = pkgs.whitesur-gtk-theme;
     };
 
     cursorTheme = {
