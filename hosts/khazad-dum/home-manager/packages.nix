@@ -48,12 +48,13 @@
     nextcloud-client
     obs-studio
     protonmail-bridge
-    qalculate-gtk
     signal-desktop
     vlc
     gimp
     satty
     dbeaver-bin
+    spotify
+    gnome-calculator
   ];
 
   programs = {
