@@ -47,6 +47,7 @@ let
       "Discord"
       "alacritty"
       "zen"
+      "spotify"
     ];
   };
 in
