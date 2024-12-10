@@ -2,79 +2,48 @@
 {
   home.packages = with pkgs; [
     asciinema
-    neofetch
     awscli2
-    corepack
     difftastic
+    dogdns
+    dust
     fd
     gh
-    git-chglog
-    git-lfs
-    gitoxide
-    glow
-    goreleaser
-    grype
     hyperfine
-    iftop
     jq
-    just
-    nix-du
-    nix-index
-    nodejs
-    python3
-    rclone
-    restic
+    kanshi
+    libnotify
+    neofetch
+    onefetch
     ripgrep
-    rustup
     sd
-    syft
-    tokei
     unzip
     wget
     xh
-    yq-go
     zip
-    libnotify
-    kanshi
-    dogdns
-    dust
 
     # GUI
     discord
-    firefox
     eog
-    nautilus
+    gnome-calculator
     insomnia
+    nautilus
     nextcloud-client
     obs-studio
-    protonmail-bridge
-    signal-desktop
-    vlc
-    gimp
+    pavucontrol
     satty
-    dbeaver-bin
+    signal-desktop
     spotify
-    gnome-calculator
+    vlc
   ];
 
   programs = {
-    zoxide.enable = true;
     btop.enable = true;
     eza.enable = true;
     fzf.enable = true;
+    gpg.enable = true;
     home-manager.enable = true;
-
-    gpg = {
-      enable = true;
-      mutableKeys = true;
-      mutableTrust = true;
-    };
-
-    starship = {
-      enable = true;
-      enableZshIntegration = true;
-      enableBashIntegration = true;
-    };
+    starship.enable = true;
+    zoxide.enable = true;
 
     bat = {
       enable = true;
@@ -91,21 +60,15 @@
       };
     };
 
-    go = {
-      enable = true;
-      goPath = "go/path";
-      goBin = "go/bin";
-    };
-
     zsh = {
       enable = true;
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       oh-my-zsh.enable = true;
-      plugins = [
+      plugins = with pkgs; [
         {
           name = "zsh-autopair";
-          src = pkgs.zsh-autopair;
+          src = zsh-autopair;
         }
       ];
       initExtra = ''
