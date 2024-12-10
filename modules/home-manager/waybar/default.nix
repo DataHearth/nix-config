@@ -56,6 +56,10 @@ in
         include = "~/.config/waybar/modules.json";
         layer = "top";
         position = "top";
+        margin-top = 5;
+        margin-left = 5;
+        margin-right = 5;
+        height = 30;
         modules-left = cfg.left;
         modules-center = cfg.center;
         modules-right = cfg.right;
