@@ -22,10 +22,10 @@
 
     services =
       let
-        path = [
-          pkgs.restic
-          pkgs.rclone
-          pkgs.curl
+        path = with pkgs; [
+          restic
+          rclone
+          curl
         ];
         environment = {
           HOME = config.users.users.datahearth.home;

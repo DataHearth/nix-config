@@ -3,7 +3,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
-    rust-overlay.url = "github:oxalica/rust-overlay";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
 
     nixvim = {
@@ -33,7 +32,6 @@
       home-manager,
       nixvim,
       lanzaboote,
-      rust-overlay,
       zen-browser,
       ...
     }:
@@ -54,15 +52,6 @@
             };
 
             modules = [
-              (
-                { pkgs, ... }:
-                {
-                  nixpkgs.overlays = [ rust-overlay.overlays.default ];
-                  environment.systemPackages = [
-                    pkgs.rust-bin.stable.latest.default
-                  ];
-                }
-              )
               ./hosts/valinor/configuration.nix
               home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
@@ -80,18 +69,11 @@
             };
 
             modules = [
-              (
-                { pkgs, ... }:
-                {
-                  nixpkgs.overlays = [
-                    rust-overlay.overlays.default
-                  ];
-                  environment.systemPackages = [
-                    pkgs.rust-bin.stable.latest.default
-                    zen-browser.packages."${system}".default
-                  ];
-                }
-              )
+              {
+                environment.systemPackages = [
+                  zen-browser.packages."${system}".default
+                ];
+              }
               ./hosts/khazad-dum/configuration.nix
               home-manager.nixosModules.home-manager
               lanzaboote.nixosModules.lanzaboote

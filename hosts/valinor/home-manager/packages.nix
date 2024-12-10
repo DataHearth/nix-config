@@ -1,24 +1,12 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    neofetch
-    gh
-    glow
-    just
-  ];
-
   programs = {
     zoxide.enable = true;
     fzf.enable = true;
     home-manager.enable = true;
     starship.enable = true;
     eza.enable = true;
-
-    gpg = {
-      enable = true;
-      mutableKeys = true;
-      mutableTrust = true;
-    };
+    gpg.enable = true;
 
     bat = {
       enable = true;
@@ -35,21 +23,15 @@
       };
     };
 
-    go = {
-      enable = true;
-      goPath = "go/path";
-      goBin = "go/bin";
-    };
-
     zsh = {
       enable = true;
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       oh-my-zsh.enable = true;
-      plugins = [
+      plugins = with pkgs; [
         {
           name = "zsh-autopair";
-          src = pkgs.zsh-autopair;
+          src = zsh-autopair;
         }
       ];
       shellAliases = {

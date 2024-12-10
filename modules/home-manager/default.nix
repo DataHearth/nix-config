@@ -3,7 +3,6 @@
   ./alacritty.nix
   ./ssh.nix
   ./hyprlock.nix
-  ./zellij
   ./swaync
   ./rofi-wayland
   ./hyprland

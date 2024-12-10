@@ -111,8 +111,6 @@
       ntfs3g
       libheif
       libheif.out
-      dig
-      pavucontrol
     ];
     pathsToLink = [
       "share/thumbnailers"
