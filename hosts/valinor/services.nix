@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   services = {
     tailscale = {
@@ -8,9 +9,12 @@
 
     openssh = {
       enable = true;
-      settings = {
-        PrintMotd = true;
-      };
+      settings.PrintMotd = true;
+      extraConfig = ''
+        Match User ${config.users.users.actinium.name}
+          AuthenticationMethods publickey
+          PasswordAuthentication no
+      '';
     };
 
     logrotate = {
