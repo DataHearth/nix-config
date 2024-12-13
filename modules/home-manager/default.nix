@@ -7,5 +7,4 @@
   ./rofi-wayland
   ./hyprland
   ./waybar
-  ./vscode
 ]

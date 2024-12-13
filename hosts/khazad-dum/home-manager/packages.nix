@@ -34,6 +34,7 @@
     signal-desktop
     spotify
     vlc
+    vscode
   ];
 
   programs = {
