@@ -69,6 +69,7 @@
         {
           name = "zsh-autopair";
           src = zsh-autopair;
+          file = "share/zsh/zsh-autopair/autopair.zsh";
         }
       ];
       initExtra = ''
