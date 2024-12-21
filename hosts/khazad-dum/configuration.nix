@@ -97,6 +97,7 @@
     zsh.enable = true;
     wireshark.enable = true;
     virt-manager.enable = true;
+    localsend.enable = true;
   };
 
   environment = {
