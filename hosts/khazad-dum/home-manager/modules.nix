@@ -4,6 +4,7 @@
     ssh.enable = true;
     rofi-wayland.enable = true;
     swaync.enable = true;
+    hyprland.enable = true;
 
     waybar = {
       enable = true;
@@ -30,11 +31,6 @@
     git = {
       enable = true;
       signingKey = "E8F90B80908E723D0EDF09165803CDA59C26A96A";
-    };
-
-    hyprland = {
-      enable = true;
-      wallpaper = "~/Pictures/assets/wallpapers/5.jpg";
     };
   };
 }

@@ -103,9 +103,9 @@ in
           cfg.execOnce
           ++ (
             if cfg.wallpaper != null then
-              [ "${pkgs.swww}/bin/swww-daemon; sleep 1; ${pkgs.swww}/bin/swww img ${cfg.wallpaper}" ]
+              [ "swww-daemon; sleep 1; swww img ${cfg.wallpaper}" ]
             else
-              [ "${pkgs.swww}/bin/swww-daemon" ]
+              [ "swww-daemon" ]
           )
           ++ [ "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" ];
         monitor = lib.mkIf (cfg.monitorSettings != [ ]) cfg.monitorSettings;
