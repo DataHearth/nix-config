@@ -9,7 +9,10 @@
 
     tailscale = {
       enable = true;
-      extraUpFlags = [ "--accept-dns" ];
+      extraUpFlags = [
+        "--accept-dns=false"
+        "--accept-routes"
+      ];
     };
 
     xserver = {

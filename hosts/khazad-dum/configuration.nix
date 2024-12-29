@@ -89,7 +89,23 @@
 
   networking = {
     hostName = "khazad-dum";
-    networkmanager.enable = true;
+    nameservers = [
+      "192.168.1.2"
+      "2a01:e0a:cc0:64c0:4071:e0d6:fbec:65ae"
+      "1.1.1.1"
+      "2606:4700:4700::1111"
+      "1.0.0.1"
+      "2606:4700:4700::1001"
+      "9.9.9.9"
+      "2620:fe::fe"
+      "149.112.112.112"
+      "2620:fe::9"
+    ];
+
+    networkmanager = {
+      enable = true;
+      dns = "none";
+    };
   };
 
   programs = {
