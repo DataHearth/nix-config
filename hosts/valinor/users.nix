@@ -43,7 +43,11 @@
         group = "actinium";
         extraGroups = [ "docker" ];
         isNormalUser = true;
-        openssh.authorizedKeys.keys = [ ];
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB/Se1hLsYsLyJjNvSXB50p28h1dJ/IdNQovrdJbuXYI corboncyril@gmail.com"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMls5ShnyasCDBIfYuzXRFinLD7xOuaOCqVjm+0pY+OH dev@antoine-langlois.net"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICsI1zpu+UKBIl6s8+Meca8ZtiGH3zG8cqpaEqnT4Lb8"
+        ];
       };
     };
   };
