@@ -481,11 +481,11 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1735467773,
-        "narHash": "sha256-pkzI8EU4CMoM/c0QyQNFDcumDv52cgElVlrfv3pXS/I=",
+        "lastModified": 1735832055,
+        "narHash": "sha256-Uk+/77EaKiJdgufdhT42aTvlApj8llOzwEX3iK4NszU=",
         "owner": "DataHearth",
         "repo": "nixvim-config",
-        "rev": "ab1d1aec2d48873d22f4004f4003dfcb6b81540a",
+        "rev": "4f94005cdcc723153480b8eeabe52d4ec7a25aa2",
         "type": "github"
       },
       "original": {
