@@ -37,6 +37,7 @@
       shellAliases = {
         cat = "bat";
         cd = "z";
+        docker-restart-all = "docker restart $(docker ps -q)";
       };
       initExtra = ''
         cd /mnt/Erebor/War-goats/appdata
