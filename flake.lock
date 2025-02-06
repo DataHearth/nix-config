@@ -476,17 +476,14 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1738787956,
-        "narHash": "sha256-8+Sc/RDpJyrStQE8HItgjKdyhtBOWAS5HfPVhOnhJCg=",
-        "owner": "DataHearth",
-        "repo": "nixvim-config",
-        "rev": "4f2bc80fed9e0a0c9455b0a820e74527c4a3dc2e",
-        "type": "github"
+        "lastModified": 1738917229,
+        "narHash": "sha256-KNcwj+LfSTLYfkuaUZR9ND/omH2l3+mr51HGCwjOCKM=",
+        "path": "/home/datahearth/.config/nixvim-config",
+        "type": "path"
       },
       "original": {
-        "owner": "DataHearth",
-        "repo": "nixvim-config",
-        "type": "github"
+        "id": "nixvim-config",
+        "type": "indirect"
       }
     },
     "nixvim_2": {

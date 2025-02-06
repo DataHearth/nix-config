@@ -6,7 +6,7 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
 
     nixvim = {
-      url = "github:DataHearth/nixvim-config";
+      url = "flake:nixvim-config";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     home-manager-unstable = {
