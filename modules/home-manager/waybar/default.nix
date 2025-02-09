@@ -9,9 +9,9 @@ let
     default = [
       "pulseaudio#output"
       "pulseaudio#input"
-      "custom/spacer"
+      "backlight"
       "custom/notification"
-      "custom/spacer"
+      "battery"
       "tray"
     ];
   };
@@ -20,13 +20,9 @@ let
     type = lib.types.listOf lib.types.str;
     default = [
       "hyprland/workspaces"
-      "custom/spacer"
       "cpu"
-      "custom/spacer"
       "memory"
-      "custom/spacer"
       "disk"
-      "custom/spacer"
       "network#speed"
     ];
   };
@@ -50,21 +46,23 @@ in
     programs.waybar = {
       enable = true;
       style = builtins.readFile ./style.css;
+      settings = {
+        default = {
+          include = "${config.xdg.configHome}/waybar/modules.json";
+          position = "top";
+          css = "~/.config/waybar/style.css";
+          modules-left = cfg.left;
+          modules-center = cfg.center;
+          modules-right = cfg.right;
+        };
+      };
     };
     xdg.configFile = {
-      "waybar/config".text = builtins.toJSON {
-        include = "~/.config/waybar/modules.json";
-        layer = "top";
-        position = "top";
-        margin-top = 5;
-        margin-left = 5;
-        margin-right = 5;
-        height = 30;
-        modules-left = cfg.left;
-        modules-center = cfg.center;
-        modules-right = cfg.right;
-      };
       "waybar/modules.json".source = ./modules.json;
+      "waybar/styles" = {
+        source = ./styles;
+        recursive = true;
+      };
     };
   };
 }

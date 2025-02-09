@@ -1,223 +1,40 @@
-/* Catpuccin Macchiato */
-@define-color rosewater #f4dbd6;
-@define-color flamingo #f0c6c6;
-@define-color pink #f5bde6;
-@define-color mauve #c6a0f6;
-@define-color red #ed8796;
-@define-color maroon #ee99a0;
-@define-color peach #f5a97f;
-@define-color yellow #eed49f;
-@define-color green #a6da95;
-@define-color teal #8bd5ca;
-@define-color sky #91d7e3;
-@define-color sapphire #7dc4e4;
-@define-color blue #8aadf4;
-@define-color lavender #b7bdf8;
-@define-color text #cad3f5;
-@define-color subtext1 #b8c0e0;
-@define-color subtext0 #a5adcb;
-@define-color overlay2 #939ab7;
-@define-color overlay1 #8087a2;
-@define-color overlay0 #6e738d;
-@define-color surface2 #5b6078;
-@define-color surface1 #494d64;
-@define-color surface0 #363a4f;
-@define-color base #24273a;
-@define-color mantle #1e2030;
-@define-color crust #181926;
+@import url("styles/colors.css");
+@import url("styles/workspaces.css");
+@import url("styles/network.css");
+@import url("styles/battery.css");
+@import url("styles/backlight.css");
+@import url("styles/notifications.css");
+@import url("styles/pulseaudio.css");
+@import url("styles/memory.css");
+@import url("styles/cpu.css");
+@import url("styles/clock.css");
+@import url("styles/disk.css");
+@import url("styles/tray.css");
 
 * {
-  color: @text;
-  font-family: Mononoki Nerd Font;
-  font-size: 14px;
-  font-weight: bold;
+  border: none;
+  border-radius: 0;
+  font-family: "Mononoki Nerd Font", monospace;
+  font-size: 13px;
   min-height: 0;
 }
 
 window#waybar {
-  background-color: shade(@base, 0.9);
-  border: 2px solid alpha(@crust, 0.3);
-  transition-duration: 0.5s;
-  transition-property: background-color;
-}
-
-window#waybar.hidden {
-  opacity: 0.2;
-}
-
-window#waybar.empty {
-  background-color: transparent;
-}
-window#waybar.solo {
-  background-color: #000000;
-}
-
-#workspaces button {
-  padding: 0 4px;
-  border-radius: 2px;
-  background-color: transparent;
-  color: #ffffff;
-}
-
-#workspaces button.active {
-  background-color: #64727d;
-  box-shadow: inset 0 -2px #ffffff;
-}
-
-#workspaces button.urgent {
-  background-color: #eb4d4b;
-}
-
-#mode {
-  background-color: #64727d;
-  border-bottom: 3px solid #ffffff;
-}
-
-window#modules-right {
-  border: 5px;
-  border-color: #ff0000;
+  background: @base;
+  color: @text;
 }
 
 #clock,
-#battery,
-#disk,
-#backlight,
-#network,
-#pulseaudio,
-#tray,
-#mode,
 #cpu,
 #memory,
-#custom-notification,
-#custom-spacer,
-#spacer {
-  margin: 0 0px;
-  border-radius: 0;
-  padding-top: 4px;
-}
-
-#window,
-#workspaces {
-  margin: 0 0px;
-}
-
-/* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
-  margin-left: 0;
-}
-
-/* If workspaces is the rightmost module, omit right margin */
-.modules-right > widget:last-child > #workspaces {
-  margin-right: 0;
-}
-
-label:focus {
-  background-color: #000000;
-}
-
-#custom-spacer {
-  padding-left: 10px;
-}
-
-#pulseaudio.output,
-#pulseaudio.input {
-  color: @yellow;
-  border-bottom: 2px solid @yellow;
-}
-#pulseaudio.input {
-  padding-left: 7px;
-  padding-right: 2px;
-}
-#pulseaudio.input.source-muted {
-  color: @red;
-  padding-left: 7px;
-  padding-right: 7px;
-}
-#pulseaudio.output.muted {
-  color: @red;
-  padding-right: 4px;
-}
-
-#network.speed {
-  color: @teal;
-  border-bottom: 2px solid @teal;
-  padding-right: 5px;
-}
-
-#backlight {
-  color: @mauve;
-  border-bottom: 2px solid @mauve;
-  padding-right: 5px;
-}
-
-#disk {
-  color: @lavender;
-  border-bottom: 2px solid @lavender;
-}
-
-#tray {
-  border-bottom: 2px solid @peach;
-  margin-right: 10px;
-}
-#tray > .passive {
-  -gtk-icon-effect: dim;
-}
-#tray > .needs-attention {
-  -gtk-icon-effect: highlight;
-  background-color: #eb4d4b;
-}
-
+#network,
+#battery,
+#pulseaudio,
+#backlight,
+#workspaces,
+#disk,
+#tray,
 #custom-notification {
-  color: @pink;
-  border-bottom: 2px solid @pink;
-  padding-right: 5px;
-}
-#custom-notification.dnd-notification,
-#custom-notification.dnd-none,
-#custom-notification.dnd-inhibited-notification,
-#custom-notification.dnd-inhibited-none {
-  padding-right: 9px;
-}
-
-#battery {
-  color: @rosewater;
-  border-bottom: 2px solid @rosewater;
-}
-#battery.charging,
-#battery.plugged {
-  color: @green;
-  border-bottom: 2px solid @green;
-}
-#battery.critical:not(.charging) {
-  background-color: @red;
-  color: @red;
-  animation-name: blink;
-  animation-duration: 0.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-
-@keyframes blink {
-  to {
-    background-color: #ffffff;
-    color: #000000;
-  }
-}
-
-#clock {
-  background-color: transparent;
-  padding-left: 14px;
-  padding-right: 10px;
-  text-shadow: 2px 2px 4px black;
-}
-
-#cpu {
-  color: @sapphire;
-  border-bottom: 2px solid @sapphire;
-}
-
-#memory {
-  color: @blue;
-  border-bottom: 2px solid @blue;
+  padding: 0 5px;
+  margin: 0 5px;
 }
