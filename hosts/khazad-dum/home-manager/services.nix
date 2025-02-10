@@ -82,18 +82,13 @@
             profile.outputs = [
               {
                 criteria = "eDP-1";
-                position = "0,0";
               }
               {
                 criteria = "AOC U2790B 0x0001E2B5";
-                mode = "3840x2160@60.00Hz";
                 scale = 2.0;
-                position = "1600,0";
               }
               {
                 criteria = "Dell Inc. DELL S2715H PP92G5CH281L";
-                mode = "1920x1080@60.00Hz";
-                position = "3510,0";
               }
             ];
           }
