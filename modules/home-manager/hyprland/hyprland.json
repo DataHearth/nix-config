@@ -24,7 +24,7 @@
     "$mod, C, exec, ~/.config/rofi/clipboard.sh",
     "$mod, SPACE, exec, ~/.config/rofi/dmenu.sh",
 
-    "$mod, RETURN, exec, alacritty",
+    "$mod, RETURN, exec, ghostty",
 
     "$mod, left, movefocus, l",
     "$mod, right, movefocus, r",

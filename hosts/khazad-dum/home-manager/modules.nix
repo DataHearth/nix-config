@@ -1,6 +1,7 @@
 {
   hm = {
     alacritty.enable = true;
+    ghostty.enable = true;
     ssh.enable = true;
     rofi-wayland.enable = true;
     swaync.enable = true;
