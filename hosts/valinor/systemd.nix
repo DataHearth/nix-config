@@ -35,6 +35,7 @@
         backups_secrets = "/run/secrets/backups";
       in
       {
+        NetworkManager-wait-online.enable = false;
         "storj-backup" =
           let
             storj_secrets = "${backups_secrets}/storj";
