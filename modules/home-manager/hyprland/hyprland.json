@@ -24,7 +24,7 @@
     "$mod, C, exec, ~/.config/rofi/clipboard.sh",
     "$mod, SPACE, exec, ~/.config/rofi/dmenu.sh",
 
-    "$mod, RETURN, exec, ghostty",
+    "$mod, RETURN, exec, alacritty",
 
     "$mod, left, movefocus, l",
     "$mod, right, movefocus, r",
@@ -113,7 +113,9 @@
     "new_status": "master"
   },
   "misc": {
-    "force_default_wallpaper": 0
+    "force_default_wallpaper": 0,
+    "font_family": "Mononoki Nerd Font",
+    "focus_on_activate": true
   },
   "monitor": ",preferred,auto,auto",
   "windowrulev2": [
