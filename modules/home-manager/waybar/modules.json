@@ -25,7 +25,7 @@
   },
   "network#speed": {
     "interval": 2,
-    "format": "  {bandwidthUpBytes}   {bandwidthDownBytes}",
+    "format": "  {bandwidthDownBytes}   {bandwidthUpBytes}",
     "max-length": 26
   },
   "clock": {
