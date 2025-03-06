@@ -13,6 +13,7 @@
   system.stateVersion = "24.11";
   xdg.portal.enable = true;
   nixpkgs.config.allowUnfree = true;
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   virtualisation = {
     docker.enable = true;
@@ -89,18 +90,6 @@
 
   networking = {
     hostName = "khazad-dum";
-    nameservers = [
-      "192.168.1.2"
-      "2a01:e0a:cc0:64c0:4071:e0d6:fbec:65ae"
-      "1.1.1.1"
-      "2606:4700:4700::1111"
-      "1.0.0.1"
-      "2606:4700:4700::1001"
-      "9.9.9.9"
-      "2620:fe::fe"
-      "149.112.112.112"
-      "2620:fe::9"
-    ];
     firewall.extraCommands = ''
       iptables -I INPUT 1 -s 172.16.0.0/12 -p tcp -d 192.168.1.0/24 -j ACCEPT
       iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 192.168.1.0/24 -j ACCEPT
