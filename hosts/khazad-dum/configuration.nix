@@ -101,11 +101,11 @@
       "149.112.112.112"
       "2620:fe::9"
     ];
-
-    networkmanager = {
-      enable = true;
-      dns = "none";
-    };
+    firewall.extraCommands = ''
+      iptables -I INPUT 1 -s 172.16.0.0/12 -p tcp -d 192.168.1.0/24 -j ACCEPT
+      iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 192.168.1.0/24 -j ACCEPT
+    '';
+    networkmanager.enable = true;
   };
 
   programs = {
