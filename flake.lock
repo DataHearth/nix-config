@@ -261,11 +261,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1741851582,
-        "narHash": "sha256-cPfs8qMccim2RBgtKGF+x9IBCduRvd/N5F4nYpU0TVE=",
+        "lastModified": 1742069588,
+        "narHash": "sha256-C7jVfohcGzdZRF6DO+ybyG/sqpo1h6bZi9T56sxLy+k=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "6607cf789e541e7873d40d3a8f7815ea92204f32",
+        "rev": "c80f6a7e10b39afcc1894e02ef785b1ad0b0d7e5",
         "type": "github"
       },
       "original": {
@@ -332,10 +332,12 @@
         "nixvim": "nixvim_2"
       },
       "locked": {
-        "lastModified": 1742058001,
-        "narHash": "sha256-AslQV4i26FoDTGCa963QQboXVE8LDy8pddZVLUBdLZk=",
-        "path": "/home/datahearth/.config/nixvim-config",
-        "type": "path"
+        "lastModified": 1742057997,
+        "narHash": "sha256-pmOFla6qbohdeWd2D8z7I5jvePNIgSyFKMeh91TmTFY=",
+        "owner": "DataHearth",
+        "repo": "nixvim-config",
+        "rev": "7f80eb6a5991338137d748759ff66c12e7d5b79e",
+        "type": "github"
       },
       "original": {
         "id": "nixvim-config",
@@ -483,11 +485,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1742055607,
-        "narHash": "sha256-25JbKaztsf9Iv+pgfBvChRLLVsQpXXUcMC1HuHMUyo4=",
+        "lastModified": 1742076998,
+        "narHash": "sha256-EuqbZFwam8dXNiuytI67rIUrF4ogy62OF2nGxWk8GGI=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "574e149f7f51976c9a4650bad34538495c8f725e",
+        "rev": "30fdea2435aeeb961acba896b9b65bab4fd17003",
         "type": "github"
       },
       "original": {
