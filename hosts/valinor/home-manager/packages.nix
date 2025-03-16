@@ -41,7 +41,7 @@
       shellAliases = {
         cat = "bat";
         cd = "z";
-        docker-restart-all = "docker compose -f /mnt/Erebor/War-goats/docker-compose.yml restart";
+        docker-restart-all = "docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml restart";
       };
       initExtra = ''
         cd /mnt/Erebor/War-goats/appdata
