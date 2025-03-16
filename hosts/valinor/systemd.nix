@@ -50,8 +50,8 @@
             } // environment;
             script = ''
               restic backup \
-                --files-from ''${XDG_CONFIG_HOME}/systemd-timers/backup/allowed.txt \
-                --exclude-file ''${XDG_CONFIG_HOME}/systemd-timers/backup/exclude.txt
+                --files-from ''${storj_secrets}/include.txt \
+                --exclude-file ''${storj_secrets}/exclude.txt
 
               restic forget --keep-last 2 --prune
 
@@ -71,7 +71,8 @@
               RESTIC_PASSWORD_FILE = "${gondoline_secrets}/password";
             } // environment;
             script = ''
-              restic backup --files-from ''${XDG_CONFIG_HOME}/systemd-timers/gondoline-backup/allowed.txt
+              restic backup \
+                --files-from ''${gondoline_secrets}/include.txt
 
               restic forget --keep-last 2 --prune
 

@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+  home.packages = with pkgs; [
+    sops
+  ];
+
   programs = {
     zoxide.enable = true;
     fzf.enable = true;
@@ -37,7 +41,7 @@
       shellAliases = {
         cat = "bat";
         cd = "z";
-        docker-restart-all = "docker restart $(docker ps -q)";
+        docker-restart-all = "docker compose -f /mnt/Erebor/War-goats/docker-compose.yml restart";
       };
       initExtra = ''
         cd /mnt/Erebor/War-goats/appdata
