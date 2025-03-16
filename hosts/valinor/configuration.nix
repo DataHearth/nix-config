@@ -62,23 +62,12 @@
     hostName = "valinor";
     networkmanager.enable = true;
 
-    firewall =
-      let
-        tcp_udp = [
-          53 # AdGuardHome DNS
-        ];
-      in
-      {
-        extraCommands = ''
-          iptables -I INPUT 1 -s 172.16.0.0/12 -p tcp -d 192.168.1.0/24 -j ACCEPT
-          iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 192.168.1.0/24 -j ACCEPT
-        '';
-        allowedUDPPorts = [
-        ] ++ tcp_udp;
-        allowedTCPPorts = [
-          3000 # AdGuardHome WebUI
-        ] ++ tcp_udp;
-      };
+    firewall = {
+      extraCommands = ''
+        iptables -I INPUT 1 -s 172.16.0.0/12 -p tcp -d 192.168.1.0/24 -j ACCEPT
+        iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 192.168.1.0/24 -j ACCEPT
+      '';
+    };
   };
 
   sops = {
@@ -94,6 +83,18 @@
       "backups/storj/repository" = { };
       "backups/storj/ping_url" = { };
       "tailscale_keys/valinor" = { };
+      "backups/storj/include.txt" = {
+        format = "binary";
+        sopsFile = ../../secrets/storj/include.txt;
+      };
+      "backups/storj/exclude.txt" = {
+        format = "binary";
+        sopsFile = ../../secrets/storj/exclude.txt;
+      };
+      "backups/gondoline/include.txt" = {
+        format = "binary";
+        sopsFile = ../../secrets/gondoline/include.txt;
+      };
     };
   };
 

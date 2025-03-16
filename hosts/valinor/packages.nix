@@ -22,6 +22,7 @@
       unzip
       xh
       zip
+      pwru
     ];
   };
 
