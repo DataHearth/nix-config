@@ -79,10 +79,17 @@
       "backups/gondoline/password" = { };
       "backups/gondoline/repository" = { };
       "backups/gondoline/ping_url" = { };
+      "backups/gondoline/include.txt" = {
+        format = "binary";
+        sopsFile = ../../secrets/gondoline/include.txt;
+      };
+      "backups/gondoline/exclude.txt" = {
+        format = "binary";
+        sopsFile = ../../secrets/gondoline/exclude.txt;
+      };
       "backups/storj/password" = { };
       "backups/storj/repository" = { };
       "backups/storj/ping_url" = { };
-      "tailscale_keys/valinor" = { };
       "backups/storj/include.txt" = {
         format = "binary";
         sopsFile = ../../secrets/storj/include.txt;
@@ -91,10 +98,7 @@
         format = "binary";
         sopsFile = ../../secrets/storj/exclude.txt;
       };
-      "backups/gondoline/include.txt" = {
-        format = "binary";
-        sopsFile = ../../secrets/gondoline/include.txt;
-      };
+      "tailscale_keys/valinor" = { };
     };
   };
 

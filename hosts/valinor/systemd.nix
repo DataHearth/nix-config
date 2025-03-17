@@ -26,6 +26,7 @@
           restic
           rclone
           curl
+          docker
         ];
         environment = {
           HOME = config.users.users.datahearth.home;
@@ -33,6 +34,7 @@
           XDG_CONFIG_HOME = "${config.users.users.datahearth.home}/.config";
         };
         backups_secrets = "/run/secrets/backups";
+        pgsql16_bak = "/tmp/pgsql16-backup.sql";
       in
       {
         NetworkManager-wait-online.enable = false;
@@ -49,9 +51,12 @@
               RESTIC_PASSWORD_FILE = "${storj_secrets}/password";
             } // environment;
             script = ''
+              docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql16 pg_dumpall -U postgres > ${pgsql16_bak}
+
               restic backup \
-                --files-from ''${storj_secrets}/include.txt \
-                --exclude-file ''${storj_secrets}/exclude.txt
+                --files-from ${storj_secrets}/include.txt \
+                --exclude-file ${storj_secrets}/exclude.txt \
+                ${pgsql16_bak}
 
               restic forget --keep-last 2 --prune
 
@@ -71,8 +76,12 @@
               RESTIC_PASSWORD_FILE = "${gondoline_secrets}/password";
             } // environment;
             script = ''
+              docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql16 pg_dumpall -U postgres > ${pgsql16_bak}
+
               restic backup \
-                --files-from ''${gondoline_secrets}/include.txt
+                --files-from ${gondoline_secrets}/include.txt \
+                --exclude-file ${gondoline_secrets}/exclude.txt \
+                ${pgsql16_bak}
 
               restic forget --keep-last 2 --prune
 
