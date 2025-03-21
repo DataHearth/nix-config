@@ -67,6 +67,11 @@
         iptables -I INPUT 1 -s 172.16.0.0/12 -p tcp -d 192.168.1.0/24 -j ACCEPT
         iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 192.168.1.0/24 -j ACCEPT
       '';
+      allowedUDPPorts = [
+        5353
+        5540
+      ];
+      allowedTCPPorts = [ 5540 ];
     };
   };
 
