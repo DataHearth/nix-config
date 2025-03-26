@@ -28,6 +28,7 @@
 
     users = {
       datahearth = {
+        useDefaultShell = true;
         isNormalUser = true;
         description = "Antoine Langlois";
         extraGroups = [
