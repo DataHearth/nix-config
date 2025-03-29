@@ -20,6 +20,7 @@
     wget
     xh
     zip
+    git-filter-repo
 
     # GUI
     discord
