@@ -33,9 +33,6 @@
   };
 
   boot = {
-    # https://community.frame.work/t/solved-fw16-not-powering-down/52659/4
-    kernelPackages = pkgs.linuxPackages_latest;
-
     loader = {
       systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
@@ -119,7 +116,6 @@
     systemPackages = with pkgs; [
       sbctl
       pinentry
-      looking-glass-client
       ntfs3g
       libheif
       libheif.out
