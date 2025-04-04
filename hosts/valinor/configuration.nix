@@ -32,19 +32,27 @@
   boot =
     let
       kernel_modules = [
-        "md-mod"
-        "dm-mod"
+        "raid1"
         "dm-raid"
         "dm-mirror"
-        "dm-region-hash"
-        "dm-log"
-        "raid1"
-        "raid456"
-        "async_raid6_recov"
-        "async_memcpy"
-        "async_pq"
-        "async_xor"
-        "async_tx"
+
+        "raid456" # required by dm-raid
+
+        "dm-mod" # required by dm-raid,dm-mirror,dm-log
+        "dm-region-hash" # required by dm-mirror
+        "dm-log" # required by dm-mirror,dm-region-hash
+
+        "md-mod" # required by raid1,raid456,dm-raid
+
+        "dax" # required by dm-mod
+        "xor" # required by async_xor
+        "async_raid6_recov" # required by raid456
+        "raid6_pq" # required by raid456,async_raid6_recov,async_pq
+        "libcrc32c" # required by raid456
+        "async_memcpy" # required by raid456
+        "async_pq" # required by raid456
+        "async_xor" # required by raid456,async_pq
+        "async_tx" # required by raid456,async_raid6_recov,async_pq,async_xor,async_memcpy
       ];
     in
     {
@@ -69,7 +77,11 @@
         5353
         5540
       ];
-      allowedTCPPorts = [ 5540 ];
+      allowedTCPPorts = [
+        5540
+        9999
+        5001
+      ];
     };
   };
 

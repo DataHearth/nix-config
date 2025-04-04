@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }:
 {
@@ -68,6 +69,7 @@
         "docker"
         "wireshark"
         "libvirtd"
+        config.services.kubo.group
       ];
     };
   };
@@ -104,6 +106,7 @@
       enable = true;
       promptInit = ''
         source <(docker completion zsh)
+        source <(ipfs commands completion zsh)
       '';
     };
   };
