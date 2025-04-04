@@ -86,7 +86,7 @@
   };
 
   networking = {
-    hostName = "khazad-dum";
+    hostName = "Khazad-dum";
     firewall.extraCommands = ''
       iptables -I INPUT 1 -s 172.16.0.0/12 -p tcp -d 192.168.1.0/24 -j ACCEPT
       iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 192.168.1.0/24 -j ACCEPT

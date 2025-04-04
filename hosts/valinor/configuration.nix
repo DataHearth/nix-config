@@ -1,5 +1,4 @@
 {
-  pkgs,
   config,
   ...
 }:
@@ -50,7 +49,6 @@
     in
     {
       loader.systemd-boot.enable = true;
-      kernelPackages = pkgs.linuxPackages_latest;
       # If I have the knowledge of which one is needed at boot
       # and the one only once mounted and checked, some kernel modules
       # could move the initrd.availableKernelModules
@@ -59,7 +57,7 @@
     };
 
   networking = {
-    hostName = "valinor";
+    hostName = "Valinor";
     networkmanager.enable = true;
 
     firewall = {
