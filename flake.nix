@@ -41,7 +41,7 @@
           system = "x86_64-linux";
         in
         {
-          valinor = nixpkgs.lib.nixosSystem {
+          Valinor = nixpkgs.lib.nixosSystem {
             inherit system;
 
             specialArgs = {
@@ -58,7 +58,8 @@
               nixvim.nixosModules.default
             ];
           };
-          khazad-dum = nixpkgs.lib.nixosSystem {
+
+          Khazad-dum = nixpkgs.lib.nixosSystem {
             inherit system;
 
             specialArgs = {

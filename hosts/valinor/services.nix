@@ -44,5 +44,13 @@
           };
         };
     };
+
+    kubo = {
+      enable = true;
+      autoMount = true;
+      enableGC = true;
+      settings.Addresses.Gateway = "/ip4/0.0.0.0/tcp/9999";
+      settings.Addresses.API = "/ip4/0.0.0.0/tcp/5001";
+    };
   };
 }

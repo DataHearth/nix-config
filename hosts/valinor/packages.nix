@@ -33,6 +33,7 @@
       enable = true;
       promptInit = ''
         source <(docker completion zsh)
+        source <(ipfs commands completion zsh)
       '';
     };
   };

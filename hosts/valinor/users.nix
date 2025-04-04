@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   users = {
     defaultUserShell = pkgs.zsh;
@@ -36,6 +36,7 @@
           "docker"
           "libvirtd"
           "networkmanager"
+          config.services.kubo.group
         ];
       };
 

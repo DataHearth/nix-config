@@ -39,5 +39,11 @@
         user = "datahearth";
       };
     };
+
+    kubo = {
+      enable = true;
+      autoMount = true;
+      enableGC = true;
+    };
   };
 }
