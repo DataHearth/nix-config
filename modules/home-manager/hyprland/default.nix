@@ -46,7 +46,7 @@ let
       "signal-desktop"
       "Discord"
       "alacritty"
-      "zen"
+      "zen-beta"
       "spotify"
     ];
   };
