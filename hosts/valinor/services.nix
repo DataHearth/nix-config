@@ -49,8 +49,25 @@
       enable = true;
       autoMount = true;
       enableGC = true;
-      settings.Addresses.Gateway = "/ip4/0.0.0.0/tcp/9999";
-      settings.Addresses.API = "/ip4/0.0.0.0/tcp/5001";
+
+      settings = {
+        Addresses = {
+          Gateway = "/ip4/0.0.0.0/tcp/9999";
+          API = "/ip4/0.0.0.0/tcp/5001";
+        };
+        API.HTTPHeaders = {
+          Access-Control-Allow-Origin = [
+            "http://192.168.1.2:5001"
+            "http://localhost:3000"
+            "http://127.0.0.1:5001"
+            "https://webui.ipfs.io"
+          ];
+          Access-Control-Allow-Methods = [
+            "PUT"
+            "POST"
+          ];
+        };
+      };
     };
   };
 }
