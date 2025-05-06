@@ -49,7 +49,7 @@
         Addresses.API = "/ip4/127.0.0.1/tcp/5001";
         API.HTTPHeaders = {
           Access-Control-Allow-Origin = [
-            "http://localhost:5001"
+            "http://localhost:3000"
             "http://127.0.0.1:5001"
             "https://webui.ipfs.io"
           ];

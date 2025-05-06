@@ -52,8 +52,7 @@
 
       settings = {
         Addresses = {
-          Gateway = "/ip4/0.0.0.0/tcp/9999";
-          API = "/ip4/0.0.0.0/tcp/5001";
+          API = "/ip4/192.168.1.2/tcp/5001";
         };
         API.HTTPHeaders = {
           Access-Control-Allow-Origin = [
