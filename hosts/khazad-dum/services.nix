@@ -1,11 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   services = {
     fprintd.enable = true;
     power-profiles-daemon.enable = true;
     deluge.enable = true;
-    gnome.gnome-keyring.enable = true;
-    blueman.enable = true;
+    gnome.gnome-keyring.enable = lib.mkDefault true;
+    blueman.enable = lib.mkDefault true;
 
     tailscale = {
       enable = true;
@@ -16,7 +16,7 @@
     };
 
     xserver = {
-      enable = true;
+      enable = lib.mkDefault true;
       xkb.layout = "fr";
     };
 
@@ -31,7 +31,7 @@
     };
 
     greetd = {
-      enable = true;
+      enable = lib.mkDefault true;
       vt = 9; # Fix lines on screen
 
       settings.default_session = {
