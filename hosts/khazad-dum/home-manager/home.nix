@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./modules.nix
@@ -12,5 +12,17 @@
     stateVersion = "24.11";
   };
 
-  xdg.enable = true;
+  xdg = {
+    enable = true;
+
+    portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+      ];
+      configPackages = with pkgs; [
+        xdg-desktop-portal-gtk
+      ];
+    };
+  };
 }

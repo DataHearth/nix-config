@@ -12,7 +12,6 @@
     ../../modules/nh.nix
   ];
   system.stateVersion = "24.11";
-  xdg.portal.enable = true;
   nixpkgs.config.allowUnfree = true;
   systemd.services.NetworkManager-wait-online.enable = false;
 
@@ -124,8 +123,17 @@
       libheif.out
     ];
     pathsToLink = [
-      "share/thumbnailers"
+      # required for Nautilus thumbnails with HEIC -> https://github.com/NixOS/nixpkgs/issues/164021#issuecomment-2078013231
+      "/share/thumbnailers"
+
+      # required by home-manager -> zsh.enableCompletion
+      # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.zsh.enableCompletion
       "/share/zsh"
+
+      # required by home-manager -> xdg.portal
+      # https://nix-community.github.io/home-manager/options.xhtml#opt-xdg.portal.enable
+      "/share/xdg-desktop-portal"
+      "/share/applications"
     ];
   };
 
