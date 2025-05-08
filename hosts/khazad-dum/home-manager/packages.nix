@@ -5,8 +5,6 @@
 }:
 {
   home.packages = with pkgs; [
-    asciinema
-    awscli2
     difftastic
     dogdns
     dust
@@ -15,8 +13,6 @@
     hyperfine
     jq
     libnotify
-    neofetch
-    onefetch
     ripgrep
     sd
     unzip
@@ -25,6 +21,7 @@
     zip
     git-filter-repo
     nixpkgs-review
+    lazygit
 
     # GUI
     discord
@@ -35,6 +32,7 @@
     spotify
     vlc
     vscode
+
     zen-browser.packages."${system}".default
   ];
 
@@ -132,28 +130,6 @@
           hostname = "valinor";
           user = "datahearth";
           identityFile = "~/.ssh/${keyNamePrefix}";
-          identitiesOnly = true;
-        };
-
-        # BAP
-        "bap-dev" = {
-          hostname = "dev.app.bienaporter.com";
-          user = "service_deploy";
-          identityFile = "~/.ssh/${keyNamePrefix}_bap-dev";
-          identitiesOnly = true;
-          port = 5022;
-        };
-        "bap-prod" = {
-          hostname = "prod.app.bienaporter.com";
-          user = "service_deploy";
-          identityFile = "~/.ssh/${keyNamePrefix}_bap-prod";
-          identitiesOnly = true;
-          port = 5022;
-        };
-        "bap-runner" = {
-          hostname = "51.91.11.36";
-          user = "gitlab-runner";
-          identityFile = "~/.ssh/${keyNamePrefix}_bap-runner";
           identitiesOnly = true;
         };
       };
