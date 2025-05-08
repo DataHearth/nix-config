@@ -3,6 +3,7 @@
   lib,
   pkgs,
   zen-browser,
+  default_user,
   ...
 }:
 let
@@ -35,6 +36,17 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion =
+          !(
+            config.services.blueman.enable
+            || config.home-manager.users."${default_user}".services.blueman-applet.enable
+          );
+        message = "Gnome already ships a bluetooth software and applet. Please disable blueman service and/or its applet service";
+      }
+    ];
+
     environment.sessionVariables = {
       NIXOS_OZONE_WL = 1;
     };
@@ -47,7 +59,7 @@ in
       greetd.enable = !cfg.settings.gdm;
     };
 
-    home-manager.users.datahearth = {
+    home-manager.users."${default_user}" = {
       # TODO: enable when 25.05 is released
       # xdg.autostart = {
       #   enable = true;

@@ -2,9 +2,7 @@
 {
   services = {
     fprintd.enable = true;
-    power-profiles-daemon.enable = true;
     deluge.enable = true;
-    gnome.gnome-keyring.enable = true;
 
     tailscale = {
       enable = true;

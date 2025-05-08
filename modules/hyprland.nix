@@ -29,7 +29,12 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.hyprland.enable = true;
-    services.blueman.enable = true;
+
+    services = {
+      blueman.enable = true;
+      power-profiles-daemon.enable = true;
+      gnome.gnome-keyring.enable = true;
+    };
 
     environment.sessionVariables = {
       NIXOS_OZONE_WL = 1;

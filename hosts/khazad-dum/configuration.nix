@@ -20,7 +20,15 @@ in
       ./services.nix
 
       "${modules}/nh.nix"
-      "${modules}/gnome.nix"
+      (import "${modules}/gnome.nix" {
+        inherit
+          default_user
+          zen-browser
+          lib
+          config
+          pkgs
+          ;
+      })
       "${modules}/hyprland.nix"
     ];
   system.stateVersion = state_version;
