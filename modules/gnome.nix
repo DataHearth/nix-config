@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  zen-browser,
   ...
 }:
 let
@@ -12,13 +13,18 @@ let
     description = "Settings for the GNOME desktop environment.";
     type = lib.types.submodule {
       options = {
-        inherit gdm;
+        inherit gdm autostart;
       };
     };
   };
 
   gdm = lib.options.mkOption {
     description = "Enable GDM (GNOME Display Manager)";
+    type = lib.types.bool;
+    default = true;
+  };
+  autostart = lib.options.mkOption {
+    description = "Enable auto-start for applications";
     type = lib.types.bool;
     default = true;
   };
@@ -42,9 +48,34 @@ in
     };
 
     home-manager.users.datahearth = {
-      programs.gnome-shell = {
-        enable = true;
-        extensions = with pkgs; [ { package = gnomeExtensions.appindicator; } ];
+      # TODO: enable when 25.05 is released
+      # xdg.autostart = {
+      #   enable = true;
+      #   entries = [ ];
+      #   readOnly = true;
+      # };
+      xdg.configFile = lib.mkIf cfg.settings.autostart {
+        "autostart/signal-desktop.desktop".source =
+          "${pkgs.signal-desktop}/share/applications/signal-desktop.desktop";
+        "autostart/discord.desktop".source = "${pkgs.discord}/share/applications/discord.desktop";
+        "autostart/Alacritty.desktop".source = "${pkgs.alacritty}/share/applications/Alacritty.desktop";
+        "autostart/zen-beta.desktop".source = "${
+          zen-browser.packages."${pkgs.system}".default
+        }/share/applications/zen-beta.desktop";
+      };
+
+      programs = {
+        # Not good looking with Gnome
+        alacritty.settings.window.opacity = 1;
+
+        gnome-shell = {
+          enable = true;
+          extensions = with pkgs; [
+            { package = gnomeExtensions.appindicator; }
+            { package = gnomeExtensions.vitals; }
+            { package = gnomeExtensions.blur-my-shell; }
+          ];
+        };
       };
     };
   };
