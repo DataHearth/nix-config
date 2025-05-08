@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  zen-browser,
   ...
 }:
 let
@@ -89,6 +90,7 @@ in
     useUserPackages = true;
     extraSpecialArgs = {
       inherit default_user state_version;
+      inherit zen-browser;
     };
     users."${default_user}" = import ./home-manager/home.nix;
   };

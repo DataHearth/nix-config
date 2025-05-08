@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  zen-browser,
+  ...
+}:
 {
   home.packages = with pkgs; [
     asciinema
@@ -31,6 +35,7 @@
     spotify
     vlc
     vscode
+    zen-browser.packages."${system}".default
   ];
 
   programs = {

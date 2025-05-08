@@ -20,7 +20,6 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -66,6 +65,8 @@
             inherit system;
 
             specialArgs = {
+              inherit zen-browser;
+
               pkgs-unstable = import nixpkgs-unstable {
                 inherit system;
                 config.allowUnfree = true;
@@ -73,11 +74,6 @@
             };
 
             modules = [
-              {
-                environment.systemPackages = [
-                  zen-browser.packages."${system}".default
-                ];
-              }
               ./hosts/khazad-dum/configuration.nix
               home-manager.nixosModules.home-manager
               lanzaboote.nixosModules.lanzaboote
