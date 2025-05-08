@@ -15,7 +15,14 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [ rofi-wayland ];
+    home.packages = with pkgs; [
+      rofi-wayland
+      grim
+      slurp
+      satty
+      hyprshot
+      playerctl
+    ];
 
     xdg.configFile = {
       "rofi/dmenu.rasi".source = ./dmenu.rasi;

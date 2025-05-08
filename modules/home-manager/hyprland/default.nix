@@ -72,12 +72,6 @@ in
       brightnessctl
       wl-clipboard
       cliphist
-      waybar
-      hyprlock
-      grim
-      slurp
-      satty
-      hyprshot
       swww
     ];
 

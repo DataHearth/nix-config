@@ -29,9 +29,10 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.hyprland.enable = true;
+    services.blueman.enable = true;
 
-    services = {
-      blueman.enable = lib.mkDefault true;
+    environment.sessionVariables = {
+      NIXOS_OZONE_WL = 1;
     };
 
     home-manager.users."${cfg.settings.default_user}" = {
@@ -39,8 +40,6 @@ in
         eog
         gnome-calculator
         nautilus
-        satty
-        pavucontrol
       ];
 
       hm = {
@@ -73,7 +72,6 @@ in
 
       services = {
         blueman-applet.enable = true;
-        playerctld.enable = true;
         network-manager-applet.enable = true;
 
         kanshi = {

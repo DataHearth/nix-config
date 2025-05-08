@@ -29,6 +29,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    environment.sessionVariables = {
+      NIXOS_OZONE_WL = 1;
+    };
+
     services = {
       xserver.desktopManager.gnome.enable = true;
       udev.packages = with pkgs; [ gnome-settings-daemon ];

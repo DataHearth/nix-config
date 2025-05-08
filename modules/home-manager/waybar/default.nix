@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.hm.waybar;
 
@@ -43,6 +48,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [ pavucontrol ];
     programs.waybar = {
       enable = true;
       style = builtins.readFile ./style.css;

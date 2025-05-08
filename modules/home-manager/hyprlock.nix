@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.hm.hyprlock;
 
@@ -20,6 +25,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [
+      playerctl
+    ];
+
     programs.hyprlock = {
       enable = true;
       settings = {
