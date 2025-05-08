@@ -10,7 +10,6 @@
     gh
     hyperfine
     jq
-    kanshi
     libnotify
     neofetch
     onefetch
@@ -25,14 +24,9 @@
 
     # GUI
     discord
-    eog
-    gnome-calculator
     insomnia
-    nautilus
     nextcloud-client
     obs-studio
-    pavucontrol
-    satty
     signal-desktop
     spotify
     vlc

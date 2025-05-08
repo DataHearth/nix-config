@@ -9,12 +9,19 @@ let
   state_version = "24.11";
 in
 {
-  imports = [
-    ./i18n.nix
-    ./hardware-configuration.nix
-    ./services.nix
-    ../../modules/nh.nix
-  ];
+  imports =
+    let
+      modules = ../../modules;
+    in
+    [
+      ./i18n.nix
+      ./hardware-configuration.nix
+      ./services.nix
+
+      "${modules}/nh.nix"
+      "${modules}/gnome.nix"
+      "${modules}/hyprland.nix"
+    ];
   system.stateVersion = state_version;
   nixpkgs.config.allowUnfree = true;
   systemd.services.NetworkManager-wait-online.enable = false;
@@ -102,7 +109,6 @@ in
   };
 
   programs = {
-    hyprland.enable = true;
     wireshark.enable = true;
     virt-manager.enable = true;
 
@@ -153,5 +159,17 @@ in
     corefonts
   ];
 
-  nixos_modules.nh.enable = true;
+  nixos_modules = {
+    nh.enable = true;
+
+    hyprland = {
+      enable = true;
+      settings.default_user = default_user;
+    };
+
+    gnome = {
+      enable = true;
+      settings.gdm = true;
+    };
+  };
 }

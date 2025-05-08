@@ -4,8 +4,7 @@
     fprintd.enable = true;
     power-profiles-daemon.enable = true;
     deluge.enable = true;
-    gnome.gnome-keyring.enable = lib.mkDefault true;
-    blueman.enable = lib.mkDefault true;
+    gnome.gnome-keyring.enable = true;
 
     tailscale = {
       enable = true;
@@ -16,7 +15,7 @@
     };
 
     xserver = {
-      enable = lib.mkDefault true;
+      enable = true;
       xkb.layout = "fr";
     };
 
