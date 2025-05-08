@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  default_user,
+  state_version,
+  ...
+}:
 {
   imports = [
     ./modules.nix
@@ -7,9 +12,9 @@
     ./ui.nix
   ] ++ (import ../../../modules/home-manager);
   home = {
-    username = "datahearth";
-    homeDirectory = "/home/datahearth";
-    stateVersion = "24.11";
+    username = default_user;
+    homeDirectory = "/home/${default_user}";
+    stateVersion = state_version;
   };
 
   xdg = {

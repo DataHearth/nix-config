@@ -4,6 +4,10 @@
   config,
   ...
 }:
+let
+  default_user = "datahearth";
+  state_version = "24.11";
+in
 {
   imports = [
     ./i18n.nix
@@ -11,7 +15,7 @@
     ./services.nix
     ../../modules/nh.nix
   ];
-  system.stateVersion = "24.11";
+  system.stateVersion = state_version;
   nixpkgs.config.allowUnfree = true;
   systemd.services.NetworkManager-wait-online.enable = false;
 
@@ -28,7 +32,7 @@
     ];
     trusted-users = [
       "root"
-      "datahearth"
+      default_user
     ];
   };
 
@@ -59,7 +63,7 @@
   users = {
     defaultUserShell = pkgs.zsh;
 
-    users.datahearth = {
+    users."${default_user}" = {
       isNormalUser = true;
       description = "Antoine Langlois";
       extraGroups = [
@@ -76,8 +80,10 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { };
-    users.datahearth = import ./home-manager/home.nix;
+    extraSpecialArgs = {
+      inherit default_user state_version;
+    };
+    users."${default_user}" = import ./home-manager/home.nix;
   };
 
   security = {
