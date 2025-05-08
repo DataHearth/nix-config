@@ -6,16 +6,29 @@ let
   cursor_pkg = pkgs.whitesur-cursors;
 in
 {
-  home.sessionVariables.GTK_THEME = theme_name;
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = cursor_pkg;
-    name = cursor_theme;
-    size = cursor_size;
+  home = {
+    sessionVariables.GTK_THEME = theme_name;
+
+    pointerCursor = {
+      gtk.enable = true;
+      package = cursor_pkg;
+      name = cursor_theme;
+      size = cursor_size;
+    };
+  };
+
+  dconf = {
+    enable = true;
+
+    settings."org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme = theme_name;
+    };
   };
 
   gtk = {
     enable = true;
+
     iconTheme = {
       name = "WhiteSur";
       package = pkgs.whitesur-icon-theme;
