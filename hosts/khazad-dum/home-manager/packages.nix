@@ -87,12 +87,6 @@
         url-sri() {
           nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
         }
-        pr-review() {
-          nix-shell -p nixpkgs-review --run "nixpkgs-review pr $1"
-        }
-        head-review() {
-          nix-shell -p nixpkgs-review --run "nixpkgs-review rev HEAD"
-        }
       '';
 
       shellAliases = {
