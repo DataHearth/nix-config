@@ -126,5 +126,5 @@
     "workspace 4,class:(signal)",
     "workspace 6,title:(Spotify Premium)"
   ],
-  "env": ["XDG_SESSION_TYPE,wayland", "NIXOS_OZONE_WL,1"]
+  "env": ["XDG_SESSION_TYPE,wayland"]
 }

@@ -6,6 +6,5 @@
   ./ghostty.nix
   ./swaync
   ./rofi-wayland
-  ./hyprland
   ./waybar
 ]

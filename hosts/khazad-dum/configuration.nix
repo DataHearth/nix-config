@@ -29,7 +29,7 @@ in
           pkgs
           ;
       })
-      "${modules}/hyprland.nix"
+      "${modules}/hyprland"
     ];
   system.stateVersion = state_version;
   nixpkgs.config.allowUnfree = true;
@@ -173,8 +173,29 @@ in
     nh.enable = true;
 
     hyprland = {
-      enable = true;
-      settings.default_user = default_user;
+      enable = false; # Conflict with bluetooth modules with Gnome DE
+      settings = {
+        default_user = default_user;
+        xwayland.enable = true;
+
+        kanshi.enable = true;
+        waybar.enable = true;
+        hyprlock.enable = true;
+
+        config = {
+          env = [ "XCURSOR_SIZER,24" ];
+          exec-once = [
+            "wl-paste --type text --watch cliphist store; bin/wl-paste --type image --watch cliphist store"
+            "waybar"
+            "swaync"
+            "signal-desktop"
+            "Discord"
+            "alacritty"
+            "zen-beta"
+            "spotify"
+          ];
+        };
+      };
     };
 
     gnome = {
