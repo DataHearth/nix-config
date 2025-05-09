@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.hm.rofi-wayland;
+  cfg = config.home_modules.rofi-wayland;
 
   enable = lib.mkEnableOption "rofi-wayland";
 in
 {
-  options.hm.rofi-wayland = {
+  options.home_modules.rofi-wayland = {
     inherit enable;
   };
 

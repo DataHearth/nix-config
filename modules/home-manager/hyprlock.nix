@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.hm.hyprlock;
+  cfg = config.home_modules.hyprlock;
 
   enable = lib.mkEnableOption "hyprlock";
   lockBackgroundImage = lib.mkOption {
@@ -20,7 +20,7 @@ let
   };
 in
 {
-  options.hm.hyprlock = {
+  options.home_modules.hyprlock = {
     inherit enable lockBackgroundImage defaultDisplay;
   };
 

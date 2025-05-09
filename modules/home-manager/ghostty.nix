@@ -1,11 +1,11 @@
 { config, lib, ... }:
 let
-  cfg = config.hm.ghostty;
+  cfg = config.home_modules.ghostty;
 
   enable = lib.mkEnableOption "ghostty";
 in
 {
-  options.hm.ghostty = {
+  options.home_modules.ghostty = {
     inherit enable;
   };
 

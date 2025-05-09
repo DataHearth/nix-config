@@ -1,5 +1,5 @@
 {
-  hm = {
+  home_modules = {
     alacritty.enable = true;
     ghostty.enable = true;
     ssh.enable = true;

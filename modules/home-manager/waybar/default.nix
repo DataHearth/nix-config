@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.hm.waybar;
+  cfg = config.home_modules.waybar;
 
   enable = lib.mkEnableOption "waybar";
   right = lib.mkOption {
@@ -38,7 +38,7 @@ let
   };
 in
 {
-  options.hm.waybar = {
+  options.home_modules.waybar = {
     inherit
       enable
       right

@@ -1,5 +1,5 @@
 {
-  hm = {
+  home_modules = {
     ssh.enable = true;
 
     git = {

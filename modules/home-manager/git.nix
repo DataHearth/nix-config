@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.hm.git;
+  cfg = config.home_modules.git;
 
   enable = lib.mkEnableOption "git";
   signingKey = lib.mkOption {
@@ -29,7 +29,7 @@ let
   };
 in
 {
-  options.hm.git = {
+  options.home_modules.git = {
     inherit
       enable
       signingKey

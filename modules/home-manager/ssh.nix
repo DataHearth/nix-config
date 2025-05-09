@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.hm.ssh;
+  cfg = config.home_modules.ssh;
 
   enable = lib.mkEnableOption "ssh";
   addKeysToAgent = lib.mkOption {
@@ -15,7 +15,7 @@ let
   };
 in
 {
-  options.hm.ssh = {
+  options.home_modules.ssh = {
     inherit enable addKeysToAgent;
   };
 

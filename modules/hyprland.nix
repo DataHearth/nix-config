@@ -47,7 +47,7 @@ in
         nautilus
       ];
 
-      hm = {
+      home_modules = {
         hyprland.enable = true;
         rofi-wayland.enable = true;
         swaync.enable = true;

@@ -1,11 +1,11 @@
 { config, lib, ... }:
 let
-  cfg = config.hm.alacritty;
+  cfg = config.home_modules.alacritty;
 
   enable = lib.mkEnableOption "alacritty";
 in
 {
-  options.hm.alacritty = {
+  options.home_modules.alacritty = {
     inherit enable;
   };
 

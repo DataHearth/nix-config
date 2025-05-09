@@ -1,11 +1,11 @@
 { config, lib, ... }:
 let
-  cfg = config.hm.swaync;
+  cfg = config.home_modules.swaync;
 
   enable = lib.mkEnableOption "swaync";
 in
 {
-  options.hm.swaync = {
+  options.home_modules.swaync = {
     inherit enable;
   };
 
