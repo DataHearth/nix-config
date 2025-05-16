@@ -36,6 +36,8 @@
     zen-browser.packages."${system}".default
   ];
 
+  xdg.configFile."zellij/layouts/default.kdl".source = ./default_layout.kdl;
+
   programs = {
     btop.enable = true;
     eza.enable = true;
@@ -44,6 +46,17 @@
     home-manager.enable = true;
     starship.enable = true;
     zoxide.enable = true;
+
+    zellij = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        theme = "catppuccin-macchiato";
+        mouse_mode = true;
+        copy_on_select = true;
+        default_mode = "locked";
+      };
+    };
 
     bat = {
       enable = true;
