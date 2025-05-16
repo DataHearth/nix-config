@@ -14,7 +14,7 @@ let
     description = "Settings for the GNOME desktop environment.";
     type = lib.types.submodule {
       options = {
-        inherit gdm autostart;
+        inherit gdm autostart extensions;
       };
     };
   };
@@ -28,6 +28,16 @@ let
     description = "Enable auto-start for applications";
     type = lib.types.bool;
     default = true;
+  };
+  extensions = lib.options.mkOption {
+    description = "GNOME Shell extensions to enable";
+    type = lib.types.listOf lib.types.package;
+    default = with pkgs.gnomeExtensions; [
+      appindicator
+      vitals
+      blur-my-shell
+      clipboard-indicator
+    ];
   };
 in
 {
@@ -47,10 +57,6 @@ in
       }
     ];
 
-    environment.sessionVariables = {
-      NIXOS_OZONE_WL = 1;
-    };
-
     services = {
       xserver.desktopManager.gnome.enable = true;
       udev.packages = with pkgs; [ gnome-settings-daemon ];
@@ -60,6 +66,10 @@ in
     };
 
     home-manager.users."${default_user}" = {
+      home.sessionVariables = {
+        NIXOS_OZONE_WL = 1;
+      };
+
       # TODO: enable when 25.05 is released
       # xdg.autostart = {
       #   enable = true;
@@ -82,11 +92,7 @@ in
 
         gnome-shell = {
           enable = true;
-          extensions = with pkgs; [
-            { package = gnomeExtensions.appindicator; }
-            { package = gnomeExtensions.vitals; }
-            { package = gnomeExtensions.blur-my-shell; }
-          ];
+          extensions = builtins.map (pkg: { package = pkg; }) cfg.settings.extensions;
         };
       };
     };
