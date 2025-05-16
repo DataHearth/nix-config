@@ -11,7 +11,7 @@
     tailscale = {
       enable = true;
       extraUpFlags = [
-        "--accept-dns=false"
+        "--accept-dns"
         "--accept-routes"
       ];
     };
