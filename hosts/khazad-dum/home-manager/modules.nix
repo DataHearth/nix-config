@@ -3,6 +3,7 @@
     alacritty.enable = true;
     ghostty.enable = true;
     ssh.enable = true;
+    zellij.enable = true;
 
     git = {
       enable = true;

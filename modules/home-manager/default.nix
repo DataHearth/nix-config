@@ -7,4 +7,5 @@
   ./swaync
   ./rofi-wayland
   ./waybar
+  ./zellij
 ]
