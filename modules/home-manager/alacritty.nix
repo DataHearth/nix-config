@@ -20,13 +20,18 @@ in
           })
         ];
         env.TERM = "xterm-256color";
+        scrolling.multiplier = 5;
+        selection.save_to_clipboard = true;
+
         font = {
           size = 12;
           normal.family = "Mononoki Nerd Font";
         };
-        scrolling.multiplier = 5;
-        selection.save_to_clipboard = true;
-        window.opacity = lib.mkDefault 0.9;
+
+        window = {
+          opacity = lib.mkDefault 0.9;
+          startup_mode = "Maximized";
+        };
       };
     };
   };

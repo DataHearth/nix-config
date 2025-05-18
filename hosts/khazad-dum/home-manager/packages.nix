@@ -1,6 +1,7 @@
 {
   pkgs,
   zen-browser,
+  lib,
   ...
 }:
 {
@@ -83,11 +84,33 @@
           file = "share/zsh/zsh-autopair/autopair.zsh";
         }
       ];
-      initContent = ''
-        url-sri() {
-          nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
-        }
-      '';
+      initContent =
+        let
+          normal = lib.mkOrder 1000 ''
+            url-sri() {
+              nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
+            }
+          '';
+          # Because some Nix implementation have a very high order (e.g zoxide), end finally lines need to be with an absurdly high number
+          # Default Zellij ZSH setup doesn't provide a way to add a default layout to start with, I took it and added one
+          end = lib.mkOrder 10000 ''
+            if [[ -z "$ZELLIJ" ]]; then
+              if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
+                  zellij attach -c
+              else
+                  zellij --layout welcome
+              fi
+
+              if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
+                  exit
+              fi
+            fi
+          '';
+        in
+        lib.mkMerge [
+          normal
+          end
+        ];
 
       shellAliases = {
         cat = "bat";

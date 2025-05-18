@@ -15,7 +15,6 @@
 
     gpg-agent = {
       enable = true;
-      enableZshIntegration = true;
       pinentry.package = pkgs.pinentry-gnome3;
       defaultCacheTtl = 86400;
       maxCacheTtl = 86400;
