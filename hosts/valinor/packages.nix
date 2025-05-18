@@ -23,6 +23,7 @@
       xh
       zip
       pwru
+      smartmontools
     ];
   };
 

@@ -117,5 +117,10 @@
     };
   };
 
-  nixos_modules.nh.enable = true;
+  nixos_modules = {
+    nh = {
+      enable = true;
+      settings.flake = "${config.users.users.datahearth.home}/.config/nix-config";
+    };
+  };
 }
