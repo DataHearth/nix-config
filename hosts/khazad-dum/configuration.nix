@@ -159,13 +159,10 @@ in
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "Mononoki"
-        "JetBrainsMono"
-      ];
-    })
+    nerd-fonts.fira-code
+    nerd-fonts.mononoki
+    nerd-fonts.jetbrains-mono
+
     corefonts
   ];
 

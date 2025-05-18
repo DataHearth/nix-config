@@ -43,7 +43,7 @@
         cd = "z";
         docker-restart-all = "docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml restart";
       };
-      initExtra = ''
+      initContent = ''
         cd /mnt/Erebor/War-goats/appdata
       '';
     };

@@ -39,11 +39,7 @@
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override {
-      fonts = [
-        "Mononoki"
-        "JetBrainsMono"
-      ];
-    })
+    nerd-fonts.mononoki
+    nerd-fonts.jetbrains-mono
   ];
 }

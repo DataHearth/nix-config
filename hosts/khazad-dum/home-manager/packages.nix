@@ -83,7 +83,7 @@
           file = "share/zsh/zsh-autopair/autopair.zsh";
         }
       ];
-      initExtra = ''
+      initContent = ''
         url-sri() {
           nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
         }
