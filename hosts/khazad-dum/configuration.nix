@@ -167,7 +167,10 @@ in
   ];
 
   nixos_modules = {
-    nh.enable = true;
+    nh = {
+      enable = true;
+      settings.flake = "${config.users.users.datahearth.home}/.config/nix-config";
+    };
 
     hyprland = {
       enable = false; # Conflict with bluetooth modules with Gnome DE
