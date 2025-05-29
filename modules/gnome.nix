@@ -66,8 +66,13 @@ in
     };
 
     home-manager.users."${default_user}" = {
-      home.sessionVariables = {
-        NIXOS_OZONE_WL = 1;
+      home = {
+        sessionVariables = {
+          NIXOS_OZONE_WL = 1;
+        };
+        packages = with pkgs; [
+          wl-clipboard
+        ];
       };
 
       xdg.autostart = {
