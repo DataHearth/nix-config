@@ -60,9 +60,18 @@ in
     services = {
       xserver.desktopManager.gnome.enable = true;
       udev.packages = with pkgs; [ gnome-settings-daemon ];
+      pipewire.enable = true; # enable screen sharing
 
       xserver.displayManager.gdm.enable = cfg.settings.gdm;
       greetd.enable = !cfg.settings.gdm;
+    };
+
+    # enable screen sharing
+    xdg.portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+      ];
     };
 
     home-manager.users."${default_user}" = {
