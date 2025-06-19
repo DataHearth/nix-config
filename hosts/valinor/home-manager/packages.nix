@@ -27,26 +27,30 @@
       };
     };
 
-    zsh = {
-      enable = true;
-      autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
-      oh-my-zsh.enable = true;
-      plugins = with pkgs; [
-        {
-          name = "zsh-autopair";
-          src = zsh-autopair;
-        }
-      ];
-      shellAliases = {
-        cat = "bat";
-        cd = "z";
-        docker-restart-all = "docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml restart";
+    zsh =
+      let
+        appdata_path = "/mnt/Erebor/War-goats/appdata";
+      in
+      {
+        enable = true;
+        autosuggestion.enable = true;
+        syntaxHighlighting.enable = true;
+        oh-my-zsh.enable = true;
+        plugins = with pkgs; [
+          {
+            name = "zsh-autopair";
+            src = zsh-autopair;
+          }
+        ];
+        shellAliases = {
+          cat = "bat";
+          cd = "z";
+          docker-restart-all = "docker compose -f ${appdata_path}/docker-compose.yml restart";
+        };
+        initContent = ''
+          cd ${appdata_path}
+        '';
       };
-      initContent = ''
-        cd /mnt/Erebor/War-goats/appdata
-      '';
-    };
 
     direnv = {
       enable = true;
