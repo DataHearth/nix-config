@@ -18,7 +18,10 @@
 
     xserver = {
       enable = true;
-      xkb.layout = "fr";
+      xkb = {
+        layout = "fr,us";
+        variant = ",intl";
+      };
     };
 
     pipewire = {
