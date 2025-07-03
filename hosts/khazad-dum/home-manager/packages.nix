@@ -23,6 +23,7 @@
     git-filter-repo
     nixpkgs-review
     lazygit
+    rclone
 
     # GUI
     discord

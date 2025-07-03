@@ -1,0 +1,5568 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+The content has been processed where line numbers have been added, content has been compressed (code blocks are separated by ⋮---- delimiter).
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+4. Repository files, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Line numbers have been added to the beginning of each line
+- Content has been compressed - code blocks are separated by ⋮---- delimiter
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+<additional_info>
+
+</additional_info>
+
+</file_summary>
+
+<directory_structure>
+hosts/
+  khazad-dum/
+    home-manager/
+      home.nix
+      modules.nix
+      packages.nix
+      services.nix
+      ui.nix
+    configuration.nix
+    hardware-configuration.nix
+    i18n.nix
+    services.nix
+  valinor/
+    home-manager/
+      home.nix
+      modules.nix
+      packages.nix
+      services.nix
+    configuration.nix
+    hardware-configuration.nix
+    locales.nix
+    packages.nix
+    services.nix
+    systemd.nix
+    users.nix
+modules/
+  home-manager/
+    looking-glass/
+      client.ini
+      default.nix
+    rofi-wayland/
+      clipboard.rasi
+      clipboard.sh
+      confirm.rasi
+      default.nix
+      dmenu.rasi
+      dmenu.sh
+      powermenu.rasi
+      powermenu.sh
+      screenshot.rasi
+      screenshot.sh
+    swaync/
+      default.nix
+      style.css
+    waybar/
+      styles/
+        backlight.css
+        battery.css
+        clock.css
+        colors.css
+        cpu.css
+        disk.css
+        memory.css
+        network.css
+        notifications.css
+        pulseaudio.css
+        tray.css
+        workspaces.css
+      default.nix
+      modules.json
+      style.css
+    zellij/
+      base_layout.kdl
+      config.kdl
+      default.nix
+    alacritty.nix
+    default.nix
+    ghostty.nix
+    git.nix
+    hyprlock.nix
+    ssh.nix
+  hyprland/
+    default.nix
+    hyprland.json
+  gnome.nix
+  nh.nix
+  nvidia.nix
+  passthrough.nix
+secrets/
+  gondoline/
+    exclude.txt
+    include.txt
+  storj/
+    exclude.txt
+    include.txt
+  secrets.yml
+.gitignore
+.LLM_INSTRUCTIONS.md
+.sops.yaml
+flake.lock
+flake.nix
+LICENSE
+README.md
+repomix.config.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".LLM_INSTRUCTIONS.md">
+This a NixOS configuration repository. My whole system is defined here and nowhere else.
+If modules or flake inputs aren't used, ignore them, I'll use them in the futur or already used them.
+`nh` is used to build, test and switch NixOS configurations. It is normal to find a `nixosModules` field in `flake.nix`.
+
+## Hosts
+
+`Khazad-dum` is a Framework 16" laptop. My main workstation.
+`Valinor` is my homelab and my production server.
+
+### `Khazad-dum`
+It has 2 graphical environment (both on Wayland), Gnome and Hyprland. It is normal, I want to be able to switch from one to another.
+
+### `Valinor`
+
+Whather is referencing `/mnt/Erebor` is managed by a `docker-compose.yml` file inside the `/mnt/Erebor/War-goats/appdata/docker-compose.yml`. All my services data live here.
+`/mnt/Erebor` contains 3 raid `lv` managed by `lvm`. `War-goats` are SSDs in RAID1, `Thorin` are HDDs in RAID5 and `Dain` are HDDs in RAID6.
+
+### Common
+
+Both hosts have custom `iptable` rules. They're destined to allow containers to talk to each other (for some reason, firewall blocks packets on NixOS).
+</file>
+
+<file path="repomix.config.json">
+{
+  "input": {
+    "maxFileSize": 52428800
+  },
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "parsableStyle": false,
+    "fileSummary": true,
+    "directoryStructure": true,
+    "files": true,
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "compress": true,
+    "topFilesLength": 15,
+    "showLineNumbers": true,
+    "copyToClipboard": false,
+    "instructFilePath": ".LLM_INSTRUCTIONS.md",
+    "git": {
+      "sortByChanges": true,
+      "sortByChangesMaxCommits": 100,
+      "includeDiffs": false
+    }
+  },
+  "include": [],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": []
+  },
+  "security": {
+    "enableSecurityCheck": true
+  },
+  "tokenCount": {
+    "encoding": "o200k_base"
+  }
+}
+</file>
+
+<file path="hosts/khazad-dum/hardware-configuration.nix">
+# Do not modify this file!  It was generated by ‘nixos-generate-config’
+# and may be overwritten by future invocations.  Please make changes
+# to /etc/nixos/configuration.nix instead.
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
+
+{
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+
+  boot.initrd.availableKernelModules = [
+    "nvme"
+    "xhci_pci"
+    "thunderbolt"
+    "usbhid"
+  ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.extraModulePackages = [ ];
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/a05a165e-78e9-458c-8628-603b41f33d4f";
+    fsType = "ext4";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/F094-182C";
+    fsType = "vfat";
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
+  };
+
+  swapDevices = [ ];
+
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+}
+</file>
+
+<file path="hosts/khazad-dum/i18n.nix">
+{ ... }:
+{
+  time.timeZone = "Europe/Paris";
+  console.keyMap = "fr";
+
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "fr_FR.UTF-8";
+      LC_IDENTIFICATION = "fr_FR.UTF-8";
+      LC_MEASUREMENT = "fr_FR.UTF-8";
+      LC_MONETARY = "fr_FR.UTF-8";
+      LC_NAME = "fr_FR.UTF-8";
+      LC_NUMERIC = "fr_FR.UTF-8";
+      LC_PAPER = "fr_FR.UTF-8";
+      LC_TELEPHONE = "fr_FR.UTF-8";
+      LC_TIME = "fr_FR.UTF-8";
+    };
+  };
+}
+</file>
+
+<file path="hosts/valinor/home-manager/home.nix">
+{ ... }:
+{
+  imports = [
+    ./modules.nix
+    ./packages.nix
+    ./services.nix
+  ] ++ (import ../../../modules/home-manager);
+  xdg.enable = true;
+
+  home = {
+    username = "datahearth";
+    homeDirectory = "/home/datahearth";
+    stateVersion = "24.11";
+  };
+}
+</file>
+
+<file path="hosts/valinor/home-manager/services.nix">
+{
+  services = {
+    ssh-agent.enable = true;
+
+    gpg-agent = {
+      enable = true;
+      defaultCacheTtl = 86400;
+      maxCacheTtl = 86400;
+    };
+  };
+}
+</file>
+
+<file path="hosts/valinor/hardware-configuration.nix">
+# Do not modify this file!  It was generated by ‘nixos-generate-config’
+# and may be overwritten by future invocations.  Please make changes
+# to /etc/nixos/configuration.nix instead.
+{ config, lib, pkgs, modulesPath, ... }:
+
+{
+  imports =
+    [ (modulesPath + "/installer/scan/not-detected.nix")
+    ];
+
+  boot.initrd.availableKernelModules = [ "nvme" "ahci" "xhci_pci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.extraModulePackages = [ ];
+
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/f25fe1f9-74a6-46ef-a948-b56f39ea46de";
+      fsType = "ext4";
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/8F7D-BDEB";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
+
+  fileSystems."/mnt/Gondoline" =
+    { device = "/dev/disk/by-uuid/87abd77b-5ad5-4444-8046-a23d14418f12";
+      fsType = "xfs";
+    };
+
+  fileSystems."/mnt/Erebor/Thorin" =
+    { device = "/dev/disk/by-uuid/89c844a1-0b1f-454f-8750-121d71c16f12";
+      fsType = "ext4";
+    };
+
+  fileSystems."/mnt/Erebor/Dain" =
+    { device = "/dev/disk/by-uuid/8ab6455d-05eb-4f81-b29d-80eb3d57f9ad";
+      fsType = "ext4";
+    };
+
+  fileSystems."/mnt/Erebor/War-goats" =
+    { device = "/dev/disk/by-uuid/0871cc76-6439-49cc-8f8f-566be2b79df4";
+      fsType = "ext4";
+    };
+
+  swapDevices = [ ];
+
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.docker0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp5s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp4s0.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+}
+</file>
+
+<file path="hosts/valinor/locales.nix">
+{
+  services.xserver.xkb.layout = "fr";
+  console.useXkbConfig = true;
+  i18n.defaultLocale = "en_US.UTF-8";
+}
+</file>
+
+<file path="hosts/valinor/systemd.nix">
+{ pkgs, config, ... }:
+{
+  systemd = {
+    timers = {
+      "storj-backup" = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          onActiveSec = "2d";
+          OnBootSec = "5min";
+          OnCalendar = "*-*-* 02:00:00";
+        };
+      };
+      "gondoline-backup" = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          onActiveSec = "2d";
+          OnBootSec = "5min";
+          OnCalendar = "*-*-* 02:00:00";
+        };
+      };
+    };
+
+    services =
+      let
+        path = with pkgs; [
+          restic
+          rclone
+          curl
+          docker
+        ];
+        environment = {
+          HOME = config.users.users.datahearth.home;
+          XDG_CACHE_HOME = "${config.users.users.datahearth.home}/.cache";
+          XDG_CONFIG_HOME = "${config.users.users.datahearth.home}/.config";
+        };
+        backups_secrets = "/run/secrets/backups";
+        pgsql16_bak = "/tmp/pgsql16-backup.sql";
+        pgsql17_bak = "/tmp/pgsql17-backup.sql";
+      in
+      {
+        NetworkManager-wait-online.enable = false;
+        "storj-backup" =
+          let
+            storj_secrets = "${backups_secrets}/storj";
+          in
+          {
+            inherit path;
+
+            serviceConfig.Type = "oneshot";
+            environment = {
+              RESTIC_REPOSITORY_FILE = "${storj_secrets}/repository";
+              RESTIC_PASSWORD_FILE = "${storj_secrets}/password";
+            } // environment;
+            script = ''
+              docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql16 pg_dumpall -U postgres > ${pgsql16_bak}
+              docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql17 pg_dumpall -U postgres > ${pgsql17_bak}
+
+              restic backup \
+                --files-from ${storj_secrets}/include.txt \
+                --exclude-file ${storj_secrets}/exclude.txt \
+                ${pgsql16_bak} ${pgsql17_bak}
+
+              restic forget --keep-last 2 --prune
+
+              curl -fsS -m 10 --retry 5 -o /dev/null $(cat ${storj_secrets}/ping_url)
+            '';
+          };
+        "gondoline-backup" =
+          let
+            gondoline_secrets = "${backups_secrets}/gondoline";
+          in
+          {
+            inherit path;
+
+            serviceConfig.Type = "oneshot";
+            environment = {
+              RESTIC_REPOSITORY_FILE = "${gondoline_secrets}/repository";
+              RESTIC_PASSWORD_FILE = "${gondoline_secrets}/password";
+            } // environment;
+            script = ''
+              docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql16 pg_dumpall -U postgres > ${pgsql16_bak}
+              docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql17 pg_dumpall -U postgres > ${pgsql17_bak}
+
+              restic backup \
+                --files-from ${gondoline_secrets}/include.txt \
+                --exclude-file ${gondoline_secrets}/exclude.txt \
+                ${pgsql16_bak} ${pgsql17_bak}
+
+              restic forget --keep-last 2 --prune
+
+              curl -fsS -m 10 --retry 5 -o /dev/null $(cat ${gondoline_secrets}/ping_url)
+            '';
+          };
+      };
+  };
+}
+</file>
+
+<file path="hosts/valinor/users.nix">
+{ pkgs, config, ... }:
+{
+  users = {
+    defaultUserShell = pkgs.zsh;
+    motd = ''
+       __     __    _ _                  
+       \ \   / /_ _| (_)_ __   ___  _ __ 
+        \ \ / / _` | | | '_ \ / _ \| '__|
+         \ V / (_| | | | | | | (_) | |   
+          \_/ \__,_|_|_|_| |_|\___/|_|   
+
+      Bienvenue à Valinor,
+      où la lumière des Deux Arbres brille éternellement,
+      et les échos des chants anciens emplissent l'air.
+
+      Ici, sous les étoiles scintillantes,
+      que votre chemin soit guidé par la sagesse et la paix.
+
+      « Dans ce royaume de beauté,
+      chaque voyage est un nouveau récit en attente d'être raconté. »
+
+      ----------------------------------------------------
+    '';
+
+    groups = {
+      actinium = { };
+    };
+
+    users = {
+      datahearth = {
+        useDefaultShell = true;
+        isNormalUser = true;
+        description = "Antoine Langlois";
+        extraGroups = [
+          "wheel"
+          "docker"
+          "libvirtd"
+          "networkmanager"
+          config.services.kubo.group
+        ];
+      };
+
+      actinium = {
+        description = "Actinium service account for managing deployed apps";
+        group = "actinium";
+        extraGroups = [ "docker" ];
+        isNormalUser = true;
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB/Se1hLsYsLyJjNvSXB50p28h1dJ/IdNQovrdJbuXYI corboncyril@gmail.com"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMls5ShnyasCDBIfYuzXRFinLD7xOuaOCqVjm+0pY+OH dev@antoine-langlois.net"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICsI1zpu+UKBIl6s8+Meca8ZtiGH3zG8cqpaEqnT4Lb8"
+        ];
+      };
+    };
+  };
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { };
+    users.datahearth = import ./home-manager/home.nix;
+  };
+}
+</file>
+
+<file path="modules/home-manager/looking-glass/client.ini">
+[win]
+showFPS = yes
+
+[input]
+escapeKey = KEY_RIGHTCTRL
+</file>
+
+<file path="modules/home-manager/looking-glass/default.nix">
+{ ... }:
+{
+  xdg.configFile = {
+    "looking-glass/client.ini".source = ./client.ini;
+  };
+}
+</file>
+
+<file path="modules/home-manager/rofi-wayland/clipboard.rasi">
+/**
+ *
+ * Author : Aditya Shakya (adi1090x)
+ * Github : @adi1090x
+ * 
+ * Rofi Theme File
+ * Rofi Version: 1.7.3
+ **/
+
+/*****----- Configuration -----*****/
+configuration {
+  show-icons: false;
+}
+
+/*****----- Global Properties -----*****/
+* {
+  border-colour:               var(selected);
+  handle-colour:               var(selected);
+  background-colour:           var(background);
+  foreground-colour:           var(foreground);
+  alternate-background:        var(background-alt);
+  normal-background:           var(background);
+  normal-foreground:           var(foreground);
+  urgent-background:           var(urgent);
+  urgent-foreground:           var(background);
+  active-background:           var(active);
+  active-foreground:           var(background);
+  selected-normal-background:  var(selected);
+  selected-normal-foreground:  var(background);
+  selected-urgent-background:  var(active);
+  selected-urgent-foreground:  var(background);
+  selected-active-background:  var(urgent);
+  selected-active-foreground:  var(background);
+  alternate-normal-background: var(background);
+  alternate-normal-foreground: var(foreground);
+  alternate-urgent-background: var(urgent);
+  alternate-urgent-foreground: var(background);
+  alternate-active-background: var(active);
+  alternate-active-foreground: var(background);
+
+  font: "Mononoki Nerd Font 14";
+  background:     #1E2127FF;
+  background-alt: #282B31FF;
+  foreground:     #FFFFFFFF;
+  selected:       #61AFEFFF;
+  active:         #98C379FF;
+  urgent:         #E06C75FF;
+}
+
+/*****----- Main Window -----*****/
+window {
+    /* properties for window widget */
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       1000px;
+    x-offset:                    0px;
+    y-offset:                    0px;
+
+    /* properties for all widgets */
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               10px;
+    border-color:                @border-colour;
+    cursor:                      "default";
+    background-color:            @background-colour;
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     30px;
+    border:                      0px solid;
+    border-radius:               0px 0px 0px 0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    children:                    [ "inputbar", "message", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    children:                    [ "textbox-prompt-colon", "entry", "mode-switcher" ];
+}
+
+prompt {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+textbox-prompt-colon {
+    enabled:                     true;
+    padding:                     5px 0px;
+    expand:                      false;
+    str:                         " ";
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+entry {
+    enabled:                     true;
+    padding:                     5px 0px;
+    background-color:            inherit;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 "Search...";
+    placeholder-color:           inherit;
+}
+num-filtered-rows {
+    enabled:                     true;
+    expand:                      false;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+textbox-num-sep {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "/";
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+num-rows {
+    enabled:                     true;
+    expand:                      false;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+case-indicator {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+
+/*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     1;
+    lines:                       10;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   true;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    
+    spacing:                     5px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    cursor:                      "default";
+}
+scrollbar {
+    handle-width:                5px ;
+    handle-color:                @handle-colour;
+    border-radius:               10px;
+    background-color:            @alternate-background;
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     5px 10px;
+    border:                      0px solid;
+    border-radius:               10px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    cursor:                      pointer;
+}
+element normal.normal {
+    background-color:            var(normal-background);
+    text-color:                  var(normal-foreground);
+}
+element normal.urgent {
+    background-color:            var(urgent-background);
+    text-color:                  var(urgent-foreground);
+}
+element normal.active {
+    background-color:            var(active-background);
+    text-color:                  var(active-foreground);
+}
+element selected.normal {
+    background-color:            var(selected-normal-background);
+    text-color:                  var(selected-normal-foreground);
+}
+element selected.urgent {
+    background-color:            var(selected-urgent-background);
+    text-color:                  var(selected-urgent-foreground);
+}
+element selected.active {
+    background-color:            var(selected-active-background);
+    text-color:                  var(selected-active-foreground);
+}
+element alternate.normal {
+    background-color:            var(alternate-normal-background);
+    text-color:                  var(alternate-normal-foreground);
+}
+element alternate.urgent {
+    background-color:            var(alternate-urgent-background);
+    text-color:                  var(alternate-urgent-foreground);
+}
+element alternate.active {
+    background-color:            var(alternate-active-background);
+    text-color:                  var(alternate-active-foreground);
+}
+element-icon {
+    background-color:            transparent;
+    text-color:                  inherit;
+    size:                        24px;
+    cursor:                      inherit;
+}
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    highlight:                   inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+/*****----- Mode Switcher -----*****/
+mode-switcher{
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
+button {
+    padding:                     5px 10px;
+    border:                      0px solid;
+    border-radius:               10px;
+    border-color:                @border-colour;
+    background-color:            @alternate-background;
+    text-color:                  inherit;
+    cursor:                      pointer;
+}
+button selected {
+    background-color:            var(selected-normal-background);
+    text-color:                  var(selected-normal-foreground);
+}
+
+/*****----- Message -----*****/
+message {
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px 0px 0px 0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
+textbox {
+    padding:                     8px 10px;
+    border:                      0px solid;
+    border-radius:               10px;
+    border-color:                @border-colour;
+    background-color:            @alternate-background;
+    text-color:                  @foreground-colour;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    highlight:                   none;
+    placeholder-color:           @foreground-colour;
+    blink:                       true;
+    markup:                      true;
+}
+error-message {
+    padding:                     10px;
+    border:                      2px solid;
+    border-radius:               10px;
+    border-color:                @border-colour;
+    background-color:            @background-colour;
+    text-color:                  @foreground-colour;
+}
+</file>
+
+<file path="modules/home-manager/rofi-wayland/clipboard.sh">
+#!/usr/bin/env bash
+
+theme="$HOME/.config/rofi/clipboard.rasi"
+
+# Rofi CMD
+rofi_cmd() {
+  rofi -dmenu \
+    -p "Clipboard" \
+    -theme "$theme"
+}
+
+cliphist list | sed -E "s/(.{40}).*$/\1.../" |
+  rofi_cmd |
+  cliphist decode |
+  wl-copy
+</file>
+
+<file path="modules/home-manager/rofi-wayland/confirm.rasi">
+/**
+ *
+ * Author : Aditya Shakya (adi1090x)
+ * Github : @adi1090x
+ * 
+ * Rofi Theme File
+ * Rofi Version: 1.7.3
+ **/
+
+/*****----- Configuration -----*****/
+configuration {
+    show-icons:                 false;
+}
+
+/*****----- Global Properties -----*****/
+* {
+  font: "Mononoki Nerd Font 10";
+  background:     #1E2127FF;
+  background-alt: #282B31FF;
+  foreground:     #FFFFFFFF;
+  selected:       #61AFEFFF;
+  active:         #98C379FF;
+  urgent:         #E06C75FF;
+}
+
+/*****----- Main Window -----*****/
+window {
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       500px;
+    border-radius:               20px;
+    cursor:                      "default";
+    background-color:            @background;
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    spacing:                     30px;
+    padding:                     30px;
+    background-color:            transparent;
+    children:                    [ "message", "listview" ];
+}
+
+/*****----- Message -----*****/
+message {
+    margin:                      0px;
+    padding:                     20px;
+    border-radius:               20px;
+    background-color:            @background-alt;
+    text-color:                  @foreground;
+}
+textbox {
+    background-color:            inherit;
+    text-color:                  inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+    placeholder-color:           @foreground;
+    blink:                       true;
+    markup:                      true;
+}
+
+/*****----- Listview -----*****/
+listview {
+    columns:                     2;
+    lines:                       1;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    
+    spacing:                     30px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      "default";
+}
+
+/*****----- Elements -----*****/
+element {
+    padding:                     60px 10px;
+    border-radius:               20px;
+    background-color:            @background-alt;
+    text-color:                  @foreground;
+    cursor:                      pointer;
+}
+element-text {
+    font:                        "Mononoki 48";
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+}
+element selected.normal {
+    background-color:            var(selected);
+    text-color:                  var(background);
+}
+</file>
+
+<file path="modules/home-manager/rofi-wayland/dmenu.rasi">
+/**
+ *
+ * Author : Aditya Shakya (adi1090x)
+ * Github : @adi1090x
+ * 
+ * Rofi Theme File
+ * Rofi Version: 1.7.3
+ **/
+
+/*****----- Configuration -----*****/
+configuration {
+	modi:                       "drun";
+  show-icons:                 false;
+  display-drun:               "";
+	drun-display-format:        "{name}";
+}
+
+/*****----- Global Properties -----*****/
+* {
+  border-colour:               var(selected);
+  handle-colour:               var(foreground);
+  background-colour:           var(background);
+  foreground-colour:           var(foreground);
+  alternate-background:        var(background-alt);
+  normal-background:           var(background);
+  normal-foreground:           var(foreground);
+  urgent-background:           var(urgent);
+  urgent-foreground:           var(background);
+  active-background:           var(active);
+  active-foreground:           var(background);
+  selected-normal-background:  var(selected);
+  selected-normal-foreground:  var(background);
+  selected-urgent-background:  var(active);
+  selected-urgent-foreground:  var(background);
+  selected-active-background:  var(urgent);
+  selected-active-foreground:  var(background);
+  alternate-normal-background: var(background);
+  alternate-normal-foreground: var(foreground);
+  alternate-urgent-background: var(urgent);
+  alternate-urgent-foreground: var(background);
+  alternate-active-background: var(active);
+  alternate-active-foreground: var(background);
+
+  font: "Mononoki Nerd Font 10";
+  background:     #1E2127FF;
+  background-alt: #282B31FF;
+  foreground:     #FFFFFFFF;
+  selected:       #61AFEFFF;
+  active:         #98C379FF;
+  urgent:         #E06C75FF;
+}
+
+/*****----- Main Window -----*****/
+window {
+    /* properties for window widget */
+    transparency:                "real";
+    location:                    south;
+    anchor:                      south;
+    fullscreen:                  false;
+    width:                       100%;
+    x-offset:                    0px;
+    y-offset:                    0px;
+
+    children:                    [ horibox ];
+
+    /* properties for all widgets */
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    cursor:                      "default";
+    background-color:            @background-colour;
+}
+
+/*****----- Horizontal Box -----*****/
+horibox {
+    spacing:                     0px;
+    background-color:            @background-colour;
+    text-color:                  @foreground-colour;
+    orientation:                 horizontal;
+    children:                    [ "prompt", "textbox-prompt-colon","entry", "listview" ];
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    enabled:                     true;
+    spacing:                     20px;
+    margin:                      0px;
+    padding:                     40px;
+    border:                      0px solid;
+    border-radius:               0px 0px 0px 0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    children:                    [ "inputbar", "message", "listview", "mode-switcher" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     8px;
+    border:                      0px solid;
+    border-radius:               4px;
+    border-color:                @border-colour;
+    background-color:            @alternate-background;
+    text-color:                  @foreground-colour;
+    children:                    [ "prompt", "entry" ];
+}
+
+prompt {
+    enabled:                     true;
+    padding:                     10px;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+textbox-prompt-colon {
+    enabled:                     true;
+    padding:                     10px 0px 10px 0px;
+    expand:                      false;
+    str:                         "::";
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+entry {
+    enabled:                     true;
+    padding:                     10px;
+    expand:                      false;
+    width:                       10em;
+    background-color:            inherit;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 "search...";
+    placeholder-color:           inherit;
+}
+num-filtered-rows {
+    enabled:                     true;
+    expand:                      false;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+textbox-num-sep {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "/";
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+num-rows {
+    enabled:                     true;
+    expand:                      false;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+case-indicator {
+    enabled:                     true;
+    background-color:            inherit;
+    text-color:                  inherit;
+}
+
+/*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     1;
+    lines:                       100;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      horizontal;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    cursor:                      "default";
+}
+scrollbar {
+    handle-width:                5px ;
+    handle-color:                @handle-colour;
+    border-radius:               8px;
+    background-color:            @alternate-background;
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    spacing:                     8px;
+    margin:                      0px;
+    padding:                     10px 8px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+    cursor:                      pointer;
+}
+element normal.normal {
+    background-color:            var(normal-background);
+    text-color:                  var(normal-foreground);
+}
+element normal.urgent {
+    background-color:            var(urgent-background);
+    text-color:                  var(urgent-foreground);
+}
+element normal.active {
+    background-color:            var(active-background);
+    text-color:                  var(active-foreground);
+}
+element selected.normal {
+    background-color:            var(selected-normal-background);
+    text-color:                  var(selected-normal-foreground);
+}
+element selected.urgent {
+    background-color:            var(selected-urgent-background);
+    text-color:                  var(selected-urgent-foreground);
+}
+element selected.active {
+    background-color:            var(selected-active-background);
+    text-color:                  var(selected-active-foreground);
+}
+element alternate.normal {
+    background-color:            var(alternate-normal-background);
+    text-color:                  var(alternate-normal-foreground);
+}
+element alternate.urgent {
+    background-color:            var(alternate-urgent-background);
+    text-color:                  var(alternate-urgent-foreground);
+}
+element alternate.active {
+    background-color:            var(alternate-active-background);
+    text-color:                  var(alternate-active-foreground);
+}
+element-icon {
+    background-color:            transparent;
+    text-color:                  inherit;
+    size:                        24px;
+    cursor:                      inherit;
+}
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    highlight:                   inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+/*****----- Mode Switcher -----*****/
+mode-switcher{
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               4px;
+    border-color:                @border-colour;
+    background-color:            @alternate-background;
+    text-color:                  @foreground-colour;
+}
+button {
+    padding:                     8px;
+    border:                      0px solid;
+    border-radius:               4px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      pointer;
+}
+button selected {
+    background-color:            var(normal-foreground);
+    text-color:                  var(normal-background);
+}
+
+/*****----- Message -----*****/
+message {
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px 0px 0px 0px;
+    border-color:                @border-colour;
+    background-color:            transparent;
+    text-color:                  @foreground-colour;
+}
+textbox {
+    padding:                     8px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    background-color:            @alternate-background;
+    text-color:                  @foreground-colour;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    highlight:                   none;
+    placeholder-color:           @foreground-colour;
+    blink:                       true;
+    markup:                      true;
+}
+error-message {
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-colour;
+    background-color:            @background-colour;
+    text-color:                  @foreground-colour;
+}
+</file>
+
+<file path="modules/home-manager/rofi-wayland/dmenu.sh">
+#!/usr/bin/env bash
+
+dir="$HOME/.config/rofi"
+
+rofi \
+  -show drun \
+  -theme "${dir}/dmenu.rasi"
+</file>
+
+<file path="modules/home-manager/rofi-wayland/powermenu.rasi">
+/**
+ *
+ * Author : Aditya Shakya (adi1090x)
+ * Github : @adi1090x
+ * 
+ * Rofi Theme File
+ * Rofi Version: 1.7.3
+ **/
+
+/*****----- Configuration -----*****/
+configuration {
+    show-icons:                 false;
+}
+
+/*****----- Global Properties -----*****/
+* {
+  font: "Mononoki Nerd Font 10";
+  background:     #1E2127FF;
+  background-alt: #282B31FF;
+  foreground:     #FFFFFFFF;
+  selected:       #61AFEFFF;
+  active:         #98C379FF;
+  urgent:         #E06C75FF;
+}
+
+/*****----- Main Window -----*****/
+window {
+    /* properties for window widget */
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       605px;
+    x-offset:                    0px;
+    y-offset:                    0px;
+
+    /* properties for all widgets */
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               4px;
+    border-color:                @selected;
+    cursor:                      "default";
+    background-color:            @background;
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     20px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @selected;
+    background-color:            transparent;
+    children:                    [ "inputbar", "message", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px;
+    border-radius:               0px;
+    border-color:                @selected;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    children:                    [ "textbox-prompt-colon", dummy, "prompt"];
+}
+
+dummy {
+    background-color:            transparent;
+}
+
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         " ";
+    padding:                     10px 14px;
+    border-radius:               4px;
+    background-color:            @urgent;
+    text-color:                  @background;
+}
+prompt {
+    enabled:                     true;
+    padding:                     10px;
+    border-radius:               4px;
+    background-color:            @active;
+    text-color:                  @background;
+}
+
+/*****----- Message -----*****/
+message {
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     10px;
+    border:                      0px solid;
+    border-radius:               4px;
+    border-color:                @selected;
+    background-color:            @background-alt;
+    text-color:                  @foreground;
+}
+textbox {
+    background-color:            inherit;
+    text-color:                  inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+    placeholder-color:           @foreground;
+    blink:                       true;
+    markup:                      true;
+}
+error-message {
+    padding:                     10px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @selected;
+    background-color:            @background;
+    text-color:                  @foreground;
+}
+
+/*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     5;
+    lines:                       1;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @selected;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      "default";
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    spacing:                     0px;
+    margin:                      0px;
+    padding:                     10px;
+    border:                      0px solid;
+    border-radius:               4px;
+    border-color:                @selected;
+    background-color:            @background-alt;
+    text-color:                  @foreground;
+    cursor:                      pointer;
+}
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+}
+element selected.normal {
+    border:                      0px 2px 0px 2px;
+    border-radius:               4px;
+    background-color:            var(selected);
+    text-color:                  var(background);
+}
+</file>
+
+<file path="modules/home-manager/rofi-wayland/powermenu.sh">
+#!/usr/bin/env bash
+
+# Current Theme
+dir="$HOME/.config/rofi"
+
+# CMDs
+uptime=$(awk '{printf("%d days, %d hours, %d minutes\n",($1/60/60/24),($1/60/60%24),($1/60%60))}' /proc/uptime)
+
+# Options
+shutdown='  Shutdown'
+reboot='󰑐  Reboot'
+lock='  Lock'
+suspend='󰤄  Sleep'
+logout='  Logout'
+yes=''
+no=''
+
+# Rofi CMD
+rofi_cmd() {
+  rofi -dmenu \
+    -p "Goodbye ${USER}" \
+    -mesg "Uptime: $uptime" \
+    -theme "${dir}/powermenu.rasi"
+}
+
+# Confirmation CMD
+confirm_cmd() {
+  rofi -dmenu \
+    -p 'Confirmation' \
+    -mesg 'Are you Sure?' \
+    -theme "${dir}/confirm.rasi"
+}
+
+# Ask for confirmation
+confirm_exit() {
+  echo -e "$yes\n$no" | confirm_cmd
+}
+
+# Actions
+chosen=$(echo -e "$suspend\n$lock\n$logout\n$reboot\n$shutdown" | rofi_cmd)
+case ${chosen} in
+"$shutdown")
+  if [[ $(confirm_exit) == "$yes" ]]; then
+    systemctl poweroff
+  fi
+  ;;
+"$reboot")
+  if [[ $(confirm_exit) == "$yes" ]]; then
+    systemctl reboot
+  fi
+  ;;
+"$lock")
+  sleep 0.5s
+  hyprlock &
+  disown
+  ;;
+"$suspend")
+  playerctl pause
+  sleep 0.5s
+  hyprlock &
+  disown
+  systemctl suspend
+  ;;
+"$logout")
+  if [[ $(confirm_exit) == "$yes" ]]; then
+    hyprctl dispatch exit
+  fi
+  ;;
+esac
+</file>
+
+<file path="modules/home-manager/rofi-wayland/screenshot.rasi">
+/**
+ *
+ * Author : Aditya Shakya (adi1090x)
+ * Github : @adi1090x
+ * 
+ * Rofi Theme File
+ * Rofi Version: 1.7.3
+ **/
+
+/*****----- Configuration -----*****/
+configuration {
+    show-icons:                 false;
+}
+
+/*****----- Global Properties -----*****/
+* {
+  font: "Mononoki Nerd Font 10";
+  background:     #1E2127FF;
+  background-alt: #282B31FF;
+  foreground:     #FFFFFFFF;
+  selected:       #61AFEFFF;
+  active:         #98C379FF;
+  urgent:         #E06C75FF;
+}
+
+/*****----- Main Window -----*****/
+window {
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       800px;
+    x-offset:                    0px;
+    y-offset:                    0px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               12px;
+    border-color:                @selected;
+    cursor:                      "default";
+    background-color:            @background;
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    enabled:                     true;
+    spacing:                     15px;
+    margin:                      0px;
+    padding:                     30px;
+    background-color:            transparent;
+    children:                    [ "inputbar", "message", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     true;
+    spacing:                     10px;
+    padding:                     0px;
+    border:                      0px;
+    border-radius:               12px;
+    border-color:                @selected;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    children:                    [ "prompt" ];
+}
+
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "";
+    padding:                     10px 10px;
+    border-radius:               12px;
+    background-color:            @urgent;
+    text-color:                  @background;
+}
+prompt {
+    enabled:                     true;
+    padding:                     10px;
+    border-radius:               12px;
+    background-color:            @active;
+    text-color:                  @background;
+}
+
+/*****----- Message -----*****/
+message {
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     10px;
+    border:                      0px solid;
+    border-radius:               12px;
+    border-color:                @selected;
+    background-color:            @background-alt;
+    text-color:                  @foreground;
+}
+textbox {
+    background-color:            inherit;
+    text-color:                  inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+/*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     6;
+    lines:                       1;
+    cycle:                       true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    
+    spacing:                     15px;
+    background-color:            transparent;
+    cursor:                      "default";
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    padding:                     30px 10px;
+    border:                      0px solid;
+    border-radius:               12px;
+    border-color:                @selected;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      pointer;
+}
+element-text {
+    font:                        "Mononoki 28";
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+}
+
+element normal.normal,
+element alternate.normal {
+    background-color:            var(background-alt);
+    text-color:                  var(foreground);
+}
+element normal.urgent,
+element alternate.urgent,
+element selected.active {
+    background-color:            var(urgent);
+    text-color:                  var(background);
+}
+element normal.active,
+element alternate.active,
+element selected.urgent {
+    background-color:            var(active);
+    text-color:                  var(background);
+}
+element selected.normal {
+    background-color:            var(selected);
+    text-color:                  var(background);
+}
+</file>
+
+<file path="modules/home-manager/rofi-wayland/screenshot.sh">
+#!/usr/bin/env bash
+
+theme="$HOME/.config/rofi/screenshot.rasi"
+out_dir="$HOME/Pictures/screenshots"
+filename=$(date '+%Y%m%d-%H:%M:%S').png
+prompt='Screenshot'
+mesg="File: $out_dir/$filename"
+
+# Options
+option_1=" "
+option_2=" "
+option_3="󰣆 "
+option_4="󰞤 "
+
+# Rofi CMD
+rofi_cmd() {
+  rofi -dmenu \
+    -p "$prompt" \
+    -mesg "$mesg" \
+    -theme "$theme"
+}
+
+# Actions
+chosen="$(echo -e "$option_1\n$option_2\n$option_3\n$option_4" | rofi_cmd)"
+case $chosen in
+"$option_1")
+  grim -g "$(slurp -o -r -c '#ff0000ff')" - | satty --filename - --output-filename "$out_dir/$filename"
+  ;;
+
+"$option_2")
+  HYPRSHOT_DIR=$out_dir hyprshot --mode output --filename "$filename"
+  ;;
+
+"$option_3")
+  HYPRSHOT_DIR=$out_dir hyprshot --mode window --filename "$filename"
+  ;;
+
+"$option_4")
+  HYPRSHOT_DIR=$out_dir hyprshot --mode region --filename "$filename"
+  ;;
+esac
+</file>
+
+<file path="modules/home-manager/swaync/style.css">
+* {
+⋮----
+trough highlight {
+⋮----
+scale trough {
+⋮----
+slider {
+⋮----
+.floating-notifications.background .notification-row .notification-background {
+⋮----
+.floating-notifications.background
+⋮----
+.control-center {
+⋮----
+.control-center .widget-title > label {
+⋮----
+.control-center .widget-title button {
+⋮----
+.control-center .widget-title button:hover {
+⋮----
+.control-center .widget-title button:active {
+⋮----
+.control-center .notification-row .notification-background {
+⋮----
+.control-center .notification-row .notification-background .notification {
+⋮----
+.control-center
+⋮----
+.control-center .notification-row .notification-background .close-button {
+⋮----
+.close-button {
+⋮----
+.control-center .notification-row .notification-background .close-button:hover {
+⋮----
+.control-center .notification-row .notification-background:hover {
+⋮----
+.control-center .notification-row .notification-background:active {
+⋮----
+.notification.critical progress {
+⋮----
+.notification.low progress,
+⋮----
+.control-center-dnd {
+⋮----
+.control-center-dnd:checked {
+⋮----
+.control-center-dnd slider {
+⋮----
+.widget-dnd {
+⋮----
+.widget-dnd > switch {
+⋮----
+.widget-dnd > switch:checked {
+⋮----
+.widget-dnd > switch slider {
+⋮----
+.widget-mpris .widget-mpris-player {
+⋮----
+.widget-mpris .widget-mpris-title {
+⋮----
+.widget-mpris .widget-mpris-subtitle {
+⋮----
+.widget-menubar > box > .menu-button-bar > button > label {
+⋮----
+.widget-menubar > box > .menu-button-bar > :last-child {
+⋮----
+.power-buttons button:hover,
+⋮----
+.control-center .widget-label > label {
+⋮----
+.widget-buttons-grid {
+⋮----
+.widget-buttons-grid > flowbox > flowboxchild > button label {
+⋮----
+.widget-volume {
+⋮----
+.widget-volume label {
+⋮----
+.widget-volume trough highlight {
+⋮----
+.widget-backlight trough highlight {
+⋮----
+.widget-backlight scale {
+⋮----
+.widget-backlight label {
+⋮----
+.widget-backlight .KB {
+⋮----
+.image {
+</file>
+
+<file path="modules/home-manager/waybar/styles/backlight.css">
+#backlight {
+⋮----
+border-bottom: 2px solid @maroon;
+color: @maroon;
+</file>
+
+<file path="modules/home-manager/waybar/styles/battery.css">
+#battery {
+⋮----
+border-bottom: 2px solid @yellow;
+color: @yellow;
+⋮----
+#battery.plugged,
+⋮----
+border-bottom: 2px solid @green;
+color: @green;
+⋮----
+#battery.warning:not(.charging) {
+⋮----
+background-color: @peach; /* Peach */
+color: @base; /* Base */
+⋮----
+#battery.critical:not(.charging) {
+⋮----
+background-color: @red; /* Red */
+</file>
+
+<file path="modules/home-manager/waybar/styles/clock.css">
+#clock {
+⋮----
+color: @teal;
+</file>
+
+<file path="modules/home-manager/waybar/styles/colors.css">
+@define-color rosewater #f4dbd6;
+@define-color flamingo #f0c6c6;
+@define-color pink #f5bde6;
+@define-color mauve #c6a0f6;
+@define-color red #ed8796;
+@define-color maroon #ee99a0;
+@define-color peach #f5a97f;
+@define-color yellow #eed49f;
+@define-color green #a6da95;
+@define-color teal #8bd5ca;
+@define-color sky #91d7e3;
+@define-color sapphire #7dc4e4;
+@define-color blue #8aadf4;
+@define-color lavender #b7bdf8;
+@define-color text #cad3f5;
+@define-color subtext1 #b8c0e0;
+@define-color subtext0 #a5adcb;
+@define-color overlay2 #939ab7;
+@define-color overlay1 #8087a2;
+@define-color overlay0 #6e738d;
+@define-color surface2 #5b6078;
+@define-color surface1 #494d64;
+@define-color surface0 #363a4f;
+@define-color base #24273a;
+@define-color mantle #1e2030;
+@define-color crust #181926;
+</file>
+
+<file path="modules/home-manager/waybar/styles/cpu.css">
+#cpu {
+⋮----
+color: @blue;
+</file>
+
+<file path="modules/home-manager/waybar/styles/disk.css">
+#disk {
+⋮----
+border-bottom: 2px solid @flamingo;
+color: @flamingo;
+</file>
+
+<file path="modules/home-manager/waybar/styles/memory.css">
+#memory {
+⋮----
+border-bottom: 2px solid @green;
+color: @green;
+</file>
+
+<file path="modules/home-manager/waybar/styles/network.css">
+#network {
+⋮----
+border-bottom: 2px solid @peach;
+color: @peach;
+⋮----
+#network.speed {
+⋮----
+border-bottom: 2px solid @lavender;
+color: @lavender;
+</file>
+
+<file path="modules/home-manager/waybar/styles/notifications.css">
+#custom-notification {
+⋮----
+border-bottom: 2px solid @mauve;
+color: @mauve;
+⋮----
+#custom-notification.empty {
+</file>
+
+<file path="modules/home-manager/waybar/styles/pulseaudio.css">
+#pulseaudio.output {
+⋮----
+color: @yellow;
+border-bottom: 2px solid @yellow;
+⋮----
+#pulseaudio.input {
+⋮----
+border-bottom: 2px solid @sapphire;
+color: @sapphire;
+⋮----
+#pulseaudio.input.source-muted {
+⋮----
+#pulseaudio.output.muted {
+</file>
+
+<file path="modules/home-manager/waybar/styles/tray.css">
+#tray {
+⋮----
+border-bottom: 2px solid @rosewater;
+color: @rosewater;
+</file>
+
+<file path="modules/home-manager/waybar/styles/workspaces.css">
+#workspaces {
+⋮----
+#workspaces button {
+⋮----
+color: @text;
+⋮----
+#workspaces button:hover {
+⋮----
+#workspaces button.active {
+⋮----
+background: @blue;
+color: @base;
+⋮----
+box-shadow: 0px 0px 2px @blue;
+⋮----
+#workspaces button.urgent {
+⋮----
+background: @red;
+</file>
+
+<file path="modules/home-manager/waybar/modules.json">
+{
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "on-scroll-up": "workspace+1",
+    "on-scroll-down": "workspace-1"
+  },
+  "cpu": {
+    "interval": 2,
+    "format": "  {usage}%",
+    "tooltip": false
+  },
+  "memory": {
+    "interval": 2,
+    "format": "  {used:0.1f}G/{total:0.1f}G",
+    "tooltip": false
+  },
+  "network": {
+    "interval": 5,
+    "format": "{ifname}",
+    "format-wifi": "  {signalStrength}%",
+    "format-ethernet": "󰈀  {ipaddr}",
+    "format-disconnected": "󰌙  Disconnected",
+    "tooltip": false
+  },
+  "network#speed": {
+    "interval": 2,
+    "format": "  {bandwidthDownBytes}   {bandwidthUpBytes}",
+    "max-length": 26
+  },
+  "clock": {
+    "interval": 60,
+    "format": "  {:%a %d - %H:%M}",
+    "tooltip": false
+  },
+  "battery": {
+    "interval": 5,
+    "format": "{capacity}% {icon}",
+    "format-icons": [" ", " ", " ", " ", " "],
+    "format-plugged": " {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "tooltip": false
+  },
+  "pulseaudio#output": {
+    "format": "  {volume}%",
+    "format-muted": "  Muted",
+    "on-click": "pavucontrol",
+    "on-click-right": "amixer sset Master toggle"
+  },
+  "pulseaudio#input": {
+    "format": "{format_source}",
+    "format-source": " On",
+    "format-source-muted": "  Muted",
+    "on-click": "pavucontrol",
+    "on-click-right": "amixer sset Capture toggle",
+    "tooltip": false
+  },
+  "backlight": {
+    "format": "󰛨 {percent}%",
+    "on-scroll-up": "brightnessctl set +5%",
+    "on-scroll-down": "brightnessctl set 5%-"
+  },
+  "disk": {
+    "interval": 15,
+    "format": "󰋊 {free}",
+    "path": "/"
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "󱅫 ",
+      "none": " ",
+      "dnd-notification": "󰂛 ",
+      "dnd-none": "󰪑 ",
+      "inhibited-notification": "󱅫 ",
+      "inhibited-none": " ",
+      "dnd-inhibited-notification": "󰂛 ",
+      "dnd-inhibited-none": " "
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
+  "tray": {
+    "spacing": 10
+  }
+}
+</file>
+
+<file path="modules/home-manager/waybar/style.css">
+* {
+⋮----
+window#waybar {
+⋮----
+background: @base;
+color: @text;
+⋮----
+#clock,
+</file>
+
+<file path="modules/home-manager/zellij/base_layout.kdl">
+layout {
+    default_tab_template {
+        children
+        pane size=1 borderless=true {
+            plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
+                format_left   "{mode} #[fg=#89B4FA,bold]{session}"
+                format_center "{tabs}"
+                format_right  "{command_git_branch} {datetime}"
+                format_space  ""
+
+                border_enabled  "false"
+                border_char     "─"
+                border_format   "#[fg=#6C7086]{char}"
+                border_position "top"
+
+                hide_frame_for_single_pane "true"
+
+                mode_normal  "#[bg=#8aadf4] "
+                mode_tmux    "#[bg=#a6da95] "
+                mode_locked  "#[bg=#f5a97f] "
+
+                tab_normal   "#[fg=#6C7086] {name} "
+                tab_active   "#[fg=#9399B2,bold,italic] {name} "
+
+                command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+                command_git_branch_format      "#[fg=blue] {stdout} "
+                command_git_branch_interval    "10"
+                command_git_branch_rendermode  "static"
+
+                datetime        "#[fg=#6C7086,bold] {format} "
+                datetime_format "%A, %d %b %Y %H:%M"
+                datetime_timezone "Europe/Paris"
+            }
+        }
+    }
+}
+</file>
+
+<file path="modules/hyprland/default.nix">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.nixos_modules.hyprland;
+
+  enable = lib.options.mkEnableOption "hyprland";
+  settings = lib.options.mkOption {
+    description = "Settings for the Hyprland window manager.";
+    type = lib.types.submodule {
+      options = {
+        inherit default_user;
+        inherit nvidia wallpaper;
+        inherit waybar hyprlock kanshi;
+
+        config = lib.options.mkOption {
+          type = lib.types.attrs;
+          description = "Custom Hyprland configuration";
+          default = { };
+        };
+      };
+    };
+  };
+
+  default_user = lib.options.mkOption {
+    type = lib.types.str;
+    description = "Default user across NixOS configuration (NixOS and Home-Manager)";
+  };
+  nvidia = lib.mkEnableOption "nvidia";
+  wallpaper = lib.mkOption {
+    type = lib.types.nullOr lib.types.str;
+    description = "Set wallpaper on Hyprland startup. String must be a valid path pointing to a file";
+    default = null;
+    example = "~/Pictures/wallpaper.jpg";
+  };
+  waybar = lib.mkEnableOption "waybar";
+  hyprlock = lib.mkOption {
+  };
+  kanshi = lib.mkEnableOption "kanshi";
+
+  # Set Nautilus as default app for directories
+  # https://github.com/NixOS/nixpkgs/blob/nixos-25.05/nixos/modules/services/x11/desktop-managers/gnome.nix#L22-L29
+  mimeAppsList = pkgs.writeTextFile {
+    name = "gnome-mimeapps";
+    destination = "/share/applications/mimeapps.list";
+    text = ''
+      [Default Applications]
+      inode/directory=nautilus.desktop;org.gnome.Nautilus.desktop
+    '';
+  };
+in
+{
+  options.nixos_modules.hyprland = {
+    inherit enable settings;
+  };
+
+  config = lib.mkIf cfg.enable {
+    programs.hyprland.enable = true;
+
+    services = {
+      power-profiles-daemon.enable = true;
+      gnome.gnome-keyring.enable = true;
+    };
+
+    xdg.portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+      ];
+      configPackages = with pkgs; [
+        xdg-desktop-portal-gtk
+      ];
+    };
+
+    systemd.user.services = {
+      polkit-gnome-authentication-agent-1 = {
+        description = "polkit-gnome-authentication-agent-1";
+        wantedBy = [ "graphical-session.target" ];
+        wants = [ "graphical-session.target" ];
+        after = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+      };
+      swww-daemon = {
+        description = "swww-daemon";
+        wantedBy = [ "graphical-session.target" ];
+        wants = [ "graphical-session.target" ];
+        after = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.swww}/bin/swww-daemon";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+      };
+    };
+
+    # Required for Nautilus extensions
+    environment.pathsToLink = [
+      "/share/nautilus-python/extensions"
+    ];
+
+    home-manager.users."${cfg.settings.default_user}" = {
+      imports = import ../home-manager;
+
+      home.packages = with pkgs; [
+        # GUI
+        eog
+        gnome-calculator
+        gnome-bluetooth
+        nautilus
+
+        # CLI
+        alsa-utils
+        playerctl
+        brightnessctl
+        wl-clipboard
+        cliphist
+        swww
+      ];
+
+      wayland.windowManager.hyprland =
+        let
+          baseCfg = builtins.fromJSON (builtins.readFile ./hyprland.json);
+        in
+        {
+          enable = true;
+          xwayland.enable = true;
+
+          settings =
+            baseCfg
+            // cfg.settings.config
+            // {
+              exec-once =
+                lib.mkIf cfg.settings.wallpaper != null [ "${pkgs.swww}/bin/swww img ${cfg.settings.wallpaper}" ];
+              input.kb_layout = config.services.xkb.layout;
+            };
+        };
+
+      sessionVariables =
+        {
+          # Set extensions directory
+          NAUTILUS_4_EXTENSION_DIR = "${config.system.path}/lib/nautilus/extensions-4";
+
+          # Override default mimeapps for nautilus
+          XDG_DATA_DIRS = [ "${mimeAppsList}/share" ];
+
+          XDG_SESSION_TYPE = "wayland";
+          NIXOS_OZONE_WL = 1;
+        }
+        // (lib.mkIf cfg.settings.nvidia {
+          WLR_NO_HARDWARE_CURSORS = 1;
+          LIBVA_DRIVER_NAME = "nvidia";
+          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        });
+
+      home_modules = {
+        hyprland.enable = true;
+        rofi-wayland.enable = true; # Required for menus
+
+        swaync.enable = cfg.settings.waybar; # Default notification daemon in waybar settings
+        waybar = cfg.settings.waybar;
+        hyprlock = cfg.settings.hyprlock;
+      };
+
+      services = {
+        network-manager-applet.enable = true;
+        kanshi.enable = cfg.settings.kanshi;
+      };
+    };
+  };
+}
+</file>
+
+<file path="modules/hyprland/hyprland.json">
+{
+  "$mod": "SUPER",
+  "animations": {
+    "animation": [
+      "windows, 1, 7, myBezier",
+      "windowsOut, 1, 7, default, popin 80%",
+      "border, 1, 10, default",
+      "borderangle, 1, 8, default",
+      "fade, 1, 7, default",
+      "workspaces, 1, 6, default"
+    ],
+    "bezier": "myBezier, 0.05, 0.9, 0.1, 1.05",
+    "enabled": "yes"
+  },
+  "bind": [
+    "$mod, Q, killactive,",
+    "$mod, V, togglefloating,",
+    "$mod, S, togglesplit,",
+    "$mod SHIFT, T, togglegroup",
+    "$mod, F, fullscreen,",
+
+    "$mod, P, exec, ~/.config/rofi/powermenu.sh",
+    "$mod, T, exec, ~/.config/rofi/screenshot.sh",
+    "$mod, C, exec, ~/.config/rofi/clipboard.sh",
+    "$mod, SPACE, exec, ~/.config/rofi/dmenu.sh",
+
+    "$mod, RETURN, exec, alacritty",
+
+    "$mod, left, movefocus, l",
+    "$mod, right, movefocus, r",
+    "$mod, up, movefocus, u",
+    "$mod, down, movefocus, d",
+    "$mod, J, changegroupactive, b",
+    "$mod, K, changegroupactive, f",
+
+    "$mod, mouse_down, workspace, e+1",
+    "$mod, mouse_up, workspace, e-1",
+
+    "$mod, ampersand, workspace, 1",
+    "$mod, eacute, workspace, 2",
+    "$mod, quotedbl, workspace, 3",
+    "$mod, apostrophe, workspace, 4",
+    "$mod, parenleft, workspace, 5",
+    "$mod, minus, workspace, 6",
+    "$mod, egrave, workspace, 7",
+    "$mod, underscore, workspace, 8",
+    "$mod, ccedilla, workspace, 9",
+    "$mod, agrave, workspace, 10",
+
+    "$mod SHIFT, ampersand, movetoworkspace, 1",
+    "$mod SHIFT, eacute, movetoworkspace, 2",
+    "$mod SHIFT, quotedbl, movetoworkspace, 3",
+    "$mod SHIFT, apostrophe, movetoworkspace, 4",
+    "$mod SHIFT, parenleft, movetoworkspace, 5",
+    "$mod SHIFT, minus, movetoworkspace, 6",
+    "$mod SHIFT, egrave, movetoworkspace, 7",
+    "$mod SHIFT, underscore, movetoworkspace, 8",
+    "$mod SHIFT, ccedilla, movetoworkspace, 9",
+    "$mod SHIFT, agrave, movetoworkspace, 10",
+
+    "$mod SHIFT, left, movewindow, l",
+    "$mod SHIFT, right, movewindow, r",
+    "$mod SHIFT, up, movewindow, u",
+    "$mod SHIFT, down, movewindow, d",
+
+    "$mod SHIFT, J, movewindoworgroup, l",
+    "$mod SHIFT, K, movewindoworgroup, r",
+
+    ", XF86AudioRaiseVolume, exec, amixer sset Master 2%+",
+    ", XF86AudioLowerVolume, exec, amixer sset Master 2%-",
+    ", XF86AudioMute, exec, amixer sset Master toggle",
+    ", XF86AudioPlay, exec, playerctl play-pause",
+    ", XF86AudioPrev, exec, playerctl previous",
+    ", XF86AudioNext, exec, playerctl next",
+    ", XF86MonBrightnessUp, exec, brightnessctl set +2%",
+    ", XF86MonBrightnessDown, exec, brightnessctl set 2%-"
+  ],
+  "bindm": ["$mod, mouse:272, movewindow", "$mod, mouse:273, resizewindow"],
+  "decoration": {
+    "blur": {
+      "enabled": true,
+      "passes": 1,
+      "size": 3
+    },
+    "rounding": 5
+  },
+  "device": {
+    "name": "epic-mouse-v1",
+    "sensitivity": -0.5
+  },
+  "dwindle": {
+    "preserve_split": "yes",
+    "pseudotile": "yes"
+  },
+  "general": {
+    "allow_tearing": false,
+    "col.active_border": "rgba(33ccffee) rgba(00ff99ee) 45deg",
+    "col.inactive_border": "rgba(595959aa)",
+    "gaps_in": 3,
+    "gaps_out": 10,
+    "layout": "dwindle"
+  },
+  "gestures": {
+    "workspace_swipe": "off"
+  },
+  "input": {
+    "follow_mouse": 1,
+    "numlock_by_default": true,
+    "sensitivity": 0
+  },
+  "master": {
+    "new_status": "master"
+  },
+  "misc": {
+    "force_default_wallpaper": 0,
+    "font_family": "Mononoki Nerd Font",
+    "focus_on_activate": true
+  },
+  "monitor": ",preferred,auto,auto",
+  "windowrulev2": [
+    "workspace 1,class:(Alacritty)",
+    "workspace 2,title:(Zen Browser)",
+    "workspace 3,class:(code)",
+    "workspace 4,class:(discord)",
+    "workspace 4,class:(signal)",
+    "workspace 6,title:(Spotify Premium)"
+  ]
+}
+</file>
+
+<file path="modules/nvidia.nix">
+{ config, lib, ... }:
+let
+  cfg = config.services.nvidia;
+  enable = lib.mkEnableOption "nvidia";
+  sleepIssue = lib.mkEnableOption "nvidia-sleep";
+in
+{
+  options.services.nvidia = {
+    inherit enable sleepIssue;
+  };
+
+  config = lib.mkIf cfg.enable {
+    services.xserver.videoDrivers = [ "nvidia" ];
+    boot.kernelParams =
+      [ ] ++ (if cfg.sleepIssue then [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ] else [ ]);
+    hardware = {
+      opengl = {
+        enable = true;
+        driSupport = true;
+        driSupport32Bit = true;
+      };
+      nvidia = {
+        modesetting.enable = true;
+        nvidiaSettings = true;
+        powerManagement.enable = cfg.sleepIssue;
+      };
+    };
+  };
+}
+</file>
+
+<file path="modules/passthrough.nix">
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.services.passthrough;
+in
+{
+  options.services.passthrough = {
+    enable = lib.mkEnableOption "passthrough";
+    ids = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      example = [
+        "10de:1b81"
+        "10de:10f0"
+      ];
+      description = "GPU's PCI ids to isolate";
+    };
+    user = lib.mkOption {
+      type = lib.types.str;
+      example = "DataHearth";
+      description = ''Username to add "libvirtd" group'';
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    boot = {
+      kernelParams = [
+        "intel_iommu=on"
+        "iommu=pt"
+      ];
+      kernelModules = [
+        "vfio"
+        "vfio_iommu_type1"
+        "vfio_pci"
+        "vfio_virqfd"
+      ];
+      extraModprobeConfig = ''
+        options vfio-pci ids=${lib.concatStringsSep "," cfg.ids}
+        softdep drm pre: vfio-pci
+      '';
+    };
+
+    users.users.${cfg.user}.extraGroups = [ "libvirtd" ];
+    environment.systemPackages = [
+      pkgs.OVMF
+      pkgs.qemu
+    ];
+    programs.virt-manager.enable = true;
+
+    virtualisation = {
+      libvirtd = {
+        enable = true;
+        qemu.verbatimConfig = ''
+          nvram = [ "${pkgs.OVMF}/FV/OVMF.fd:${pkgs.OVMF}/FV/OVMF_VARS.fd" ]
+        '';
+      };
+      spiceUSBRedirection.enable = true;
+    };
+  };
+}
+</file>
+
+<file path="secrets/gondoline/exclude.txt">
+{
+	"data": "ENC[AES256_GCM,data:cSefgWF5CrIEHbmLqwR9icZ4N3+vuCGgDSB1UKVTt//liQPNaXof43RzK0Df2yfkFWJSUjOOE5o960m3qGAHgdCU8oiF2yTfmYkMNYlfhhw9aFJ17yNISxehiP4SBtbg/7sAgo34q1AQT0EBjZkhdtZuTh6GIw1HEQQGpz/7HaGxdiWocsla7Unb8Y+tB/NEA22l,iv:ocLPx+GhkDcJhSP38TiQyxuhMU36fCtHBHGG63SvxEM=,tag:5x1zwHj9jbBvkIRYDrlG5A==,type:str]",
+	"sops": {
+		"kms": null,
+		"gcp_kms": null,
+		"azure_kv": null,
+		"hc_vault": null,
+		"age": [
+			{
+				"recipient": "age13q7kqza63eva6haww69za2fkut7yp6nuyye77zc33hnx3n03y3ns66rfzc",
+				"enc": "-----BEGIN AGE ENCRYPTED FILE-----\nYWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBOdHE0WkJQZ0t5cEZPeWZl\nSXVIR2FMQjFMc1lXOHpmamdiN1Nwd1haeTM0CkxvRW1JNGs3c2N2Z0E5ODNyL3BS\nMGxOVTlOR0wwQkhlb0dMZ1piekN5ckEKLS0tIDg2UThZTkxqcWlJNm5SNWl2eFRa\nMWw1RWtIaHpoWnptOVdvOTV4cVFMVG8KedZvoI4a5fGiC8s3bBuIlURAVqw6emfA\nrmXA+C1rlsr1ut/DJrD7kxJcFVkXr0D26wex7jZj8GquDsewtqzyjQ==\n-----END AGE ENCRYPTED FILE-----\n"
+			}
+		],
+		"lastmodified": "2025-03-17T21:47:45Z",
+		"mac": "ENC[AES256_GCM,data:bsI0nQJZ1WLGjdY4sdZqR8Vamfoz19+DjRnCP0omyGwsoumwDgmgM0F8debV+T/nUz1GepVl4IfIP579V/4sWK6ZKjRtBIvMgnIONVyJeb861ux5PC9RkaTYSfMAYX6t7yNjcAbQJQA0MsIOog3dSATjR8esfpUy1OOXM7wXnIk=,iv:4AaVxvOmuFyUC7uZflfFrIgfU2kiTdcjJHipsh7JyP4=,tag:auZC/siw9H24dtlG0sSKdA==,type:str]",
+		"pgp": null,
+		"unencrypted_suffix": "_unencrypted",
+		"version": "3.9.4"
+	}
+}
+</file>
+
+<file path="secrets/gondoline/include.txt">
+{
+	"data": "ENC[AES256_GCM,data:3oW3/L1Z4XbXfGtAMZ9gpim0wbxRwVOx+2vWdUr8Neih4fx/eDsM/jXWofwh0rKZTzH9G359cIHo9Q==,iv:yNOMesnByPOpoDjoAAZWZAH/HWAKyocqZVpSwwBBqkY=,tag:BT5VeYEONhjD/KgxUkb0aQ==,type:str]",
+	"sops": {
+		"kms": null,
+		"gcp_kms": null,
+		"azure_kv": null,
+		"hc_vault": null,
+		"age": [
+			{
+				"recipient": "age13q7kqza63eva6haww69za2fkut7yp6nuyye77zc33hnx3n03y3ns66rfzc",
+				"enc": "-----BEGIN AGE ENCRYPTED FILE-----\nYWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBMWCt6NzlSSVNOZjV5UFhR\nN2IxWGNTSkVuWFNMZTVVK2ZsWnNnbGExT2trCm1Ub01zV2tlSWdna1ArUndmQk5H\nK1ptTzRzR3lzalVRVFdPUE9sanZTTDgKLS0tIEk5MENRNlBYRTQxcTU2WDRmWkh5\nL0ovRE9TdmZ5THlGU0pPeWEvb3gxSFEKnnolAYWAqX/FOya1Vh06Xi5GsF06lsRl\n/MO27iCUyeSIhroTXjl8AYh/V2GVL9xF3rPZhONWegTPyOsRG+xT2g==\n-----END AGE ENCRYPTED FILE-----\n"
+			}
+		],
+		"lastmodified": "2025-03-17T21:56:41Z",
+		"mac": "ENC[AES256_GCM,data:GSo7ZG9wK3biLT513Y7IcSY4exY0FG3u6gVqJAOawp1eXqnQPHRCy3ylWxx5OZsCM9jhwPPWokQCy0tne+f+RbDz39geXAOBYhUDa/OxnEs4AfPlZ1Cs23sQPfl+ZNjO7uCGPAQCmgzS8WRrrY6FTi+fPW+OBEthDTeEGQd8IKE=,iv:NtLWE3BSUgyIbNJZH4h5ZOnrxiCpwG+5VglKCyZxQKs=,tag:CnfcnrlxS01R4sq9A9BfGg==,type:str]",
+		"pgp": null,
+		"unencrypted_suffix": "_unencrypted",
+		"version": "3.9.4"
+	}
+}
+</file>
+
+<file path="secrets/storj/exclude.txt">
+{
+	"data": "ENC[AES256_GCM,data:7wsgZP+HD5HtNc7zWqdvbHTrAHd93WDHcgLwICFehXyIMCSEqsXQCRTy/311gNEcY7zXtKJoRtHUwBSpWtw=,iv:UFq745LvmkOqc2WYoLZXhFk15AyYdqG2JThdP8m8cJ4=,tag:OR8uSb21MRCRkMR29iEyyQ==,type:str]",
+	"sops": {
+		"kms": null,
+		"gcp_kms": null,
+		"azure_kv": null,
+		"hc_vault": null,
+		"age": [
+			{
+				"recipient": "age13q7kqza63eva6haww69za2fkut7yp6nuyye77zc33hnx3n03y3ns66rfzc",
+				"enc": "-----BEGIN AGE ENCRYPTED FILE-----\nYWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBJL2RsME0vMGF0c0k5N3RK\nQW1Bb0MrQTU2RFBRYTFDZURPYnNoZXJsa3pzCnBVOEhLUmZnKzZJeFdFUnVUMmxn\nWUl4dlVDS2JPZ3d4S0QxeXFsajQ0RGcKLS0tIEMyY0ZxUEhIWms1Q0lpT2pod3Fq\nd0wxeHBSdEpPZ1hiNlN0cnltWEtVUjAKSfWFQu+cryZRbeX842Z6d4Q8C4+0sBjn\nSNVk9S+E764+22k4tJ3hAKBF210smb9w2a0/ZXYj4Qv+HHXyovjzXw==\n-----END AGE ENCRYPTED FILE-----\n"
+			}
+		],
+		"lastmodified": "2025-03-17T09:59:22Z",
+		"mac": "ENC[AES256_GCM,data:YyS34ktG5D91lXaSDFmLc29SzY26OHk0jvYdBhkzRMH+SG6K4frCvKUjObsWI7tFH2nw7aIqnLGkPamWe1es9g9Uo02ZbJXLUnY/FodVQdjH6XGy8NjFATqhhyFY7XxRkhgE1CxZcg2Yw9bOVplKcRWtmAXqYtE+tzsO6kC8WcI=,iv:O4NTjzlaas/c1VpFH7tt3csGSV9OmEnFLJDCwHaCVs8=,tag:r0OFFz/rAUeXX5j+pFBJ5w==,type:str]",
+		"pgp": null,
+		"unencrypted_suffix": "_unencrypted",
+		"version": "3.9.4"
+	}
+}
+</file>
+
+<file path="secrets/storj/include.txt">
+{
+	"data": "ENC[AES256_GCM,data:pK7D1LGNLbAWpFeK+MFE2cpdXxeLpAvwRoPqfheEHMUFXcTpXfVEWedUGSaosG0nElYONXRTm2be1mKQwLc92Ra0h8BLSrihnEHMjmunqOsXAnzm5quVx5I=,iv:qLccKJYhut+Epamhh30AwRIJtwQzZoEG1uVgWxvYkPQ=,tag:cED5Av8NWeMTBLvpXynhJQ==,type:str]",
+	"sops": {
+		"kms": null,
+		"gcp_kms": null,
+		"azure_kv": null,
+		"hc_vault": null,
+		"age": [
+			{
+				"recipient": "age13q7kqza63eva6haww69za2fkut7yp6nuyye77zc33hnx3n03y3ns66rfzc",
+				"enc": "-----BEGIN AGE ENCRYPTED FILE-----\nYWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAzd2sxZy8xK3pCYldhMUVp\nUWhjRDJLT2RZS1RnenVzZy9JZytXOUh0LzNjCkczTVQxWXhGUEVhRzZDTXdFSjNa\nbFUyUnN4d3NxYXZxbmtQcFJxL3NOTDAKLS0tIEZHbWs3eHRwbEpucW82M3RIR0Qx\nYkt2Y0lXalZXbXBVdGRqNlNEd05SMzgKOUS5v1RLQzJ46PH3Dx/WZm36p390Bvgs\nnhBpFX5Jh5iQbA/NFYM3TzXjDD2hxEoRaIGeGx8f/Wm5ylZCIduzkw==\n-----END AGE ENCRYPTED FILE-----\n"
+			}
+		],
+		"lastmodified": "2025-03-17T21:56:31Z",
+		"mac": "ENC[AES256_GCM,data:hqM9y+6itFSraTmkatdsYzErVB3/dToLdcpHZ9tobJaSYbFjZt81tpZ2pr5hrh1TVqQ0qvxLJLbMtXuyg+YIJ3TArscU1Qm5LnP9atENhUTMJd61RTL0wLpGetNg2dNJxCh4k1hSxJAil9yvZE80ResxAQxiJ6x6Lt2v27mVzX4=,iv:5nVDfUOGGyUhzuNO6rEfLpwNSq5JOUTihKSJj0SbZ3Y=,tag:/aywKFWIAAz9RmCKlYgG9Q==,type:str]",
+		"pgp": null,
+		"unencrypted_suffix": "_unencrypted",
+		"version": "3.9.4"
+	}
+}
+</file>
+
+<file path="secrets/secrets.yml">
+tailscale_keys:
+    valinor: ENC[AES256_GCM,data:04UQFjTkPvMR9Rm/eFRK3OzY6kUumbTslf67L9fSSRQuPEBlNGbYQCAHiIz34MqKLQam5rP3wUxDUEINIw==,iv:wq+IVnoS6AeTNefacUFe6yW8BtrDmilIlKgQkQ50mdo=,tag:kw3duwaH6otufqY2OrA6OA==,type:str]
+backups:
+    gondoline:
+        password: ENC[AES256_GCM,data:B/rVLTa+HuKaliupmu/BHHrnP4yysGDAw6fzlgwjO5dkoE0=,iv:cb0W3SIKii6ydY/tPSjC6SGvkZJoNaOAdA5znn8NsbI=,tag:CJC1v+mVKhGDwNjw723gJg==,type:str]
+        repository: ENC[AES256_GCM,data:CyvzONxTQMO0HL3mENhXMy5zyd3q,iv:3o2ocVrDoaZE/MEJN14tpUEIAyaooSTIOaOY8SdCroY=,tag:RtEs6BAbxS9YmtbzG8UZsw==,type:str]
+        ping_url: ENC[AES256_GCM,data:MIWTs8yjCtT5ECl4dOVuU5s226QpU6W9b2keW2eu14nj8d9cHkjRCVsj6Srgiw62xUG36kXuhRA=,iv:6im1IVosAHwM30LsTTBtzMmXYP7VL5MC22lDSfr5XVM=,tag:Nrb/M86dIkdbjp22nQmIfQ==,type:str]
+    storj:
+        password: ENC[AES256_GCM,data:G0MN4ATF5isf7h9E50GiBNvbvJVJAHpjPg8CmXbR,iv:96Z3O7os1XuOIAYOzIHtZhtiAXlghfMtIOfZuK3i5JQ=,tag:YJPpKvoZgmk5AyKDEUpsqg==,type:str]
+        repository: ENC[AES256_GCM,data:d+56N/lPmfSx3ZyghpPfdqSc9+6jaxe0ezrrO4Ef9nMKAApa5A==,iv:lGZxiiHiXK+KQUP2lg5Tuwy+P8MR51P5rVJ2XaGJo74=,tag:eaRiwaHXw5M9rcslKz2gbg==,type:str]
+        ping_url: ENC[AES256_GCM,data:LFHa4ZmfDezg5AlFxi4CbUZUaSDJKS0nFtQnDLfZd/GMxmPn3OJ6RU1gN/0mrYW3J86vEcMyGY0=,iv:vTzTn6jrElokkqdMSq3sIynIMsl9gZALQEEQISXhBR0=,tag:YlTIu1Kjxl0xAi5FrTagGA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age13q7kqza63eva6haww69za2fkut7yp6nuyye77zc33hnx3n03y3ns66rfzc
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3eHpUTXduTmtnRW8vaHZn
+            bVlXNHFFaThHWWZxWDhOMHdyVXYxYWdtekYwCmEwVlptL1k0dzk5Mlh0ZEJ1TXFK
+            dnh2NGZNdVhjMVNtRTEzQWUvQVJ2bHcKLS0tIFZvOTRaOGxWalJuck5mcjg2ZG5R
+            bGpsQkVxRnJKUWU0a0ZqL3VSZHMyajQKnzyCUCy2j3DcYaNulMzVEdoCo62TkYlW
+            gCnOSSQWKKrb0SPj0K7RHoOX1T8Fkn29uu75Geiy/LhVGuykhpzZQw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-04-04T08:17:01Z"
+    mac: ENC[AES256_GCM,data:nxiB0JZ0PI7kXRIyhT9bZhAG0BDKs1MQ8kW3EZwFCCQzZBjwb1zC4nyw2gYuix0lzHdI9iT1fEV447fbb40ZZ8+3jq9FlXJ5d87e0uPvkvXDLH5ME/gx+mgPlaST3aKKm0UJwfLV/3QyIgxvdDoepPw1lwzKGaR45g7Bmc0YJuw=,iv:tfMcMtk7QIfRU06l56LUXQCKiuacD9cflt/zAQLwUTw=,tag:K7t9XWxS8N50nBWrhVA1dA==,type:str]
+    pgp: []
+    unencrypted_suffix: _unencrypted
+    version: 3.9.4
+</file>
+
+<file path=".gitignore">
+repomix-output.xml
+</file>
+
+<file path=".sops.yaml">
+keys:
+  - &age age13q7kqza63eva6haww69za2fkut7yp6nuyye77zc33hnx3n03y3ns66rfzc
+creation_rules:
+  - path_regex: ^secrets/.*$
+    key_groups:
+      - age:
+        - *age
+</file>
+
+<file path="LICENSE">
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+
+Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
+
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+
+Preamble
+
+The GNU General Public License is a free, copyleft license for software and other kinds of works.
+
+The licenses for most software and other practical works are designed to take away your freedom to share and change the works. By contrast, the GNU General Public License is intended to guarantee your freedom to share and change all versions of a program--to make sure it remains free software for all its users. We, the Free Software Foundation, use the GNU General Public License for most of our software; it applies also to any other work released this way by its authors. You can apply it to your programs, too.
+
+When we speak of free software, we are referring to freedom, not price. Our General Public Licenses are designed to make sure that you have the freedom to distribute copies of free software (and charge for them if you wish), that you receive source code or can get it if you want it, that you can change the software or use pieces of it in new free programs, and that you know you can do these things.
+
+To protect your rights, we need to prevent others from denying you these rights or asking you to surrender the rights. Therefore, you have certain responsibilities if you distribute copies of the software, or if you modify it: responsibilities to respect the freedom of others.
+
+For example, if you distribute copies of such a program, whether gratis or for a fee, you must pass on to the recipients the same freedoms that you received. You must make sure that they, too, receive or can get the source code. And you must show them these terms so they know their rights.
+
+Developers that use the GNU GPL protect your rights with two steps: (1) assert copyright on the software, and (2) offer you this License giving you legal permission to copy, distribute and/or modify it.
+
+For the developers' and authors' protection, the GPL clearly explains that there is no warranty for this free software. For both users' and authors' sake, the GPL requires that modified versions be marked as changed, so that their problems will not be attributed erroneously to authors of previous versions.
+
+Some devices are designed to deny users access to install or run modified versions of the software inside them, although the manufacturer can do so. This is fundamentally incompatible with the aim of protecting users' freedom to change the software. The systematic pattern of such abuse occurs in the area of products for individuals to use, which is precisely where it is most unacceptable. Therefore, we have designed this version of the GPL to prohibit the practice for those products. If such problems arise substantially in other domains, we stand ready to extend this provision to those domains in future versions of the GPL, as needed to protect the freedom of users.
+
+Finally, every program is threatened constantly by software patents. States should not allow patents to restrict development and use of software on general-purpose computers, but in those that do, we wish to avoid the special danger that patents applied to a free program could make it effectively proprietary. To prevent this, the GPL assures that patents cannot be used to render the program non-free.
+
+The precise terms and conditions for copying, distribution and modification follow.
+
+TERMS AND CONDITIONS
+
+0. Definitions.
+
+“This License” refers to version 3 of the GNU General Public License.
+
+“Copyright” also means copyright-like laws that apply to other kinds of works, such as semiconductor masks.
+
+“The Program” refers to any copyrightable work licensed under this License. Each licensee is addressed as “you”. “Licensees” and “recipients” may be individuals or organizations.
+
+To “modify” a work means to copy from or adapt all or part of the work in a fashion requiring copyright permission, other than the making of an exact copy. The resulting work is called a “modified version” of the earlier work or a work “based on” the earlier work.
+
+A “covered work” means either the unmodified Program or a work based on the Program.
+
+To “propagate” a work means to do anything with it that, without permission, would make you directly or secondarily liable for infringement under applicable copyright law, except executing it on a computer or modifying a private copy. Propagation includes copying, distribution (with or without modification), making available to the public, and in some countries other activities as well.
+
+To “convey” a work means any kind of propagation that enables other parties to make or receive copies. Mere interaction with a user through a computer network, with no transfer of a copy, is not conveying.
+
+An interactive user interface displays “Appropriate Legal Notices” to the extent that it includes a convenient and prominently visible feature that (1) displays an appropriate copyright notice, and (2) tells the user that there is no warranty for the work (except to the extent that warranties are provided), that licensees may convey the work under this License, and how to view a copy of this License. If the interface presents a list of user commands or options, such as a menu, a prominent item in the list meets this criterion.
+
+1. Source Code.
+The “source code” for a work means the preferred form of the work for making modifications to it. “Object code” means any non-source form of a work.
+
+A “Standard Interface” means an interface that either is an official standard defined by a recognized standards body, or, in the case of interfaces specified for a particular programming language, one that is widely used among developers working in that language.
+
+The “System Libraries” of an executable work include anything, other than the work as a whole, that (a) is included in the normal form of packaging a Major Component, but which is not part of that Major Component, and (b) serves only to enable use of the work with that Major Component, or to implement a Standard Interface for which an implementation is available to the public in source code form. A “Major Component”, in this context, means a major essential component (kernel, window system, and so on) of the specific operating system (if any) on which the executable work runs, or a compiler used to produce the work, or an object code interpreter used to run it.
+
+The “Corresponding Source” for a work in object code form means all the source code needed to generate, install, and (for an executable work) run the object code and to modify the work, including scripts to control those activities. However, it does not include the work's System Libraries, or general-purpose tools or generally available free programs which are used unmodified in performing those activities but which are not part of the work. For example, Corresponding Source includes interface definition files associated with source files for the work, and the source code for shared libraries and dynamically linked subprograms that the work is specifically designed to require, such as by intimate data communication or control flow between those subprograms and other parts of the work.
+
+The Corresponding Source need not include anything that users can regenerate automatically from other parts of the Corresponding Source.
+
+The Corresponding Source for a work in source code form is that same work.
+
+2. Basic Permissions.
+All rights granted under this License are granted for the term of copyright on the Program, and are irrevocable provided the stated conditions are met. This License explicitly affirms your unlimited permission to run the unmodified Program. The output from running a covered work is covered by this License only if the output, given its content, constitutes a covered work. This License acknowledges your rights of fair use or other equivalent, as provided by copyright law.
+
+You may make, run and propagate covered works that you do not convey, without conditions so long as your license otherwise remains in force. You may convey covered works to others for the sole purpose of having them make modifications exclusively for you, or provide you with facilities for running those works, provided that you comply with the terms of this License in conveying all material for which you do not control copyright. Those thus making or running the covered works for you must do so exclusively on your behalf, under your direction and control, on terms that prohibit them from making any copies of your copyrighted material outside their relationship with you.
+
+Conveying under any other circumstances is permitted solely under the conditions stated below. Sublicensing is not allowed; section 10 makes it unnecessary.
+
+3. Protecting Users' Legal Rights From Anti-Circumvention Law.
+No covered work shall be deemed part of an effective technological measure under any applicable law fulfilling obligations under article 11 of the WIPO copyright treaty adopted on 20 December 1996, or similar laws prohibiting or restricting circumvention of such measures.
+
+When you convey a covered work, you waive any legal power to forbid circumvention of technological measures to the extent such circumvention is effected by exercising rights under this License with respect to the covered work, and you disclaim any intention to limit operation or modification of the work as a means of enforcing, against the work's users, your or third parties' legal rights to forbid circumvention of technological measures.
+
+4. Conveying Verbatim Copies.
+You may convey verbatim copies of the Program's source code as you receive it, in any medium, provided that you conspicuously and appropriately publish on each copy an appropriate copyright notice; keep intact all notices stating that this License and any non-permissive terms added in accord with section 7 apply to the code; keep intact all notices of the absence of any warranty; and give all recipients a copy of this License along with the Program.
+
+You may charge any price or no price for each copy that you convey, and you may offer support or warranty protection for a fee.
+
+5. Conveying Modified Source Versions.
+You may convey a work based on the Program, or the modifications to produce it from the Program, in the form of source code under the terms of section 4, provided that you also meet all of these conditions:
+
+     a) The work must carry prominent notices stating that you modified it, and giving a relevant date.
+
+     b) The work must carry prominent notices stating that it is released under this License and any conditions added under section 7. This requirement modifies the requirement in section 4 to “keep intact all notices”.
+
+     c) You must license the entire work, as a whole, under this License to anyone who comes into possession of a copy. This License will therefore apply, along with any applicable section 7 additional terms, to the whole of the work, and all its parts, regardless of how they are packaged. This License gives no permission to license the work in any other way, but it does not invalidate such permission if you have separately received it.
+
+     d) If the work has interactive user interfaces, each must display Appropriate Legal Notices; however, if the Program has interactive interfaces that do not display Appropriate Legal Notices, your work need not make them do so.
+
+A compilation of a covered work with other separate and independent works, which are not by their nature extensions of the covered work, and which are not combined with it such as to form a larger program, in or on a volume of a storage or distribution medium, is called an “aggregate” if the compilation and its resulting copyright are not used to limit the access or legal rights of the compilation's users beyond what the individual works permit. Inclusion of a covered work in an aggregate does not cause this License to apply to the other parts of the aggregate.
+
+6. Conveying Non-Source Forms.
+You may convey a covered work in object code form under the terms of sections 4 and 5, provided that you also convey the machine-readable Corresponding Source under the terms of this License, in one of these ways:
+
+     a) Convey the object code in, or embodied in, a physical product (including a physical distribution medium), accompanied by the Corresponding Source fixed on a durable physical medium customarily used for software interchange.
+
+     b) Convey the object code in, or embodied in, a physical product (including a physical distribution medium), accompanied by a written offer, valid for at least three years and valid for as long as you offer spare parts or customer support for that product model, to give anyone who possesses the object code either (1) a copy of the Corresponding Source for all the software in the product that is covered by this License, on a durable physical medium customarily used for software interchange, for a price no more than your reasonable cost of physically performing this conveying of source, or (2) access to copy the Corresponding Source from a network server at no charge.
+
+     c) Convey individual copies of the object code with a copy of the written offer to provide the Corresponding Source. This alternative is allowed only occasionally and noncommercially, and only if you received the object code with such an offer, in accord with subsection 6b.
+
+     d) Convey the object code by offering access from a designated place (gratis or for a charge), and offer equivalent access to the Corresponding Source in the same way through the same place at no further charge. You need not require recipients to copy the Corresponding Source along with the object code. If the place to copy the object code is a network server, the Corresponding Source may be on a different server (operated by you or a third party) that supports equivalent copying facilities, provided you maintain clear directions next to the object code saying where to find the Corresponding Source. Regardless of what server hosts the Corresponding Source, you remain obligated to ensure that it is available for as long as needed to satisfy these requirements.
+
+     e) Convey the object code using peer-to-peer transmission, provided you inform other peers where the object code and Corresponding Source of the work are being offered to the general public at no charge under subsection 6d.
+
+A separable portion of the object code, whose source code is excluded from the Corresponding Source as a System Library, need not be included in conveying the object code work.
+
+A “User Product” is either (1) a “consumer product”, which means any tangible personal property which is normally used for personal, family, or household purposes, or (2) anything designed or sold for incorporation into a dwelling. In determining whether a product is a consumer product, doubtful cases shall be resolved in favor of coverage. For a particular product received by a particular user, “normally used” refers to a typical or common use of that class of product, regardless of the status of the particular user or of the way in which the particular user actually uses, or expects or is expected to use, the product. A product is a consumer product regardless of whether the product has substantial commercial, industrial or non-consumer uses, unless such uses represent the only significant mode of use of the product.
+
+“Installation Information” for a User Product means any methods, procedures, authorization keys, or other information required to install and execute modified versions of a covered work in that User Product from a modified version of its Corresponding Source. The information must suffice to ensure that the continued functioning of the modified object code is in no case prevented or interfered with solely because modification has been made.
+
+If you convey an object code work under this section in, or with, or specifically for use in, a User Product, and the conveying occurs as part of a transaction in which the right of possession and use of the User Product is transferred to the recipient in perpetuity or for a fixed term (regardless of how the transaction is characterized), the Corresponding Source conveyed under this section must be accompanied by the Installation Information. But this requirement does not apply if neither you nor any third party retains the ability to install modified object code on the User Product (for example, the work has been installed in ROM).
+
+The requirement to provide Installation Information does not include a requirement to continue to provide support service, warranty, or updates for a work that has been modified or installed by the recipient, or for the User Product in which it has been modified or installed. Access to a network may be denied when the modification itself materially and adversely affects the operation of the network or violates the rules and protocols for communication across the network.
+
+Corresponding Source conveyed, and Installation Information provided, in accord with this section must be in a format that is publicly documented (and with an implementation available to the public in source code form), and must require no special password or key for unpacking, reading or copying.
+
+7. Additional Terms.
+“Additional permissions” are terms that supplement the terms of this License by making exceptions from one or more of its conditions. Additional permissions that are applicable to the entire Program shall be treated as though they were included in this License, to the extent that they are valid under applicable law. If additional permissions apply only to part of the Program, that part may be used separately under those permissions, but the entire Program remains governed by this License without regard to the additional permissions.
+
+When you convey a copy of a covered work, you may at your option remove any additional permissions from that copy, or from any part of it. (Additional permissions may be written to require their own removal in certain cases when you modify the work.) You may place additional permissions on material, added by you to a covered work, for which you have or can give appropriate copyright permission.
+
+Notwithstanding any other provision of this License, for material you add to a covered work, you may (if authorized by the copyright holders of that material) supplement the terms of this License with terms:
+
+     a) Disclaiming warranty or limiting liability differently from the terms of sections 15 and 16 of this License; or
+
+     b) Requiring preservation of specified reasonable legal notices or author attributions in that material or in the Appropriate Legal Notices displayed by works containing it; or
+
+     c) Prohibiting misrepresentation of the origin of that material, or requiring that modified versions of such material be marked in reasonable ways as different from the original version; or
+
+     d) Limiting the use for publicity purposes of names of licensors or authors of the material; or
+
+     e) Declining to grant rights under trademark law for use of some trade names, trademarks, or service marks; or
+
+     f) Requiring indemnification of licensors and authors of that material by anyone who conveys the material (or modified versions of it) with contractual assumptions of liability to the recipient, for any liability that these contractual assumptions directly impose on those licensors and authors.
+
+All other non-permissive additional terms are considered “further restrictions” within the meaning of section 10. If the Program as you received it, or any part of it, contains a notice stating that it is governed by this License along with a term that is a further restriction, you may remove that term. If a license document contains a further restriction but permits relicensing or conveying under this License, you may add to a covered work material governed by the terms of that license document, provided that the further restriction does not survive such relicensing or conveying.
+
+If you add terms to a covered work in accord with this section, you must place, in the relevant source files, a statement of the additional terms that apply to those files, or a notice indicating where to find the applicable terms.
+
+Additional terms, permissive or non-permissive, may be stated in the form of a separately written license, or stated as exceptions; the above requirements apply either way.
+
+8. Termination.
+You may not propagate or modify a covered work except as expressly provided under this License. Any attempt otherwise to propagate or modify it is void, and will automatically terminate your rights under this License (including any patent licenses granted under the third paragraph of section 11).
+
+However, if you cease all violation of this License, then your license from a particular copyright holder is reinstated (a) provisionally, unless and until the copyright holder explicitly and finally terminates your license, and (b) permanently, if the copyright holder fails to notify you of the violation by some reasonable means prior to 60 days after the cessation.
+
+Moreover, your license from a particular copyright holder is reinstated permanently if the copyright holder notifies you of the violation by some reasonable means, this is the first time you have received notice of violation of this License (for any work) from that copyright holder, and you cure the violation prior to 30 days after your receipt of the notice.
+
+Termination of your rights under this section does not terminate the licenses of parties who have received copies or rights from you under this License. If your rights have been terminated and not permanently reinstated, you do not qualify to receive new licenses for the same material under section 10.
+
+9. Acceptance Not Required for Having Copies.
+You are not required to accept this License in order to receive or run a copy of the Program. Ancillary propagation of a covered work occurring solely as a consequence of using peer-to-peer transmission to receive a copy likewise does not require acceptance. However, nothing other than this License grants you permission to propagate or modify any covered work. These actions infringe copyright if you do not accept this License. Therefore, by modifying or propagating a covered work, you indicate your acceptance of this License to do so.
+
+10. Automatic Licensing of Downstream Recipients.
+Each time you convey a covered work, the recipient automatically receives a license from the original licensors, to run, modify and propagate that work, subject to this License. You are not responsible for enforcing compliance by third parties with this License.
+
+An “entity transaction” is a transaction transferring control of an organization, or substantially all assets of one, or subdividing an organization, or merging organizations. If propagation of a covered work results from an entity transaction, each party to that transaction who receives a copy of the work also receives whatever licenses to the work the party's predecessor in interest had or could give under the previous paragraph, plus a right to possession of the Corresponding Source of the work from the predecessor in interest, if the predecessor has it or can get it with reasonable efforts.
+
+You may not impose any further restrictions on the exercise of the rights granted or affirmed under this License. For example, you may not impose a license fee, royalty, or other charge for exercise of rights granted under this License, and you may not initiate litigation (including a cross-claim or counterclaim in a lawsuit) alleging that any patent claim is infringed by making, using, selling, offering for sale, or importing the Program or any portion of it.
+
+11. Patents.
+A “contributor” is a copyright holder who authorizes use under this License of the Program or a work on which the Program is based. The work thus licensed is called the contributor's “contributor version”.
+
+A contributor's “essential patent claims” are all patent claims owned or controlled by the contributor, whether already acquired or hereafter acquired, that would be infringed by some manner, permitted by this License, of making, using, or selling its contributor version, but do not include claims that would be infringed only as a consequence of further modification of the contributor version. For purposes of this definition, “control” includes the right to grant patent sublicenses in a manner consistent with the requirements of this License.
+
+Each contributor grants you a non-exclusive, worldwide, royalty-free patent license under the contributor's essential patent claims, to make, use, sell, offer for sale, import and otherwise run, modify and propagate the contents of its contributor version.
+
+In the following three paragraphs, a “patent license” is any express agreement or commitment, however denominated, not to enforce a patent (such as an express permission to practice a patent or covenant not to sue for patent infringement). To “grant” such a patent license to a party means to make such an agreement or commitment not to enforce a patent against the party.
+
+If you convey a covered work, knowingly relying on a patent license, and the Corresponding Source of the work is not available for anyone to copy, free of charge and under the terms of this License, through a publicly available network server or other readily accessible means, then you must either (1) cause the Corresponding Source to be so available, or (2) arrange to deprive yourself of the benefit of the patent license for this particular work, or (3) arrange, in a manner consistent with the requirements of this License, to extend the patent license to downstream recipients. “Knowingly relying” means you have actual knowledge that, but for the patent license, your conveying the covered work in a country, or your recipient's use of the covered work in a country, would infringe one or more identifiable patents in that country that you have reason to believe are valid.
+
+If, pursuant to or in connection with a single transaction or arrangement, you convey, or propagate by procuring conveyance of, a covered work, and grant a patent license to some of the parties receiving the covered work authorizing them to use, propagate, modify or convey a specific copy of the covered work, then the patent license you grant is automatically extended to all recipients of the covered work and works based on it.
+
+A patent license is “discriminatory” if it does not include within the scope of its coverage, prohibits the exercise of, or is conditioned on the non-exercise of one or more of the rights that are specifically granted under this License. You may not convey a covered work if you are a party to an arrangement with a third party that is in the business of distributing software, under which you make payment to the third party based on the extent of your activity of conveying the work, and under which the third party grants, to any of the parties who would receive the covered work from you, a discriminatory patent license (a) in connection with copies of the covered work conveyed by you (or copies made from those copies), or (b) primarily for and in connection with specific products or compilations that contain the covered work, unless you entered into that arrangement, or that patent license was granted, prior to 28 March 2007.
+
+Nothing in this License shall be construed as excluding or limiting any implied license or other defenses to infringement that may otherwise be available to you under applicable patent law.
+
+12. No Surrender of Others' Freedom.
+If conditions are imposed on you (whether by court order, agreement or otherwise) that contradict the conditions of this License, they do not excuse you from the conditions of this License. If you cannot convey a covered work so as to satisfy simultaneously your obligations under this License and any other pertinent obligations, then as a consequence you may not convey it at all. For example, if you agree to terms that obligate you to collect a royalty for further conveying from those to whom you convey the Program, the only way you could satisfy both those terms and this License would be to refrain entirely from conveying the Program.
+
+13. Use with the GNU Affero General Public License.
+Notwithstanding any other provision of this License, you have permission to link or combine any covered work with a work licensed under version 3 of the GNU Affero General Public License into a single combined work, and to convey the resulting work. The terms of this License will continue to apply to the part which is the covered work, but the special requirements of the GNU Affero General Public License, section 13, concerning interaction through a network will apply to the combination as such.
+
+14. Revised Versions of this License.
+The Free Software Foundation may publish revised and/or new versions of the GNU General Public License from time to time. Such new versions will be similar in spirit to the present version, but may differ in detail to address new problems or concerns.
+
+Each version is given a distinguishing version number. If the Program specifies that a certain numbered version of the GNU General Public License “or any later version” applies to it, you have the option of following the terms and conditions either of that numbered version or of any later version published by the Free Software Foundation. If the Program does not specify a version number of the GNU General Public License, you may choose any version ever published by the Free Software Foundation.
+
+If the Program specifies that a proxy can decide which future versions of the GNU General Public License can be used, that proxy's public statement of acceptance of a version permanently authorizes you to choose that version for the Program.
+
+Later license versions may give you additional or different permissions. However, no additional obligations are imposed on any author or copyright holder as a result of your choosing to follow a later version.
+
+15. Disclaimer of Warranty.
+THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
+16. Limitation of Liability.
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS THE PROGRAM AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+17. Interpretation of Sections 15 and 16.
+If the disclaimer of warranty and limitation of liability provided above cannot be given local legal effect according to their terms, reviewing courts shall apply local law that most closely approximates an absolute waiver of all civil liability in connection with the Program, unless a warranty or assumption of liability accompanies a copy of the Program in return for a fee.
+
+END OF TERMS AND CONDITIONS
+
+How to Apply These Terms to Your New Programs
+
+If you develop a new program, and you want it to be of the greatest possible use to the public, the best way to achieve this is to make it free software which everyone can redistribute and change under these terms.
+
+To do so, attach the following notices to the program. It is safest to attach them to the start of each source file to most effectively state the exclusion of warranty; and each file should have at least the “copyright” line and a pointer to where the full notice is found.
+
+     nix-config
+     Copyright (C) 2024  DataHearth
+
+     This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Also add information on how to contact you by electronic and paper mail.
+
+If the program does terminal interaction, make it output a short notice like this when it starts in an interactive mode:
+
+     nix-config  Copyright (C) 2024  DataHearth
+     This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+     This is free software, and you are welcome to redistribute it under certain conditions; type `show c' for details.
+
+The hypothetical commands `show w' and `show c' should show the appropriate parts of the General Public License. Of course, your program's commands might be different; for a GUI interface, you would use an “about box”.
+
+You should also get your employer (if you work as a programmer) or school, if any, to sign a “copyright disclaimer” for the program, if necessary. For more information on this, and how to apply and follow the GNU GPL, see <https://www.gnu.org/licenses/>.
+
+The GNU General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License. But first, please read <https://www.gnu.org/philosophy/why-not-lgpl.html>.
+</file>
+
+<file path="README.md">
+# nix-config
+
+My Nix configuration across all my systems (NixOS, Darwin).
+</file>
+
+<file path="hosts/valinor/home-manager/modules.nix">
+{
+  home_modules = {
+    ssh.enable = true;
+
+    git = {
+      enable = true;
+      signingKey = "4DC34E03802B08908F8DA621F4C806AC1E3EBAB6";
+    };
+  };
+}
+</file>
+
+<file path="hosts/valinor/home-manager/packages.nix">
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [
+    sops
+  ];
+
+  programs = {
+    zoxide.enable = true;
+    fzf.enable = true;
+    home-manager.enable = true;
+    starship.enable = true;
+    eza.enable = true;
+    gpg.enable = true;
+
+    bat = {
+      enable = true;
+      config.theme = "catppuccin_macchiato";
+
+      themes.catppuccin_macchiato = {
+        src = pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "bat";
+          rev = "ba4d16880d63e656acced2b7d4e034e4a93f74b1";
+          sha256 = "1g2r6j33f4zys853i1c5gnwcdbwb6xv5w6pazfdslxf69904lrg9";
+        };
+        file = "Catppuccin-macchiato.tmTheme";
+      };
+    };
+
+    zsh = {
+      enable = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      oh-my-zsh.enable = true;
+      plugins = with pkgs; [
+        {
+          name = "zsh-autopair";
+          src = zsh-autopair;
+        }
+      ];
+      shellAliases = {
+        cat = "bat";
+        cd = "z";
+        docker-restart-all = "docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml restart";
+      };
+      initContent = ''
+        cd /mnt/Erebor/War-goats/appdata
+      '';
+    };
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
+    ssh.matchBlocks =
+      let
+        keyNamePrefix = "id_ed25519";
+      in
+      {
+        # Git servers
+        "github.com" = {
+          hostname = "github.com";
+          user = "git";
+          identityFile = "~/.ssh/${keyNamePrefix}";
+          identitiesOnly = true;
+        };
+        "gitlab.com" = {
+          hostname = "gitlab.com";
+          user = "git";
+          identityFile = "~/.ssh/${keyNamePrefix}";
+          identitiesOnly = true;
+        };
+      };
+  };
+}
+</file>
+
+<file path="hosts/valinor/configuration.nix">
+{
+  config,
+  ...
+}:
+{
+  imports = [
+    ./hardware-configuration.nix
+    ./packages.nix
+    ./users.nix
+    ./locales.nix
+    ./services.nix
+    ./systemd.nix
+    ../../modules/nh.nix
+  ];
+
+  time.timeZone = "Europe/Paris";
+  virtualisation.docker.enable = true;
+  system.stateVersion = "24.11";
+
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [
+      "root"
+      "datahearth"
+    ];
+  };
+
+  boot =
+    let
+      kernel_modules = [
+        "raid1"
+        "dm-raid"
+        "dm-mirror"
+
+        "raid456" # required by dm-raid
+
+        "dm-mod" # required by dm-raid,dm-mirror,dm-log
+        "dm-region-hash" # required by dm-mirror
+        "dm-log" # required by dm-mirror,dm-region-hash
+
+        "md-mod" # required by raid1,raid456,dm-raid
+
+        "dax" # required by dm-mod
+        "xor" # required by async_xor
+        "async_raid6_recov" # required by raid456
+        "raid6_pq" # required by raid456,async_raid6_recov,async_pq
+        "libcrc32c" # required by raid456
+        "async_memcpy" # required by raid456
+        "async_pq" # required by raid456
+        "async_xor" # required by raid456,async_pq
+        "async_tx" # required by raid456,async_raid6_recov,async_pq,async_xor,async_memcpy
+      ];
+    in
+    {
+      loader.systemd-boot.enable = true;
+      # If I have the knowledge of which one is needed at boot
+      # and the one only once mounted and checked, some kernel modules
+      # could move the initrd.availableKernelModules
+      initrd.kernelModules = kernel_modules;
+      initrd.availableKernelModules = kernel_modules;
+    };
+
+  networking = {
+    hostName = "Valinor";
+    networkmanager.enable = true;
+
+    firewall = {
+      extraCommands = ''
+        iptables -I INPUT 1 -s 172.16.0.0/12 -p tcp -d 192.168.1.0/24 -j ACCEPT
+        iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 192.168.1.0/24 -j ACCEPT
+      '';
+      allowedUDPPorts = [
+        5353
+        5540
+      ];
+      allowedTCPPorts = [
+        5540
+        9999
+        5001
+      ];
+    };
+  };
+
+  sops = {
+    defaultSopsFile = ../../secrets/secrets.yml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "${config.users.users.datahearth.home}/.config/sops/age/keys.txt";
+
+    secrets = {
+      "backups/gondoline/password" = { };
+      "backups/gondoline/repository" = { };
+      "backups/gondoline/ping_url" = { };
+      "backups/gondoline/include.txt" = {
+        format = "binary";
+        sopsFile = ../../secrets/gondoline/include.txt;
+      };
+      "backups/gondoline/exclude.txt" = {
+        format = "binary";
+        sopsFile = ../../secrets/gondoline/exclude.txt;
+      };
+      "backups/storj/password" = { };
+      "backups/storj/repository" = { };
+      "backups/storj/ping_url" = { };
+      "backups/storj/include.txt" = {
+        format = "binary";
+        sopsFile = ../../secrets/storj/include.txt;
+      };
+      "backups/storj/exclude.txt" = {
+        format = "binary";
+        sopsFile = ../../secrets/storj/exclude.txt;
+      };
+      "tailscale_keys/valinor" = { };
+    };
+  };
+
+  nixos_modules = {
+    nh = {
+      enable = true;
+      settings.flake = "${config.users.users.datahearth.home}/.config/nix-config";
+    };
+  };
+}
+</file>
+
+<file path="modules/home-manager/swaync/default.nix">
+{ config, lib, ... }:
+let
+  cfg = config.home_modules.swaync;
+
+  enable = lib.mkEnableOption "swaync";
+in
+{
+  options.home_modules.swaync = {
+    inherit enable;
+  };
+
+  config = lib.mkIf cfg.enable {
+    services.swaync = {
+      enable = true;
+      style = ./style.css;
+    };
+  };
+}
+</file>
+
+<file path="modules/home-manager/zellij/config.kdl">
+copy_on_select true
+mouse_mode true
+theme "catppuccin-macchiato"
+default_layout "base"
+show_startup_tips false
+
+plugins {
+    welcome-screen location="zellij:session-manager" {
+        welcome_screen true
+    }
+}
+
+keybinds clear-defaults=true {
+    locked {
+        bind "Ctrl g" { SwitchToMode "normal"; }
+    }
+    pane {
+        bind "left" { MoveFocus "left"; }
+        bind "down" { MoveFocus "down"; }
+        bind "up" { MoveFocus "up"; }
+        bind "right" { MoveFocus "right"; }
+        bind "c" { SwitchToMode "renamepane"; PaneNameInput 0; }
+        bind "d" { NewPane "down"; SwitchToMode "locked"; }
+        bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "locked"; }
+        bind "f" { ToggleFocusFullscreen; SwitchToMode "locked"; }
+        bind "h" { MoveFocus "left"; }
+        bind "j" { MoveFocus "down"; }
+        bind "k" { MoveFocus "up"; }
+        bind "l" { MoveFocus "right"; }
+        bind "n" { NewPane; SwitchToMode "locked"; }
+        bind "p" { SwitchToMode "normal"; }
+        bind "r" { NewPane "right"; SwitchToMode "locked"; }
+        bind "w" { ToggleFloatingPanes; SwitchToMode "locked"; }
+        bind "x" { CloseFocus; SwitchToMode "locked"; }
+        bind "z" { TogglePaneFrames; SwitchToMode "locked"; }
+        bind "tab" { SwitchFocus; }
+    }
+    tab {
+        bind "left" { GoToPreviousTab; }
+        bind "down" { GoToNextTab; }
+        bind "up" { GoToPreviousTab; }
+        bind "right" { GoToNextTab; }
+        bind "1" { GoToTab 1; SwitchToMode "locked"; }
+        bind "2" { GoToTab 2; SwitchToMode "locked"; }
+        bind "3" { GoToTab 3; SwitchToMode "locked"; }
+        bind "4" { GoToTab 4; SwitchToMode "locked"; }
+        bind "5" { GoToTab 5; SwitchToMode "locked"; }
+        bind "6" { GoToTab 6; SwitchToMode "locked"; }
+        bind "7" { GoToTab 7; SwitchToMode "locked"; }
+        bind "8" { GoToTab 8; SwitchToMode "locked"; }
+        bind "9" { GoToTab 9; SwitchToMode "locked"; }
+        bind "[" { BreakPaneLeft; SwitchToMode "locked"; }
+        bind "]" { BreakPaneRight; SwitchToMode "locked"; }
+        bind "b" { BreakPane; SwitchToMode "locked"; }
+        bind "h" { GoToPreviousTab; }
+        bind "j" { GoToNextTab; }
+        bind "k" { GoToPreviousTab; }
+        bind "l" { GoToNextTab; }
+        bind "n" { NewTab; SwitchToMode "locked"; }
+        bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
+        bind "s" { ToggleActiveSyncTab; SwitchToMode "locked"; }
+        bind "t" { SwitchToMode "normal"; }
+        bind "x" { CloseTab; SwitchToMode "locked"; }
+        bind "tab" { ToggleTab; }
+    }
+    resize {
+        bind "left" { Resize "Increase left"; }
+        bind "down" { Resize "Increase down"; }
+        bind "up" { Resize "Increase up"; }
+        bind "right" { Resize "Increase right"; }
+        bind "+" { Resize "Increase"; }
+        bind "-" { Resize "Decrease"; }
+        bind "=" { Resize "Increase"; }
+        bind "H" { Resize "Decrease left"; }
+        bind "J" { Resize "Decrease down"; }
+        bind "K" { Resize "Decrease up"; }
+        bind "L" { Resize "Decrease right"; }
+        bind "h" { Resize "Increase left"; }
+        bind "j" { Resize "Increase down"; }
+        bind "k" { Resize "Increase up"; }
+        bind "l" { Resize "Increase right"; }
+        bind "r" { SwitchToMode "normal"; }
+    }
+    move {
+        bind "left" { MovePane "left"; }
+        bind "down" { MovePane "down"; }
+        bind "up" { MovePane "up"; }
+        bind "right" { MovePane "right"; }
+        bind "h" { MovePane "left"; }
+        bind "j" { MovePane "down"; }
+        bind "k" { MovePane "up"; }
+        bind "l" { MovePane "right"; }
+        bind "m" { SwitchToMode "normal"; }
+        bind "n" { MovePane; }
+        bind "p" { MovePaneBackwards; }
+        bind "tab" { MovePane; }
+    }
+    scroll {
+        bind "Alt left" { MoveFocusOrTab "left"; SwitchToMode "locked"; }
+        bind "Alt down" { MoveFocus "down"; SwitchToMode "locked"; }
+        bind "Alt up" { MoveFocus "up"; SwitchToMode "locked"; }
+        bind "Alt right" { MoveFocusOrTab "right"; SwitchToMode "locked"; }
+        bind "e" { EditScrollback; SwitchToMode "locked"; }
+        bind "f" { SwitchToMode "entersearch"; SearchInput 0; }
+        bind "Alt h" { MoveFocusOrTab "left"; SwitchToMode "locked"; }
+        bind "Alt j" { MoveFocus "down"; SwitchToMode "locked"; }
+        bind "Alt k" { MoveFocus "up"; SwitchToMode "locked"; }
+        bind "Alt l" { MoveFocusOrTab "right"; SwitchToMode "locked"; }
+        bind "s" { SwitchToMode "normal"; }
+    }
+    search {
+        bind "c" { SearchToggleOption "CaseSensitivity"; }
+        bind "n" { Search "down"; }
+        bind "o" { SearchToggleOption "WholeWord"; }
+        bind "p" { Search "up"; }
+        bind "w" { SearchToggleOption "Wrap"; }
+    }
+    session {
+        bind "c" {
+            LaunchOrFocusPlugin "configuration" {
+                floating true
+                move_to_focused_tab true
+            }
+            SwitchToMode "locked"
+        }
+        bind "d" { Detach; }
+        bind "o" { SwitchToMode "normal"; }
+        bind "p" {
+            LaunchOrFocusPlugin "plugin-manager" {
+                floating true
+                move_to_focused_tab true
+            }
+            SwitchToMode "locked"
+        }
+        bind "w" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            }
+            SwitchToMode "locked"
+        }
+    }
+    shared_among "normal" "locked" {
+        bind "Alt left" { MoveFocusOrTab "left"; }
+        bind "Alt down" { MoveFocus "down"; }
+        bind "Alt up" { MoveFocus "up"; }
+        bind "Alt right" { MoveFocusOrTab "right"; }
+        bind "Alt +" { Resize "Increase"; }
+        bind "Alt -" { Resize "Decrease"; }
+        bind "Alt =" { Resize "Increase"; }
+        bind "Alt [" { PreviousSwapLayout; }
+        bind "Alt ]" { NextSwapLayout; }
+        bind "Alt f" { ToggleFloatingPanes; }
+        bind "Alt h" { MoveFocusOrTab "left"; }
+        bind "Alt i" { MoveTab "left"; }
+        bind "Alt j" { MoveFocus "down"; }
+        bind "Alt k" { MoveFocus "up"; }
+        bind "Alt l" { MoveFocusOrTab "right"; }
+        bind "Alt n" { NewPane; }
+        bind "Alt o" { MoveTab "right"; }
+    }
+    shared_except "locked" "renametab" "renamepane" {
+        bind "Ctrl g" { SwitchToMode "locked"; }
+        bind "Ctrl q" { Quit; }
+    }
+    shared_except "locked" "entersearch" {
+        bind "enter" { SwitchToMode "locked"; }
+    }
+    shared_except "locked" "entersearch" "renametab" "renamepane" {
+        bind "esc" { SwitchToMode "locked"; }
+    }
+    shared_except "locked" "entersearch" "renametab" "renamepane" "move" {
+        bind "m" { SwitchToMode "move"; }
+    }
+    shared_except "locked" "entersearch" "search" "renametab" "renamepane" "session" {
+        bind "o" { SwitchToMode "session"; }
+    }
+    shared_except "locked" "tab" "entersearch" "renametab" "renamepane" {
+        bind "t" { SwitchToMode "tab"; }
+    }
+    shared_except "locked" "tab" "scroll" "entersearch" "renametab" "renamepane" {
+        bind "s" { SwitchToMode "scroll"; }
+    }
+    shared_among "normal" "resize" "tab" "scroll" "prompt" "tmux" {
+        bind "p" { SwitchToMode "pane"; }
+    }
+    shared_except "locked" "resize" "pane" "tab" "entersearch" "renametab" "renamepane" {
+        bind "r" { SwitchToMode "resize"; }
+    }
+    shared_among "scroll" "search" {
+        bind "PageDown" { PageScrollDown; }
+        bind "PageUp" { PageScrollUp; }
+        bind "left" { PageScrollUp; }
+        bind "down" { ScrollDown; }
+        bind "up" { ScrollUp; }
+        bind "right" { PageScrollDown; }
+        bind "Ctrl b" { PageScrollUp; }
+        bind "Ctrl c" { ScrollToBottom; SwitchToMode "locked"; }
+        bind "d" { HalfPageScrollDown; }
+        bind "Ctrl f" { PageScrollDown; }
+        bind "h" { PageScrollUp; }
+        bind "j" { ScrollDown; }
+        bind "k" { ScrollUp; }
+        bind "l" { PageScrollDown; }
+        bind "u" { HalfPageScrollUp; }
+    }
+    entersearch {
+        bind "Ctrl c" { SwitchToMode "scroll"; }
+        bind "esc" { SwitchToMode "scroll"; }
+        bind "enter" { SwitchToMode "search"; }
+    }
+    renametab {
+        bind "esc" { UndoRenameTab; SwitchToMode "tab"; }
+    }
+    shared_among "renametab" "renamepane" {
+        bind "Ctrl c" { SwitchToMode "locked"; }
+    }
+    renamepane {
+        bind "esc" { UndoRenamePane; SwitchToMode "pane"; }
+    }
+}
+</file>
+
+<file path="modules/home-manager/zellij/default.nix">
+{ config, lib, ... }:
+let
+  cfg = config.home_modules.zellij;
+
+  enable = lib.mkEnableOption "zellij";
+in
+{
+  options.home_modules.zellij = {
+    inherit cfg enable;
+  };
+
+  config = lib.mkIf cfg.enable {
+    # Due to KDL format, it is very hard and not completely accurate to transform
+    # Nix -> KDL. So most "advanced" configuration won't work
+    xdg.configFile = {
+      "zellij/layouts/base.kdl".source = ./base_layout.kdl;
+      "zellij/config.kdl".source = ./config.kdl;
+    };
+
+    programs.zellij.enable = true;
+  };
+}
+</file>
+
+<file path="modules/home-manager/ghostty.nix">
+{ config, lib, ... }:
+let
+  cfg = config.home_modules.ghostty;
+
+  enable = lib.mkEnableOption "ghostty";
+in
+{
+  options.home_modules.ghostty = {
+    inherit enable;
+  };
+
+  config = lib.mkIf cfg.enable {
+    programs.ghostty = {
+      enable = true;
+      installVimSyntax = true;
+      settings = {
+        background-opacity = 0.9;
+        theme = "catppuccin-macchiato";
+        font-family = "Mononoki Nerd Font";
+        link-url = true;
+        # clipboard-read = "allow";
+        # clipboard-write = "allow";
+        copy-on-select = "clipboard";
+      };
+    };
+  };
+}
+</file>
+
+<file path="modules/home-manager/git.nix">
+{ config, lib, ... }:
+let
+  cfg = config.home_modules.git;
+
+  enable = lib.mkEnableOption "git";
+  signingKey = lib.mkOption {
+    type = lib.types.nullOr lib.types.nonEmptyStr;
+    description = "The GPG key to use for signing commits";
+    example = "A12925470298BFEE7EE092B3946E2D0C410C7B3D";
+    default = null;
+  };
+  user = lib.mkOption {
+    type = lib.types.attrs;
+    description = "user information for git";
+    default = {
+      name = "DataHearth";
+      email = "dev@antoine-langlois.net";
+    };
+  };
+  extraConfig = lib.mkOption {
+    type = lib.types.attrs;
+    description = "Extra git configuration";
+    default = { };
+  };
+  extraAliases = lib.mkOption {
+    type = lib.types.attrs;
+    description = "Extra git aliases";
+    default = { };
+  };
+in
+{
+  options.home_modules.git = {
+    inherit
+      enable
+      signingKey
+      user
+      extraConfig
+      extraAliases
+      ;
+  };
+
+  config = lib.mkIf cfg.enable {
+    programs.git = {
+      enable = true;
+      aliases = {
+        co = "checkout";
+        p = "push";
+        c = "commit";
+        s = "status";
+        pu = "pull";
+        logs = "log --graph --oneline";
+        remote-update = "remote update origin --prune";
+        tags = "git tag --list";
+      } // cfg.extraAliases;
+      difftastic.enable = true;
+      lfs.enable = true;
+      signing = lib.mkIf (cfg.signingKey != null) {
+        signByDefault = true;
+        key = cfg.signingKey;
+      };
+      userName = cfg.user.name;
+      userEmail = cfg.user.email;
+      extraConfig = {
+        init.defaultBranch = "main";
+      } // cfg.extraConfig;
+    };
+  };
+}
+</file>
+
+<file path="modules/home-manager/ssh.nix">
+{ config, lib, ... }:
+let
+  cfg = config.home_modules.ssh;
+
+  enable = lib.mkEnableOption "ssh";
+  addKeysToAgent = lib.mkOption {
+    type = lib.types.enum [
+      "yes"
+      "no"
+      "confirm"
+      "ask"
+    ];
+    default = "yes";
+    description = "Add automatically private SSH keys to ssh-agent";
+  };
+in
+{
+  options.home_modules.ssh = {
+    inherit enable addKeysToAgent;
+  };
+
+  config = lib.mkIf cfg.enable {
+    programs.ssh = {
+      enable = true;
+      addKeysToAgent = cfg.addKeysToAgent;
+    };
+  };
+}
+</file>
+
+<file path="modules/nh.nix">
+{ config, lib, ... }:
+let
+  cfg = config.nixos_modules.nh;
+
+  enable = lib.mkEnableOption "nh";
+  settings = lib.mkOption {
+    type = lib.types.submodule {
+      options = {
+        inherit flake clean;
+      };
+    };
+    description = "nh settings";
+  };
+
+  flake = lib.mkOption {
+    type = lib.types.str;
+    description = "Location of system/home-manager configuration";
+  };
+  clean = lib.mkOption {
+    type = lib.types.bool;
+    description = "Should a systemd timer clean-up every 2 days generations";
+    default = true;
+  };
+in
+{
+  options.nixos_modules.nh = {
+    inherit enable settings;
+  };
+
+  config.programs.nh = lib.mkIf cfg.enable {
+    enable = true;
+    clean = lib.mkIf cfg.settings.clean {
+      enable = true;
+      extraArgs = "--keep-since 2d --keep 2";
+    };
+    flake = cfg.settings.flake;
+  };
+}
+</file>
+
+<file path="hosts/khazad-dum/home-manager/ui.nix">
+{ pkgs, ... }:
+let
+  theme_name = "WhiteSur-Dark";
+  cursor_theme = "WhiteSur-cursors";
+  cursor_size = 32;
+  cursor_pkg = pkgs.whitesur-cursors;
+in
+{
+  home = {
+    sessionVariables.GTK_THEME = theme_name;
+
+    pointerCursor = {
+      gtk.enable = true;
+      package = cursor_pkg;
+      name = cursor_theme;
+      size = cursor_size;
+    };
+  };
+
+  dconf = {
+    enable = true;
+
+    settings = {
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        gtk-theme = theme_name;
+      };
+      "org/gnome/mutter" = {
+        experimental-features = [ "scale-monitor-framebuffer" ];
+      };
+    };
+  };
+
+  gtk = {
+    enable = true;
+
+    iconTheme = {
+      name = "WhiteSur";
+      package = pkgs.whitesur-icon-theme;
+    };
+
+    theme = {
+      name = theme_name;
+      package = pkgs.whitesur-gtk-theme;
+    };
+
+    cursorTheme = {
+      name = cursor_theme;
+      package = cursor_pkg;
+      size = cursor_size;
+    };
+  };
+}
+</file>
+
+<file path="hosts/valinor/packages.nix">
+{ pkgs, ... }:
+{
+  environment = {
+    pathsToLink = [ "/share/zsh" ];
+    shells = with pkgs; [
+      zsh
+      bashInteractive
+    ];
+    systemPackages = with pkgs; [
+      age
+      btop
+      difftastic
+      dig
+      dogdns
+      dust
+      fd
+      jq
+      rclone
+      restic
+      ripgrep
+      sd
+      unzip
+      xh
+      zip
+      pwru
+      smartmontools
+    ];
+  };
+
+  programs = {
+    gnupg.agent.enable = true;
+
+    zsh = {
+      enable = true;
+      promptInit = ''
+        source <(docker completion zsh)
+        source <(ipfs commands completion zsh)
+      '';
+    };
+  };
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.mononoki
+    nerd-fonts.jetbrains-mono
+  ];
+}
+</file>
+
+<file path="hosts/valinor/services.nix">
+{ config, ... }:
+{
+  services = {
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      authKeyFile = "/run/secrets/tailscale_keys/valinor";
+      useRoutingFeatures = "server";
+      extraUpFlags = [
+        "--accept-dns=false"
+        "--advertise-tags=\"tag:actinium\""
+        "--advertise-routes=\"192.168.1.0/24\""
+      ];
+    };
+
+    openssh = {
+      enable = true;
+      settings.PrintMotd = true;
+      extraConfig = ''
+        Match User ${config.users.users.actinium.name}
+          AuthenticationMethods publickey
+          PasswordAuthentication no
+      '';
+    };
+
+    logrotate = {
+      enable = true;
+      settings =
+        let
+          war_goats_logs = "/mnt/Erebor/War-goats/logs";
+        in
+        {
+          header = {
+            dateext = true;
+          };
+
+          "${war_goats_logs}/traefik/access.log" = {
+            size = "50M";
+            rotate = 30;
+            notifempty = true;
+            postrotate = ''
+              docker kill --signal 'USR1' reverse-proxy-traefik-1
+            '';
+          };
+        };
+    };
+
+    kubo = {
+      enable = true;
+      autoMount = true;
+      enableGC = true;
+
+      settings = {
+        Addresses = {
+          API = "/ip4/192.168.1.2/tcp/5001";
+        };
+        API.HTTPHeaders = {
+          Access-Control-Allow-Origin = [
+            "http://192.168.1.2:5001"
+            "http://localhost:3000"
+            "http://127.0.0.1:5001"
+            "https://webui.ipfs.io"
+          ];
+          Access-Control-Allow-Methods = [
+            "PUT"
+            "POST"
+          ];
+        };
+      };
+    };
+  };
+}
+</file>
+
+<file path="modules/home-manager/rofi-wayland/default.nix">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.home_modules.rofi-wayland;
+
+  enable = lib.mkEnableOption "rofi-wayland";
+in
+{
+  options.home_modules.rofi-wayland = {
+    inherit enable;
+  };
+
+  config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [
+      rofi-wayland
+      grim
+      slurp
+      satty
+      hyprshot
+      playerctl
+    ];
+
+    xdg.configFile = {
+      "rofi/dmenu.rasi".source = ./dmenu.rasi;
+      "rofi/clipboard.rasi".source = ./clipboard.rasi;
+      "rofi/powermenu.rasi".source = ./powermenu.rasi;
+      "rofi/screenshot.rasi".source = ./screenshot.rasi;
+      "rofi/confirm.rasi".source = ./confirm.rasi;
+
+      "rofi/dmenu.sh" = {
+        source = ./dmenu.sh;
+        executable = true;
+      };
+      "rofi/clipboard.sh" = {
+        source = ./clipboard.sh;
+        executable = true;
+      };
+      "rofi/powermenu.sh" = {
+        source = ./powermenu.sh;
+        executable = true;
+      };
+      "rofi/screenshot.sh" = {
+        source = ./screenshot.sh;
+        executable = true;
+      };
+    };
+  };
+}
+</file>
+
+<file path="modules/home-manager/waybar/default.nix">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.home_modules.waybar;
+
+  enable = lib.mkEnableOption "waybar";
+  right = lib.mkOption {
+    description = "List of modules to include in the right part of waybar";
+    type = lib.types.listOf lib.types.str;
+    default = [
+      "pulseaudio#output"
+      "pulseaudio#input"
+      "backlight"
+      "custom/notification"
+      "battery"
+      "tray"
+    ];
+  };
+  left = lib.mkOption {
+    description = "List of modules to include in the left part of waybar";
+    type = lib.types.listOf lib.types.str;
+    default = [
+      "hyprland/workspaces"
+      "cpu"
+      "memory"
+      "disk"
+      "network#speed"
+    ];
+  };
+  center = lib.mkOption {
+    description = "List of modules to include in the center part of waybar";
+    type = lib.types.listOf lib.types.str;
+    default = [ "clock" ];
+  };
+in
+{
+  options.home_modules.waybar = {
+    inherit
+      enable
+      right
+      left
+      center
+      ;
+  };
+
+  config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [ pavucontrol ];
+    programs.waybar = {
+      enable = true;
+      style = builtins.readFile ./style.css;
+      settings = {
+        default = {
+          include = "${config.xdg.configHome}/waybar/modules.json";
+          position = "top";
+          css = "~/.config/waybar/style.css";
+          modules-left = cfg.left;
+          modules-center = cfg.center;
+          modules-right = cfg.right;
+        };
+      };
+    };
+    xdg.configFile = {
+      "waybar/modules.json".source = ./modules.json;
+      "waybar/styles" = {
+        source = ./styles;
+        recursive = true;
+      };
+    };
+  };
+}
+</file>
+
+<file path="modules/home-manager/default.nix">
+[
+  ./git.nix
+  ./alacritty.nix
+  ./ssh.nix
+  ./hyprlock.nix
+  ./ghostty.nix
+  ./swaync
+  ./rofi-wayland
+  ./waybar
+  ./zellij
+]
+</file>
+
+<file path="modules/home-manager/hyprlock.nix">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.home_modules.hyprlock;
+
+  enable = lib.mkEnableOption "hyprlock";
+  lockBackgroundImage = lib.mkOption {
+    type = lib.types.nullOr lib.types.str;
+    description = "Path to background image for lock screen";
+    default = null;
+  };
+  defaultDisplay = lib.mkOption {
+    type = lib.types.str;
+    description = "Default display will have all labels and input-labels written on.";
+    default = "";
+  };
+in
+{
+  options.home_modules.hyprlock = {
+    inherit enable lockBackgroundImage defaultDisplay;
+  };
+
+  config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [
+      playerctl
+    ];
+
+    programs.hyprlock = {
+      enable = true;
+      settings = {
+        general = {
+          disable_loading_bar = true;
+          grace = 0;
+          hide_cursor = true;
+          no_fade_in = false;
+          no_fade_out = false;
+          ignore_empty_input = false;
+        };
+
+        background = [
+          {
+            path = lib.mkIf (cfg.lockBackgroundImage != null) cfg.lockBackgroundImage;
+            blur_passes = 3;
+            blur_size = 8;
+            contrast = 0.8916;
+            brightness = 0.8172;
+            vibrancy = 0.1696;
+            vibrancy_darkness = 0.0;
+            noise = 1.17e-2;
+          }
+        ];
+
+        input-field = [
+          {
+            monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+            size = "250, 60";
+            outline_thickness = 2;
+            dots_size = 0.2;
+            dots_spacing = 0.2;
+            dots_center = true;
+            dots_rounding = -1;
+            outer_color = "rgba(0, 0, 0, 0)";
+            inner_color = "rgba(0, 0, 0, 0.5)";
+            font_color = "rgb(200, 200, 200)";
+            fade_on_empty = true;
+            fade_timeout = 2000;
+            placeholder_text = ''<i><span foreground="##cdd6f4">Input Password...</span></i>'';
+            rounding = -1;
+            check_color = "rgb(204, 136, 34)";
+            fail_color = "rgb(204, 34, 34)";
+            fail_text = "<i>$FAIL</i>";
+            fail_transition = 300;
+            capslock_color = -1;
+            numlock_color = -1;
+            bothlock_color = -1;
+            invert_numlock = false;
+            swap_font_color = false;
+            position = "0, -120";
+            halign = "center";
+            valign = "center";
+            shadow_passes = 0;
+            shadow_size = 3;
+            shadow_color = "rgba(0, 0, 0, 1.0)";
+            shadow_boost = 1.2;
+            hide_input = false;
+          }
+        ];
+
+        label = [
+          {
+            monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+            text = ''cmd[update:1000] echo "$TIME"'';
+            font_family = "Mononoki Nerd Font";
+            color = "rgba(255, 255, 255, 0.6)";
+            font_size = 120;
+            position = "0, -300";
+            valign = "top";
+            halign = "center";
+            shadow_passes = 0;
+            shadow_size = 3;
+            shadow_color = "rgba(0, 0, 0, 1.0)";
+            shadow_boost = 1.2;
+          }
+          {
+            monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+            text = "Hello there, $USER";
+            font_family = "Mononoki Nerd Font";
+            color = "rgba(255, 255, 255, 0.6)";
+            font_size = 25;
+            position = "0, -40";
+            halign = "center";
+            valign = "center";
+            shadow_passes = 0;
+            shadow_size = 3;
+            shadow_color = "rgba(0, 0, 0, 1.0)";
+            shadow_boost = 1.2;
+          }
+          {
+            monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+            text = ''cmd[update:1000] playerctl metadata --format "{{ artist }} - {{ album }} - {{ title }}"'';
+            color = "rgba(255, 255, 255, 0.6)";
+            font_size = 18;
+            font_family = "Mononoki Nerd Font";
+            position = "0, -50";
+            valign = "bottom";
+            halign = "center";
+            shadow_passes = 0;
+            shadow_size = 3;
+            shadow_color = "rgba(0, 0, 0, 1.0)";
+            shadow_boost = 1.2;
+          }
+        ];
+      };
+    };
+  };
+}
+</file>
+
+<file path="hosts/khazad-dum/home-manager/home.nix">
+{
+  pkgs,
+  default_user,
+  state_version,
+  ...
+}:
+{
+  imports = [
+    ./modules.nix
+    ./packages.nix
+    ./services.nix
+    ./ui.nix
+  ] ++ (import ../../../modules/home-manager);
+  home = {
+    username = default_user;
+    homeDirectory = "/home/${default_user}";
+    stateVersion = state_version;
+    shell.enableZshIntegration = true;
+  };
+
+  xdg.enable = true;
+
+}
+</file>
+
+<file path="modules/home-manager/alacritty.nix">
+{ config, lib, ... }:
+let
+  cfg = config.home_modules.alacritty;
+
+  enable = lib.mkEnableOption "alacritty";
+in
+{
+  options.home_modules.alacritty = {
+    inherit enable;
+  };
+
+  config = lib.mkIf cfg.enable {
+    programs.alacritty = {
+      enable = true;
+      settings = {
+        general.import = [
+          (builtins.fetchurl {
+            url = "https://raw.githubusercontent.com/catppuccin/alacritty/832787d6cc0796c9f0c2b03926f4a83ce4d4519b/catppuccin-macchiato.toml";
+            sha256 = "1iq187vg64h4rd15b8fv210liqkbzkh8sw04ykq0hgpx20w3qilv";
+          })
+        ];
+        env.TERM = "xterm-256color";
+        scrolling.multiplier = 5;
+        selection.save_to_clipboard = true;
+
+        font = {
+          size = 12;
+          normal.family = "Mononoki Nerd Font";
+        };
+
+        window = {
+          opacity = lib.mkDefault 0.9;
+          startup_mode = "Maximized";
+        };
+      };
+    };
+  };
+}
+</file>
+
+<file path="flake.nix">
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    sops-nix.url = "github:Mic92/sops-nix";
+    zjstatus.url = "github:dj95/zjstatus";
+
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixvim = {
+      url = "github:datahearth/nixvim-config";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
+  outputs =
+    {
+      nixpkgs,
+      nixpkgs-unstable,
+      sops-nix,
+      home-manager,
+      nixvim,
+      lanzaboote,
+      zen-browser,
+      zjstatus,
+      ...
+    }:
+    {
+      nixosConfigurations =
+        let
+          system = "x86_64-linux";
+        in
+        {
+          Valinor = nixpkgs.lib.nixosSystem {
+            inherit system;
+
+            specialArgs = {
+              pkgs-unstable = import nixpkgs-unstable {
+                inherit system;
+                config.allowUnfree = true;
+              };
+            };
+
+            modules = [
+              ./hosts/valinor/configuration.nix
+              home-manager.nixosModules.home-manager
+              sops-nix.nixosModules.sops
+              nixvim.nixosModules.default
+            ];
+          };
+
+          Khazad-dum = nixpkgs.lib.nixosSystem {
+            inherit system;
+
+            specialArgs = {
+              inherit zen-browser;
+
+              pkgs-unstable = import nixpkgs-unstable {
+                inherit system;
+                config.allowUnfree = true;
+              };
+            };
+
+            modules = [
+              {
+                nixpkgs.overlays = [
+                  (final: prev: {
+                    zjstatus = zjstatus.packages.${prev.system}.default;
+                  })
+                ];
+              }
+              ./hosts/khazad-dum/configuration.nix
+              home-manager.nixosModules.home-manager
+              lanzaboote.nixosModules.lanzaboote
+              sops-nix.nixosModules.sops
+              nixvim.nixosModules.default
+            ];
+          };
+        };
+    };
+}
+</file>
+
+<file path="hosts/khazad-dum/home-manager/modules.nix">
+{
+  home_modules = {
+    alacritty.enable = true;
+    ghostty.enable = true;
+    ssh.enable = true;
+    zellij.enable = true;
+
+    git = {
+      enable = true;
+      signingKey = "E8F90B80908E723D0EDF09165803CDA59C26A96A";
+    };
+
+    waybar.right = [
+      "pulseaudio#output"
+      "pulseaudio#input"
+      "custom/spacer"
+      "backlight"
+      "custom/spacer"
+      "battery"
+      "custom/spacer"
+      "custom/notification"
+      "custom/spacer"
+      "tray"
+    ];
+
+    hyprlock = {
+      lockBackgroundImage = "~/Pictures/assets/locks/1.png";
+      defaultDisplay = "eDP-1";
+    };
+  };
+}
+</file>
+
+<file path="hosts/khazad-dum/home-manager/services.nix">
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  services = {
+    ssh-agent.enable = true;
+
+    nextcloud-client = {
+      enable = true;
+      startInBackground = true;
+    };
+
+    gpg-agent = {
+      enable = true;
+      pinentry.package = pkgs.pinentry-gnome3;
+      defaultCacheTtl = 86400;
+      maxCacheTtl = 86400;
+    };
+
+    kanshi.settings = lib.mkIf config.services.kanshi.enable [
+      {
+        profile.name = "nomad";
+        profile.exec =
+          (map (v: "hyprctl dispatch moveworkspacetomonitor ${v} eDP-1") [
+            "1"
+            "2"
+            "3"
+            "4"
+            "5"
+            "6"
+            "7"
+            "8"
+            "9"
+            "0"
+          ])
+          ++ [
+            "${pkgs.hyprland}/bin/hyprctl dispatch workspace 1"
+            "notify-send -i $HOME/Pictures/icons/nomad.svg 'Nomad mode' 'Hyprland displays switched to nomad configuration' -a 'Kanshi' -t 4000"
+            (lib.mkIf config.nixos_modules.hyprland.setttings.waybar "${pkgs.killall}/bin/killall -SIGUSR2 .waybar-wrapped")
+          ];
+        profile.outputs = [ { criteria = "eDP-1"; } ];
+      }
+      {
+        profile.name = "docked";
+        profile.exec =
+          (map (v: "hyprctl dispatch moveworkspacetomonitor ${v.workspace} ${v.monitor}") [
+            {
+              workspace = "1";
+              monitor = "DP-4";
+            }
+            {
+              workspace = "2";
+              monitor = "DP-3";
+            }
+            {
+              workspace = "3";
+              monitor = "DP-4";
+            }
+            {
+              workspace = "4";
+              monitor = "DP-3";
+            }
+            {
+              workspace = "6";
+              monitor = "eDP-1";
+            }
+
+          ])
+          ++ [
+            "${pkgs.hyprland}/bin/hyprctl dispatch workspace 1"
+            "notify-send -i $HOME/Pictures/icons/docked.svg 'Docked mode' 'Hyprland displays switched to docked configuration' -a 'Kanshi' -t 4000"
+            (lib.mkIf config.nixos_modules.hyprland.setttings.waybar "${pkgs.killall}/bin/killall -SIGUSR2 .waybar-wrapped")
+          ];
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+          }
+          {
+            criteria = "AOC U2790B 0x0001E2B5";
+            scale = 2.0;
+          }
+          {
+            criteria = "Dell Inc. DELL S2715H PP92G5CH281L";
+          }
+        ];
+      }
+    ];
+  };
+}
+</file>
+
+<file path="flake.lock">
+{
+  "nodes": {
+    "crane": {
+      "locked": {
+        "lastModified": 1746291859,
+        "narHash": "sha256-DdWJLA+D5tcmrRSg5Y7tp/qWaD05ATI4Z7h22gd1h7Q=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "dfd9a8dfd09db9aad544c4d3b6c47b12562544a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipetkov",
+        "repo": "crane",
+        "type": "github"
+      }
+    },
+    "crane_2": {
+      "locked": {
+        "lastModified": 1743700120,
+        "narHash": "sha256-8BjG/P0xnuCyVOXlYRwdI1B8nVtyYLf3oDwPSimqREY=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "e316f19ee058e6db50075115783be57ac549c389",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipetkov",
+        "repo": "crane",
+        "type": "github"
+      }
+    },
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1733328505,
+        "narHash": "sha256-NeCCThCEP3eCl2l/+27kNNK7QrwZB1IJCrXfrbv5oqU=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "ff81ac966bb2cae68946d5ed5fc4994f96d0ffec",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-parts": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "lanzaboote",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1743550720,
+        "narHash": "sha256-hIshGgKZCgWh6AYJpJmRgFdR3WUbkY04o82X05xqQiY=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "c621e8422220273271f52058f618c94e405bb0f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-parts_2": {
+      "inputs": {
+        "nixpkgs-lib": "nixpkgs-lib"
+      },
+      "locked": {
+        "lastModified": 1743550720,
+        "narHash": "sha256-hIshGgKZCgWh6AYJpJmRgFdR3WUbkY04o82X05xqQiY=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "c621e8422220273271f52058f618c94e405bb0f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-parts_3": {
+      "inputs": {
+        "nixpkgs-lib": [
+          "nixvim",
+          "nixvim",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1743550720,
+        "narHash": "sha256-hIshGgKZCgWh6AYJpJmRgFdR3WUbkY04o82X05xqQiY=",
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "rev": "c621e8422220273271f52058f618c94e405bb0f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "gitignore": {
+      "inputs": {
+        "nixpkgs": [
+          "lanzaboote",
+          "pre-commit-hooks-nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1709087332,
+        "narHash": "sha256-HG2cCnktfHsKV0s4XW83gU3F57gaTljL9KNSuG6bnQs=",
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748487945,
+        "narHash": "sha256-e9zc/rHdoH9i+sFFhhQiKoF6IuD+T2rB/nUyPaO7CCg=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "0d13ea58d565d3c1c1468ddae1f623316dc395d9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-25.05",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "home-manager-unstable": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748489961,
+        "narHash": "sha256-uGnudxMoQi2c8rpPoHXuQSm80NBqlOiNF4xdT3hhzLM=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "95c988cf08e9a5a8fe7cc275d5e3f24e9e87bd51",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "home-manager_2": {
+      "inputs": {
+        "nixpkgs": [
+          "zen-browser",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1743604125,
+        "narHash": "sha256-ZD61DNbsBt1mQbinAaaEqKaJk2RFo9R/j+eYWeGMx7A=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "180fd43eea296e62ae68e079fcf56aba268b9a1a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "ixx": {
+      "inputs": {
+        "flake-utils": [
+          "nixvim",
+          "nixvim",
+          "nuschtosSearch",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixvim",
+          "nixvim",
+          "nuschtosSearch",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748294338,
+        "narHash": "sha256-FVO01jdmUNArzBS7NmaktLdGA5qA3lUMJ4B7a05Iynw=",
+        "owner": "NuschtOS",
+        "repo": "ixx",
+        "rev": "cc5f390f7caf265461d4aab37e98d2292ebbdb85",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NuschtOS",
+        "ref": "v0.0.8",
+        "repo": "ixx",
+        "type": "github"
+      }
+    },
+    "lanzaboote": {
+      "inputs": {
+        "crane": "crane",
+        "flake-compat": "flake-compat",
+        "flake-parts": "flake-parts",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pre-commit-hooks-nix": "pre-commit-hooks-nix",
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1747056319,
+        "narHash": "sha256-qSKcBaISBozadtPq6BomnD+wIYTZIkiua3UuHLaD52c=",
+        "owner": "nix-community",
+        "repo": "lanzaboote",
+        "rev": "2e425f3da6ce7f5b34fa6eaf7a2a7f78dbabcc85",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "lanzaboote",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1748302896,
+        "narHash": "sha256-ixMT0a8mM091vSswlTORZj93WQAJsRNmEvqLL+qwTFM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "7848cd8c982f7740edf76ddb3b43d234cb80fc4d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-lib": {
+      "locked": {
+        "lastModified": 1743296961,
+        "narHash": "sha256-b1EdN3cULCqtorQ4QeWgLMrd5ZGOjLSLemfa00heasc=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "e4822aea2a6d1cdd36653c134cacfd64c97ff4fa",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "nixpkgs-unstable": {
+      "locked": {
+        "lastModified": 1748370509,
+        "narHash": "sha256-QlL8slIgc16W5UaI3w7xHQEP+Qmv/6vSNTpoZrrSlbk=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "4faa5f5321320e49a78ae7848582f684d64783e9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1748344075,
+        "narHash": "sha256-PsZAY3H0e/PBoDVn4fLwGEmeSwESj7SZPZ6CMfgbWFU=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e0042dedfbc9134ef973f64e5c7f56a38cc5cc97",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1744868846,
+        "narHash": "sha256-5RJTdUHDmj12Qsv7XOhuospjAjATNiTMElplWnJE9Hs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ebe4301cbd8f81c4f8d3244b3632338bbeb6d49c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
+        "lastModified": 1743689281,
+        "narHash": "sha256-y7Hg5lwWhEOgflEHRfzSH96BOt26LaYfrYWzZ+VoVdg=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2bfc080955153be0be56724be6fa5477b4eefabb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixvim": {
+      "inputs": {
+        "flake-parts": "flake-parts_2",
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ],
+        "nixvim": "nixvim_2"
+      },
+      "locked": {
+        "lastModified": 1748510852,
+        "narHash": "sha256-nIRpJvbTl9ta79gBkSaODn3M8bEDFPM74pdgZo5ofHk=",
+        "owner": "datahearth",
+        "repo": "nixvim-config",
+        "rev": "daa7fe37da5710e913fba7dfb5aa1ee9741f445d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "datahearth",
+        "repo": "nixvim-config",
+        "type": "github"
+      }
+    },
+    "nixvim_2": {
+      "inputs": {
+        "flake-parts": "flake-parts_3",
+        "nixpkgs": "nixpkgs_2",
+        "nuschtosSearch": "nuschtosSearch",
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1748477044,
+        "narHash": "sha256-X6tA9XTFhgZqZGUCqP8F8/Fl0/ZQoo4husc3JoHa0fk=",
+        "owner": "nix-community",
+        "repo": "nixvim",
+        "rev": "28a2abf874c3ecbbf91edf1b2b9fe595f0f54099",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixvim",
+        "type": "github"
+      }
+    },
+    "nuschtosSearch": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "ixx": "ixx",
+        "nixpkgs": [
+          "nixvim",
+          "nixvim",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748298102,
+        "narHash": "sha256-PP11GVwUt7F4ZZi5A5+99isuq39C59CKc5u5yVisU/U=",
+        "owner": "NuschtOS",
+        "repo": "search",
+        "rev": "f8a1c221afb8b4c642ed11ac5ee6746b0fe1d32f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NuschtOS",
+        "repo": "search",
+        "type": "github"
+      }
+    },
+    "pre-commit-hooks-nix": {
+      "inputs": {
+        "flake-compat": [
+          "lanzaboote",
+          "flake-compat"
+        ],
+        "gitignore": "gitignore",
+        "nixpkgs": [
+          "lanzaboote",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1746537231,
+        "narHash": "sha256-Wb2xeSyOsCoTCTj7LOoD6cdKLEROyFAArnYoS+noCWo=",
+        "owner": "cachix",
+        "repo": "pre-commit-hooks.nix",
+        "rev": "fa466640195d38ec97cf0493d6d6882bc4d14969",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cachix",
+        "repo": "pre-commit-hooks.nix",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "home-manager": "home-manager",
+        "home-manager-unstable": "home-manager-unstable",
+        "lanzaboote": "lanzaboote",
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "nixvim": "nixvim",
+        "sops-nix": "sops-nix",
+        "zen-browser": "zen-browser",
+        "zjstatus": "zjstatus"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "lanzaboote",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1747017456,
+        "narHash": "sha256-C/U12fcO+HEF071b5mK65lt4XtAIZyJSSJAg9hdlvTk=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "5b07506ae89b025b14de91f697eba23b48654c52",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "zjstatus",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1743682350,
+        "narHash": "sha256-S/MyKOFajCiBm5H5laoE59wB6w0NJ4wJG53iAPfYW3k=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "c4a8327b0f25d1d81edecbb6105f74d7cf9d7382",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1747603214,
+        "narHash": "sha256-lAblXm0VwifYCJ/ILPXJwlz0qNY07DDYdLD+9H+Wc8o=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "8d215e1c981be3aa37e47aeabd4e61bb069548fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "zen-browser": {
+      "inputs": {
+        "home-manager": "home-manager_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1748488425,
+        "narHash": "sha256-lk2NDcUI7fvLj47dSS9VlitizGVD2BR5HZGt0w4MjUY=",
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "rev": "74f856b8e9a7a77844f9842bae61aeb0a1e1a95f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0xc000022070",
+        "repo": "zen-browser-flake",
+        "type": "github"
+      }
+    },
+    "zjstatus": {
+      "inputs": {
+        "crane": "crane_2",
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": "nixpkgs_4",
+        "rust-overlay": "rust-overlay_2"
+      },
+      "locked": {
+        "lastModified": 1745230073,
+        "narHash": "sha256-OER99U7MiqQ47myvbsiljsax7OsK19NMds4NBM9XXLs=",
+        "owner": "dj95",
+        "repo": "zjstatus",
+        "rev": "a819e3bfe6bfef0438d811cdbb1bcfdc29912c62",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dj95",
+        "repo": "zjstatus",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
+</file>
+
+<file path="modules/gnome.nix">
+{
+  config,
+  lib,
+  pkgs,
+  zen-browser,
+  default_user,
+  ...
+}:
+let
+  cfg = config.nixos_modules.gnome;
+
+  enable = lib.options.mkEnableOption "gnome";
+  settings = lib.options.mkOption {
+    description = "Settings for the GNOME desktop environment.";
+    type = lib.types.submodule {
+      options = {
+        inherit gdm autostart extensions;
+      };
+    };
+  };
+
+  gdm = lib.options.mkOption {
+    description = "Enable GDM (GNOME Display Manager)";
+    type = lib.types.bool;
+    default = true;
+  };
+  autostart = lib.options.mkOption {
+    description = "Enable auto-start for applications";
+    type = lib.types.bool;
+    default = true;
+  };
+  extensions = lib.options.mkOption {
+    description = "GNOME Shell extensions to enable";
+    type = lib.types.listOf lib.types.package;
+    default = with pkgs.gnomeExtensions; [
+      appindicator
+      vitals
+      blur-my-shell
+      clipboard-indicator
+    ];
+  };
+in
+{
+  options.nixos_modules.gnome = {
+    inherit enable settings;
+  };
+
+  config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion =
+          !(
+            config.services.blueman.enable
+            || config.home-manager.users."${default_user}".services.blueman-applet.enable
+          );
+        message = "Gnome already ships a bluetooth software and applet. Please disable blueman service and/or its applet service";
+      }
+    ];
+
+    services = {
+      xserver.desktopManager.gnome.enable = true;
+      udev.packages = with pkgs; [ gnome-settings-daemon ];
+      pipewire.enable = true; # enable screen sharing
+
+      xserver.displayManager.gdm.enable = cfg.settings.gdm;
+      greetd.enable = !cfg.settings.gdm;
+    };
+
+    systemd.user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+
+    home-manager.users."${default_user}" = {
+      home = {
+        sessionVariables = {
+          NIXOS_OZONE_WL = 1;
+        };
+        packages = with pkgs; [
+          wl-clipboard
+        ];
+      };
+
+      xdg.autostart = {
+        enable = true;
+        readOnly = true;
+        entries = [
+          "${pkgs.signal-desktop}/share/applications/signal.desktop"
+          "${pkgs.discord}/share/applications/discord.desktop"
+          "${pkgs.alacritty}/share/applications/Alacritty.desktop"
+          "${zen-browser.packages."${pkgs.system}".default}/share/applications/zen-beta.desktop"
+        ];
+      };
+
+      programs = {
+        # Not good looking with Gnome
+        alacritty.settings.window.opacity = 1;
+
+        gnome-shell = {
+          enable = true;
+          extensions = builtins.map (pkg: { package = pkg; }) cfg.settings.extensions;
+        };
+      };
+    };
+  };
+}
+</file>
+
+<file path="hosts/khazad-dum/home-manager/packages.nix">
+{
+  pkgs,
+  zen-browser,
+  lib,
+  ...
+}:
+{
+  home.packages = with pkgs; [
+    difftastic
+    dogdns
+    dust
+    fd
+    gh
+    hyperfine
+    jq
+    libnotify
+    ripgrep
+    sd
+    unzip
+    wget
+    xh
+    zip
+    git-filter-repo
+    nixpkgs-review
+    lazygit
+
+    # GUI
+    discord
+    insomnia
+    nextcloud-client
+    obs-studio
+    signal-desktop
+    spotify
+    vlc
+    vscode
+
+    zen-browser.packages."${system}".default
+  ];
+
+  programs = {
+    btop.enable = true;
+    eza.enable = true;
+    fzf.enable = true;
+    gpg.enable = true;
+    home-manager.enable = true;
+    starship.enable = true;
+    zoxide.enable = true;
+
+    bat = {
+      enable = true;
+      config.theme = "catppuccin_macchiato";
+
+      themes.catppuccin_macchiato = {
+        src = pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "bat";
+          rev = "ba4d16880d63e656acced2b7d4e034e4a93f74b1";
+          sha256 = "1g2r6j33f4zys853i1c5gnwcdbwb6xv5w6pazfdslxf69904lrg9";
+        };
+        file = "Catppuccin-macchiato.tmTheme";
+      };
+    };
+
+    yazi = {
+      enable = true;
+      settings = {
+        manager = {
+          show_hidden = true;
+          sort_dir_first = true;
+          show_symlink = true;
+        };
+      };
+    };
+
+    zsh = {
+      enable = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      oh-my-zsh.enable = true;
+      plugins = with pkgs; [
+        {
+          name = "zsh-autopair";
+          src = zsh-autopair;
+          file = "share/zsh/zsh-autopair/autopair.zsh";
+        }
+      ];
+      initContent =
+        let
+          normal = lib.mkOrder 1000 ''
+            url-sri() {
+              nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
+            }
+          '';
+          # Because some Nix implementation have a very high order (e.g zoxide), end finally lines need to be with an absurdly high number
+          # Default Zellij ZSH setup doesn't provide a way to add a default layout to start with, I took it and added one
+          end = lib.mkOrder 10000 ''
+            if [[ -z "$ZELLIJ" ]]; then
+              if [[ "$ZELLIJ_AUTO_ATTACH" == "true" ]]; then
+                  zellij attach -c
+              else
+                  zellij --layout welcome
+              fi
+
+              if [[ "$ZELLIJ_AUTO_EXIT" == "true" ]]; then
+                  exit
+              fi
+            fi
+          '';
+        in
+        lib.mkMerge [
+          normal
+          end
+        ];
+
+      shellAliases = {
+        cat = "bat";
+        cd = "z";
+      };
+    };
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
+    ssh.matchBlocks =
+      let
+        keyNamePrefix = "id_ed25519";
+      in
+      {
+        # Git servers
+        "github.com" = {
+          hostname = "github.com";
+          user = "git";
+          identityFile = "~/.ssh/${keyNamePrefix}_git";
+          identitiesOnly = true;
+        };
+        "gitlab.com" = {
+          hostname = "gitlab.com";
+          user = "git";
+          identityFile = "~/.ssh/${keyNamePrefix}_git";
+          identitiesOnly = true;
+        };
+
+        # Servers
+        "valinor" = {
+          hostname = "valinor";
+          user = "datahearth";
+          identityFile = "~/.ssh/${keyNamePrefix}";
+          identitiesOnly = true;
+        };
+      };
+  };
+}
+</file>
+
+<file path="hosts/khazad-dum/services.nix">
+{
+  pkgs,
+  lib,
+  ...
+}:
+{
+  services = {
+    fprintd.enable = true;
+    deluge.enable = true;
+
+    tailscale = {
+      enable = true;
+      extraUpFlags = [
+        "--accept-dns"
+        "--accept-routes"
+      ];
+    };
+
+    xserver = {
+      enable = true;
+      xkb.layout = "fr";
+    };
+
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+    };
+
+    greetd = {
+      enable = lib.mkDefault true;
+      vt = 9; # Fix lines on screen
+
+      settings.default_session = {
+        command = ''${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --time --greeting "Speak Friend and Enter" --remember --remember-user-session --asterisks --cmd Hyprland'';
+        user = "datahearth";
+      };
+    };
+
+    kubo = {
+      enable = true;
+      autoMount = true;
+      enableGC = true;
+
+      settings = {
+        Addresses = {
+          API = "/ip4/127.0.0.1/tcp/5001";
+          Gateway = "/ip4/127.0.0.1/tcp/10000";
+        };
+
+        API.HTTPHeaders = {
+          Access-Control-Allow-Origin = [
+            "http://localhost:3000"
+            "http://127.0.0.1:5001"
+            "https://webui.ipfs.io"
+          ];
+          Access-Control-Allow-Methods = [
+            "PUT"
+            "POST"
+          ];
+        };
+      };
+    };
+  };
+}
+</file>
+
+<file path="hosts/khazad-dum/configuration.nix">
+{
+  pkgs,
+  lib,
+  config,
+  zen-browser,
+  ...
+}:
+let
+  default_user = "datahearth";
+  state_version = "24.11";
+in
+{
+  imports =
+    let
+      modules = ../../modules;
+    in
+    [
+      ./i18n.nix
+      ./hardware-configuration.nix
+      ./services.nix
+
+      "${modules}/nh.nix"
+      (import "${modules}/gnome.nix" {
+        inherit
+          default_user
+          zen-browser
+          lib
+          config
+          pkgs
+          ;
+      })
+      "${modules}/hyprland"
+    ];
+  system.stateVersion = state_version;
+  nixpkgs.config.allowUnfree = true;
+  systemd.services.NetworkManager-wait-online.enable = false;
+
+  virtualisation = {
+    docker.enable = true;
+    libvirtd.enable = true;
+  };
+
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [
+      "root"
+      default_user
+    ];
+  };
+
+  boot = {
+    loader = {
+      systemd-boot.enable = lib.mkForce false;
+      efi.canTouchEfiVariables = true;
+    };
+
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+    };
+  };
+
+  hardware = {
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+  };
+
+  users = {
+    defaultUserShell = pkgs.zsh;
+
+    users."${default_user}" = {
+      isNormalUser = true;
+      description = "Antoine Langlois";
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "docker"
+        "wireshark"
+        "libvirtd"
+        config.services.kubo.group
+      ];
+    };
+  };
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = {
+      inherit default_user state_version;
+      inherit zen-browser;
+    };
+    users."${default_user}" = import ./home-manager/home.nix;
+  };
+
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+    pam.services.hyprlock.enableGnomeKeyring = true;
+  };
+
+  networking = {
+    hostName = "Khazad-dum";
+    firewall.extraCommands = ''
+      iptables -I INPUT 1 -s 172.16.0.0/12 -p tcp -d 192.168.1.0/24 -j ACCEPT
+      iptables -I INPUT 2 -s 172.16.0.0/12 -p udp -d 192.168.1.0/24 -j ACCEPT
+    '';
+    networkmanager.enable = true;
+  };
+
+  programs = {
+    wireshark.enable = true;
+    virt-manager.enable = true;
+
+    zsh = {
+      enable = true;
+      promptInit = ''
+        source <(docker completion zsh)
+        source <(ipfs commands completion zsh)
+      '';
+    };
+  };
+
+  environment = {
+    shells = with pkgs; [
+      zsh
+      bashInteractive
+    ];
+    systemPackages = with pkgs; [
+      sbctl
+      pinentry
+      ntfs3g
+    ];
+    pathsToLink = [
+      # required by home-manager -> zsh.enableCompletion
+      # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.zsh.enableCompletion
+      "/share/zsh"
+    ];
+  };
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    nerd-fonts.mononoki
+    nerd-fonts.jetbrains-mono
+
+    corefonts
+  ];
+
+  nixos_modules = {
+    nh = {
+      enable = true;
+      settings.flake = "${config.users.users.datahearth.home}/.config/nix-config";
+    };
+
+    hyprland = {
+      enable = true;
+      settings = {
+        default_user = default_user;
+
+        kanshi = true;
+        waybar = true;
+        hyprlock = true;
+
+        config = {
+          env = [ "XCURSOR_SIZER,24" ];
+          exec-once = [
+            "wl-paste --type text --watch cliphist store; bin/wl-paste --type image --watch cliphist store"
+            "waybar"
+            "swaync"
+            "signal-desktop"
+            "Discord"
+            "alacritty"
+            "zen-beta"
+            "spotify"
+          ];
+        };
+      };
+    };
+
+    gnome = {
+      enable = true;
+      settings.gdm = true;
+    };
+  };
+}
+</file>
+
+</files>

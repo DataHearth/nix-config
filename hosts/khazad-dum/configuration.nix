@@ -33,7 +33,22 @@ in
     ];
   system.stateVersion = state_version;
   nixpkgs.config.allowUnfree = true;
-  systemd.services.NetworkManager-wait-online.enable = false;
+
+  systemd = {
+    services.NetworkManager-wait-online.enable = false;
+    user.services.proton-drive =
+      let
+        proton_drive_folder = "%h/Proton Drive";
+      in
+      {
+        wantedBy = [ "default.target" ];
+        after = [ "network-online.target" ];
+        description = "Mount Proton Drive";
+        preStart = "/usr/bin/env mkdir -p \"%h/Proton Drive\"";
+        script = "${pkgs.rclone}/bin/rclone --config=%h/.config/rclone/rclone.conf mount protondrive: \"${proton_drive_folder}\" --vfs-cache-mode full";
+        postStop = "/bin/fusermount -u \"${proton_drive_folder}\"";
+      };
+  };
 
   virtualisation = {
     docker.enable = true;
