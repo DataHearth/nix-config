@@ -102,16 +102,16 @@
         format = "binary";
         sopsFile = ../../secrets/gondoline/exclude.txt;
       };
-      "backups/storj/password" = { };
-      "backups/storj/repository" = { };
-      "backups/storj/ping_url" = { };
-      "backups/storj/include.txt" = {
+      "backups/protondrive/password" = { };
+      "backups/protondrive/repository" = { };
+      "backups/protondrive/ping_url" = { };
+      "backups/protondrive/include.txt" = {
         format = "binary";
-        sopsFile = ../../secrets/storj/include.txt;
+        sopsFile = ../../secrets/protondrive/include.txt;
       };
-      "backups/storj/exclude.txt" = {
+      "backups/protondrive/exclude.txt" = {
         format = "binary";
-        sopsFile = ../../secrets/storj/exclude.txt;
+        sopsFile = ../../secrets/protondrive/exclude.txt;
       };
       "tailscale_keys/valinor" = { };
     };

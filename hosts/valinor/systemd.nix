@@ -2,7 +2,7 @@
 {
   systemd = {
     timers = {
-      "storj-backup" = {
+      "critical-backup" = {
         wantedBy = [ "timers.target" ];
         timerConfig = {
           onActiveSec = "2d";
@@ -39,30 +39,31 @@
       in
       {
         NetworkManager-wait-online.enable = false;
-        "storj-backup" =
+        "critical-backup" =
           let
-            storj_secrets = "${backups_secrets}/storj";
+            protondrive_secrets = "${backups_secrets}/protondrive";
           in
           {
             inherit path;
 
             serviceConfig.Type = "oneshot";
             environment = {
-              RESTIC_REPOSITORY_FILE = "${storj_secrets}/repository";
-              RESTIC_PASSWORD_FILE = "${storj_secrets}/password";
+              RESTIC_REPOSITORY_FILE = "${protondrive_secrets}/repository";
+              RESTIC_PASSWORD_FILE = "${protondrive_secrets}/password";
+              RCLONE_PROTONDRIVE_REPLACE_EXISTING_DRAFT = "true";
             } // environment;
             script = ''
               docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql16 pg_dumpall -U postgres > ${pgsql16_bak}
               docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql17 pg_dumpall -U postgres > ${pgsql17_bak}
 
               restic backup \
-                --files-from ${storj_secrets}/include.txt \
-                --exclude-file ${storj_secrets}/exclude.txt \
+                --files-from ${protondrive_secrets}/include.txt \
+                --exclude-file ${protondrive_secrets}/exclude.txt \
                 ${pgsql16_bak} ${pgsql17_bak}
 
               restic forget --keep-last 2 --prune
 
-              curl -fsS -m 10 --retry 5 -o /dev/null $(cat ${storj_secrets}/ping_url)
+              curl -fsS -m 10 --retry 5 -o /dev/null $(cat ${protondrive_secrets}/ping_url)
             '';
           };
         "gondoline-backup" =
