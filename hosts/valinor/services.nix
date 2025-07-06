@@ -8,7 +8,6 @@
       useRoutingFeatures = "server";
       extraUpFlags = [
         "--accept-dns=false"
-        "--advertise-tags=\"tag:actinium\""
         "--advertise-routes=\"192.168.1.0/24\""
       ];
     };
