@@ -5,9 +5,6 @@ default_layout "base"
 show_startup_tips false
 
 plugins {
-    welcome-screen location="zellij:session-manager" {
-        welcome_screen true
-    }
 }
 
 keybinds clear-defaults=true {

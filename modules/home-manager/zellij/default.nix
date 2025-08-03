@@ -17,6 +17,9 @@ in
       "zellij/config.kdl".source = ./config.kdl;
     };
 
-    programs.zellij.enable = true;
+    programs.zellij = {
+      enable = true;
+      enableZshIntegration = true;
+    };
   };
 }

@@ -15,7 +15,7 @@
     username = default_user;
     homeDirectory = "/home/${default_user}";
     stateVersion = state_version;
-    shell.enableZshIntegration = true;
+    shell.enableShellIntegration = true;
   };
 
   xdg = {
