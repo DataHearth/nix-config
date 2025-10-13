@@ -8,6 +8,13 @@
     fprintd.enable = true;
     deluge.enable = true;
 
+    syncthing = {
+      enable = true;
+      openDefaultPorts = true;
+      user = "datahearth";
+      group = "users";
+    };
+
     tailscale = {
       enable = true;
       extraUpFlags = [
@@ -21,6 +28,7 @@
       xkb = {
         layout = "fr,us";
         variant = ",intl";
+        options = "grp:win_space_toggle";
       };
     };
 
@@ -41,31 +49,6 @@
       settings.default_session = {
         command = ''${pkgs.greetd.tuigreet}/bin/tuigreet --user-menu --time --greeting "Speak Friend and Enter" --remember --remember-user-session --asterisks --cmd Hyprland'';
         user = "datahearth";
-      };
-    };
-
-    kubo = {
-      enable = true;
-      autoMount = true;
-      enableGC = true;
-
-      settings = {
-        Addresses = {
-          API = "/ip4/127.0.0.1/tcp/5001";
-          Gateway = "/ip4/127.0.0.1/tcp/10000";
-        };
-
-        API.HTTPHeaders = {
-          Access-Control-Allow-Origin = [
-            "http://localhost:3000"
-            "http://127.0.0.1:5001"
-            "https://webui.ipfs.io"
-          ];
-          Access-Control-Allow-Methods = [
-            "PUT"
-            "POST"
-          ];
-        };
       };
     };
   };

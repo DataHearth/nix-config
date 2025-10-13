@@ -1,4 +1,3 @@
-{ config, ... }:
 {
   services = {
     tailscale = {
@@ -15,11 +14,6 @@
     openssh = {
       enable = true;
       settings.PrintMotd = true;
-      extraConfig = ''
-        Match User ${config.users.users.actinium.name}
-          AuthenticationMethods publickey
-          PasswordAuthentication no
-      '';
     };
 
     logrotate = {
@@ -42,30 +36,6 @@
             '';
           };
         };
-    };
-
-    kubo = {
-      enable = true;
-      autoMount = true;
-      enableGC = true;
-
-      settings = {
-        Addresses = {
-          API = "/ip4/192.168.1.2/tcp/5001";
-        };
-        API.HTTPHeaders = {
-          Access-Control-Allow-Origin = [
-            "http://192.168.1.2:5001"
-            "http://localhost:3000"
-            "http://127.0.0.1:5001"
-            "https://webui.ipfs.io"
-          ];
-          Access-Control-Allow-Methods = [
-            "PUT"
-            "POST"
-          ];
-        };
-      };
     };
   };
 }

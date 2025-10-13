@@ -34,7 +34,6 @@
       enable = true;
       promptInit = ''
         source <(docker completion zsh)
-        source <(ipfs commands completion zsh)
         source ${pkgs.rclone}/share/zsh/site-functions/_rclone
       '';
     };

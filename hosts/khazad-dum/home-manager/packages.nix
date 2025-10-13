@@ -22,18 +22,15 @@
     zip
     git-filter-repo
     nixpkgs-review
-    lazygit
     claude-code
 
     # GUI
     discord
-    insomnia
-    nextcloud-client
     obs-studio
     signal-desktop
-    spotify
     vlc
     vscode
+    obsidian
 
     zen-browser.packages."${system}".default
   ];

@@ -88,7 +88,7 @@ in
         "docker"
         "wireshark"
         "libvirtd"
-        config.services.kubo.group
+        config.services.syncthing.group
       ];
     };
   };
@@ -126,7 +126,6 @@ in
       enable = true;
       promptInit = ''
         source <(docker completion zsh)
-        source <(ipfs commands completion zsh)
       '';
     };
   };
