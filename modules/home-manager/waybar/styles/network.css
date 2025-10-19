@@ -1,9 +1,0 @@
-#network {
-  border-bottom: 2px solid @peach;
-  color: @peach;
-}
-
-#network.speed {
-  border-bottom: 2px solid @lavender;
-  color: @lavender;
-}

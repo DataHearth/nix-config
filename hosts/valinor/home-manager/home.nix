@@ -4,7 +4,8 @@
     ./modules.nix
     ./packages.nix
     ./services.nix
-  ] ++ (import ../../../modules/home-manager);
+  ]
+  ++ (import ../../../modules/home-manager);
   xdg.enable = true;
 
   home = {

@@ -1,17 +1,27 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.home_modules.alacritty;
 
   enable = lib.mkEnableOption "alacritty";
+  package = lib.mkPackageOption pkgs "alacritty" {
+    nullable = true;
+  };
 in
 {
   options.home_modules.alacritty = {
-    inherit enable;
+    inherit enable package;
   };
 
   config = lib.mkIf cfg.enable {
     programs.alacritty = {
       enable = true;
+      package = lib.mkIf (cfg.package != null) cfg.package;
+
       settings = {
         general.import = [
           (builtins.fetchurl {

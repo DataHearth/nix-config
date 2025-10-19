@@ -1,13 +1,16 @@
 {
   pkgs,
-  zen-browser,
-  lib,
+  config,
+  nixGL,
   ...
 }:
 {
+  nixGL.packages = nixGL.packages;
+  nixGL.defaultWrapper = "mesa";
+  nixGL.installScripts = [ "mesa" ];
+
   home.packages = with pkgs; [
     difftastic
-    dogdns
     dust
     fd
     gh
@@ -23,16 +26,16 @@
     git-filter-repo
     nixpkgs-review
     claude-code
+    nixfmt-rfc-style
+    nixd
 
     # GUI
-    discord
-    obs-studio
+    (config.lib.nixGL.wrap obs-studio)
     signal-desktop
     vlc
-    vscode
     obsidian
-
-    zen-browser.packages."${system}".default
+    discord
+    spotify
   ];
 
   programs = {
@@ -43,6 +46,16 @@
     home-manager.enable = true;
     starship.enable = true;
     zoxide.enable = true;
+
+    jujutsu = {
+      enable = true;
+      settings = {
+        user = {
+          name = "DataHearth";
+          email = "dev@antoine-langlois.net";
+        };
+      };
+    };
 
     bat = {
       enable = true;
@@ -82,19 +95,10 @@
           file = "share/zsh/zsh-autopair/autopair.zsh";
         }
       ];
-      initContent =
-        let
-          normal = lib.mkOrder 1000 ''
-            url-sri() {
-              nix-prefetch-url "$1" | xargs nix hash to-sri --type sha256
-            }
-          '';
-          end = lib.mkOrder 10000 '''';
-        in
-        lib.mkMerge [
-          normal
-          end
-        ];
+      loginExtra = ''
+        	export PATH="''${PATH}:${config.home.homeDirectory}/.local/bin"
+        	export PATH="''${PATH}:${config.home.homeDirectory}/.cargo/bin"
+      '';
 
       shellAliases = {
         cat = "bat";

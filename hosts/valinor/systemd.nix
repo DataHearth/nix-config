@@ -51,7 +51,8 @@
               RESTIC_REPOSITORY_FILE = "${protondrive_secrets}/repository";
               RESTIC_PASSWORD_FILE = "${protondrive_secrets}/password";
               RCLONE_PROTONDRIVE_REPLACE_EXISTING_DRAFT = "true";
-            } // environment;
+            }
+            // environment;
             script = ''
               docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql16 pg_dumpall -U postgres > ${pgsql16_bak}
               docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql17 pg_dumpall -U postgres > ${pgsql17_bak}
@@ -77,7 +78,8 @@
             environment = {
               RESTIC_REPOSITORY_FILE = "${gondoline_secrets}/repository";
               RESTIC_PASSWORD_FILE = "${gondoline_secrets}/password";
-            } // environment;
+            }
+            // environment;
             script = ''
               docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql16 pg_dumpall -U postgres > ${pgsql16_bak}
               docker compose -f /mnt/Erebor/War-goats/appdata/docker-compose.yml exec -it postgresql17 pg_dumpall -U postgres > ${pgsql17_bak}

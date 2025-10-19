@@ -49,9 +49,10 @@ in
         s = "status";
         pu = "pull";
         logs = "log --graph --oneline";
-        remote-update = "remote update origin --prune";
+        update-remote = "remote update origin --prune";
         tags = "git tag --list";
-      } // cfg.extraAliases;
+      }
+      // cfg.extraAliases;
       difftastic.enable = true;
       lfs.enable = true;
       signing = lib.mkIf (cfg.signingKey != null) {
@@ -62,7 +63,8 @@ in
       userEmail = cfg.user.email;
       extraConfig = {
         init.defaultBranch = "main";
-      } // cfg.extraConfig;
+      }
+      // cfg.extraConfig;
     };
   };
 }
