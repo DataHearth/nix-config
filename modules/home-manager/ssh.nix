@@ -22,7 +22,10 @@ in
   config = lib.mkIf cfg.enable {
     programs.ssh = {
       enable = true;
-      addKeysToAgent = cfg.addKeysToAgent;
+      enableDefaultConfig = false;
+      matchBlocks."*" = {
+        addKeysToAgent = cfg.addKeysToAgent;
+      };
     };
   };
 }

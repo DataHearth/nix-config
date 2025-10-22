@@ -1,9 +1,10 @@
 [
-  ./git.nix
   ./alacritty.nix
-  ./ssh.nix
+  ./ashell.nix
+  ./git.nix
   ./hyprland.nix
   ./hyprlock.nix
+  ./ssh.nix
   ./swaync
   ./zellij
 ]

@@ -42,26 +42,27 @@ in
   config = lib.mkIf cfg.enable {
     programs.git = {
       enable = true;
-      aliases = {
-        co = "checkout";
-        p = "push";
-        c = "commit";
-        s = "status";
-        pu = "pull";
-        logs = "log --graph --oneline";
-        update-remote = "remote update origin --prune";
-        tags = "git tag --list";
-      }
-      // cfg.extraAliases;
-      difftastic.enable = true;
       lfs.enable = true;
       signing = lib.mkIf (cfg.signingKey != null) {
         signByDefault = true;
         key = cfg.signingKey;
       };
-      userName = cfg.user.name;
-      userEmail = cfg.user.email;
-      extraConfig = {
+      settings = {
+        alias = {
+          co = "checkout";
+          p = "push";
+          c = "commit";
+          s = "status";
+          pu = "pull";
+          logs = "log --graph --oneline";
+          update-remote = "remote update origin --prune";
+          tags = "git tag --list";
+        }
+        // cfg.extraAliases;
+        user = {
+          name = cfg.user.name;
+          email = cfg.user.email;
+        };
         init.defaultBranch = "main";
       }
       // cfg.extraConfig;

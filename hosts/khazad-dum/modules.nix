@@ -1,9 +1,11 @@
 { config, pkgs, ... }:
 {
+  wayland.windowManager.hyprland.package = config.lib.nixGL.wrap pkgs.hyprland;
   home_modules = {
     ssh.enable = true;
     zellij.enable = true;
     hyprland.enable = true;
+    ashell.enable = true;
 
     hyprlock = {
       enable = false;

@@ -10,7 +10,6 @@
   nixGL.installScripts = [ "mesa" ];
 
   home.packages = with pkgs; [
-    difftastic
     dust
     fd
     gh
@@ -48,6 +47,11 @@
     home-manager.enable = true;
     starship.enable = true;
     zoxide.enable = true;
+
+    difftastic = {
+      enable = true;
+      git.enable = config.home_modules.git.enable;
+    };
 
     jujutsu = {
       enable = true;
