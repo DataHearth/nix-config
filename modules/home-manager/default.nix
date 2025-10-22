@@ -2,6 +2,7 @@
   ./git.nix
   ./alacritty.nix
   ./ssh.nix
+  ./hyprland.nix
   ./hyprlock.nix
   ./swaync
   ./zellij

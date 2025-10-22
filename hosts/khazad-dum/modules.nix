@@ -3,6 +3,12 @@
   home_modules = {
     ssh.enable = true;
     zellij.enable = true;
+    hyprland.enable = true;
+
+    hyprlock = {
+      enable = false;
+      lockBackgroundImage = "~/.local/share/backgrounds/2025-10-19-18-43-55-undefined\ -\ Imgur(1).jpg";
+    };
 
     alacritty = {
       enable = true;

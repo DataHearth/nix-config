@@ -28,13 +28,15 @@
     claude-code
     nixfmt-rfc-style
     nixd
+    playerctl
+    brightnessctl
 
     # GUI
     (config.lib.nixGL.wrap obs-studio)
     signal-desktop
+    discord
     vlc
     obsidian
-    discord
     spotify
   ];
 
@@ -75,7 +77,7 @@
     yazi = {
       enable = true;
       settings = {
-        manager = {
+        mgr = {
           show_hidden = true;
           sort_dir_first = true;
           show_symlink = true;
@@ -95,14 +97,11 @@
           file = "share/zsh/zsh-autopair/autopair.zsh";
         }
       ];
-      loginExtra = ''
-        	export PATH="''${PATH}:${config.home.homeDirectory}/.local/bin"
-        	export PATH="''${PATH}:${config.home.homeDirectory}/.cargo/bin"
-      '';
 
       shellAliases = {
         cat = "bat";
         cd = "z";
+        open = "xdg-open";
       };
     };
 

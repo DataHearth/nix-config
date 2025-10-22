@@ -9,14 +9,14 @@ let
 
   enable = lib.mkEnableOption "hyprlock";
   lockBackgroundImage = lib.mkOption {
-    type = lib.types.nullOr lib.types.str;
+    type = lib.types.nullOr lib.types.nonEmptyStr;
     description = "Path to background image for lock screen";
     default = null;
   };
   defaultDisplay = lib.mkOption {
-    type = lib.types.str;
+    type = lib.types.nullOr lib.types.nonEmptyStr;
     description = "Default display will have all labels and input-labels written on.";
-    default = "";
+    default = null;
   };
 in
 {
@@ -33,11 +33,8 @@ in
       enable = true;
       settings = {
         general = {
-          disable_loading_bar = true;
           grace = 0;
           hide_cursor = true;
-          no_fade_in = false;
-          no_fade_out = false;
           ignore_empty_input = false;
         };
 
@@ -56,7 +53,7 @@ in
 
         input-field = [
           {
-            monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+            monitor = lib.mkIf (cfg.defaultDisplay != null) cfg.defaultDisplay;
             size = "250, 60";
             outline_thickness = 2;
             dots_size = 0.2;
@@ -73,7 +70,6 @@ in
             check_color = "rgb(204, 136, 34)";
             fail_color = "rgb(204, 34, 34)";
             fail_text = "<i>$FAIL</i>";
-            fail_transition = 300;
             capslock_color = -1;
             numlock_color = -1;
             bothlock_color = -1;
@@ -92,7 +88,7 @@ in
 
         label = [
           {
-            monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+            monitor = lib.mkIf (cfg.defaultDisplay != null) cfg.defaultDisplay;
             text = ''cmd[update:1000] echo "$TIME"'';
             font_family = "Mononoki Nerd Font";
             color = "rgba(255, 255, 255, 0.6)";
@@ -106,7 +102,7 @@ in
             shadow_boost = 1.2;
           }
           {
-            monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+            monitor = lib.mkIf (cfg.defaultDisplay != null) cfg.defaultDisplay;
             text = "Hello there, $USER";
             font_family = "Mononoki Nerd Font";
             color = "rgba(255, 255, 255, 0.6)";
@@ -120,7 +116,7 @@ in
             shadow_boost = 1.2;
           }
           {
-            monitor = lib.mkIf (cfg.defaultDisplay != "") cfg.defaultDisplay;
+            monitor = lib.mkIf (cfg.defaultDisplay != null) cfg.defaultDisplay;
             text = ''cmd[update:1000] playerctl metadata --format "{{ artist }} - {{ album }} - {{ title }}"'';
             color = "rgba(255, 255, 255, 0.6)";
             font_size = 18;
@@ -134,6 +130,12 @@ in
             shadow_boost = 1.2;
           }
         ];
+
+        auth = {
+          fingerprint = {
+            enabled = true;
+          };
+        };
       };
     };
   };
