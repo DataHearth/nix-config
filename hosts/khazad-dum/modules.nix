@@ -1,14 +1,32 @@
 { config, pkgs, ... }:
 {
-  wayland.windowManager.hyprland.package = config.lib.nixGL.wrap pkgs.hyprland;
   home_modules = {
     ssh.enable = true;
     zellij.enable = true;
-    hyprland.enable = true;
     ashell.enable = true;
 
+    hyprland = {
+      enable = true;
+      package = config.lib.nixGL.wrap pkgs.hyprland;
+      window_rules = [
+        "workspace 1, class:Alacritty"
+        "workspace 2, class:zen, initialTitle:Zen Browser"
+        "workspace 3, class:dev.zed.Zed-Dev"
+        "workspace 3, class:code, initialTitle: Visual Studio Code"
+        "workspace 4, class:discord"
+        "workspace 4, class:signal"
+        "workspace 6, class:spotify"
+      ];
+      exec_once = [
+        "signal-desktop"
+        "discord"
+        "zen"
+        "spotify"
+      ];
+    };
+
     hyprlock = {
-      enable = false;
+      enable = true;
       lockBackgroundImage = "~/.local/share/backgrounds/2025-10-19-18-43-55-undefined\ -\ Imgur(1).jpg";
     };
 

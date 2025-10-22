@@ -18,11 +18,12 @@ let
     default = [ ];
     description = "Additional environment variables in format 'VAR,value'";
   };
-  workspace_rules = lib.mkOption {
+  window_rules = lib.mkOption {
     type = lib.types.listOf lib.types.str;
     default = [ ];
-    description = "Workspace rules for specific workspaces";
+    description = "window rules";
   };
+  package = lib.mkPackageOption pkgs "hyprland" { };
 
   terminal = "${config.programs.alacritty.package}/bin/alacritty";
   fileManager = "nautilus";
@@ -33,23 +34,25 @@ in
   options.home_modules.hyprland = {
     inherit
       enable
-      workspace_rules
+      window_rules
       exec_once
       additional_envs
+      package
       ;
   };
 
   config = lib.mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
+      package = cfg.package;
       settings = {
         monitor = ",preferred,auto,auto";
 
         exec-once = [
+          (lib.mkIf config.services.hyprpaper.enable "hyprctl hyprpaper")
           "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
           "elephant"
           "swaync"
-          "hyprctl hyprpaper"
           "ashell"
           terminal
         ]
@@ -210,6 +213,7 @@ in
           "${mainMod}, mouse_up, workspace, e-1"
 
           "${mainMod}, F, fullscreen"
+          (lib.mkIf config.services.hypridle.enable "${mainMod}, L, exec, loginctl lock-session")
         ];
 
         bindel = [
@@ -237,7 +241,7 @@ in
           "suppressevent maximize, class:.*"
           "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
         ]
-        ++ cfg.workspace_rules;
+        ++ cfg.window_rules;
       };
     };
   };

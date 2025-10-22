@@ -25,13 +25,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      playerctl
-    ];
-
     programs.hyprlock = {
       enable = true;
+      package = null;
       settings = {
+        auth.fingerprint.enabled = true;
+
         general = {
           grace = 0;
           hide_cursor = true;
@@ -117,7 +116,7 @@ in
           }
           {
             monitor = lib.mkIf (cfg.defaultDisplay != null) cfg.defaultDisplay;
-            text = ''cmd[update:1000] playerctl metadata --format "{{ artist }} - {{ album }} - {{ title }}"'';
+            text = ''cmd[update:1000] ${pkgs.playerctl} metadata --format "{{ artist }} - {{ album }} - {{ title }}"'';
             color = "rgba(255, 255, 255, 0.6)";
             font_size = 18;
             font_family = "Mononoki Nerd Font";
@@ -130,12 +129,6 @@ in
             shadow_boost = 1.2;
           }
         ];
-
-        auth = {
-          fingerprint = {
-            enabled = true;
-          };
-        };
       };
     };
   };

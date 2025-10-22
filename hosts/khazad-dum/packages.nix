@@ -29,6 +29,7 @@
     nixd
     playerctl
     brightnessctl
+    wl-clipboard
 
     # GUI
     (config.lib.nixGL.wrap obs-studio)
@@ -37,6 +38,7 @@
     vlc
     obsidian
     spotify
+    libreoffice
   ];
 
   programs = {
@@ -47,6 +49,15 @@
     home-manager.enable = true;
     starship.enable = true;
     zoxide.enable = true;
+
+    nh = {
+      enable = true;
+      homeFlake = "${config.xdg.configHome}/nix-config";
+      clean = {
+        enable = true;
+        dates = "daily";
+      };
+    };
 
     difftastic = {
       enable = true;
