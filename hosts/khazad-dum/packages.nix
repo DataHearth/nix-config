@@ -1,14 +1,9 @@
 {
   pkgs,
   config,
-  nixGL,
   ...
 }:
 {
-  nixGL.packages = nixGL.packages;
-  nixGL.defaultWrapper = "mesa";
-  nixGL.installScripts = [ "mesa" ];
-
   home.packages = with pkgs; [
     dust
     fd

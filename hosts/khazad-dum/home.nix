@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, nixGL, ... }:
 {
   imports = [
     ./modules.nix
@@ -25,7 +25,14 @@
     };
   };
 
-  targets.genericLinux.enable = true;
+  targets.genericLinux = {
+    enable = true;
+    nixGL = {
+      packages = nixGL.packages;
+      defaultWrapper = "mesa";
+      installScripts = [ "mesa" ];
+    };
+  };
   xdg = {
     enable = true;
     autostart.enable = true;
