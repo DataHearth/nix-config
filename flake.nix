@@ -58,19 +58,12 @@
           system = "x86_64-linux";
         in
         {
-          Valinor = nixpkgs.lib.nixosSystem {
+          Valinor = nixpkgs-unstable.lib.nixosSystem {
             inherit system;
-
-            specialArgs = {
-              pkgs-unstable = import nixpkgs-unstable {
-                inherit system;
-                config.allowUnfree = true;
-              };
-            };
 
             modules = [
               ./hosts/valinor/configuration.nix
-              home-manager.nixosModules.home-manager
+              home-manager-unstable.nixosModules.home-manager
               sops-nix.nixosModules.sops
               nixvim.nixosModules.default
             ];

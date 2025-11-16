@@ -24,6 +24,7 @@
       zip
       pwru
       smartmontools
+      duf
     ];
   };
 

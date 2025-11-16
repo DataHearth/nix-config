@@ -23,6 +23,14 @@
     '';
 
     users = {
+      ggau = {
+        useDefaultShell = true;
+        isNormalUser = true;
+        description = "Germain Gau access account";
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICsI1zpu+UKBIl6s8+Meca8ZtiGH3zG8cqpaEqnT4Lb8"
+        ];
+      };
       datahearth = {
         useDefaultShell = true;
         isNormalUser = true;
@@ -32,7 +40,6 @@
           "docker"
           "libvirtd"
           "networkmanager"
-          config.services.kubo.group
         ];
       };
     };

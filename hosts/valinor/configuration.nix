@@ -76,11 +76,13 @@
       allowedUDPPorts = [
         5353
         5540
+        22
       ];
       allowedTCPPorts = [
         5540
         9999
         5001
+        22
       ];
     };
   };
