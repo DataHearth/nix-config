@@ -24,6 +24,7 @@ let
     description = "window rules";
   };
   package = lib.mkPackageOption pkgs "hyprland" { };
+  display_manager = lib.mkEnableOption "display_manager";
 
   terminal = "${config.programs.alacritty.package}/bin/alacritty";
   fileManager = "nautilus";
@@ -38,14 +39,22 @@ in
       exec_once
       additional_envs
       package
+      display_manager
       ;
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [ (lib.mkIf cfg.display_manager nwg-displays) ];
+
     wayland.windowManager.hyprland = {
       enable = true;
       package = cfg.package;
       settings = {
+        source = lib.mkIf cfg.display_manager [
+          "~/.config/hypr/monitors.conf"
+          "~/.config/hypr/workspaces.conf"
+        ];
+
         monitor = ",preferred,auto,auto";
 
         exec-once = [

@@ -8,6 +8,7 @@
     hyprland = {
       enable = true;
       package = config.lib.nixGL.wrap pkgs.hyprland;
+      display_manager = true;
       window_rules = [
         "workspace 1, class:Alacritty"
         "workspace 2, class:zen, initialTitle:Zen Browser"
