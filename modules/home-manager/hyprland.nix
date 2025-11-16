@@ -216,13 +216,14 @@ in
           "${mainMod} SHIFT, code:19, movetoworkspace, 10"
 
           "${mainMod}, S, togglespecialworkspace, magic"
-          "${mainMod} SHIFT, S, movetoworkspace, special:magic"
 
           "${mainMod}, mouse_down, workspace, e+1"
           "${mainMod}, mouse_up, workspace, e-1"
 
           "${mainMod}, F, fullscreen"
-          (lib.mkIf config.services.hypridle.enable "${mainMod}, L, exec, loginctl lock-session")
+          "${mainMod}, L, exec, loginctl lock-session"
+          "${mainMod}, S, exec, systemctl suspend"
+          "${mainMod} SHIFT, S, exec, systemctl hibernate"
         ];
 
         bindel = [
