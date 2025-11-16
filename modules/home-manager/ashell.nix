@@ -24,10 +24,8 @@ in
           ];
           center = [ "Clock" ];
           right = [
-            [ "Tray" ]
             [
               "Privacy"
-              "KeyboardLayout"
               "CustomNotifications"
             ]
             [ "Settings" ]
