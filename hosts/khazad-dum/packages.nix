@@ -25,6 +25,7 @@
     playerctl
     brightnessctl
     wl-clipboard
+    podman-compose
 
     # GUI
     (config.lib.nixGL.wrap obs-studio)
@@ -33,7 +34,6 @@
     vlc
     obsidian
     spotify
-    libreoffice
   ];
 
   programs = {
@@ -44,6 +44,7 @@
     home-manager.enable = true;
     starship.enable = true;
     zoxide.enable = true;
+    mise.enable = true;
 
     nh = {
       enable = true;
@@ -81,17 +82,6 @@
           sha256 = "1g2r6j33f4zys853i1c5gnwcdbwb6xv5w6pazfdslxf69904lrg9";
         };
         file = "Catppuccin-macchiato.tmTheme";
-      };
-    };
-
-    yazi = {
-      enable = true;
-      settings = {
-        mgr = {
-          show_hidden = true;
-          sort_dir_first = true;
-          show_symlink = true;
-        };
       };
     };
 
@@ -142,6 +132,14 @@
         # Servers
         "valinor" = {
           hostname = "valinor";
+          user = "datahearth";
+          identityFile = "~/.ssh/${keyNamePrefix}";
+          identitiesOnly = true;
+        };
+
+        # VMs
+        "deeps" = {
+          hostname = "192.168.122.101";
           user = "datahearth";
           identityFile = "~/.ssh/${keyNamePrefix}";
           identitiesOnly = true;
