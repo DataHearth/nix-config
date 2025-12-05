@@ -25,10 +25,8 @@
 
   outputs =
     {
-      nixpkgs,
       nixpkgs-unstable,
       sops-nix,
-      home-manager,
       home-manager-unstable,
       nixvim,
       nixGL,
@@ -50,6 +48,7 @@
           modules = [
             { nixpkgs.config.allowUnfree = true; }
             ./hosts/khazad-dum/home.nix
+            nixvim.homeModules.default
           ];
         };
 
