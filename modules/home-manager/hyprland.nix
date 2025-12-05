@@ -46,6 +46,8 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ (lib.mkIf cfg.display_manager nwg-displays) ];
 
+    programs.hyprshot.enable = true;
+
     wayland.windowManager.hyprland = {
       enable = true;
       package = cfg.package;
@@ -173,67 +175,78 @@ in
           sensitivity = -0.5;
         };
 
-        bind = [
-          "${mainMod}, Return, exec, ${terminal}"
-          "${mainMod}, Q, killactive,"
-          "${mainMod}, M, exit,"
-          "${mainMod}, E, exec, ${fileManager}"
-          "${mainMod}, V, togglefloating,"
-          "${mainMod}, Space, exec, ${menu}"
-          "${mainMod}, P, pseudo,"
-          "${mainMod}, J, togglesplit,"
+        bind =
+          let
+            hyprshot = "${pkgs.hyprshot}/bin/hyprshot";
+          in
+          [
+            "${mainMod}, Return, exec, ${terminal}"
+            "${mainMod}, Q, killactive,"
+            "${mainMod}, M, exit,"
+            "${mainMod}, E, exec, ${fileManager}"
+            "${mainMod}, V, togglefloating,"
+            "${mainMod}, Space, exec, ${menu}"
+            "${mainMod}, P, pseudo,"
+            "${mainMod}, J, togglesplit,"
 
-          "${mainMod}, left, movefocus, l"
-          "${mainMod}, right, movefocus, r"
-          "${mainMod}, up, movefocus, u"
-          "${mainMod}, down, movefocus, d"
+            "${mainMod}, left, movefocus, l"
+            "${mainMod}, right, movefocus, r"
+            "${mainMod}, up, movefocus, u"
+            "${mainMod}, down, movefocus, d"
 
-          "${mainMod} SHIFT, left, movewindow, l"
-          "${mainMod} SHIFT, right, movewindow, r"
-          "${mainMod} SHIFT, up, movewindow, u"
-          "${mainMod} SHIFT, down, movewindow, d"
+            "${mainMod} SHIFT, left, movewindow, l"
+            "${mainMod} SHIFT, right, movewindow, r"
+            "${mainMod} SHIFT, up, movewindow, u"
+            "${mainMod} SHIFT, down, movewindow, d"
 
-          "${mainMod}, code:10, workspace, 1"
-          "${mainMod}, code:11, workspace, 2"
-          "${mainMod}, code:12, workspace, 3"
-          "${mainMod}, code:13, workspace, 4"
-          "${mainMod}, code:14, workspace, 5"
-          "${mainMod}, code:15, workspace, 6"
-          "${mainMod}, code:16, workspace, 7"
-          "${mainMod}, code:17, workspace, 8"
-          "${mainMod}, code:18, workspace, 9"
-          "${mainMod}, code:19, workspace, 10"
+            "${mainMod}, code:10, workspace, 1"
+            "${mainMod}, code:11, workspace, 2"
+            "${mainMod}, code:12, workspace, 3"
+            "${mainMod}, code:13, workspace, 4"
+            "${mainMod}, code:14, workspace, 5"
+            "${mainMod}, code:15, workspace, 6"
+            "${mainMod}, code:16, workspace, 7"
+            "${mainMod}, code:17, workspace, 8"
+            "${mainMod}, code:18, workspace, 9"
+            "${mainMod}, code:19, workspace, 10"
 
-          "${mainMod} SHIFT, code:10, movetoworkspace, 1"
-          "${mainMod} SHIFT, code:11, movetoworkspace, 2"
-          "${mainMod} SHIFT, code:12, movetoworkspace, 3"
-          "${mainMod} SHIFT, code:13, movetoworkspace, 4"
-          "${mainMod} SHIFT, code:14, movetoworkspace, 5"
-          "${mainMod} SHIFT, code:15, movetoworkspace, 6"
-          "${mainMod} SHIFT, code:16, movetoworkspace, 7"
-          "${mainMod} SHIFT, code:17, movetoworkspace, 8"
-          "${mainMod} SHIFT, code:18, movetoworkspace, 9"
-          "${mainMod} SHIFT, code:19, movetoworkspace, 10"
+            "${mainMod} SHIFT, code:10, movetoworkspace, 1"
+            "${mainMod} SHIFT, code:11, movetoworkspace, 2"
+            "${mainMod} SHIFT, code:12, movetoworkspace, 3"
+            "${mainMod} SHIFT, code:13, movetoworkspace, 4"
+            "${mainMod} SHIFT, code:14, movetoworkspace, 5"
+            "${mainMod} SHIFT, code:15, movetoworkspace, 6"
+            "${mainMod} SHIFT, code:16, movetoworkspace, 7"
+            "${mainMod} SHIFT, code:17, movetoworkspace, 8"
+            "${mainMod} SHIFT, code:18, movetoworkspace, 9"
+            "${mainMod} SHIFT, code:19, movetoworkspace, 10"
 
-          "${mainMod}, S, togglespecialworkspace, magic"
+            "${mainMod}, mouse_down, workspace, e+1"
+            "${mainMod}, mouse_up, workspace, e-1"
 
-          "${mainMod}, mouse_down, workspace, e+1"
-          "${mainMod}, mouse_up, workspace, e-1"
+            "${mainMod}, F, fullscreen"
+            "${mainMod}, L, exec, loginctl lock-session"
+            "${mainMod}, S, exec, systemctl suspend"
+            "${mainMod} SHIFT, S, exec, systemctl hibernate"
 
-          "${mainMod}, F, fullscreen"
-          "${mainMod}, L, exec, loginctl lock-session"
-          "${mainMod}, S, exec, systemctl suspend"
-          "${mainMod} SHIFT, S, exec, systemctl hibernate"
-        ];
+            "${mainMod}, PRINT, exec, ${hyprshot} -m window"
+            ", PRINT, exec, ${hyprshot} -m output"
+            "${mainMod} SHIFT, PRINT, exec, ${hyprshot} -m region"
+          ];
 
-        bindel = [
-          ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-          ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-          ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          ",XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-          ",XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl -e4 -n2 set 5%+"
-          ",XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl -e4 -n2 set 5%-"
-        ];
+        bindel =
+          let
+            wpctl_bin = "${pkgs.wireplumber}/bin/wpctl";
+            brightnessctl_bin = "${pkgs.brightnessctl}/bin/brightnessctl";
+          in
+          [
+            ",XF86AudioRaiseVolume, exec, ${wpctl_bin} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+            ",XF86AudioLowerVolume, exec, ${wpctl_bin} set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+            ",XF86AudioMute, exec, ${wpctl_bin} set-mute @DEFAULT_AUDIO_SINK@ toggle"
+            ",XF86AudioMicMute, exec, ${wpctl_bin} set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+            ",XF86MonBrightnessUp, exec, ${brightnessctl_bin} -e4 -n2 set 5%+"
+            ",XF86MonBrightnessDown, exec, ${brightnessctl_bin} -e4 -n2 set 5%-"
+          ];
 
         bindl = [
           ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"

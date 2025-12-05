@@ -14,7 +14,6 @@ in
       enable = cfg.enable;
       settings = {
         log_level = "info";
-        app_launcher_cmd = "walker";
 
         modules = {
           left = [
@@ -26,6 +25,7 @@ in
           right = [
             [
               "Privacy"
+              "KeyboardLayout"
               "CustomNotifications"
             ]
             [ "Settings" ]

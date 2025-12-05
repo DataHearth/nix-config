@@ -16,8 +16,7 @@
       settings = {
         general = {
           lock_cmd = "hyprlock";
-          on_lock_cmd = "playerctl pause --all-players";
-          before_sleep_cmd = "loginctl lock-session";
+          before_sleep_cmd = "playerctl pause --all-players && loginctl lock-session";
         };
         listener = [
           {

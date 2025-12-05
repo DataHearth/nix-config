@@ -12,16 +12,16 @@
       window_rules = [
         "workspace 1, class:Alacritty"
         "workspace 2, class:zen, initialTitle:Zen Browser"
-        "workspace 3, class:dev.zed.Zed-Dev"
+        "workspace 3, class:dev.zed.Zed"
         "workspace 3, class:code, initialTitle: Visual Studio Code"
         "workspace 4, class:discord"
         "workspace 4, class:signal"
         "workspace 6, class:spotify"
       ];
       exec_once = [
-        "signal-desktop"
+        "signal-desktop --password-store=\"gnome-libsecret\""
         "discord"
-        "zen"
+        "zen-browser"
         "spotify"
       ];
     };
