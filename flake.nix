@@ -48,7 +48,6 @@
           modules = [
             { nixpkgs.config.allowUnfree = true; }
             ./hosts/khazad-dum/home.nix
-            nixvim.homeModules.default
           ];
         };
 

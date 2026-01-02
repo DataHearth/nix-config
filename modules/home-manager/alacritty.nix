@@ -38,6 +38,15 @@ in
           normal.family = "Mononoki Nerd Font";
         };
 
+
+        keyboard.bindings = [
+          {
+            key = "Return";
+            mods = "Shift";
+            chars = "\n";
+          }
+        ];
+
         window = {
           opacity = lib.mkDefault 0.9;
           startup_mode = "Maximized";

@@ -7,4 +7,5 @@
   ./ssh.nix
   ./swaync
   ./zellij
+  ./neovim
 ]

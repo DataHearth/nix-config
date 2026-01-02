@@ -4,6 +4,10 @@
     ssh.enable = true;
     zellij.enable = true;
     ashell.enable = true;
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+    };
 
     hyprland = {
       enable = true;
