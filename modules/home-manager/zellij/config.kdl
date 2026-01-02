@@ -3,9 +3,7 @@ mouse_mode true
 theme "catppuccin-macchiato"
 default_layout "base"
 show_startup_tips false
-
-plugins {
-}
+default_mode "locked"
 
 keybinds clear-defaults=true {
     locked {

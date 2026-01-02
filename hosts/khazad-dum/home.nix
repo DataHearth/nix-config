@@ -11,9 +11,6 @@
     homeDirectory = "/home/datahearth";
     stateVersion = "25.05";
     shell.enableShellIntegration = true;
-    sessionVariables = {
-      NIXOS_OZONE_WL = 1;
-    };
     sessionPath = [
       "${config.home.homeDirectory}/.local/bin"
       "${config.home.homeDirectory}/.cargo/bin"
@@ -22,6 +19,8 @@
     ];
     sessionVariables = {
       GOPATH = "${config.home.homeDirectory}/.go";
+      DOCKER_HOST = "unix:///run/user/1000/podman/podman.sock";
+      NIXOS_OZONE_WL = 1;
     };
   };
 

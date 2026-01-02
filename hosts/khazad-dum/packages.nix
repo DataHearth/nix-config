@@ -34,6 +34,7 @@
     vlc
     obsidian
     spotify
+    rquickshare
   ];
 
   programs = {
@@ -87,6 +88,7 @@
 
     zsh = {
       enable = true;
+      dotDir = "${config.xdg.configHome}/zsh";
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       oh-my-zsh.enable = true;
@@ -96,7 +98,17 @@
           src = zsh-autopair;
           file = "share/zsh/zsh-autopair/autopair.zsh";
         }
+        {
+          name = "zsh-completion-sync";
+          src = zsh-completion-sync;
+          file = "share/zsh-completion-sync/zsh-completion-sync.plugin.zsh";
+        }
       ];
+      envExtra = ''
+        if [[ -n "$CLAUDECODE" ]]; then
+          eval "$(direnv hook zsh)"
+        fi
+      '';
 
       shellAliases = {
         cat = "bat";

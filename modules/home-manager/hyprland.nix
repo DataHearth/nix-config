@@ -46,7 +46,10 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ (lib.mkIf cfg.display_manager nwg-displays) ];
 
-    programs.hyprshot.enable = true;
+    programs.hyprshot = {
+      enable = true;
+      saveLocation = "${config.home.homeDirectory}/Pictures/Screenshots";
+    };
 
     wayland.windowManager.hyprland = {
       enable = true;
