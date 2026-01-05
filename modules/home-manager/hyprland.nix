@@ -25,10 +25,17 @@ let
   };
   package = lib.mkPackageOption pkgs "hyprland" { };
   display_manager = lib.mkEnableOption "display_manager";
+  statusBar = lib.mkOption {
+    type = lib.types.enum [
+      "ashell"
+      "waybar"
+      "none"
+    ];
+    default = "ashell";
+    description = "Status bar to use";
+  };
 
   terminal = "${config.programs.alacritty.package}/bin/alacritty";
-  fileManager = "nautilus";
-  menu = "walker";
   mainMod = "SUPER";
 in
 {
@@ -40,20 +47,45 @@ in
       additional_envs
       package
       display_manager
+      statusBar
       ;
   };
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ (lib.mkIf cfg.display_manager nwg-displays) ];
 
-    programs.hyprshot = {
+    programs = {
+      elephant = {
+        enable = true;
+        installService = true;
+      };
+
+      hyprshot = {
+        enable = true;
+        saveLocation = "${config.home.homeDirectory}/Pictures/Screenshots";
+      };
+    };
+
+    services.walker = {
       enable = true;
-      saveLocation = "${config.home.homeDirectory}/Pictures/Screenshots";
+      systemd.enable = true;
+    };
+
+    home_modules = {
+      swaync.enable = true;
+      waybar.enable = cfg.statusBar == "waybar";
+      ashell.enable = cfg.statusBar == "ashell";
+
+      hyprlock = {
+        enable = true;
+        lockBackgroundImage = "~/.local/share/backgrounds/2025-10-19-18-43-55-undefined\ -\ Imgur(1).jpg";
+      };
     };
 
     wayland.windowManager.hyprland = {
       enable = true;
       package = cfg.package;
+
       settings = {
         source = lib.mkIf cfg.display_manager [
           "~/.config/hypr/monitors.conf"
@@ -65,11 +97,10 @@ in
         exec-once = [
           (lib.mkIf config.services.hyprpaper.enable "hyprctl hyprpaper")
           "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-          "elephant"
-          "swaync"
-          "ashell"
           terminal
         ]
+        ++ lib.optional (cfg.statusBar == "ashell") "ashell"
+        ++ lib.optional (cfg.statusBar == "waybar") "waybar"
         ++ cfg.exec_once;
 
         env = [
@@ -147,9 +178,7 @@ in
           preserve_split = true;
         };
 
-        master = {
-          new_status = "master";
-        };
+        master.new_status = "master";
 
         misc = {
           force_default_wallpaper = -1;
@@ -166,9 +195,7 @@ in
           follow_mouse = 1;
           sensitivity = 0;
 
-          touchpad = {
-            natural_scroll = false;
-          };
+          touchpad.natural_scroll = false;
         };
 
         gesture = "3, horizontal, workspace";
@@ -186,9 +213,9 @@ in
             "${mainMod}, Return, exec, ${terminal}"
             "${mainMod}, Q, killactive,"
             "${mainMod}, M, exit,"
-            "${mainMod}, E, exec, ${fileManager}"
+            "${mainMod}, E, exec, ${pkgs.nautilus}/bin/nautilus"
             "${mainMod}, V, togglefloating,"
-            "${mainMod}, Space, exec, ${menu}"
+            "${mainMod}, Space, exec, ${config.services.walker.package}"
             "${mainMod}, P, pseudo,"
             "${mainMod}, J, togglesplit,"
 
@@ -230,7 +257,7 @@ in
             "${mainMod}, F, fullscreen"
             "${mainMod}, L, exec, loginctl lock-session"
             "${mainMod}, S, exec, systemctl suspend"
-            "${mainMod} SHIFT, S, exec, systemctl hibernate"
+            "${mainMod} SHIFT, S, exec, systemctl poweroff"
 
             "${mainMod}, PRINT, exec, ${hyprshot} -m window"
             ", PRINT, exec, ${hyprshot} -m output"
