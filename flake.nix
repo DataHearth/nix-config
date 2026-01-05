@@ -21,6 +21,10 @@
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    elephant = {
+      url = "github:abenz1267/elephant";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
@@ -30,6 +34,7 @@
       home-manager-unstable,
       nixvim,
       nixGL,
+      elephant,
       ...
     }:
     {
@@ -47,6 +52,7 @@
 
           modules = [
             { nixpkgs.config.allowUnfree = true; }
+            elephant.homeManagerModules.default
             ./hosts/khazad-dum/home.nix
           ];
         };
