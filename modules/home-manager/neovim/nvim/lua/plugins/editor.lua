@@ -97,11 +97,30 @@ return {
     dependencies = { 'rafamadriz/friendly-snippets' },
     version = '1.*',
     opts = {
-      keymap = { preset = 'default' },
+      keymap = { preset = 'enter' },
       appearance = { nerd_font_variant = 'mono' },
-
-      -- (Default) Only show the documentation popup when manually triggered
-      completion = { documentation = { auto_show = false } },
+      completion = {
+        list = {
+          selection = {
+            preselect = true,
+            auto_insert = false,
+          },
+        },
+        documentation = {
+          auto_show = false,
+          window = { border = 'rounded' },
+        },
+        menu = {
+          border = 'rounded',
+          draw = {
+            columns = {
+              { 'kind_icon' },
+              { 'label', 'label_description', gap = 1 },
+            },
+          },
+        },
+      },
+      signature = { window = { border = 'rounded' } },
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
