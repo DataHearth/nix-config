@@ -19,7 +19,6 @@
     ];
     sessionVariables = {
       GOPATH = "${config.home.homeDirectory}/.go";
-      DOCKER_HOST = "unix:///run/user/1000/podman/podman.sock";
       NIXOS_OZONE_WL = 1;
     };
   };

@@ -3,7 +3,8 @@
   home_modules = {
     ssh.enable = true;
     zellij.enable = true;
-    ashell.enable = true;
+    yazi.enable = true;
+
     neovim = {
       enable = true;
       defaultEditor = true;
@@ -13,6 +14,7 @@
       enable = true;
       package = config.lib.nixGL.wrap pkgs.hyprland;
       display_manager = true;
+      statusBar = "waybar";
       window_rules = [
         "workspace 1, class:Alacritty"
         "workspace 2, class:zen, initialTitle:Zen Browser"
@@ -28,11 +30,6 @@
         "zen-browser"
         "spotify"
       ];
-    };
-
-    hyprlock = {
-      enable = true;
-      lockBackgroundImage = "~/.local/share/backgrounds/2025-10-19-18-43-55-undefined\ -\ Imgur(1).jpg";
     };
 
     alacritty = {

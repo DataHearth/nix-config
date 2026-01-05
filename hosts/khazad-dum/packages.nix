@@ -26,6 +26,12 @@
     brightnessctl
     wl-clipboard
     podman-compose
+    walker
+
+    # Fonts
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.mononoki
+    nerd-fonts.fira-code
 
     # GUI
     (config.lib.nixGL.wrap obs-studio)
