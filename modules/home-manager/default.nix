@@ -6,6 +6,8 @@
   ./hyprlock.nix
   ./ssh.nix
   ./swaync
+  ./waybar
+  ./yazi.nix
   ./zellij
   ./neovim
 ]

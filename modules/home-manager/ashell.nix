@@ -11,7 +11,7 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.ashell = {
-      enable = cfg.enable;
+      enable = true;
       settings = {
         log_level = "info";
 
