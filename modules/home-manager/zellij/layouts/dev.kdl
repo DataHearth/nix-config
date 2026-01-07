@@ -38,6 +38,10 @@ layout {
         pane command="claude"
     }
 
+    tab name="Nvim" {
+      pane command="nvim"
+    }
+
     tab name="CLI" {
         pane
     }
