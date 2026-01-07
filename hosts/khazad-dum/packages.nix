@@ -26,7 +26,8 @@
     brightnessctl
     wl-clipboard
     podman-compose
-    walker
+    proton-vpn-cli
+    qbittorrent-cli
 
     # Fonts
     nerd-fonts.jetbrains-mono
@@ -40,7 +41,10 @@
     vlc
     obsidian
     spotify
-    rquickshare
+    (config.lib.nixGL.wrap rquickshare)
+    qbittorrent
+    walker
+    virt-manager
   ];
 
   programs = {

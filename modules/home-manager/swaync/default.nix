@@ -33,9 +33,9 @@ in
         notification-body-image-height = 160;
         notification-body-image-width = 200;
 
-        # Timeouts (in ms)
-        timeout = 6000;
-        timeout-low = 4000;
+        # Timeouts (in seconds)
+        timeout = 6;
+        timeout-low = 4;
         timeout-critical = 0;
 
         # Animations
