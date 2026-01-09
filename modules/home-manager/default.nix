@@ -2,8 +2,7 @@
   ./alacritty.nix
   ./ashell.nix
   ./git.nix
-  ./hyprland.nix
-  ./hyprlock.nix
+  ./hyprland
   ./ssh.nix
   ./swaync
   ./waybar

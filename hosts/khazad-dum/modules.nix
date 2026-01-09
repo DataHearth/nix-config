@@ -14,15 +14,15 @@
       enable = true;
       package = config.lib.nixGL.wrap pkgs.hyprland;
       display_manager = true;
-      statusBar = "waybar";
+      status_bar = "waybar";
       window_rules = [
-        "workspace 1, class:Alacritty"
-        "workspace 2, class:zen, initialTitle:Zen Browser"
-        "workspace 3, class:dev.zed.Zed"
-        "workspace 3, class:code, initialTitle: Visual Studio Code"
-        "workspace 4, class:discord"
-        "workspace 4, class:signal"
-        "workspace 6, class:spotify"
+        "workspace 1, match:class Alacritty"
+        "workspace 2, match:class zen, match:initial_title Zen Browser"
+        "workspace 3, match:class dev.zed.Zed"
+        "workspace 3, match:class code, match:initial_title Visual Studio Code"
+        "workspace 4, match:class discord"
+        "workspace 4, match:class signal"
+        "workspace 6, match:class spotify"
       ];
       exec_once = [
         "signal-desktop --password-store=\"gnome-libsecret\""

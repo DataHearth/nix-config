@@ -25,7 +25,7 @@ let
   };
   package = lib.mkPackageOption pkgs "hyprland" { };
   display_manager = lib.mkEnableOption "display_manager";
-  statusBar = lib.mkOption {
+  status_bar = lib.mkOption {
     type = lib.types.enum [
       "ashell"
       "waybar"
@@ -47,23 +47,16 @@ in
       additional_envs
       package
       display_manager
-      statusBar
+      status_bar
       ;
   };
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ (lib.mkIf cfg.display_manager nwg-displays) ];
 
-    programs = {
-      elephant = {
-        enable = true;
-        installService = true;
-      };
-
-      hyprshot = {
-        enable = true;
-        saveLocation = "${config.home.homeDirectory}/Pictures/Screenshots";
-      };
+    programs.elephant = {
+      enable = true;
+      installService = true;
     };
 
     services.walker = {
@@ -73,13 +66,8 @@ in
 
     home_modules = {
       swaync.enable = true;
-      waybar.enable = cfg.statusBar == "waybar";
-      ashell.enable = cfg.statusBar == "ashell";
-
-      hyprlock = {
-        enable = true;
-        lockBackgroundImage = "~/.local/share/backgrounds/2025-10-19-18-43-55-undefined\ -\ Imgur(1).jpg";
-      };
+      waybar.enable = cfg.status_bar == "waybar";
+      ashell.enable = cfg.status_bar == "ashell";
     };
 
     wayland.windowManager.hyprland = {
@@ -92,15 +80,17 @@ in
           "~/.config/hypr/workspaces.conf"
         ];
 
+        ecosystem.no_update_news = true;
+
         monitor = ",preferred,auto,auto";
 
         exec-once = [
-          (lib.mkIf config.services.hyprpaper.enable "hyprctl hyprpaper")
           "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+          "hyprctl hyprpaper"
           terminal
         ]
-        ++ lib.optional (cfg.statusBar == "ashell") "ashell"
-        ++ lib.optional (cfg.statusBar == "waybar") "waybar"
+        ++ lib.optional (cfg.status_bar == "ashell") "ashell"
+        ++ lib.optional (cfg.status_bar == "waybar") "waybar"
         ++ cfg.exec_once;
 
         env = [
@@ -207,7 +197,7 @@ in
 
         bind =
           let
-            hyprshot = "${pkgs.hyprshot}/bin/hyprshot";
+            hyprshot_bin = "${pkgs.hyprshot}/bin/hyprshot";
           in
           [
             "${mainMod}, Return, exec, ${terminal}"
@@ -259,9 +249,9 @@ in
             "${mainMod}, S, exec, systemctl suspend"
             "${mainMod} SHIFT, S, exec, systemctl poweroff"
 
-            "${mainMod}, PRINT, exec, ${hyprshot} -m window"
-            ", PRINT, exec, ${hyprshot} -m output"
-            "${mainMod} SHIFT, PRINT, exec, ${hyprshot} -m region"
+            "${mainMod}, PRINT, exec, ${hyprshot_bin} -m window"
+            ", PRINT, exec, ${hyprshot_bin} -m output"
+            "${mainMod} SHIFT, PRINT, exec, ${hyprshot_bin} -m region"
           ];
 
         bindel =
@@ -278,12 +268,16 @@ in
             ",XF86MonBrightnessDown, exec, ${brightnessctl_bin} -e4 -n2 set 5%-"
           ];
 
-        bindl = [
-          ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
-          ", XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
-          ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
-          ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
-        ];
+        bindl =
+          let
+            playerctl_bin = "${pkgs.playerctl}/bin/playerctl";
+          in
+          [
+            ", XF86AudioNext, exec, ${playerctl_bin} next"
+            ", XF86AudioPause, exec, ${playerctl_bin} play-pause"
+            ", XF86AudioPlay, exec, ${playerctl_bin} play-pause"
+            ", XF86AudioPrev, exec, ${playerctl_bin} previous"
+          ];
 
         bindm = [
           "${mainMod}, mouse:272, movewindow"
@@ -291,8 +285,8 @@ in
         ];
 
         windowrule = [
-          "suppressevent maximize, class:.*"
-          "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
+          "suppress_event maximize, match:class .*"
+          "no_focus 1, match:class ^$, match:title ^$, match:xwayland 1, match:float 1, match:fullscreen 0, match:pin 0"
         ]
         ++ cfg.window_rules;
       };
