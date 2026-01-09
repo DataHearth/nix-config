@@ -27,7 +27,6 @@
     wl-clipboard
     podman-compose
     proton-vpn-cli
-    qbittorrent-cli
 
     # Fonts
     nerd-fonts.jetbrains-mono
@@ -62,7 +61,8 @@
       homeFlake = "${config.xdg.configHome}/nix-config";
       clean = {
         enable = true;
-        dates = "daily";
+        dates = "monthly";
+        extraArgs = "--keep 3 --keep-since 72h --optimise";
       };
     };
 
