@@ -128,15 +128,17 @@
   min-width: 20px;
   min-height: 20px;
   border-radius: 10px;
-  color: rgba(255, 255, 255, 0.6);
-  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  background-color: rgba(80, 80, 80, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .floating-notifications.background
   .notification-row
   .notification-background
   .close-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(100, 100, 100, 1);
+  border-color: rgba(255, 255, 255, 0.4);
   color: #ffffff;
 }
 
@@ -144,7 +146,8 @@
   .notification-row
   .notification-background
   .close-button:active {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: #ff453a;
+  border-color: #ff453a;
 }
 
 /* ==================== Control Center ==================== */
@@ -171,25 +174,74 @@
 .control-center .widget-title button {
   border-radius: 8px;
   color: #007aff;
-  background-color: transparent;
+  background-color: rgba(0, 122, 255, 0.15);
+  border: 1px solid rgba(0, 122, 255, 0.4);
   padding: 6px 10px;
   font-size: 13px;
   font-weight: 500;
 }
 
 .control-center .widget-title button:hover {
-  background-color: rgba(0, 122, 255, 0.1);
+  background-color: rgba(0, 122, 255, 0.25);
+  border-color: rgba(0, 122, 255, 0.6);
 }
 
 .control-center .widget-title button:active {
-  background-color: rgba(0, 122, 255, 0.2);
+  background-color: rgba(0, 122, 255, 0.35);
+}
+
+/* Notification group buttons (expand/collapse) */
+.notification-group .notification-group-buttons {
+  margin: 8px 16px;
+}
+
+.notification-group .notification-group-buttons button {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  color: #ffffff;
+  padding: 4px 8px;
+  margin: 0 4px;
+}
+
+.notification-group .notification-group-buttons button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.notification-group .notification-group-buttons button:active {
+  background-color: #007aff;
+  border-color: #007aff;
+}
+
+/* Notification group close button */
+.notification-group .notification-group-close-button .close-button {
+  margin: 12px 8px 8px 8px;
+  padding: 4px;
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 10px;
+  color: #ffffff;
+  background-color: rgba(80, 80, 80, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.notification-group .notification-group-close-button .close-button:hover {
+  background-color: rgba(100, 100, 100, 1);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
+.notification-group .notification-group-close-button .close-button:active {
+  background-color: #ff453a;
+  border-color: #ff453a;
 }
 
 /* Notification cards in control center */
 .control-center .notification-row .notification-background {
   border-radius: 12px;
   color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: rgba(50, 50, 50, 1);
   margin-top: 8px;
 }
 
@@ -262,7 +314,8 @@
   .notification-action {
   border-radius: 8px;
   color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   margin: 6px 4px;
   padding: 6px 12px;
   font-size: 13px;
@@ -275,7 +328,8 @@
   > *:last-child
   > *
   .notification-action:hover {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .control-center
@@ -286,6 +340,7 @@
   > *
   .notification-action:active {
   background-color: #007aff;
+  border-color: #007aff;
 }
 
 .control-center .notification-row .notification-background .close-button {
@@ -294,8 +349,9 @@
   min-width: 20px;
   min-height: 20px;
   border-radius: 10px;
-  color: rgba(255, 255, 255, 0.5);
-  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  background-color: rgba(80, 80, 80, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .close-button {
@@ -303,7 +359,8 @@
 }
 
 .control-center .notification-row .notification-background .close-button:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(100, 100, 100, 1);
+  border-color: rgba(255, 255, 255, 0.4);
   color: #ffffff;
 }
 
@@ -311,15 +368,16 @@
   .notification-row
   .notification-background
   .close-button:active {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #ff453a;
+  border-color: #ff453a;
 }
 
 .control-center .notification-row .notification-background:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(60, 60, 60, 1);
 }
 
 .control-center .notification-row .notification-background:active {
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(70, 70, 70, 1);
 }
 
 /* Progress bars */
