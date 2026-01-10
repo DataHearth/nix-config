@@ -58,7 +58,7 @@ in
 
         # conform.nvim
         stylua
-        nixfmt-rfc-style
+        nixfmt
         prettierd
         eslint_d
         taplo
