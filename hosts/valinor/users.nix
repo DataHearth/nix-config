@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, elephant, ... }:
 {
   users = {
     defaultUserShell = pkgs.zsh;
@@ -48,7 +48,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { };
+    extraSpecialArgs = { inherit elephant; };
     users.datahearth = import ./home-manager/home.nix;
   };
 }

@@ -65,6 +65,10 @@
           Valinor = nixpkgs-unstable.lib.nixosSystem {
             inherit system;
 
+            specialArgs = {
+              inherit elephant;
+            };
+
             modules = [
               ./hosts/valinor/configuration.nix
               home-manager-unstable.nixosModules.home-manager

@@ -10,8 +10,7 @@
       age
       btop
       difftastic
-      dig
-      dogdns
+      doggo
       dust
       fd
       jq
