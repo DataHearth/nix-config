@@ -65,7 +65,8 @@ in
     };
 
     home_modules = {
-      swaync.enable = true;
+      swaync.enable = lib.mkDefault true;
+      hyprland.awww.enable = lib.mkDefault true;
       waybar.enable = cfg.status_bar == "waybar";
       ashell.enable = cfg.status_bar == "ashell";
     };
@@ -246,6 +247,7 @@ in
 
             "${mainMod}, F, fullscreen"
             "${mainMod}, L, exec, loginctl lock-session"
+            "${mainMod}, I, exec, ${lib.getExe config.home_modules.hyprland.hypridle.toggleScript}"
             "${mainMod}, S, exec, systemctl suspend"
             "${mainMod} SHIFT, S, exec, systemctl poweroff"
 

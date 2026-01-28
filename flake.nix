@@ -25,6 +25,10 @@
       url = "github:abenz1267/elephant";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    awww = {
+      url = "git+https://codeberg.org/LGFae/awww";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
@@ -35,6 +39,7 @@
       nixvim,
       nixGL,
       elephant,
+      awww,
       ...
     }:
     {
@@ -47,11 +52,12 @@
           inherit pkgs;
 
           extraSpecialArgs = {
-            inherit nixGL;
+            inherit nixGL awww;
           };
 
           modules = [
             { nixpkgs.config.allowUnfree = true; }
+            sops-nix.homeManagerModules.sops
             elephant.homeManagerModules.default
             ./hosts/khazad-dum/home.nix
           ];

@@ -78,6 +78,7 @@ window#waybar.hidden {
 #bluetooth,
 #battery,
 #language,
+#custom-hypridle,
 #custom-notification {
   padding: 0 8px;
   margin: 4px 0;
@@ -171,10 +172,19 @@ window#waybar.hidden {
   color: @magenta;
 }
 
+#custom-hypridle {
+  color: @success;
+}
+
+#custom-hypridle.disabled {
+  color: @warning;
+}
+
 #pulseaudio,
 #network,
 #bluetooth,
 #language,
+#custom-hypridle,
 #custom-notification {
   border-radius: 12px;
 }
@@ -183,6 +193,7 @@ window#waybar.hidden {
 #network:hover,
 #bluetooth:hover,
 #language:hover,
+#custom-hypridle:hover,
 #custom-notification:hover {
   background-color: @bg-strong;
 }

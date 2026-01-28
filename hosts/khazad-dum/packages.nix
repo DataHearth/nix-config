@@ -20,18 +20,21 @@
     git-filter-repo
     nixpkgs-review
     claude-code
-    nixfmt-rfc-style
+    nixfmt
     nixd
     playerctl
     brightnessctl
     wl-clipboard
     podman-compose
     proton-vpn-cli
+    sops
 
     # Fonts
     nerd-fonts.jetbrains-mono
     nerd-fonts.mononoki
     nerd-fonts.fira-code
+    noto-fonts-cjk-serif # support for chinese/japanese characters
+    noto-fonts-cjk-sans # support for chinese/japanese characters
 
     # GUI
     (config.lib.nixGL.wrap obs-studio)
@@ -71,9 +74,25 @@
       git.enable = config.home_modules.git.enable;
     };
 
+    delta = {
+      enable = true;
+      enableJujutsuIntegration = true;
+      options = {
+        navigate = true;
+        side-by-side = true;
+        line-numbers = true;
+      };
+    };
+
     jujutsu = {
       enable = true;
       settings = {
+        signing = {
+          behavior = "own";
+          backend = "gpg";
+          key = "dev@antoine-langlois.net";
+        };
+        git.sign-on-push = true;
         user = {
           name = "DataHearth";
           email = "dev@antoine-langlois.net";

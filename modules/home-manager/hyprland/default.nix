@@ -3,7 +3,7 @@
     ./hyprland.nix
     ./hypridle.nix
     ./hyprlock.nix
-    ./hyprpaper.nix
+    ./awww.nix
     ./hyprshot.nix
   ];
 }

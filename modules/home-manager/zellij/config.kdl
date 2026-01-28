@@ -40,6 +40,14 @@ keybinds clear-defaults=true {
       bind "Alt z" { ToggleFloatingPanes; }
       bind "Alt f" { ToggleFocusFullscreen; }
 
+      // === Session ===
+      bind "Alt s" {
+          LaunchOrFocusPlugin "session-manager" {
+              floating true
+              move_to_focused_tab true
+          }
+      }
+
       // === Layout/resize (you have these) ===
       bind "Alt +" { Resize "Increase"; }
       bind "Alt -" { Resize "Decrease"; }

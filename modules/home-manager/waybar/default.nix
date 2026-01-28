@@ -63,9 +63,24 @@ in
           "group/info" = {
             orientation = "horizontal";
             modules = [
+              "custom/hypridle"
               "hyprland/language"
               "custom/notification"
             ];
+          };
+
+          "custom/hypridle" = {
+            tooltip = true;
+            format = "{icon}";
+            format-icons = {
+              enabled = "󰒲";
+              disabled = "󰒳";
+            };
+            return-type = "json";
+            exec = lib.getExe config.home_modules.hyprland.hypridle.statusScript;
+            on-click = lib.getExe config.home_modules.hyprland.hypridle.toggleScript;
+            interval = "once";
+            signal = 8;
           };
 
           "hyprland/workspaces" = {

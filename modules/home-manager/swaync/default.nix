@@ -29,9 +29,9 @@ in
 
         # Notification behavior
         notification-window-width = 380;
-        notification-icon-size = 48;
-        notification-body-image-height = 160;
-        notification-body-image-width = 200;
+        notification-icon-size = 64;
+        notification-body-image-height = 100;
+        notification-body-image-width = 100;
 
         # Timeouts (in seconds)
         timeout = 6;

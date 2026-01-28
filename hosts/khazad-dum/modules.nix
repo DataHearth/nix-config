@@ -30,6 +30,11 @@
         "zen-browser"
         "spotify"
       ];
+
+      awww.randomize = {
+        enable = true;
+        directory = "/run/media/datahearth/proton/medias/wallpapers";
+      };
     };
 
     alacritty = {
