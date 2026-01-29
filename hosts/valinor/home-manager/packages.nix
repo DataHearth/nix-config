@@ -2,6 +2,13 @@
 {
   home.packages = with pkgs; [
     sops
+    argocd
+    kubectl
+    claude-code
+    talosctl
+    kustomize
+    kubernetes-helm
+    gh
   ];
 
   programs = {

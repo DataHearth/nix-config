@@ -16,6 +16,7 @@
   time.timeZone = "Europe/Paris";
   virtualisation.docker.enable = true;
   system.stateVersion = "24.11";
+  nixpkgs.config.allowUnfree = true;
 
   nix.settings = {
     auto-optimise-store = true;
@@ -62,6 +63,14 @@
       # could move the initrd.availableKernelModules
       initrd.kernelModules = kernel_modules;
       initrd.availableKernelModules = kernel_modules;
+
+      # Legacy iptables modules required by Docker containers (e.g., qbittorrentvpn)
+      kernelModules = [
+        "ip_tables"
+        "iptable_filter"
+        "iptable_nat"
+        "iptable_mangle"
+      ];
     };
 
   networking = {
@@ -83,6 +92,7 @@
         9999
         5001
         22
+        32400
       ];
     };
   };
