@@ -45,14 +45,16 @@
     {
       homeConfigurations."Khazad-dum" =
         let
-          system = "x86_64-linux";
-          pkgs = nixpkgs-unstable.legacyPackages.${system};
+          pkgs = import nixpkgs-unstable {
+            system = "x86_64-linux";
+            overlays = [ nixGL.overlay ];
+          };
         in
         home-manager-unstable.lib.homeManagerConfiguration {
           inherit pkgs;
 
           extraSpecialArgs = {
-            inherit nixGL awww;
+            inherit awww;
           };
 
           modules = [

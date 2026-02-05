@@ -1,4 +1,4 @@
-{ config, nixGL, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ./modules.nix
@@ -31,9 +31,10 @@
     enable = true;
 
     nixGL = {
-      packages = nixGL.packages;
+      packages = pkgs.nixgl;
       defaultWrapper = "mesa";
       installScripts = [ "mesa" ];
+      vulkan.enable = true;
     };
   };
 
