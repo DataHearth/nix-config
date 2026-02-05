@@ -250,6 +250,7 @@ in
             "${mainMod}, I, exec, ${lib.getExe config.home_modules.hyprland.hypridle.toggleScript}"
             "${mainMod}, S, exec, systemctl suspend"
             "${mainMod} SHIFT, S, exec, systemctl poweroff"
+            "${mainMod} SHIFT, R, exec, systemctl reboot"
 
             "${mainMod}, PRINT, exec, ${hyprshot_bin} -m window"
             ", PRINT, exec, ${hyprshot_bin} -m output"
