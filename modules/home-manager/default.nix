@@ -7,6 +7,7 @@
   ./swaync
   ./waybar
   ./yazi.nix
+  ./zed-editor.nix
   ./zellij
   ./neovim
 ]

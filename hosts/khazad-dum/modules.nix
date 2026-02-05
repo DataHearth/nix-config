@@ -4,6 +4,8 @@
     ssh.enable = true;
     zellij.enable = true;
     yazi.enable = true;
+    zed-editor.enable = true;
+    zed-editor.package = config.lib.nixGL.wrap pkgs.zed-editor;
 
     neovim = {
       enable = true;
