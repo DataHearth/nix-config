@@ -29,6 +29,7 @@ window#waybar.hidden {
 /* Workspaces group */
 #workspaces {
   background-color: @bg-weak;
+  border: 1px solid @bg-strong;
   border-radius: 20px;
   margin: 4px;
   padding: 0 4px;
@@ -64,6 +65,7 @@ window#waybar.hidden {
 #info {
   background-color: @bg-weak;
   background-image: none;
+  border: 1px solid @bg-strong;
   border-radius: 20px;
   margin: 4px;
   padding: 0 8px;
@@ -88,6 +90,7 @@ window#waybar.hidden {
 
 #clock {
   background-color: @bg-weak;
+  border: 1px solid @bg-strong;
   border-radius: 20px;
   margin: 4px;
   padding: 0 16px;
@@ -97,6 +100,7 @@ window#waybar.hidden {
 
 #tray {
   background-color: @bg-weak;
+  border: 1px solid @bg-strong;
   border-radius: 20px;
   margin: 4px;
   padding: 0 8px;
