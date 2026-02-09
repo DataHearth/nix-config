@@ -48,6 +48,7 @@
     qbittorrent
     walker
     virt-manager
+    proton-authenticator
   ];
 
   programs = {

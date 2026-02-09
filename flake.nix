@@ -21,6 +21,14 @@
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    niri-flake = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     elephant = {
       url = "github:abenz1267/elephant";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -38,6 +46,8 @@
       home-manager-unstable,
       nixvim,
       nixGL,
+      niri-flake,
+      dms,
       elephant,
       awww,
       ...
@@ -61,6 +71,8 @@
             { nixpkgs.config.allowUnfree = true; }
             sops-nix.homeManagerModules.sops
             elephant.homeManagerModules.default
+            niri-flake.homeModules.niri
+            dms.homeModules.dank-material-shell
             ./hosts/khazad-dum/home.nix
           ];
         };

@@ -3,6 +3,7 @@
   ./ashell.nix
   ./git.nix
   ./hyprland
+  ./niri
   ./ssh.nix
   ./swaync
   ./waybar

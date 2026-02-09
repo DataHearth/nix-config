@@ -39,6 +39,11 @@
       };
     };
 
+    niri = {
+      enable = true;
+      package = config.lib.nixGL.wrap pkgs.niri;
+    };
+
     alacritty = {
       enable = true;
       package = config.lib.nixGL.wrap pkgs.alacritty;
