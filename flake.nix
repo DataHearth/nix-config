@@ -51,6 +51,7 @@
       dms,
       elephant,
       awww,
+      nixos-hardware,
       ...
     }:
     {
@@ -83,6 +84,30 @@
           system = "x86_64-linux";
         in
         {
+          Khazad-dum = nixpkgs-unstable.lib.nixosSystem {
+            inherit system;
+
+            modules = [
+              ./hosts/khazad-dum/configuration.nix
+              home-manager-unstable.nixosModules.home-manager
+              sops-nix.nixosModules.sops
+              nixvim.nixosModules.default
+              niri-flake.nixosModules.niri
+              nixos-hardware.nixosModules.framework-16-7040-amd
+              {
+                home-manager.sharedModules = [
+                  sops-nix.homeManagerModules.sops
+                  elephant.homeManagerModules.default
+                  niri-flake.homeModules.niri
+                  dms.homeModules.dank-material-shell
+                ];
+                home-manager.extraSpecialArgs = {
+                  inherit awww;
+                };
+              }
+            ];
+          };
+
           Valinor = nixpkgs-unstable.lib.nixosSystem {
             inherit system;
 
