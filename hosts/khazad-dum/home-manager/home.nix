@@ -5,7 +5,7 @@
     ./packages.nix
     ./services.nix
   ]
-  ++ (import ../../modules/home-manager);
+  ++ (import ../../../modules/home-manager);
 
   fonts.fontconfig.enable = true;
 

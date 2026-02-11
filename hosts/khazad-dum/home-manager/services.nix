@@ -5,7 +5,7 @@ in
 {
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    defaultSopsFile = ../../secrets/secrets.yml;
+    defaultSopsFile = ../../../secrets/secrets.yml;
     secrets = {
       "rclone/protondrive/username" = { };
       "rclone/protondrive/password" = { };

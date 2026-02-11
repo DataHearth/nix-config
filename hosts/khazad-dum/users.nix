@@ -17,6 +17,6 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.datahearth = import ./home.nix;
+    users.datahearth = import ./home-manager/home.nix;
   };
 }

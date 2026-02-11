@@ -2,10 +2,12 @@
   config,
   lib,
   pkgs,
+  options,
   ...
 }:
 let
   cfg = config.home_modules.niri;
+  isStandalone = options.programs.niri ? enable;
 
   terminal = "${config.programs.alacritty.package}/bin/alacritty";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
@@ -19,10 +21,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.niri = {
+    programs.niri = lib.optionalAttrs isStandalone {
       enable = true;
       package = cfg.package;
-
+    } // {
       settings = {
         input = {
           keyboard.xkb = {
@@ -51,10 +53,6 @@ in
           center-focused-column = "on-overflow";
           default-column-width.proportion = 0.5;
         };
-
-        spawn-at-startup = [
-          { command = [ "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1" ]; }
-        ];
 
         environment = {
           XCURSOR_SIZE = "24";
@@ -246,8 +244,13 @@ in
       };
     };
 
-    xdg.configFile."systemd/user/niri.service".source = "${cfg.package}/share/systemd/user/niri.service";
-    xdg.configFile."systemd/user/niri-shutdown.target".source = "${cfg.package}/share/systemd/user/niri-shutdown.target";
+    # Only needed in standalone Home Manager mode (non-NixOS)
+    xdg.configFile."systemd/user/niri.service" = lib.mkIf isStandalone {
+      source = "${cfg.package}/share/systemd/user/niri.service";
+    };
+    xdg.configFile."systemd/user/niri-shutdown.target" = lib.mkIf isStandalone {
+      source = "${cfg.package}/share/systemd/user/niri-shutdown.target";
+    };
 
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 

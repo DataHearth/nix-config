@@ -2,10 +2,8 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./packages.nix
     ./users.nix
     ./locales.nix
-    ./services.nix
     ../../modules/nh.nix
     ../../modules/greetd.nix
   ];
@@ -75,6 +73,9 @@
     enable = true;
     greeter = "tuigreet";
   };
+
+  # Shell
+  programs.zsh.enable = true;
 
   # Docker
   virtualisation.docker.enable = true;

@@ -75,7 +75,7 @@
             elephant.homeManagerModules.default
             niri-flake.homeModules.niri
             dms.homeModules.dank-material-shell
-            ./hosts/khazad-dum/home.nix
+            ./hosts/khazad-dum/home-manager/home.nix
           ];
         };
 
@@ -98,7 +98,6 @@
                 home-manager.sharedModules = [
                   sops-nix.homeManagerModules.sops
                   elephant.homeManagerModules.default
-                  niri-flake.homeModules.niri
                   dms.homeModules.dank-material-shell
                 ];
                 home-manager.extraSpecialArgs = {
