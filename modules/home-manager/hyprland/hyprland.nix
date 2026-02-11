@@ -86,7 +86,6 @@ in
         monitor = ",preferred,auto,auto";
 
         exec-once = [
-          "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
           "hyprctl hyprpaper"
           terminal
         ]
