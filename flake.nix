@@ -37,6 +37,7 @@
       url = "git+https://codeberg.org/LGFae/awww";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs =
