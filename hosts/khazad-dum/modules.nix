@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 {
   home_modules = {
     ssh.enable = true;
@@ -6,7 +6,6 @@
     yazi.enable = true;
     nushell.enable = true;
     zed-editor.enable = true;
-    zed-editor.package = config.lib.nixGL.wrap pkgs.zed-editor;
 
     neovim = {
       enable = true;
@@ -15,7 +14,6 @@
 
     hyprland = {
       enable = true;
-      package = config.lib.nixGL.wrap pkgs.hyprland;
       display_manager = true;
       status_bar = "waybar";
       window_rules = [
@@ -40,15 +38,9 @@
       };
     };
 
-    niri = {
-      enable = true;
-      package = config.lib.nixGL.wrap pkgs.niri;
-    };
+    niri.enable = true;
 
-    alacritty = {
-      enable = true;
-      package = config.lib.nixGL.wrap pkgs.alacritty;
-    };
+    alacritty.enable = true;
 
     git = {
       enable = true;

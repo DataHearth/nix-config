@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   imports = [
     ./modules.nix
@@ -18,23 +18,11 @@
       "${config.home.homeDirectory}/.local/bin"
       "${config.home.homeDirectory}/.cargo/bin"
       "${config.home.homeDirectory}/.go/bin"
-      "/usr/local/go/bin"
     ];
 
     sessionVariables = {
       GOPATH = "${config.home.homeDirectory}/.go";
       NIXOS_OZONE_WL = 1;
-    };
-  };
-
-  targets.genericLinux = {
-    enable = true;
-
-    nixGL = {
-      packages = pkgs.nixgl;
-      defaultWrapper = "mesa";
-      installScripts = [ "mesa" ];
-      vulkan.enable = true;
     };
   };
 

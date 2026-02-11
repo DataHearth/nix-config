@@ -5,7 +5,6 @@
 }:
 {
   home.packages = with pkgs; [
-    nixgl.auto.nixGLDefault
     dust
     fd
     gh
@@ -26,7 +25,6 @@
     playerctl
     brightnessctl
     wl-clipboard
-    podman-compose
     proton-vpn-cli
     sops
 
@@ -38,13 +36,13 @@
     noto-fonts-cjk-sans # support for chinese/japanese characters
 
     # GUI
-    (config.lib.nixGL.wrap obs-studio)
+    obs-studio
     signal-desktop
     discord
     vlc
     obsidian
     spotify
-    (config.lib.nixGL.wrap rquickshare)
+    rquickshare
     qbittorrent
     walker
     virt-manager
