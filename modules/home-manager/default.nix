@@ -11,4 +11,5 @@
   ./zed-editor.nix
   ./zellij
   ./neovim
+  ./nushell.nix
 ]
