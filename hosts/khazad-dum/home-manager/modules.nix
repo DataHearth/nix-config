@@ -1,10 +1,13 @@
 { ... }:
 {
+  programs.zen-browser.enable = true;
+
   home_modules = {
     ssh.enable = true;
     zellij.enable = true;
     yazi.enable = true;
     nushell.enable = true;
+    vscode.enable = true;
     zed-editor.enable = true;
 
     neovim = {
@@ -39,6 +42,7 @@
     };
 
     niri.enable = true;
+    theme.enable = true;
 
     alacritty.enable = true;
 

@@ -6,8 +6,10 @@
   ./niri
   ./ssh.nix
   ./swaync
+  ./theme.nix
   ./waybar
   ./yazi.nix
+  ./vscode.nix
   ./zed-editor.nix
   ./zellij
   ./neovim

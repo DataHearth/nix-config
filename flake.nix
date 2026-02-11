@@ -38,6 +38,10 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
@@ -52,6 +56,7 @@
       elephant,
       awww,
       nixos-hardware,
+      zen-browser,
       ...
     }:
     {
@@ -75,6 +80,7 @@
             elephant.homeManagerModules.default
             niri-flake.homeModules.niri
             dms.homeModules.dank-material-shell
+            zen-browser.homeModules.beta
             ./hosts/khazad-dum/home-manager/home.nix
           ];
         };
@@ -99,6 +105,7 @@
                   sops-nix.homeManagerModules.sops
                   elephant.homeManagerModules.default
                   dms.homeModules.dank-material-shell
+                  zen-browser.homeModules.beta
                 ];
                 home-manager.extraSpecialArgs = {
                   inherit awww;

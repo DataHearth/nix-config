@@ -9,6 +9,7 @@
       extraGroups = [
         "wheel"
         "docker"
+        "libvirtd"
         "networkmanager"
       ];
     };

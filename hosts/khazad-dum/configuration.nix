@@ -64,6 +64,12 @@
   services.power-profiles-daemon.enable = true;
   services.thermald.enable = true;
 
+  # Fingerprint reader
+  services.fprintd.enable = true;
+
+  # Tailscale VPN
+  services.tailscale.enable = true;
+
   # Desktop sessions
   programs.hyprland.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
@@ -79,6 +85,19 @@
 
   # Docker
   virtualisation.docker.enable = true;
+
+  # Libvirt / QEMU
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.swtpm.enable = true;
+  };
+  virtualisation.spiceUSBRedirection.enable = true;
+
+  # Qt Wayland support
+  environment.systemPackages = with pkgs; [
+    qt5.qtwayland
+    qt6.qtwayland
+  ];
 
   # Polkit authentication agent
   systemd.user.services.polkit-gnome-authentication-agent-1 = {

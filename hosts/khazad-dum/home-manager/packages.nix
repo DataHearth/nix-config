@@ -46,7 +46,10 @@
     qbittorrent
     walker
     virt-manager
+    spice-gtk
     proton-authenticator
+    docker-compose
+    docker-buildx
   ];
 
   programs = {
