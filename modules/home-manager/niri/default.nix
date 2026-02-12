@@ -17,7 +17,7 @@ in
 {
   options.home_modules.niri = {
     enable = lib.mkEnableOption "niri scrollable-tiling Wayland compositor";
-    package = lib.mkPackageOption pkgs "niri-unstable" { };
+    package = lib.mkPackageOption pkgs "niri" { };
   };
 
   config = lib.mkIf cfg.enable {
@@ -256,7 +256,10 @@ in
 
     programs.dank-material-shell.enable = lib.mkDefault true;
 
+    services.cliphist.enable = lib.mkDefault true;
+
     home_modules = {
+      walker.enable = lib.mkDefault true;
       swaync.enable = lib.mkDefault true;
     };
   };

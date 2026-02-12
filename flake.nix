@@ -1,54 +1,61 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
     zjstatus.url = "github:dj95/zjstatus";
 
     nixvim = {
       url = "github:datahearth/nixvim-config";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    home-manager-unstable = {
+    home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixGL = {
       url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     niri-flake = {
       url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     elephant = {
       url = "github:abenz1267/elephant";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     awww = {
       url = "git+https://codeberg.org/LGFae/awww";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs =
     {
-      nixpkgs-unstable,
+      nixpkgs,
       sops-nix,
-      home-manager-unstable,
+      home-manager,
       nixvim,
       nixGL,
       niri-flake,
@@ -57,17 +64,20 @@
       awww,
       nixos-hardware,
       zen-browser,
+      nix-index-database,
+      disko,
+      lanzaboote,
       ...
     }:
     {
       homeConfigurations."Khazad-dum" =
         let
-          pkgs = import nixpkgs-unstable {
+          pkgs = import nixpkgs {
             system = "x86_64-linux";
             overlays = [ nixGL.overlay ];
           };
         in
-        home-manager-unstable.lib.homeManagerConfiguration {
+        home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
 
           extraSpecialArgs = {
@@ -81,6 +91,7 @@
             niri-flake.homeModules.niri
             dms.homeModules.dank-material-shell
             zen-browser.homeModules.beta
+            nix-index-database.hmModules.nix-index
             ./hosts/khazad-dum/home-manager/home.nix
           ];
         };
@@ -90,12 +101,12 @@
           system = "x86_64-linux";
         in
         {
-          Khazad-dum = nixpkgs-unstable.lib.nixosSystem {
+          Khazad-dum = nixpkgs.lib.nixosSystem {
             inherit system;
 
             modules = [
               ./hosts/khazad-dum/configuration.nix
-              home-manager-unstable.nixosModules.home-manager
+              home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
               nixvim.nixosModules.default
               niri-flake.nixosModules.niri
@@ -106,6 +117,7 @@
                   elephant.homeManagerModules.default
                   dms.homeModules.dank-material-shell
                   zen-browser.homeModules.beta
+                  nix-index-database.hmModules.nix-index
                 ];
                 home-manager.extraSpecialArgs = {
                   inherit awww;
@@ -114,12 +126,12 @@
             ];
           };
 
-          Valinor = nixpkgs-unstable.lib.nixosSystem {
+          Valinor = nixpkgs.lib.nixosSystem {
             inherit system;
 
             modules = [
               ./hosts/valinor/configuration.nix
-              home-manager-unstable.nixosModules.home-manager
+              home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
               nixvim.nixosModules.default
               niri-flake.nixosModules.niri
@@ -129,6 +141,7 @@
                   elephant.homeManagerModules.default
                   dms.homeModules.dank-material-shell
                   zen-browser.homeModules.beta
+                  nix-index-database.hmModules.nix-index
                 ];
                 home-manager.extraSpecialArgs = {
                   inherit awww;

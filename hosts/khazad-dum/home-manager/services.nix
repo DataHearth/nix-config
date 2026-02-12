@@ -60,7 +60,6 @@ in
 
   services = {
     ssh-agent.enable = true;
-    cliphist.enable = true;
 
     gpg-agent = {
       enable = true;

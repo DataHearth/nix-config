@@ -1,17 +1,22 @@
 [
   ./alacritty.nix
   ./ashell.nix
+  ./bat.nix
+  ./direnv.nix
   ./git.nix
   ./hyprland
+  ./jujutsu.nix
   ./niri
+  ./nushell.nix
   ./ssh.nix
   ./swaync
   ./theme.nix
-  ./waybar
-  ./yazi.nix
   ./vscode.nix
+  ./waybar
+  ./walker.nix
+  ./yazi.nix
   ./zed-editor.nix
   ./zellij
+  ./zsh.nix
   ./neovim
-  ./nushell.nix
 ]

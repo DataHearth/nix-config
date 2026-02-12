@@ -1,18 +1,86 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.zen-browser.enable = true;
 
   home_modules = {
-    ssh.enable = true;
-    zellij.enable = true;
-    yazi.enable = true;
+    alacritty.enable = true;
+    bat.enable = true;
+    direnv.enable = true;
+    niri.enable = true;
     nushell.enable = true;
+    theme.enable = true;
     vscode.enable = true;
+    yazi.enable = true;
     zed-editor.enable = true;
+    zellij.enable = true;
+
+    ssh = {
+      enable = true;
+      matchBlocks =
+        let
+          keyNamePrefix = "id_ed25519";
+        in
+        {
+          "github.com" = {
+            hostname = "github.com";
+            user = "git";
+            identityFile = "~/.ssh/${keyNamePrefix}_git";
+            identitiesOnly = true;
+          };
+          "gitlab.com" = {
+            hostname = "gitlab.com";
+            user = "git";
+            identityFile = "~/.ssh/${keyNamePrefix}_git";
+            identitiesOnly = true;
+          };
+          "valinor" = {
+            hostname = "valinor";
+            user = "datahearth";
+            identityFile = "~/.ssh/${keyNamePrefix}";
+            identitiesOnly = true;
+          };
+          "deeps" = {
+            hostname = "192.168.122.101";
+            user = "datahearth";
+            identityFile = "~/.ssh/${keyNamePrefix}";
+            identitiesOnly = true;
+          };
+        };
+    };
+
+    zsh = {
+      enable = true;
+      extraPlugins = [
+        {
+          name = "zsh-completion-sync";
+          src = pkgs.zsh-completion-sync;
+          file = "share/zsh-completion-sync/zsh-completion-sync.plugin.zsh";
+        }
+      ];
+      extraAliases = {
+        open = "xdg-open";
+      };
+      envExtra = ''
+        if [[ -n "$CLAUDECODE" ]]; then
+          eval "$(direnv hook zsh)"
+        fi
+      '';
+    };
 
     neovim = {
       enable = true;
       defaultEditor = true;
+    };
+
+    git = {
+      enable = true;
+      signingKey = "dev@antoine-langlois.net";
+      difftastic.enable = true;
+    };
+
+    jujutsu = {
+      enable = true;
+      signingKey = "dev@antoine-langlois.net";
     };
 
     hyprland = {
@@ -39,16 +107,6 @@
         enable = true;
         directory = "/run/media/datahearth/proton/medias/wallpapers";
       };
-    };
-
-    niri.enable = true;
-    theme.enable = true;
-
-    alacritty.enable = true;
-
-    git = {
-      enable = true;
-      signingKey = "B3402BD69AEDB608F67D6E850DBAB694B466214F";
     };
   };
 }

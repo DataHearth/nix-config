@@ -5,37 +5,43 @@
   ...
 }:
 let
-  cfg = config.services.passthrough;
+  cfg = config.nixos_modules.passthrough;
 in
 {
-  options.services.passthrough = {
-    enable = lib.mkEnableOption "passthrough";
+  options.nixos_modules.passthrough = {
+    enable = lib.mkEnableOption "GPU passthrough with VFIO";
     ids = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       example = [
-        "10de:1b81"
-        "10de:10f0"
+        "1002:7480"
+        "1002:ab30"
       ];
-      description = "GPU's PCI ids to isolate";
+      description = "GPU PCI IDs to isolate for passthrough";
+    };
+    cpu = lib.mkOption {
+      type = lib.types.enum [
+        "amd"
+        "intel"
+      ];
+      description = "CPU vendor for IOMMU kernel parameter";
     };
     user = lib.mkOption {
       type = lib.types.str;
-      example = "DataHearth";
-      description = ''Username to add "libvirtd" group'';
+      example = "datahearth";
+      description = "Username to add to the libvirtd group";
     };
   };
 
   config = lib.mkIf cfg.enable {
     boot = {
       kernelParams = [
-        "intel_iommu=on"
+        "${cfg.cpu}_iommu=on"
         "iommu=pt"
       ];
       kernelModules = [
         "vfio"
         "vfio_iommu_type1"
         "vfio_pci"
-        "vfio_virqfd"
       ];
       extraModprobeConfig = ''
         options vfio-pci ids=${lib.concatStringsSep "," cfg.ids}
@@ -44,18 +50,11 @@ in
     };
 
     users.users.${cfg.user}.extraGroups = [ "libvirtd" ];
-    environment.systemPackages = [
-      pkgs.OVMF
-      pkgs.qemu
-    ];
-    programs.virt-manager.enable = true;
 
     virtualisation = {
       libvirtd = {
         enable = true;
-        qemu.verbatimConfig = ''
-          nvram = [ "${pkgs.OVMF}/FV/OVMF.fd:${pkgs.OVMF}/FV/OVMF_VARS.fd" ]
-        '';
+        qemu.swtpm.enable = true;
       };
       spiceUSBRedirection.enable = true;
     };

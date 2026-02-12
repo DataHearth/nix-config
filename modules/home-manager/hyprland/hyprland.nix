@@ -59,12 +59,10 @@ in
       installService = true;
     };
 
-    services.walker = {
-      enable = true;
-      systemd.enable = true;
-    };
+    services.cliphist.enable = lib.mkDefault true;
 
     home_modules = {
+      walker.enable = lib.mkDefault true;
       swaync.enable = lib.mkDefault true;
       hyprland.awww.enable = lib.mkDefault true;
       waybar.enable = cfg.status_bar == "waybar";

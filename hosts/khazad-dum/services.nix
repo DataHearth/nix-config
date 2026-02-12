@@ -23,7 +23,11 @@
   services.fprintd.enable = true;
 
   # Tailscale VPN
-  services.tailscale.enable = true;
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+    openFirewall = true;
+  };
 
   # Firmware updates
   services.fwupd.enable = true;
