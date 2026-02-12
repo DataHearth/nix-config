@@ -3,15 +3,16 @@
   ...
 }:
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./packages.nix
-    ./users.nix
-    ./locales.nix
-    ./services.nix
-    ./systemd.nix
-    ../../modules/nh.nix
-  ];
+  imports =
+    [
+      ./hardware-configuration.nix
+      ./packages.nix
+      ./users.nix
+      ./locales.nix
+      ./services.nix
+      ./systemd.nix
+    ]
+    ++ (import ../../modules/nixos);
 
   time.timeZone = "Europe/Paris";
   virtualisation.docker.enable = true;

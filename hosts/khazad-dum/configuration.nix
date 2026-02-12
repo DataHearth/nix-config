@@ -1,12 +1,16 @@
-{ config, pkgs, ... }:
+{ ... }:
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./users.nix
-    ./locales.nix
-    ../../modules/nh.nix
-    ../../modules/greetd.nix
-  ];
+  imports =
+    [
+      ./hardware-configuration.nix
+      ./users.nix
+      ./locales.nix
+      ./modules.nix
+      ./packages.nix
+      ./services.nix
+      ./systemd.nix
+    ]
+    ++ (import ../../modules/nixos);
 
   time.timeZone = "Europe/Paris";
   system.stateVersion = "25.11";
@@ -43,83 +47,5 @@
     wireless.iwd.enable = true;
     nftables.enable = true;
     firewall.enable = true;
-  };
-
-  # Audio
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-  security.rtkit.enable = true;
-
-  # Bluetooth
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-  };
-
-  # Power management
-  services.power-profiles-daemon.enable = true;
-  services.thermald.enable = true;
-
-  # Fingerprint reader
-  services.fprintd.enable = true;
-
-  # Tailscale VPN
-  services.tailscale.enable = true;
-
-  # Desktop sessions
-  programs.hyprland.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  # Display manager
-  nixos_modules.greetd = {
-    enable = true;
-    greeter = "tuigreet";
-  };
-
-  # Shell
-  programs.zsh.enable = true;
-
-  # Docker
-  virtualisation.docker.enable = true;
-
-  # Libvirt / QEMU
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu.swtpm.enable = true;
-  };
-  virtualisation.spiceUSBRedirection.enable = true;
-
-  # Qt Wayland support
-  environment.systemPackages = with pkgs; [
-    qt5.qtwayland
-    qt6.qtwayland
-  ];
-
-  # Polkit authentication agent
-  systemd.user.services.polkit-gnome-authentication-agent-1 = {
-    description = "polkit-gnome-authentication-agent-1";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      Restart = "on-failure";
-      RestartSec = 1;
-      TimeoutStopSec = 10;
-    };
-  };
-
-  # Firmware updates
-  services.fwupd.enable = true;
-
-  # nh
-  nixos_modules.nh = {
-    enable = true;
-    settings.flake = "${config.users.users.datahearth.home}/.config/nix-config";
   };
 }

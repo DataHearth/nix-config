@@ -1,7 +1,6 @@
-{ elephant, ... }:
+{ ... }:
 {
   imports = [
-    elephant.homeManagerModules.default
     ./modules.nix
     ./packages.nix
     ./services.nix

@@ -7,7 +7,7 @@
 }:
 let
   cfg = config.home_modules.niri;
-  isStandalone = options.programs.niri ? enable;
+  isStandalone = (options.programs ? niri) && (options.programs.niri ? enable);
 
   terminal = "${config.programs.alacritty.package}/bin/alacritty";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";

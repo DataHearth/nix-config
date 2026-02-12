@@ -117,15 +117,23 @@
           Valinor = nixpkgs-unstable.lib.nixosSystem {
             inherit system;
 
-            specialArgs = {
-              inherit elephant;
-            };
-
             modules = [
               ./hosts/valinor/configuration.nix
               home-manager-unstable.nixosModules.home-manager
               sops-nix.nixosModules.sops
               nixvim.nixosModules.default
+              niri-flake.nixosModules.niri
+              {
+                home-manager.sharedModules = [
+                  sops-nix.homeManagerModules.sops
+                  elephant.homeManagerModules.default
+                  dms.homeModules.dank-material-shell
+                  zen-browser.homeModules.beta
+                ];
+                home-manager.extraSpecialArgs = {
+                  inherit awww;
+                };
+              }
             ];
           };
         };
