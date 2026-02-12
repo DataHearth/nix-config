@@ -203,6 +203,7 @@ in
             "${mainMod}, M, exit,"
             "${mainMod}, E, exec, ${pkgs.nautilus}/bin/nautilus"
             "${mainMod}, V, togglefloating,"
+            "${mainMod}, C, exec, cliphist list | walker --dmenu | cliphist decode | wl-copy"
             "${mainMod}, Space, exec, ${config.services.walker.package}/bin/walker"
             "${mainMod}, P, pseudo,"
             "${mainMod}, J, togglesplit,"

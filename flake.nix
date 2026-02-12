@@ -20,10 +20,6 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     elephant = {
       url = "github:abenz1267/elephant";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,7 +55,6 @@
       nixvim,
       nixGL,
       niri-flake,
-      dms,
       elephant,
       awww,
       nixos-hardware,
@@ -89,7 +84,6 @@
             sops-nix.homeManagerModules.sops
             elephant.homeManagerModules.default
             niri-flake.homeModules.niri
-            dms.homeModules.dank-material-shell
             zen-browser.homeModules.beta
             nix-index-database.homeModules.nix-index
             ./hosts/khazad-dum/home-manager/home.nix
@@ -115,7 +109,6 @@
                 home-manager.sharedModules = [
                   sops-nix.homeManagerModules.sops
                   elephant.homeManagerModules.default
-                  dms.homeModules.dank-material-shell
                   zen-browser.homeModules.beta
                   nix-index-database.homeModules.nix-index
                 ];
@@ -139,7 +132,6 @@
                 home-manager.sharedModules = [
                   sops-nix.homeManagerModules.sops
                   elephant.homeManagerModules.default
-                  dms.homeModules.dank-material-shell
                   zen-browser.homeModules.beta
                   nix-index-database.homeModules.nix-index
                 ];

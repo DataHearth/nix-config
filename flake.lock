@@ -72,27 +72,6 @@
         "type": "github"
       }
     },
-    "dms": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "quickshell": "quickshell"
-      },
-      "locked": {
-        "lastModified": 1770607005,
-        "narHash": "sha256-ownvN3t0xDdqhi18KS+Sf/eEqyhc2xK4V5Ow//6kdbY=",
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "rev": "fce120fa311282ddd41866cfca47a3723fa26c54",
-        "type": "github"
-      },
-      "original": {
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "type": "github"
-      }
-    },
     "elephant": {
       "inputs": {
         "nixpkgs": [
@@ -655,33 +634,10 @@
         "type": "github"
       }
     },
-    "quickshell": {
-      "inputs": {
-        "nixpkgs": [
-          "dms",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1766725085,
-        "narHash": "sha256-O2aMFdDUYJazFrlwL7aSIHbUSEm3ADVZjmf41uBJfHs=",
-        "ref": "refs/heads/master",
-        "rev": "41828c4180fb921df7992a5405f5ff05d2ac2fff",
-        "revCount": 715,
-        "type": "git",
-        "url": "https://git.outfoxxed.me/quickshell/quickshell"
-      },
-      "original": {
-        "rev": "41828c4180fb921df7992a5405f5ff05d2ac2fff",
-        "type": "git",
-        "url": "https://git.outfoxxed.me/quickshell/quickshell"
-      }
-    },
     "root": {
       "inputs": {
         "awww": "awww",
         "disko": "disko",
-        "dms": "dms",
         "elephant": "elephant",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",

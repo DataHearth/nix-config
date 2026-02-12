@@ -254,8 +254,6 @@ in
 
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
-    programs.dank-material-shell.enable = lib.mkDefault true;
-
     services.cliphist.enable = lib.mkDefault true;
 
     home_modules = {
