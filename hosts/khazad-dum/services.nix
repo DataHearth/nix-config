@@ -29,6 +29,9 @@
     openFirewall = true;
   };
 
+  # Removable device automounting
+  services.udisks2.enable = true;
+
   # Firmware updates
   services.fwupd.enable = true;
 }

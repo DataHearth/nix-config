@@ -1,5 +1,10 @@
 { pkgs, ... }:
 {
+  # Ensure ProtonDrive mount point exists with correct ownership
+  systemd.tmpfiles.rules = [
+    "d /run/media/datahearth/proton 0755 datahearth users -"
+  ];
+
   # Polkit authentication agent
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";
