@@ -105,6 +105,8 @@
               nixvim.nixosModules.default
               niri-flake.nixosModules.niri
               nixos-hardware.nixosModules.framework-16-7040-amd
+              disko.nixosModules.disko
+              lanzaboote.nixosModules.lanzaboote
               {
                 home-manager.sharedModules = [
                   sops-nix.homeManagerModules.sops

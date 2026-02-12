@@ -3,6 +3,9 @@
   imports =
     [
       ./hardware-configuration.nix
+      ./disko.nix
+      # Uncomment after first boot + sbctl create-keys (see lanzaboote post-install steps)
+      # ./lanzaboote.nix
       ./users.nix
       ./locales.nix
       ./modules.nix
@@ -33,9 +36,7 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    initrd.luks.devices."cryptroot" = {
-      device = "/dev/disk/by-partlabel/LUKS";
-    };
+    # LUKS device is managed by disko
   };
 
   networking = {
