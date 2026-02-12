@@ -91,7 +91,7 @@
             niri-flake.homeModules.niri
             dms.homeModules.dank-material-shell
             zen-browser.homeModules.beta
-            nix-index-database.hmModules.nix-index
+            nix-index-database.homeModules.nix-index
             ./hosts/khazad-dum/home-manager/home.nix
           ];
         };
@@ -117,7 +117,7 @@
                   elephant.homeManagerModules.default
                   dms.homeModules.dank-material-shell
                   zen-browser.homeModules.beta
-                  nix-index-database.hmModules.nix-index
+                  nix-index-database.homeModules.nix-index
                 ];
                 home-manager.extraSpecialArgs = {
                   inherit awww;
@@ -141,7 +141,7 @@
                   elephant.homeManagerModules.default
                   dms.homeModules.dank-material-shell
                   zen-browser.homeModules.beta
-                  nix-index-database.hmModules.nix-index
+                  nix-index-database.homeModules.nix-index
                 ];
                 home-manager.extraSpecialArgs = {
                   inherit awww;
