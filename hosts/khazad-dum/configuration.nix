@@ -39,6 +39,10 @@
     # LUKS device is managed by disko
   };
 
+  security.pki.certificateFiles = [
+    /mnt/development/cert1.pem
+  ];
+
   networking = {
     hostName = "khazad-dum";
     networkmanager = {

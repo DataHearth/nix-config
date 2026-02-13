@@ -34,4 +34,10 @@
 
   # Firmware updates
   services.fwupd.enable = true;
+
+  # Antivirus
+  services.clamav = {
+    daemon.enable = true;
+    updater.enable = true;
+  };
 }
