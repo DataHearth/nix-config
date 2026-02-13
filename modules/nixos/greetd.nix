@@ -30,8 +30,9 @@ in
 
     services.greetd = lib.mkIf (cfg.greeter == "tuigreet") {
       enable = true;
+      terminal.vt = 9;
       settings.default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember-session --sessions ${sessionData}/share/wayland-sessions";
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember-session --remember-user-session --remember --sessions ${sessionData}/share/wayland-sessions --asterisks --time";
         user = config.users.users.datahearth.name;
       };
     };
