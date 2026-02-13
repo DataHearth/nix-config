@@ -65,37 +65,12 @@
       ...
     }:
     {
-      homeConfigurations."Khazad-dum" =
-        let
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-            overlays = [ nixGL.overlay ];
-          };
-        in
-        home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          extraSpecialArgs = {
-            inherit awww;
-          };
-
-          modules = [
-            { nixpkgs.config.allowUnfree = true; }
-            sops-nix.homeManagerModules.sops
-            elephant.homeManagerModules.default
-            niri-flake.homeModules.niri
-            zen-browser.homeModules.beta
-            nix-index-database.homeModules.nix-index
-            ./hosts/khazad-dum/home-manager/home.nix
-          ];
-        };
-
       nixosConfigurations =
         let
           system = "x86_64-linux";
         in
         {
-          Khazad-dum = nixpkgs.lib.nixosSystem {
+          khazad-dum = nixpkgs.lib.nixosSystem {
             inherit system;
 
             modules = [
