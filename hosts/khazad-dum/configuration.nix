@@ -1,19 +1,17 @@
 { ... }:
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./disko.nix
-      # Uncomment after first boot + sbctl create-keys (see lanzaboote post-install steps)
-      # ./lanzaboote.nix
-      ./users.nix
-      ./locales.nix
-      ./modules.nix
-      ./packages.nix
-      ./services.nix
-      ./systemd.nix
-    ]
-    ++ (import ../../modules/nixos);
+  imports = [
+    ./hardware-configuration.nix
+    ./disko.nix
+    ./lanzaboote.nix
+    ./users.nix
+    ./locales.nix
+    ./modules.nix
+    ./packages.nix
+    ./services.nix
+    ./systemd.nix
+  ]
+  ++ (import ../../modules/nixos);
 
   time.timeZone = "Europe/Paris";
   system.stateVersion = "25.11";
@@ -48,6 +46,7 @@
     networkmanager = {
       enable = true;
       wifi.backend = "iwd";
+      unmanaged = [ "interface-name:tun*" ];
     };
     wireless.iwd.enable = true;
     nftables.enable = true;

@@ -10,6 +10,7 @@ in
     customPackages.f5vpn
     customPackages.f5epi
     doggo
+    sbctl
   ];
 
   systemd.tmpfiles.packages = [
