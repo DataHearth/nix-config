@@ -40,7 +40,7 @@ in
         ${pkgs.fuse}/bin/fusermount -u ${mountPoint} 2>/dev/null || true
         # Wait for network connectivity
         until ${pkgs.iputils}/bin/ping -c 1 -W 2 proton.me > /dev/null 2>&1; do
-          sleep 2
+          ${pkgs.coreutils}/bin/sleep 2
         done
       '';
       ExecStart = pkgs.writeShellScript "rclone-proton-mount" ''

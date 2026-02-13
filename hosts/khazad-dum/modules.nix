@@ -2,7 +2,7 @@
 {
   # Desktop sessions
   programs.hyprland.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Display manager
   nixos_modules.greetd = {

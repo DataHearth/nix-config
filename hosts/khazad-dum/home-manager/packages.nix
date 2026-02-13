@@ -27,6 +27,8 @@
     wl-clipboard
     proton-vpn-cli
     sops
+    rclone
+    gpclient
 
     # Fonts
     nerd-fonts.jetbrains-mono

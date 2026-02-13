@@ -21,5 +21,6 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     users.datahearth = import ./home-manager/home.nix;
+    users.root = import ./home-manager/root.nix;
   };
 }
