@@ -51,7 +51,6 @@
   krb5,
   systemdMinimal,
   cacert,
-  iproute2,
 }:
 
 stdenv.mkDerivation {
@@ -127,6 +126,9 @@ stdenv.mkDerivation {
     mkdir -p $out/opt/f5
     cp -r opt/f5/vpn $out/opt/f5/
 
+    # tunnelserver is an ELF binary but the .deb ships it without execute bits
+    chmod +x $out/opt/f5/vpn/tunnelserver
+
     mkdir -p $out/bin
     makeWrapper $out/opt/f5/vpn/f5vpn $out/bin/f5vpn \
       --set QT_XKB_CONFIG_ROOT "${xkeyboard-config}/share/X11/xkb" \
@@ -154,29 +156,11 @@ stdenv.mkDerivation {
     install -Dm444 /dev/stdin $out/lib/tmpfiles.d/f5vpn.conf <<EOF
     d /opt/f5/vpn 0755 root root -
     L+ /opt/f5/vpn/svpn - - - - /run/wrappers/bin/svpn
-    EOF
-
-    # Split tunnel fix: f5vpn routes 1.1.1.1 (DNS) through the tunnel,
-    # breaking internet. This udev rule + systemd service removes that
-    # route when tun0 appears, restoring normal DNS resolution.
-    install -Dm555 /dev/stdin $out/libexec/f5vpn-fix-routes <<SCRIPT
-    #!/bin/sh
-    sleep 2
-    ${iproute2}/bin/ip route del 1.1.1.1 dev tun0 2>/dev/null || true
-    SCRIPT
-
-    install -Dm444 /dev/stdin $out/lib/systemd/system/f5vpn-split-tunnel.service <<EOF
-    [Unit]
-    Description=Remove F5 VPN DNS route hijack for split tunneling
-    After=network.target
-
-    [Service]
-    Type=oneshot
-    ExecStart=$out/libexec/f5vpn-fix-routes
-    EOF
-
-    install -Dm444 /dev/stdin $out/lib/udev/rules.d/99-f5vpn-split-tunnel.rules <<EOF
-    ACTION=="add", SUBSYSTEM=="net", KERNEL=="tun0", TAG+="systemd", ENV{SYSTEMD_WANTS}+="f5vpn-split-tunnel.service"
+    L+ /opt/f5/vpn/tunnelserver - - - - $out/opt/f5/vpn/tunnelserver
+    d /usr/local/lib/F5Networks/SSLVPN/var/run 0755 root root -
+    d /usr/local/ssl 0755 root root -
+    L+ /usr/local/ssl/cert.pem - - - - ${cacert}/etc/ssl/certs/ca-bundle.crt
+    L+ /usr/local/ssl/certs - - - - ${cacert}/etc/ssl/certs
     EOF
 
     runHook postInstall
