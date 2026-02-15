@@ -1,15 +1,4 @@
-/* Catppuccin Macchiato */
-@define-color bg #181926;
-@define-color bg-weak #24273a;
-@define-color bg-strong #363a4f;
-@define-color text #cad3f5;
-@define-color text-dim #6e738d;
-@define-color primary #8aadf4;
-@define-color success #a6da95;
-@define-color warning #eed49f;
-@define-color danger #ed8796;
-@define-color cyan #7dc4e4;
-@define-color magenta #c6a0f6;
+/* Colors injected by catppuccin/nix via @import */
 
 * {
   font-family: "JetBrainsMono Nerd Font";
@@ -28,8 +17,8 @@ window#waybar.hidden {
 
 /* Workspaces group */
 #workspaces {
-  background-color: @bg-weak;
-  border: 1px solid @bg-strong;
+  background-color: @base;
+  border: 1px solid @surface0;
   border-radius: 20px;
   margin: 4px;
   padding: 0 4px;
@@ -37,7 +26,7 @@ window#waybar.hidden {
 
 #workspaces button {
   padding: 0 8px;
-  color: @text-dim;
+  color: @overlay0;
   background-color: transparent;
   border-radius: 16px;
   margin: 4px 2px;
@@ -45,27 +34,27 @@ window#waybar.hidden {
 }
 
 #workspaces button:hover {
-  background-color: @bg-strong;
+  background-color: @surface0;
   color: @text;
 }
 
 #workspaces button.active {
-  background-color: @success;
-  color: @bg;
+  background-color: @green;
+  color: @crust;
 }
 
 #workspaces button.urgent {
-  background-color: @danger;
-  color: @bg;
+  background-color: @red;
+  color: @crust;
 }
 
 /* Module groups */
 #system,
 #hardware,
 #info {
-  background-color: @bg-weak;
+  background-color: @base;
   background-image: none;
-  border: 1px solid @bg-strong;
+  border: 1px solid @surface0;
   border-radius: 20px;
   margin: 4px;
   padding: 0 8px;
@@ -89,8 +78,8 @@ window#waybar.hidden {
 }
 
 #clock {
-  background-color: @bg-weak;
-  border: 1px solid @bg-strong;
+  background-color: @base;
+  border: 1px solid @surface0;
   border-radius: 20px;
   margin: 4px;
   padding: 0 16px;
@@ -99,8 +88,8 @@ window#waybar.hidden {
 }
 
 #tray {
-  background-color: @bg-weak;
-  border: 1px solid @bg-strong;
+  background-color: @base;
+  border: 1px solid @surface0;
   border-radius: 20px;
   margin: 4px;
   padding: 0 8px;
@@ -108,61 +97,61 @@ window#waybar.hidden {
 
 #window {
   padding: 0 12px;
-  color: @text-dim;
+  color: @overlay0;
 }
 
 /* Module colors */
 #cpu {
-  color: @primary;
+  color: @blue;
 }
 
 #memory {
-  color: @success;
+  color: @green;
 }
 
 #temperature {
-  color: @warning;
+  color: @yellow;
 }
 
 #temperature.critical {
-  color: @danger;
+  color: @red;
 }
 
 #pulseaudio {
-  color: @cyan;
+  color: @sapphire;
 }
 
 #pulseaudio.muted {
-  color: @text-dim;
+  color: @overlay0;
 }
 
 #network {
-  color: @success;
+  color: @green;
 }
 
 #network.disconnected {
-  color: @text-dim;
+  color: @overlay0;
 }
 
 #bluetooth {
-  color: @primary;
+  color: @blue;
 }
 
 #bluetooth.off,
 #bluetooth.disabled {
-  color: @text-dim;
+  color: @overlay0;
 }
 
 #battery {
-  color: @success;
+  color: @green;
 }
 
 #battery.warning:not(.charging) {
-  color: @warning;
+  color: @yellow;
 }
 
 #battery.critical:not(.charging) {
-  color: @danger;
+  color: @red;
   animation: blink 0.5s linear infinite alternate;
 }
 
@@ -173,15 +162,15 @@ window#waybar.hidden {
 }
 
 #custom-notification {
-  color: @magenta;
+  color: @mauve;
 }
 
 #custom-hypridle {
-  color: @success;
+  color: @green;
 }
 
 #custom-hypridle.disabled {
-  color: @warning;
+  color: @yellow;
 }
 
 #pulseaudio,
@@ -199,7 +188,7 @@ window#waybar.hidden {
 #language:hover,
 #custom-hypridle:hover,
 #custom-notification:hover {
-  background-color: @bg-strong;
+  background-color: @surface0;
 }
 
 #tray > .passive {
@@ -208,12 +197,12 @@ window#waybar.hidden {
 
 #tray > .needs-attention {
   -gtk-icon-effect: highlight;
-  color: @danger;
+  color: @red;
 }
 
 tooltip {
-  background-color: @bg;
-  border: 1px solid @bg-strong;
+  background-color: @crust;
+  border: 1px solid @surface0;
   border-radius: 12px;
 }
 

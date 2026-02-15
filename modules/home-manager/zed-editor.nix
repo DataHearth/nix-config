@@ -102,16 +102,6 @@ in
         show_edit_predictions = false;
 
         # Appearance
-        theme = {
-          mode = "system";
-          light = "One Light";
-          dark = "Catppuccin Macchiato";
-        };
-        icon_theme = {
-          mode = "system";
-          light = "Zed (Default)";
-          dark = "Catppuccin Macchiato";
-        };
         ui_font_size = 16;
         buffer_font_size = 15;
         buffer_font_family = "Mononoki Nerd Font";

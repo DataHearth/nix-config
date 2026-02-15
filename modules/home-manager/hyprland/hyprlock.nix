@@ -7,11 +7,6 @@
 let
   cfg = config.home_modules.hyprland;
 
-  macchiatoTheme = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/catppuccin/hyprland/c388ac55563ddeea0afe9df79d4bfff0096b146b/themes/macchiato.conf";
-    hash = "sha256-iA3WePp1L381pxnl145K5P4cimbisX3YJQ8I4XTJDrk=";
-  };
-
   lock_wallpaper = lib.mkOption {
     type = lib.types.either lib.types.nonEmptyStr lib.types.path;
     default = pkgs.fetchurl {
@@ -39,7 +34,6 @@ in
     programs.hyprlock = {
       enable = true;
       settings = {
-        source = toString macchiatoTheme;
         "$accent" = "$mauve";
         "$accentAlpha" = "$mauveAlpha";
         "$font" = "Mononoki Nerd Font";

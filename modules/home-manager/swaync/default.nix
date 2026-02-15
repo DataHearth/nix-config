@@ -1,11 +1,6 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let
   cfg = config.home_modules.swaync;
-
-  macchiatoStyle = pkgs.fetchurl {
-    url = "https://github.com/catppuccin/swaync/releases/download/v1.0.1/catppuccin-macchiato.css";
-    hash = "sha256-jN7oHf075g463+pPtiTJl3OTXMQjQ+O+OS8L4cCTipI=";
-  };
 
   enable = lib.mkEnableOption "swaync";
 in
@@ -17,7 +12,6 @@ in
   config = lib.mkIf cfg.enable {
     services.swaync = {
       enable = true;
-      style = macchiatoStyle;
 
       settings = {
         # Position like macOS - top right

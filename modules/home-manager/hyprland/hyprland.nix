@@ -7,11 +7,6 @@
 let
   cfg = config.home_modules.hyprland;
 
-  macchiatoTheme = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/catppuccin/hyprland/c388ac55563ddeea0afe9df79d4bfff0096b146b/themes/macchiato.conf";
-    hash = "sha256-iA3WePp1L381pxnl145K5P4cimbisX3YJQ8I4XTJDrk=";
-  };
-
   enable = lib.mkEnableOption "Hyprland window manager";
   exec_once = lib.mkOption {
     type = lib.types.listOf lib.types.str;
@@ -79,10 +74,7 @@ in
       package = cfg.package;
 
       settings = {
-        source = [
-          (toString macchiatoTheme)
-        ]
-        ++ lib.optionals cfg.display_manager [
+        source = lib.mkIf cfg.display_manager [
           "~/.config/hypr/monitors.conf"
           "~/.config/hypr/workspaces.conf"
         ];

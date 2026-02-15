@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    catppuccin.url = "github:catppuccin/nix";
     sops-nix.url = "github:Mic92/sops-nix";
     zjstatus.url = "github:dj95/zjstatus";
 
@@ -50,6 +51,7 @@
   outputs =
     {
       nixpkgs,
+      catppuccin,
       sops-nix,
       home-manager,
       nixvim,
@@ -84,6 +86,7 @@
               lanzaboote.nixosModules.lanzaboote
               {
                 home-manager.sharedModules = [
+                  catppuccin.homeModules.catppuccin
                   sops-nix.homeManagerModules.sops
                   elephant.homeManagerModules.default
                   zen-browser.homeModules.beta
@@ -107,6 +110,7 @@
               niri-flake.nixosModules.niri
               {
                 home-manager.sharedModules = [
+                  catppuccin.homeModules.catppuccin
                   sops-nix.homeManagerModules.sops
                   elephant.homeManagerModules.default
                   zen-browser.homeModules.beta
