@@ -22,6 +22,9 @@
   # Fingerprint reader
   services.fprintd.enable = true;
 
+  # Hyprlock PAM (required for password + fingerprint unlock)
+  security.pam.services.hyprlock = {};
+
   # Tailscale VPN
   services.tailscale = {
     enable = true;

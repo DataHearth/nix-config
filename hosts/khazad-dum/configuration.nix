@@ -34,7 +34,6 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    # LUKS device is managed by disko
   };
 
   security.pki.certificateFiles = [
@@ -43,13 +42,26 @@
 
   networking = {
     hostName = "khazad-dum";
+    wireless.iwd.enable = true;
+    nftables.enable = true;
+    firewall.enable = true;
     networkmanager = {
       enable = true;
       wifi.backend = "iwd";
       unmanaged = [ "interface-name:tun*" ];
+      insertNameservers = [
+        # Cloudflare
+        "1.1.1.1"
+        "2606:4700:4700::1111"
+        "1.0.0.1"
+        "2606:4700:4700::1001"
+
+        # Quad9
+        "9.9.9.9"
+        "2620:fe::fe"
+        "149.112.112.112"
+        "2620:fe::9"
+      ];
     };
-    wireless.iwd.enable = true;
-    nftables.enable = true;
-    firewall.enable = true;
   };
 }

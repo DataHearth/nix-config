@@ -7,6 +7,11 @@
 let
   cfg = config.home_modules.hyprland;
 
+  macchiatoTheme = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/catppuccin/hyprland/c388ac55563ddeea0afe9df79d4bfff0096b146b/themes/macchiato.conf";
+    hash = "sha256-iA3WePp1L381pxnl145K5P4cimbisX3YJQ8I4XTJDrk=";
+  };
+
   enable = lib.mkEnableOption "Hyprland window manager";
   exec_once = lib.mkOption {
     type = lib.types.listOf lib.types.str;
@@ -74,7 +79,10 @@ in
       package = cfg.package;
 
       settings = {
-        source = lib.mkIf cfg.display_manager [
+        source = [
+          (toString macchiatoTheme)
+        ]
+        ++ lib.optionals cfg.display_manager [
           "~/.config/hypr/monitors.conf"
           "~/.config/hypr/workspaces.conf"
         ];
@@ -94,7 +102,6 @@ in
         env = [
           "XCURSOR_SIZE,24"
           "HYPRCURSOR_SIZE,24"
-          "ELECTRON_OZONE_PLATFORM_HINT,auto"
         ]
         ++ cfg.additional_envs;
 
@@ -102,8 +109,8 @@ in
           gaps_in = 5;
           gaps_out = 5;
           border_size = 2;
-          "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-          "col.inactive_border" = "rgba(595959aa)";
+          "col.active_border" = "$lavender $mauve 45deg";
+          "col.inactive_border" = "$overlay0";
           resize_on_border = false;
           allow_tearing = false;
           layout = "dwindle";
@@ -119,7 +126,7 @@ in
             enabled = true;
             range = 4;
             render_power = 3;
-            color = "rgba(1a1a1aee)";
+            color = "rgba($crustAlphaee)";
           };
 
           blur = {
