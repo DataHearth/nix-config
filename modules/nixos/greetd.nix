@@ -30,10 +30,27 @@ in
 
     services.greetd = lib.mkIf (cfg.greeter == "tuigreet") {
       enable = true;
-      terminal.vt = 9;
-      settings.default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember-session --remember-user-session --remember --sessions ${sessionData}/share/wayland-sessions --asterisks --time";
-        user = config.users.users.datahearth.name;
+      settings = {
+        default_session = {
+          command = builtins.concatStringsSep " " [
+            "${pkgs.tuigreet}/bin/tuigreet"
+            "--time"
+            "--time-format '%A, %B %d %Y  %H:%M'"
+            "--greeting 'Welcome back'"
+            "--remember-session"
+            "--remember-user-session"
+            "--remember"
+            "--sessions ${sessionData}/share/wayland-sessions"
+            "--asterisks"
+            "--asterisks-char '•'"
+            "--width 80"
+            "--window-padding 2"
+            "--container-padding 2"
+            "--prompt-padding 1"
+            "--theme 'border=#8aadf4;text=#cad3f5;time=#c6a0f6;container=#24273a;button=#a6da95;prompt=#f5bde6;action=#f5a97f;input=#f4dbd6'"
+          ];
+          user = config.users.users.datahearth.name;
+        };
       };
     };
 

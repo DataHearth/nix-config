@@ -33,11 +33,18 @@ in
         scrolling.multiplier = 5;
         selection.save_to_clipboard = true;
 
+        cursor = {
+          style = {
+            shape = "Beam";
+            blinking = "On";
+          };
+          blink_interval = 500;
+        };
+
         font = {
           size = 12;
           normal.family = "Mononoki Nerd Font";
         };
-
 
         keyboard.bindings = [
           {
@@ -50,6 +57,11 @@ in
         window = {
           opacity = lib.mkDefault 0.9;
           startup_mode = "Maximized";
+          padding = {
+            x = 8;
+            y = 8;
+          };
+          dynamic_padding = true;
         };
       };
     };

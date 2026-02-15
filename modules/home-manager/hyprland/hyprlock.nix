@@ -7,6 +7,11 @@
 let
   cfg = config.home_modules.hyprland;
 
+  macchiatoTheme = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/catppuccin/hyprland/c388ac55563ddeea0afe9df79d4bfff0096b146b/themes/macchiato.conf";
+    hash = "sha256-iA3WePp1L381pxnl145K5P4cimbisX3YJQ8I4XTJDrk=";
+  };
+
   lock_wallpaper = lib.mkOption {
     type = lib.types.either lib.types.nonEmptyStr lib.types.path;
     default = pkgs.fetchurl {
@@ -33,9 +38,12 @@ in
   config = lib.mkIf cfg.enable {
     programs.hyprlock = {
       enable = true;
-      # when on non-NixOS distribution, hyprlock must be installed outside of nix for correct polkit usage
-      package = null;
       settings = {
+        source = toString macchiatoTheme;
+        "$accent" = "$mauve";
+        "$accentAlpha" = "$mauveAlpha";
+        "$font" = "Mononoki Nerd Font";
+
         auth.fingerprint.enabled = true;
 
         general = {
@@ -54,41 +62,31 @@ in
             vibrancy = 0.1696;
             vibrancy_darkness = 0.0;
             noise = 1.17e-2;
+            color = "$base";
           }
         ];
 
         input-field = [
           {
             monitor = if cfg.default_display != null then cfg.default_display else "";
-            size = "250, 60";
-            outline_thickness = 2;
+            size = "300, 60";
+            outline_thickness = 4;
             dots_size = 0.2;
             dots_spacing = 0.2;
             dots_center = true;
-            dots_rounding = -1;
-            outer_color = "rgba(0, 0, 0, 0)";
-            inner_color = "rgba(0, 0, 0, 0.5)";
-            font_color = "rgb(200, 200, 200)";
-            fade_on_empty = true;
-            fade_timeout = 2000;
-            placeholder_text = ''<i><span foreground="##cdd6f4">Input Password...</span></i>'';
-            rounding = -1;
-            check_color = "rgb(204, 136, 34)";
-            fail_color = "rgb(204, 34, 34)";
-            fail_text = "<i>$FAIL</i>";
-            capslock_color = -1;
-            numlock_color = -1;
-            bothlock_color = -1;
-            invert_numlock = false;
-            swap_font_color = false;
-            position = "0, -120";
+            outer_color = "$accent";
+            inner_color = "$surface0";
+            font_color = "$text";
+            fade_on_empty = false;
+            placeholder_text = ''<span foreground="##$textAlpha"><i>󰌾 Logged in as </i><span foreground="##$accentAlpha">$USER</span></span>'';
+            hide_input = false;
+            check_color = "$accent";
+            fail_color = "$red";
+            fail_text = "<i>$FAIL <b>($ATTEMPTS)</b></i>";
+            capslock_color = "$yellow";
+            position = "0, -47";
             halign = "center";
             valign = "center";
-            shadow_passes = 0;
-            shadow_size = 3;
-            shadow_color = "rgba(0, 0, 0, 1.0)";
-            shadow_boost = 1.2;
-            hide_input = false;
           }
         ];
 
@@ -97,47 +95,60 @@ in
             monitor = if cfg.default_display != null then cfg.default_display else "";
           in
           [
+            # TIME — top right
             {
               inherit monitor;
-              text = ''cmd[update:1000] echo "$TIME"'';
-              font_family = "Mononoki Nerd Font";
-              color = "rgba(255, 255, 255, 0.6)";
-              font_size = 120;
-              position = "0, -300";
+              text = "$TIME";
+              font_family = "$font";
+              color = "$text";
+              font_size = 90;
+              position = "-30, 0";
               valign = "top";
-              halign = "center";
-              shadow_passes = 0;
-              shadow_size = 3;
-              shadow_color = "rgba(0, 0, 0, 1.0)";
-              shadow_boost = 1.2;
+              halign = "right";
             }
+            # DATE — below time, top right
             {
               inherit monitor;
-              text = "Hello there, $USER";
-              font_family = "Mononoki Nerd Font";
-              color = "rgba(255, 255, 255, 0.6)";
+              text = ''cmd[update:43200000] date +"%A, %d %B %Y"'';
+              font_family = "$font";
+              color = "$text";
               font_size = 25;
-              position = "0, -40";
+              position = "-30, -150";
+              valign = "top";
+              halign = "right";
+            }
+            # LAYOUT — top left
+            {
+              inherit monitor;
+              text = "Layout: $LAYOUT";
+              font_family = "$font";
+              color = "$text";
+              font_size = 25;
+              position = "30, -30";
+              valign = "top";
+              halign = "left";
+            }
+            # FINGERPRINT
+            {
+              inherit monitor;
+              text = "$FPRINTPROMPT";
+              font_family = "$font";
+              color = "$text";
+              font_size = 14;
+              position = "0, -107";
               halign = "center";
               valign = "center";
-              shadow_passes = 0;
-              shadow_size = 3;
-              shadow_color = "rgba(0, 0, 0, 1.0)";
-              shadow_boost = 1.2;
             }
+            # MEDIA — bottom center
             {
               inherit monitor;
               text = ''cmd[update:1000] ${pkgs.playerctl}/bin/playerctl metadata --format "{{ artist }} - {{ album }} - {{ title }}"'';
-              color = "rgba(255, 255, 255, 0.6)";
+              font_family = "$font";
+              color = "$subtext0";
               font_size = 18;
-              font_family = "Mononoki Nerd Font";
               position = "0, -50";
               valign = "bottom";
               halign = "center";
-              shadow_passes = 0;
-              shadow_size = 3;
-              shadow_color = "rgba(0, 0, 0, 1.0)";
-              shadow_boost = 1.2;
             }
           ];
       };
