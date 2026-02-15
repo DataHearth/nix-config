@@ -106,34 +106,38 @@ in
         ++ cfg.additional_envs;
 
         general = {
-          gaps_in = 5;
-          gaps_out = 5;
+          gaps_in = 4;
+          gaps_out = 4;
           border_size = 2;
           "col.active_border" = "$lavender $mauve 45deg";
           "col.inactive_border" = "$overlay0";
-          resize_on_border = false;
+          resize_on_border = true;
           allow_tearing = false;
           layout = "dwindle";
         };
 
         decoration = {
-          rounding = 2;
+          rounding = 8;
           rounding_power = 2;
-          active_opacity = 1.0;
-          inactive_opacity = 1.0;
+          active_opacity = 0.95;
+          inactive_opacity = 0.88;
+          fullscreen_opacity = 1.0;
 
           shadow = {
             enabled = true;
-            range = 4;
+            range = 8;
             render_power = 3;
-            color = "rgba($crustAlphaee)";
+            color = "rgba($crustAlphacc)";
           };
 
           blur = {
             enabled = true;
-            size = 3;
-            passes = 1;
-            vibrancy = 0.1696;
+            size = 6;
+            passes = 3;
+            new_optimizations = true;
+            ignore_opacity = true;
+            vibrancy = 0.2;
+            noise = 2.0e-2;
           };
         };
 
@@ -177,8 +181,8 @@ in
         master.new_status = "master";
 
         misc = {
-          force_default_wallpaper = -1;
-          disable_hyprland_logo = false;
+          force_default_wallpaper = 0;
+          disable_hyprland_logo = true;
         };
 
         input = {

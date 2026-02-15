@@ -1,15 +1,15 @@
-/* Tokyo Night - matching ashell */
-@define-color bg #1a1b26;
+/* Catppuccin Macchiato */
+@define-color bg #181926;
 @define-color bg-weak #24273a;
-@define-color bg-strong #414868;
-@define-color text #a9b1d6;
-@define-color text-dim #565f89;
-@define-color primary #7aa2f7;
-@define-color success #9ece6a;
-@define-color warning #e0af68;
-@define-color danger #f7768e;
-@define-color cyan #7dcfff;
-@define-color magenta #bb9af7;
+@define-color bg-strong #363a4f;
+@define-color text #cad3f5;
+@define-color text-dim #6e738d;
+@define-color primary #8aadf4;
+@define-color success #a6da95;
+@define-color warning #eed49f;
+@define-color danger #ed8796;
+@define-color cyan #7dc4e4;
+@define-color magenta #c6a0f6;
 
 * {
   font-family: "JetBrainsMono Nerd Font";
