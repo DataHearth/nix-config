@@ -7,20 +7,18 @@
 let
   cfg = config.home_modules.zed-editor;
 
-  enable = lib.mkEnableOption "zed-editor";
-  package = lib.mkPackageOption pkgs "zed-editor" {
-    nullable = true;
-  };
 in
 {
   options.home_modules.zed-editor = {
-    inherit enable package;
+    enable = lib.mkEnableOption "zed-editor";
   };
 
   config = lib.mkIf cfg.enable {
     programs.zed-editor = {
       enable = true;
-      package = lib.mkIf (cfg.package != null) cfg.package;
+      mutableUserSettings = false;
+      mutableUserTasks = false;
+      mutableUserDebug = false;
 
       # LSPs, formatters, and tools available in Zed's environment
       extraPackages = with pkgs; [
@@ -81,13 +79,17 @@ in
         "svelte"
         "tailwindcss"
         "sql"
+        "lua"
+        "xml"
+        "csv"
+        "zig"
+        "proto"
+        "rainbow-csv"
+        "helm"
 
         # Version control
         "jj-lsp"
         "git-firefly"
-
-        # Theme
-        "catppuccin"
       ];
 
       userSettings = {
@@ -108,9 +110,7 @@ in
         tab_size = 2;
 
         # Behavior
-        autosave = {
-          after_delay.milliseconds = 1000;
-        };
+        autosave.after_delay.milliseconds = 1000;
         linked_edits = true;
         prettier.allowed = false;
 
@@ -123,10 +123,18 @@ in
           plaintext = [ "LICENSE" ];
         };
 
+        # Agent
+        agent_servers.claude.env = {
+          CLAUDE_CODE_EXECUTABLE = "${pkgs.claude-code}/bin/claude";
+        };
+
         # Language-specific settings
         languages = {
           Nix = {
-            language_servers = [ "nixd" "!nil" ];
+            language_servers = [
+              "nixd"
+              "!nil"
+            ];
           };
           Go = {
             formatter = "language_server";
