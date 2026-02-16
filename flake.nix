@@ -3,18 +3,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     catppuccin.url = "github:catppuccin/nix";
     sops-nix.url = "github:Mic92/sops-nix";
-    zjstatus.url = "github:dj95/zjstatus";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-    nixvim = {
-      url = "github:datahearth/nixvim-config";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixGL = {
-      url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri-flake = {
@@ -29,7 +21,6 @@
       url = "git+https://codeberg.org/LGFae/awww";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,8 +45,6 @@
       catppuccin,
       sops-nix,
       home-manager,
-      nixvim,
-      nixGL,
       niri-flake,
       elephant,
       awww,
@@ -79,7 +68,6 @@
               ./hosts/khazad-dum/configuration.nix
               home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
-              nixvim.nixosModules.default
               niri-flake.nixosModules.niri
               nixos-hardware.nixosModules.framework-16-7040-amd
               disko.nixosModules.disko
@@ -106,7 +94,6 @@
               ./hosts/valinor/configuration.nix
               home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
-              nixvim.nixosModules.default
               niri-flake.nixosModules.niri
               {
                 home-manager.sharedModules = [

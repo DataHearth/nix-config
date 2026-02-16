@@ -1,4 +1,4 @@
-{ pkgs, config, elephant, ... }:
+{ pkgs, elephant, ... }:
 {
   users = {
     defaultUserShell = pkgs.zsh;

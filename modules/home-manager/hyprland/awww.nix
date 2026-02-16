@@ -36,7 +36,7 @@ let
   };
 
   system = pkgs.stdenv.hostPlatform.system;
-  awwwPkg = config.lib.nixGL.wrap awww.packages.${system}.awww;
+  awwwPkg = awww.packages.${system}.awww;
   randomWallpaperScript = pkgs.writeShellScript "awww-random-wallpaper" ''
     dir="${cfg.awww.randomize.directory}"
     interval="${toString cfg.awww.randomize.interval}"
