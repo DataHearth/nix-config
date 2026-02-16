@@ -4,6 +4,7 @@
 
   home_modules = {
     alacritty.enable = true;
+    atuin.enable = true;
     bat.enable = true;
     direnv.enable = true;
     # niri.enable = true; # TODO: debug niri build failure

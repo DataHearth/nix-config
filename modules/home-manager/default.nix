@@ -1,6 +1,7 @@
 [
   ./alacritty.nix
   ./ashell.nix
+  ./atuin.nix
   ./bat.nix
   ./direnv.nix
   ./git.nix
