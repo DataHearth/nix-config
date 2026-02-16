@@ -88,13 +88,20 @@ in
         "helm"
 
         # Version control
-        "jj-lsp"
         "git-firefly"
       ];
 
       userSettings = {
         vim_mode = true;
         base_keymap = "VSCode";
+
+        project_panel = {
+          hide_root = true;
+        };
+
+        diagnostics = {
+          inline.enabled= true;
+        };
 
         # Disable telemetry and AI
         telemetry = {
@@ -108,14 +115,32 @@ in
         buffer_font_size = 15;
         buffer_font_family = "Mononoki Nerd Font";
         tab_size = 2;
+        show_wrap_guides = true;
+        wrap_guides = [ 120 ];
+        indent_guides.enabled = true;
 
         # Behavior
         autosave.after_delay.milliseconds = 1000;
+        format_on_save = "on";
         linked_edits = true;
         prettier.allowed = false;
 
+        # Exclusions
+        file_scan_exclusions = [
+          "**/.git"
+          "**/node_modules"
+          "**/target"
+          "**/.direnv"
+          "**/result"
+        ];
+
         # Git
-        git.inline_blame.enabled = true;
+        git = {
+          inline_blame = {
+            enabled = true;
+            show_commit_summary = true;
+          };
+        };
 
         # File types
         file_types = {
@@ -124,6 +149,9 @@ in
         };
 
         # Agent
+        agent = {
+          show_turn_stats = true;
+        };
         agent_servers.claude.env = {
           CLAUDE_CODE_EXECUTABLE = "${pkgs.claude-code}/bin/claude";
         };
