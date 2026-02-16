@@ -1,17 +1,9 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 let
   mountPoint = "/run/media/datahearth/proton";
+  secretsPath = "/run/secrets";
 in
 {
-  sops = {
-    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    defaultSopsFile = ../../../secrets/secrets.yml;
-    secrets = {
-      "rclone/protondrive/username" = { };
-      "rclone/protondrive/password" = { };
-      "rclone/protondrive/totp-secret" = { };
-    };
-  };
 
   systemd.user.services.deeps-tunnel = {
     Unit = {
@@ -44,9 +36,9 @@ in
         done
       '';
       ExecStart = pkgs.writeShellScript "rclone-proton-mount" ''
-        export RCLONE_PROTONDRIVE_USERNAME=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."rclone/protondrive/username".path})
-        export RCLONE_PROTONDRIVE_PASSWORD=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."rclone/protondrive/password".path})
-        export RCLONE_PROTONDRIVE_OTP_SECRET_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."rclone/protondrive/totp-secret".path})
+        export RCLONE_PROTONDRIVE_USERNAME=$(${pkgs.coreutils}/bin/cat ${secretsPath}/rclone/protondrive/username)
+        export RCLONE_PROTONDRIVE_PASSWORD=$(${pkgs.coreutils}/bin/cat ${secretsPath}/rclone/protondrive/password)
+        export RCLONE_PROTONDRIVE_OTP_SECRET_KEY=$(${pkgs.coreutils}/bin/cat ${secretsPath}/rclone/protondrive/totp-secret)
         exec ${pkgs.rclone}/bin/rclone mount :protondrive: ${mountPoint} \
           --vfs-cache-mode full \
           --vfs-read-chunk-size 16M \

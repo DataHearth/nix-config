@@ -6,6 +6,10 @@
     users.datahearth = {
       useDefaultShell = true;
       isNormalUser = true;
+      createHome = true;
+      home = "/home/datahearth";
+      uid = 1000;
+      group = "users";
       description = "Antoine Langlois";
       hashedPassword = "$y$j9T$CU51P3F9VUUoDPNZc1QK8/$44k3N0Qmn0PfQko1fWzt98C5aXKM/D.H2hLal.2KSK2";
       extraGroups = [
