@@ -4,23 +4,6 @@ let
   secretsPath = "/run/secrets";
 in
 {
-
-  systemd.user.services.deeps-tunnel = {
-    Unit = {
-      Description = "SSH SOCKS proxy tunnel to deeps VM";
-      After = [ "network.target" ];
-    };
-    Service = {
-      Type = "simple";
-      ExecStart = "${pkgs.openssh}/bin/ssh -D 1080 -N -o ServerAliveInterval=30 -o ExitOnForwardFailure=yes deeps";
-      Restart = "on-failure";
-      RestartSec = 5;
-    };
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
-  };
-
   systemd.user.services.rclone-proton = {
     Unit = {
       Description = "Mount ProtonDrive via rclone";
