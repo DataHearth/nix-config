@@ -38,14 +38,12 @@ in
         pyright
 
         # TypeScript/JavaScript
-        typescript-language-server
         vtsls
         eslint_d
 
         # Web
         svelte-language-server
         tailwindcss-language-server
-        htmx-lsp
 
         # YAML/JSON/TOML
         yaml-language-server
@@ -61,11 +59,17 @@ in
         lua-language-server
         stylua
 
-        # Markdown
-        marksman
+        # Zig
+        # zls # TODO: broken on nixpkgs-unstable
 
-        # SQL
-        sqlfluff
+        # Protobuf
+        protobuf-language-server
+
+        # Helm
+        helm-ls
+
+        nodejs
+        jj-lsp
       ];
 
       # Extensions from Zed's extension registry
@@ -81,11 +85,11 @@ in
         "sql"
         "lua"
         "xml"
-        "csv"
         "zig"
         "proto"
         "rainbow-csv"
         "helm"
+        "docker-compose"
 
         # Version control
         "git-firefly"
@@ -100,7 +104,7 @@ in
         };
 
         diagnostics = {
-          inline.enabled= true;
+          inline.enabled = true;
         };
 
         # Disable telemetry and AI
@@ -118,6 +122,12 @@ in
         show_wrap_guides = true;
         wrap_guides = [ 120 ];
         indent_guides.enabled = true;
+        inlay_hints = {
+          enabled = true;
+          show_type_hints = true;
+          show_parameter_hints = true;
+          show_other_hints = true;
+        };
 
         # Behavior
         autosave.after_delay.milliseconds = 1000;
@@ -156,6 +166,26 @@ in
           CLAUDE_CODE_EXECUTABLE = "${pkgs.claude-code}/bin/claude";
         };
 
+        # LSP settings
+        lsp = {
+          rust-analyzer = {
+            initialization_options = {
+              check.command = "clippy";
+            };
+          };
+          vtsls = {
+            initialization_options = {
+              typescript.inlayHints = {
+                parameterNames.enabled = "all";
+                variableTypes.enabled = true;
+                propertyDeclarationTypes.enabled = true;
+                functionLikeReturnTypes.enabled = true;
+                enumMemberValues.enabled = true;
+              };
+            };
+          };
+        };
+
         # Language-specific settings
         languages = {
           Nix = {
@@ -164,9 +194,39 @@ in
               "!nil"
             ];
           };
+          Rust = {
+            language_servers = [ "rust-analyzer" ];
+          };
           Go = {
             formatter = "language_server";
             language_servers = [ "gopls" ];
+          };
+          Python = {
+            language_servers = [
+              "pyright"
+              "ruff"
+            ];
+            formatter = "language_server";
+          };
+          TypeScript = {
+            language_servers = [
+              "vtsls"
+              "eslint"
+            ];
+          };
+          Lua = {
+            language_servers = [ "lua-language-server" ];
+            formatter = "language_server";
+          };
+          Zig = {
+            language_servers = [ "zls" ];
+            formatter = "language_server";
+          };
+          Helm = {
+            language_servers = [ "helm-ls" ];
+          };
+          Proto = {
+            language_servers = [ "protobuf-language-server" ];
           };
           YAML = {
             formatter = "language_server";
