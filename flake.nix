@@ -37,6 +37,10 @@
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    jj-lsp = {
+      url = "github:nilskch/jj-lsp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -53,6 +57,7 @@
       nix-index-database,
       disko,
       lanzaboote,
+      jj-lsp,
       ...
     }:
     {
@@ -84,6 +89,13 @@
                   inherit awww;
                 };
               }
+              {
+                nixpkgs.overlays = [
+                  (self: super: {
+                    jj-lsp = jj-lsp.packages.${system}.default;
+                  })
+                ];
+              }
             ];
           };
 
@@ -106,6 +118,13 @@
                 home-manager.extraSpecialArgs = {
                   inherit awww;
                 };
+              }
+              {
+                nixpkgs.overlays = [
+                  (self: super: {
+                    jj-lsp = jj-lsp.packages.${system}.default;
+                  })
+                ];
               }
             ];
           };
