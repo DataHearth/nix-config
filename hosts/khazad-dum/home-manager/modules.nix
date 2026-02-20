@@ -100,9 +100,9 @@
       ];
       exec_once = [
         "signal-desktop --password-store=\"gnome-libsecret\""
-        "discord"
+        "discord --ozone-platform=wayland"
         "zen-beta"
-        "spotify"
+        "spotify --ozone-platform=wayland"
       ];
 
       awww.randomize = {
