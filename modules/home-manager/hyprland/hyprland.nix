@@ -84,7 +84,7 @@ in
         monitor = ",preferred,auto,auto";
 
         exec-once = [
-          "hyprctl hyprpaper"
+          "${pkgs.hyprland}/bin/hyprctl hyprpaper"
           terminal
         ]
         ++ lib.optional (cfg.status_bar == "ashell") "ashell"
@@ -207,7 +207,7 @@ in
             "${mainMod}, M, exit,"
             "${mainMod}, E, exec, ${pkgs.nautilus}/bin/nautilus"
             "${mainMod}, V, togglefloating,"
-            "${mainMod}, C, exec, cliphist list | walker --dmenu | cliphist decode | wl-copy"
+            "${mainMod}, C, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.walker}/bin/walker --dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
             "${mainMod}, Space, exec, ${config.services.walker.package}/bin/walker"
             "${mainMod}, P, pseudo,"
             "${mainMod}, J, togglesplit,"

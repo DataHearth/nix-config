@@ -50,9 +50,8 @@ in
       enable = true;
       settings = {
         general = {
-          lock_cmd = "hyprlock";
+          lock_cmd = "${pkgs.hyprlock}/bin/hyprlock";
           before_sleep_cmd = "${pkgs.playerctl}/bin/playerctl pause --all-players && loginctl lock-session";
-          after_sleep_cmd = "systemctl --user restart wireplumber";
         };
         listener = [
           {
@@ -61,8 +60,8 @@ in
           }
           {
             timeout = 600; # 10min
-            on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on && brightnessctl -r ";
+            on-timeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
+            on-resume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on && brightnessctl -r ";
           }
           {
             timeout = 720; # 12min
