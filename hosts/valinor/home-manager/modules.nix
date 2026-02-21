@@ -1,6 +1,7 @@
 {
   home_modules = {
     bat.enable = true;
+    claude-code.enable = true;
     direnv.enable = true;
 
     ssh = {

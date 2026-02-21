@@ -14,6 +14,27 @@
     yazi.enable = true;
     zed-editor.enable = true;
     zellij.enable = true;
+    claude-code = {
+      enable = true;
+      marketplaces.superpowers-marketplace = {
+        source = {
+          source = "github";
+          repo = "obra/superpowers-marketplace";
+        };
+      };
+      plugins = {
+        "superpowers@superpowers-marketplace" = true;
+        "typescript-lsp@claude-plugins-official" = true;
+        "rust-analyzer-lsp@claude-plugins-official" = true;
+        "gopls-lsp@claude-plugins-official" = true;
+        "pyright-lsp@claude-plugins-official" = true;
+        "github@claude-plugins-official" = true;
+        "context7@claude-plugins-official" = true;
+        "frontend-design@claude-plugins-official" = true;
+        "feature-dev@claude-plugins-official" = true;
+        "stripe@claude-plugins-official" = true;
+      };
+    };
 
     ssh = {
       enable = true;
