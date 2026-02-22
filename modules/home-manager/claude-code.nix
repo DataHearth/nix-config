@@ -103,6 +103,18 @@ in
       default = null;
       description = "Path to a directory containing rule files";
     };
+
+    skills = lib.mkOption {
+      type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
+      default = { };
+      description = "Custom skills for Claude Code, stored in .claude/skills/<name>/SKILL.md";
+    };
+
+    skillsDir = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Path to a directory containing skill directories";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -138,6 +150,8 @@ in
         memory
         rules
         rulesDir
+        skills
+        skillsDir
         ;
     };
   };
