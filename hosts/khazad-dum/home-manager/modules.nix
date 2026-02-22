@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   programs.zen-browser.enable = true;
+  programs.zen-browser.suppressXdgMigrationWarning = true;
 
   home_modules = {
     alacritty.enable = true;
@@ -33,6 +34,33 @@
         "frontend-design@claude-plugins-official" = true;
         "feature-dev@claude-plugins-official" = true;
         "stripe@claude-plugins-official" = true;
+        "playwright@claude-plugins-official" = true;
+        "claude-md-management@claude-plugins-official" = true;
+        "claude-code-setup@claude-plugins-official" = true;
+      };
+      skillsDir =
+        let
+          src = pkgs.fetchgit {
+            url = "https://github.com/anthropics/skills.git";
+            rev = "1ed29a03dc852d30fa6ef2ca53a67dc2c2c2c563";
+            hash = "sha256-RlORhdCeodVB6m8eRlvpV/E0L47zbWeIhDv2mBuCEaQ=";
+            sparseCheckout = [ "skills/canvas-design" ];
+          };
+        in
+        "${src}/skills";
+      rules = {
+        nix-conventions = ''
+          When working with Nix files in this repository:
+          - Use SRI hashes: `hash = "sha256-..."` or explicit `sha256 = "hex..."`. Never use bare hex with `hash =`.
+          - Desktop files: use `install -Dm444` for proper permissions, not `cp` + `mkdir -p`.
+          - Build with `nh os build` (or `nh os switch`), never raw `nix build` expressions.
+        '';
+        commit-conventions = ''
+          When creating git commits:
+          - Use conventional commit prefixes: feat:, fix:, refactor:, chore:, docs:
+          - Keep subject line under 72 characters.
+          - Focus on "why" not "what".
+        '';
       };
     };
 

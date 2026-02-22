@@ -49,10 +49,12 @@ The repository uses the `nh` utility for building and switching configurations:
 ```bash
 # For Khazad-dum (NixOS system)
 nh os build    # Build without switching
+nh os test     # Build and switch, but don't persist across reboots
 nh os switch   # Build and switch system
 
 # For Valinor (NixOS system)
 nh os build    # Build without switching
+nh os test     # Build and switch, but don't persist across reboots
 nh os switch   # Build and switch system
 
 # Dry-run build verification (no root needed)
@@ -113,45 +115,38 @@ nix-config/
 │       ├── locales.nix
 │       └── home-manager/
 ├── modules/              # Shared modules
-│   ├── home-manager/    # Home Manager modules
-│   │   ├── alacritty.nix
-│   │   ├── ashell.nix
-│   │   ├── git.nix
-│   │   ├── hyprland/
-│   │   ├── niri/
-│   │   ├── nushell.nix
-│   │   ├── ssh.nix
-│   │   ├── swaync/
-│   │   ├── waybar/
-│   │   ├── yazi.nix
-│   │   ├── zed-editor.nix
-│   │   └── zellij/
-│   ├── greetd.nix       # greetd display manager (tuigreet/regreet)
-│   ├── nh.nix           # nh utility module
-│   ├── nvidia.nix       # NVIDIA configuration
-│   └── passthrough.nix  # GPU passthrough
+│   ├── home-manager/    # Home Manager modules (options under home_modules.<name>)
+│   │   ├── alacritty.nix, ashell.nix, atuin.nix, bat.nix
+│   │   ├── claude-code.nix, direnv.nix, git.nix, jujutsu.nix
+│   │   ├── hyprland/, neovim/, niri/, swaync/, waybar/, zellij/
+│   │   ├── nushell.nix, ssh.nix, theme.nix, vscode.nix
+│   │   ├── walker.nix, yazi.nix, zed-editor.nix, zsh.nix
+│   │   └── default.nix  # Module aggregator
+│   └── nixos/           # NixOS system modules
+│       ├── greetd.nix, nh.nix, nvidia.nix, passthrough.nix
+│       └── default.nix
 └── secrets/             # Encrypted secrets (sops-nix)
 ```
 
 ### Flake Inputs
 
-- **nixpkgs** (25.05): Stable NixOS packages
-- **nixpkgs-unstable**: Latest packages
-- **home-manager** (25.05): Stable Home Manager
-- **home-manager-unstable**: Latest Home Manager
+- **nixpkgs** (nixos-unstable): NixOS packages
+- **home-manager**: Home Manager (follows nixpkgs)
+- **catppuccin**: Catppuccin theming module (system + HM)
 - **sops-nix**: Secrets management
-- **nixvim**: Custom Neovim configuration
-- **nixGL**: OpenGL wrapper for non-NixOS systems (legacy)
-- **zjstatus**: Zellij status bar plugin
+- **nixos-hardware**: Hardware-specific NixOS modules
 - **niri-flake**: Niri scrollable-tiling Wayland compositor
-- **dms**: DankMaterialShell (niri status bar)
 - **elephant**: Elephant Home Manager module
 - **awww**: Awww wallpaper tool
-- **nixos-hardware**: Hardware-specific NixOS modules
+- **zen-browser**: Zen Browser flake
+- **nix-index-database**: Prebuilt nix-index database
+- **disko**: Declarative disk partitioning
+- **lanzaboote**: Secure Boot support
+- **jj-lsp**: Jujutsu LSP server (overlay)
 
 ### NixOS Modules
 
-Available modules in `modules/`:
+Available modules in `modules/nixos/`:
 - **greetd.nix**: Display manager with tuigreet/regreet switching, gnome-keyring PAM integration
 - **nh.nix**: nh build/switch utility
 - **nvidia.nix**: NVIDIA GPU configuration
@@ -162,16 +157,26 @@ Available modules in `modules/`:
 Available modules in `modules/home-manager/`:
 - **alacritty.nix**: Terminal emulator configuration
 - **ashell.nix**: Ashell status bar for niri
+- **atuin.nix**: Atuin shell history
+- **bat.nix**: Bat (cat replacement) with theme
+- **claude-code.nix**: Claude Code CLI with plugins, skills, and security defaults
+- **direnv.nix**: Direnv environment management
 - **git.nix**: Git configuration
 - **hyprland/**: Hyprland window manager with keybinds, autostart, etc.
+- **jujutsu.nix**: Jujutsu VCS configuration
+- **neovim/**: Neovim editor
 - **niri/**: Niri scrollable-tiling compositor (NixOS/standalone HM compatible)
 - **nushell.nix**: Nushell with carapace completions
 - **ssh.nix**: SSH client configuration
 - **swaync/**: Notification daemon
+- **theme.nix**: Catppuccin Macchiato theme (centralized via catppuccin/nix)
+- **vscode.nix**: Visual Studio Code
+- **walker.nix**: Walker application launcher
 - **waybar/**: Waybar status bar
 - **yazi.nix**: Yazi file manager
 - **zed-editor.nix**: Zed editor with LSPs and extensions
 - **zellij/**: Terminal multiplexer
+- **zsh.nix**: Zsh shell with plugins
 
 ## Development Workflow
 
@@ -192,9 +197,9 @@ Secrets are managed using sops-nix:
 
 ## Notes
 
-- Both systems use unstable channels for latest packages
-- Custom nixvim configuration is maintained in separate repository
+- Home Manager modules define options under `home_modules.<name>` namespace (e.g., `home_modules.claude-code.enable`), not directly under `programs`
+- Valinor's nixosConfiguration key is capitalized: `nixosConfigurations.Valinor`
+- Both systems use nixos-unstable channel for latest packages
 - The repository follows a modular structure for easy maintenance
 - Khazad-dum uses nixos-hardware `framework-16-7040-amd` module for hardware support
 - The niri module uses `isStandalone` detection (`options.programs.niri ? enable`) to be compatible with both NixOS and standalone Home Manager
-- A legacy `homeConfigurations.Khazad-dum` output exists for standalone HM mode (pre-NixOS migration)
