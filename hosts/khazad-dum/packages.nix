@@ -38,18 +38,6 @@ in
     ACTION=="add", SUBSYSTEM=="net", KERNEL=="tailscale0", TAG+="systemd", ENV{SYSTEMD_WANTS}="tailscale-dns.service"
   '';
 
-  # systemd.services.gp-dns-setup = {
-  #   description = "Configure resolved DNS for GlobalProtect (tun0)";
-  #   serviceConfig = {
-  #     Type = "oneshot";
-  #     ExecStartPre = "${pkgs.coreutils}/bin/sleep 2";
-  #     ExecStart = pkgs.writeShellScript "gp-dns-setup" ''
-  #       ${pkgs.systemd}/bin/resolvectl dns tun0 10.30.18.15 10.30.2.19
-  #       ${pkgs.systemd}/bin/resolvectl domain tun0 "~."
-  #     '';
-  #   };
-  # };
-
   systemd.services.tailscale-dns = {
     description = "Configure resolved DNS for Tailscale";
     serviceConfig = {
@@ -67,7 +55,7 @@ in
   };
 
   systemd.services.f5vpn-fix = {
-    description = "Fix routing and DNS for F5 VPN (tun1)";
+    description = "Fix routing and DNS for F5 VPN";
     serviceConfig = {
       Type = "oneshot";
       ExecStart = pkgs.writeShellScript "f5vpn-fix" ''

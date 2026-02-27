@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   programs.zen-browser.enable = true;
   programs.zen-browser.suppressXdgMigrationWarning = true;
@@ -17,50 +22,26 @@
     zellij.enable = true;
     claude-code = {
       enable = true;
-      marketplaces.superpowers-marketplace = {
-        source = {
-          source = "github";
-          repo = "obra/superpowers-marketplace";
-        };
-      };
       plugins = {
-        "superpowers@superpowers-marketplace" = true;
-        "typescript-lsp@claude-plugins-official" = true;
-        "rust-analyzer-lsp@claude-plugins-official" = true;
-        "gopls-lsp@claude-plugins-official" = true;
-        "pyright-lsp@claude-plugins-official" = true;
-        "github@claude-plugins-official" = true;
-        "context7@claude-plugins-official" = true;
-        "frontend-design@claude-plugins-official" = true;
         "feature-dev@claude-plugins-official" = true;
-        "stripe@claude-plugins-official" = true;
-        "playwright@claude-plugins-official" = true;
         "claude-md-management@claude-plugins-official" = true;
         "claude-code-setup@claude-plugins-official" = true;
       };
-      skillsDir =
-        let
-          src = pkgs.fetchgit {
-            url = "https://github.com/anthropics/skills.git";
-            rev = "1ed29a03dc852d30fa6ef2ca53a67dc2c2c2c563";
-            hash = "sha256-RlORhdCeodVB6m8eRlvpV/E0L47zbWeIhDv2mBuCEaQ=";
-            sparseCheckout = [ "skills/canvas-design" ];
+      mcpServers = {
+        github = {
+          type = "http";
+          url = "https://api.githubcopilot.com/mcp";
+          headers = {
+            Authorization = "Bearer \${GITHUB_TOKEN}";
           };
-        in
-        "${src}/skills";
-      rules = {
-        nix-conventions = ''
-          When working with Nix files in this repository:
-          - Use SRI hashes: `hash = "sha256-..."` or explicit `sha256 = "hex..."`. Never use bare hex with `hash =`.
-          - Desktop files: use `install -Dm444` for proper permissions, not `cp` + `mkdir -p`.
-          - Build with `nh os build` (or `nh os switch`), never raw `nix build` expressions.
-        '';
-        commit-conventions = ''
-          When creating git commits:
-          - Use conventional commit prefixes: feat:, fix:, refactor:, chore:, docs:
-          - Keep subject line under 72 characters.
-          - Focus on "why" not "what".
-        '';
+        };
+        context7 = {
+          type = "http";
+          url = "https://mcp.context7.com/mcp";
+          headers = {
+            CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
+          };
+        };
       };
     };
 
@@ -89,12 +70,6 @@
             identityFile = "~/.ssh/${keyNamePrefix}";
             identitiesOnly = true;
           };
-          "deeps" = {
-            hostname = "192.168.122.101";
-            user = "datahearth";
-            identityFile = "~/.ssh/${keyNamePrefix}";
-            identitiesOnly = true;
-          };
         };
     };
 
@@ -110,11 +85,20 @@
       extraAliases = {
         open = "xdg-open";
       };
-      envExtra = ''
-        if [[ -n "$CLAUDECODE" ]]; then
-          eval "$(direnv hook zsh)"
-        fi
-      '';
+      envExtra =
+        lib.optionalString config.home_modules.direnv.enable ''
+          if [[ -n "$CLAUDECODE" ]]; then
+            eval "$(${config.programs.direnv.package} hook zsh)"
+          fi
+        ''
+        + lib.optionalString config.home_modules.claude-code.enable ''
+          if [[ -r /run/secrets/claude-code/github-mcp ]]; then
+            export GITHUB_TOKEN="$(${pkgs.coreutils}/bin/cat /run/secrets/claude-code/github-mcp)"
+          fi
+          if [[ -r /run/secrets/claude-code/context7-mcp ]]; then
+            export CONTEXT7_API_KEY="$(${pkgs.coreutils}/bin/cat /run/secrets/claude-code/context7-mcp)"
+          fi
+        '';
     };
 
     neovim = {

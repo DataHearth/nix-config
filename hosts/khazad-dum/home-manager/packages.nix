@@ -19,7 +19,6 @@
     zip
     git-filter-repo
     nixpkgs-review
-    claude-code
     nixfmt
     nixd
     playerctl

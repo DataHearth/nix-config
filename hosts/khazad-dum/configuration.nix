@@ -31,6 +31,12 @@
       "rclone/protondrive/totp-secret" = {
         owner = config.users.users.datahearth.name;
       };
+      "claude-code/github-mcp" = {
+        owner = config.users.users.datahearth.name;
+      };
+      "claude-code/context7-mcp" = {
+        owner = config.users.users.datahearth.name;
+      };
     };
   };
 
