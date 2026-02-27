@@ -88,7 +88,7 @@
       envExtra =
         lib.optionalString config.home_modules.direnv.enable ''
           if [[ -n "$CLAUDECODE" ]]; then
-            eval "$(${config.programs.direnv.package} hook zsh)"
+            eval "$(${config.programs.direnv.package}/bin/direnv hook zsh)"
           fi
         ''
         + lib.optionalString config.home_modules.claude-code.enable ''
