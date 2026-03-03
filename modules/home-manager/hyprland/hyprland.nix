@@ -97,6 +97,21 @@ in
         ]
         ++ cfg.additional_envs;
 
+        group = {
+          "col.border_active" = "$lavender";
+          "col.border_inactive" = "$overlay0";
+
+          groupbar = {
+            font_size = 11;
+            height = 20;
+            render_titles = true;
+            gradients = true;
+            "col.active" = "rgba($mauveAlphaff)";
+            "col.inactive" = "rgba($surface0Alphaff)";
+            text_color = "rgba($crustAlphaff)";
+          };
+        };
+
         general = {
           gaps_in = 4;
           gaps_out = 4;
@@ -247,7 +262,10 @@ in
             "${mainMod}, mouse_down, workspace, e+1"
             "${mainMod}, mouse_up, workspace, e-1"
 
-            "${mainMod}, F, fullscreen"
+            "${mainMod}, F, togglegroup"
+            "${mainMod}, TAB, changegroupactive, f"
+            "${mainMod} SHIFT, TAB, changegroupactive, b"
+            "${mainMod} SHIFT, F, fullscreen"
             "${mainMod}, L, exec, loginctl lock-session"
             "${mainMod}, I, exec, ${lib.getExe config.home_modules.hyprland.hypridle.toggleScript}"
             "${mainMod}, S, exec, systemctl suspend"
