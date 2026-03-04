@@ -42,7 +42,6 @@
     discord
     vlc
     obsidian
-    spotify
     rquickshare
     qbittorrent
     virt-manager

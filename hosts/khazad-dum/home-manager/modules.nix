@@ -128,14 +128,12 @@
         "workspace 3, match:class code, match:initial_title Visual Studio Code"
         "workspace 4, match:class discord"
         "workspace 4, match:class signal"
-        "workspace 6, match:initial_title Spotify Premium"
         "workspace 9, match:class F5 VPN"
       ];
       exec_once = [
         "signal-desktop --password-store=\"gnome-libsecret\""
         "discord --ozone-platform=wayland"
         "zen-beta"
-        "spotify --ozone-platform=wayland"
       ];
 
       awww.randomize = {
