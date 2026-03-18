@@ -38,17 +38,17 @@ in
     ACTION=="add", SUBSYSTEM=="net", KERNEL=="tailscale0", TAG+="systemd", ENV{SYSTEMD_WANTS}="tailscale-dns.service"
   '';
 
+  # Route all DNS through the tailnet PiHole (100.109.226.49).
+  # MagicDNS is disabled; PiHole resolves both tailnet and public names.
   systemd.services.tailscale-dns = {
     description = "Configure resolved DNS for Tailscale";
     serviceConfig = {
       Type = "oneshot";
-      TimeoutStartSec = 300;
+      RemainAfterExit = true;
+      Restart = "on-failure";
+      RestartSec = 5;
       ExecStart = pkgs.writeShellScript "tailscale-dns" ''
-        # Wait for Tailscale to be connected before claiming DNS
-        until ${pkgs.tailscale}/bin/tailscale status --peers=false >/dev/null 2>&1; do
-          sleep 2
-        done
-        ${pkgs.systemd}/bin/resolvectl dns tailscale0 100.100.100.100
+        ${pkgs.systemd}/bin/resolvectl dns tailscale0 100.109.226.49
         ${pkgs.systemd}/bin/resolvectl domain tailscale0 "~."
       '';
     };
