@@ -63,10 +63,6 @@
     };
   };
 
-  security.pki.certificateFiles = [
-    /mnt/development/cert1.pem
-  ];
-
   # systemd-resolved provides split-DNS: it routes queries to the right
   # DNS server based on the interface/domain (e.g. corporate domains go
   # through VPN DNS, everything else through the default interface).
@@ -76,21 +72,7 @@
   # stub listener, but Nix reads /etc/resolv.conf directly and fails.
   # The activation script below makes /etc/resolv.conf immutable so the
   # VPN can't overwrite it, forcing all DNS through the resolved stub.
-  services.resolved = {
-    enable = true;
-    # settings.Resolve.FallbackDns = [
-    #   # Cloudflare
-    #   "1.1.1.1"
-    #   "2606:4700:4700::1111"
-    #   "1.0.0.1"
-    #   "2606:4700:4700::1001"
-    #   # Quad9
-    #   "9.9.9.9"
-    #   "2620:fe::fe"
-    #   "149.112.112.112"
-    #   "2620:fe::9"
-    # ];
-  };
+  services.resolved.enable = true;
 
   system.activationScripts.immutable-resolv-conf = lib.stringAfter [ "etc" ] ''
     ${pkgs.e2fsprogs}/bin/chattr -i /etc/resolv.conf 2>/dev/null || true
@@ -106,6 +88,10 @@
     wireless.iwd.enable = true;
     nftables.enable = true;
     firewall.enable = true;
+    extraHosts = ''
+      127.0.0.1 etlm.cluster.local
+    '';
+
     networkmanager = {
       enable = true;
       dns = "systemd-resolved";
