@@ -59,6 +59,7 @@
     home-manager.enable = true;
     starship.enable = true;
     zoxide.enable = true;
+    mise.enable = true;
 
     nh = {
       enable = true;

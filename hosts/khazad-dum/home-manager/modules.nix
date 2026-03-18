@@ -6,7 +6,6 @@
 }:
 {
   programs.zen-browser.enable = true;
-  programs.zen-browser.suppressXdgMigrationWarning = true;
 
   home_modules = {
     alacritty.enable = true;

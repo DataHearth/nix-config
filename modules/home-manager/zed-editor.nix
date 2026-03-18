@@ -90,6 +90,7 @@ in
         "rainbow-csv"
         "helm"
         "docker-compose"
+        "make"
 
         # Version control
         "git-firefly"
