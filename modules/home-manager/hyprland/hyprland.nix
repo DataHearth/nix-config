@@ -193,9 +193,9 @@ in
         };
 
         input = {
-          kb_layout = "fr,us";
-          kb_variant = ",altgr-intl";
-          kb_model = ",pc105";
+          kb_layout = "us";
+          kb_variant = "altgr-intl";
+          kb_model = "pc105";
           kb_options = "grp:alt_space_toggle";
           kb_rules = "";
           resolve_binds_by_sym = 1;
