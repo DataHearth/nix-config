@@ -70,6 +70,8 @@ in
 
         nodejs
         jj-lsp
+
+        dockerfile-language-server
       ];
 
       # Extensions from Zed's extension registry
