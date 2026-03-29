@@ -50,6 +50,11 @@
             ipv4 = {
               method = "auto";
               dns = "192.168.1.102;";
+              ignore-auto-dns = "true";
+            };
+            ipv6 = {
+              method = "auto";
+              ignore-auto-dns = "true";
             };
           };
           cirdan-plus = {
@@ -69,6 +74,11 @@
             ipv4 = {
               method = "auto";
               dns = "192.168.1.102;";
+              ignore-auto-dns = "true";
+            };
+            ipv6 = {
+              method = "auto";
+              ignore-auto-dns = "true";
             };
           };
         };
