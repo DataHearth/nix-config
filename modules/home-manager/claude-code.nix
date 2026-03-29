@@ -115,12 +115,30 @@ in
       default = null;
       description = "Path to a directory containing skill directories";
     };
+
+    extraPackages = lib.mkOption {
+      type = lib.types.listOf lib.types.package;
+      default = [ ];
+      description = "Extra packages to make available in Claude Code's PATH";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     programs.claude-code = {
       enable = true;
       enableMcpIntegration = true;
+      package = lib.mkIf (cfg.extraPackages != [ ]) (
+        pkgs.symlinkJoin {
+          name = "claude-code-with-deps";
+          paths = [ pkgs.claude-code ];
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+          postBuild = ''
+            wrapProgram $out/bin/claude \
+              --prefix PATH : ${lib.makeBinPath cfg.extraPackages}
+          '';
+          inherit (pkgs.claude-code) meta;
+        }
+      );
       settings = {
         attribution = {
           commit = "";

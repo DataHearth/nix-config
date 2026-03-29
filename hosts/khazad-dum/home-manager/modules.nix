@@ -5,7 +5,100 @@
   ...
 }:
 {
-  programs.zen-browser.enable = true;
+  programs.zen-browser = {
+    enable = true;
+
+    policies = {
+      DisableTelemetry = true;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisableFormHistory = true;
+      PasswordManagerEnabled = false;
+      OfferToSaveLogins = false;
+      OfferToSaveLoginsDefault = false;
+      FirefoxSuggest = {
+        WebSuggestions = false;
+        SponsoredSuggestions = false;
+        ImproveSuggest = false;
+      };
+      EnableTrackingProtection = {
+        Value = true;
+        Cryptomining = true;
+        Fingerprinting = true;
+      };
+      ExtensionSettings =
+        let
+          ext = id: url: {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${url}/latest.xpi";
+            installation_mode = "force_installed";
+          };
+          extDisabled = id: url: {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/${url}/latest.xpi";
+            installation_mode = "normal_installed";
+          };
+        in
+        {
+          "uBlock0@raymondhill.net" = ext "uBlock0@raymondhill.net" "ublock-origin";
+          "jid1-MnnxcxisBPnSXQ@jetpack" = ext "jid1-MnnxcxisBPnSXQ@jetpack" "privacy-badger17";
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" =
+            ext "{446900e4-71c2-419f-a6a7-df9c091e268b}" "bitwarden-password-manager";
+          "addon@darkreader.org" = ext "addon@darkreader.org" "darkreader";
+          "{cf3dba12-a848-4f68-8e2d-f9fadc0721de}" =
+            ext "{cf3dba12-a848-4f68-8e2d-f9fadc0721de}" "google-lighthouse";
+          "78272b6fa58f4a1abaac99321d503a20@proton.me" =
+            extDisabled "78272b6fa58f4a1abaac99321d503a20@proton.me" "proton-pass";
+          "vpn@proton.ch" = ext "vpn@proton.ch" "proton-vpn-firefox-extension";
+        };
+    };
+
+    profiles.default = {
+      id = 0;
+      isDefault = true;
+      path = "gz71a4fv.Default Profile";
+
+      mods = [
+        "ad97bb70-0066-4e42-9b5f-173a5e42c6fc" # SuperPins
+      ];
+
+      search = {
+        default = "qwant";
+        force = true;
+        engines = {
+          "qwant" = {
+            urls = [ { template = "https://www.qwant.com/?q={searchTerms}"; } ];
+            icon = "https://www.qwant.com/favicon.ico";
+            definedAliases = [ "@q" ];
+          };
+          "google".metaData.hidden = true;
+          "bing".metaData.hidden = true;
+        };
+      };
+
+      settings = {
+        # Fractional scaling breaks extension popups on wlroots compositors
+        # (bugzilla#1849109). Disable until upstream fix lands.
+        "widget.wayland.fractional-scale.enabled" = false;
+
+        # Disable all saving/autofill
+        "signon.rememberSignons" = false;
+        "signon.autofillForms" = false;
+        "browser.formfill.enable" = false;
+        "extensions.formautofill.addresses.enabled" = false;
+        "extensions.formautofill.creditCards.enabled" = false;
+
+        # Telemetry
+        "toolkit.telemetry.enabled" = false;
+        "toolkit.telemetry.unified" = false;
+        "datareporting.healthreport.uploadEnabled" = false;
+        "datareporting.policy.dataSubmissionEnabled" = false;
+        "browser.ping-centre.telemetry" = false;
+        "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+        "browser.newtabpage.activity-stream.telemetry" = false;
+      };
+
+      containers = { };
+    };
+  };
 
   home_modules = {
     alacritty.enable = true;
@@ -21,11 +114,21 @@
     zellij.enable = true;
     claude-code = {
       enable = true;
+
+      extraPackages = with pkgs; [
+        # required for claude-mem
+        bun
+        uv
+        nodejs-slim
+      ];
+
       plugins = {
         "feature-dev@claude-plugins-official" = true;
         "claude-md-management@claude-plugins-official" = true;
         "claude-code-setup@claude-plugins-official" = true;
+        "claude-mem@thedotmack" = true;
       };
+
       mcpServers = {
         github = {
           type = "http";
@@ -39,6 +142,15 @@
           url = "https://mcp.context7.com/mcp";
           headers = {
             CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
+          };
+        };
+      };
+
+      marketplaces = {
+        "thedotmack/claude-mem" = {
+          source = {
+            source = "github";
+            repo = "thedotmack/claude-mem";
           };
         };
       };
