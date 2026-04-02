@@ -6,6 +6,8 @@
 }:
 let
   cfg = config.home_modules.waybar;
+  kbLayouts = config.wayland.windowManager.hyprland.settings.input.kb_layout or "";
+  hasMultipleLayouts = builtins.length (lib.splitString "," kbLayouts) > 1;
 
   enable = lib.mkEnableOption "waybar";
 in
@@ -53,6 +55,7 @@ in
           "group/hardware" = {
             orientation = "horizontal";
             modules = [
+              "backlight"
               "pulseaudio"
               "network"
               "bluetooth"
@@ -64,7 +67,9 @@ in
             orientation = "horizontal";
             modules = [
               "custom/hypridle"
+            ] ++ lib.optionals hasMultipleLayouts [
               "hyprland/language"
+            ] ++ [
               "custom/notification"
             ];
           };
@@ -133,6 +138,14 @@ in
             format-critical = "󰸁 {temperatureC}°C";
           };
 
+          backlight = {
+            format = "{icon} {percent}%";
+            format-icons = [ "󰃞" "󰃟" "󰃠" ];
+            scroll-step = 5;
+            on-scroll-up = "${pkgs.brightnessctl}/bin/brightnessctl -e4 -n2 set 5%+";
+            on-scroll-down = "${pkgs.brightnessctl}/bin/brightnessctl -e4 -n2 set 5%-";
+          };
+
           pulseaudio = {
             format = "{icon} {volume}%";
             format-bluetooth = "󰂱 {volume}%";
@@ -150,7 +163,7 @@ in
                 "󰕾"
               ];
             };
-            on-click = "${pkgs.pwmenu}/bin/pwmenu -l walker -s 3";
+            on-click = "${pkgs.pwmenu}/bin/pwmenu -l custom --launcher-command 'walker -d' -s 3";
             on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
             scroll-step = 5;
           };
@@ -161,7 +174,7 @@ in
             format-disconnected = "󰤭";
             tooltip-format-wifi = "{essid} ({signalStrength}%)";
             tooltip-format-ethernet = "{ifname}: {ipaddr}/{cidr}";
-            on-click = "${pkgs.iwmenu}/bin/iwmenu -l walker -s 3";
+            on-click = "${pkgs.iwmenu}/bin/iwmenu -l custom --launcher-command 'walker -d' -s 3";
           };
 
           bluetooth = {
@@ -172,10 +185,11 @@ in
             tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
             tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
             tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
-            on-click = "${pkgs.bzmenu}/bin/bzmenu -l walker -s 3";
+            on-click = "${pkgs.bzmenu}/bin/bzmenu -l custom --launcher-command 'walker -d' -s 3";
           };
 
           battery = {
+            bat = "BAT1";
             states = {
               warning = 30;
               critical = 15;
@@ -190,10 +204,18 @@ in
               "󰂀"
               "󰁹"
             ];
-            tooltip-format = "{timeTo}";
+            tooltip-format = "{timeTo} ({power} W)";
+            on-click = let
+              script = pkgs.writeShellScript "power-profile-menu" ''
+                choice=$(printf "󰌪 power-saver\n󰛲 balanced\n󰓅 performance" | walker -d)
+                [ -z "$choice" ] && exit 0
+                profile=$(echo "$choice" | sed 's/^[^ ]* //')
+                powerprofilesctl set "$profile"
+              '';
+            in "${script}";
           };
 
-          "hyprland/language" = {
+          "hyprland/language" = lib.mkIf hasMultipleLayouts {
             format = "{}";
             format-en = "🇺🇸";
             format-fr = "🇫🇷";
