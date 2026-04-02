@@ -49,7 +49,7 @@
             };
             ipv4 = {
               method = "auto";
-              dns = "192.168.1.102;";
+              dns = "192.168.1.102;1.1.1.1;1.0.0.1;";
               ignore-auto-dns = "true";
             };
             ipv6 = {
@@ -73,7 +73,7 @@
             };
             ipv4 = {
               method = "auto";
-              dns = "192.168.1.102;";
+              dns = "192.168.1.102;1.1.1.1;1.0.0.1;";
               ignore-auto-dns = "true";
             };
             ipv6 = {

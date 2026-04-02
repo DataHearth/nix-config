@@ -48,6 +48,12 @@
           "78272b6fa58f4a1abaac99321d503a20@proton.me" =
             extDisabled "78272b6fa58f4a1abaac99321d503a20@proton.me" "proton-pass";
           "vpn@proton.ch" = ext "vpn@proton.ch" "proton-vpn-firefox-extension";
+          "sponsorBlocker@ajay.app" = ext "sponsorBlocker@ajay.app" "sponsorblock";
+          "fr-dicollecte@dictionaries.addons.mozilla.org" =
+            ext "fr-dicollecte@dictionaries.addons.mozilla.org" "dictionnaire-fran%C3%A7ais1";
+          "ef-french-simplified-orthograph@dictionaries.addons.mozilla.org" =
+            ext "ef-french-simplified-orthograph@dictionaries.addons.mozilla.org" "corecteur-ortografe-simplifiee";
+          "langpack-fr@firefox.mozilla.org" = ext "langpack-fr@firefox.mozilla.org" "francais-language-pack";
         };
     };
 
@@ -75,6 +81,21 @@
       };
 
       settings = {
+        # Startup: restore session
+        "browser.startup.page" = 3;
+        "browser.shell.checkDefaultBrowser" = true;
+
+        # Spellcheck
+        "layout.spellcheckDefault" = 1;
+        "spellchecker.dictionary" = "fr,en-US";
+
+        # Search suggestions
+        "browser.search.suggest.enabled" = true;
+        "browser.urlbar.suggest.searches" = true;
+
+        # Sidebar + topbar layout
+        "zen.view.use-single-toolbar" = false;
+
         # Fractional scaling breaks extension popups on wlroots compositors
         # (bugzilla#1849109). Disable until upstream fix lands.
         "widget.wayland.fractional-scale.enabled" = false;
@@ -120,13 +141,14 @@
         bun
         uv
         nodejs-slim
+        (python3.withPackages (ps: [ ps.chromadb ]))
       ];
 
       plugins = {
         "feature-dev@claude-plugins-official" = true;
         "claude-md-management@claude-plugins-official" = true;
         "claude-code-setup@claude-plugins-official" = true;
-        "claude-mem@thedotmack" = true;
+        "claude-mem@thedotmack" = false;
       };
 
       mcpServers = {
@@ -144,6 +166,15 @@
             CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
           };
         };
+      };
+
+      settings = {
+        permissions.allow = [
+          "mcp__context7__resolve-library-id"
+          "mcp__context7__query-docs"
+          "Bash(git diff:*)"
+          "Bash(git log:*)"
+        ];
       };
 
       marketplaces = {

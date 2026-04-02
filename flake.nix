@@ -93,6 +93,7 @@
                 nixpkgs.overlays = [
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
+                    claude-code = super.callPackage ./packages/claude-code.nix { };
                   })
                 ];
               }
@@ -123,6 +124,7 @@
                 nixpkgs.overlays = [
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
+                    claude-code = super.callPackage ./packages/claude-code.nix { };
                   })
                 ];
               }
