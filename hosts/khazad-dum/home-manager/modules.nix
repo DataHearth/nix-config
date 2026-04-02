@@ -126,7 +126,6 @@
     atuin.enable = true;
     bat.enable = true;
     direnv.enable = true;
-    # niri.enable = true; # TODO: debug niri build failure
     nushell.enable = true;
     theme.enable = true;
     vscode.enable = true;
@@ -148,7 +147,7 @@
         "feature-dev@claude-plugins-official" = true;
         "claude-md-management@claude-plugins-official" = true;
         "claude-code-setup@claude-plugins-official" = true;
-        "claude-mem@thedotmack" = false;
+        "claude-mem@thedotmack" = true;
       };
 
       mcpServers = {
@@ -170,10 +169,30 @@
 
       settings = {
         permissions.allow = [
-          "mcp__context7__resolve-library-id"
-          "mcp__context7__query-docs"
-          "Bash(git diff:*)"
-          "Bash(git log:*)"
+          "Read(//nix/store)"
+          # MCP
+          "mcp__github__*"
+          "mcp__context7__*"
+          "mcp__claude-mem__*"
+          # Git (read-only)
+          "Bash(git diff *)"
+          "Bash(git log *)"
+          "Bash(git status *)"
+          "Bash(git blame *)"
+          "Bash(git branch *)"
+          "Bash(git show *)"
+          "Bash(git rev-parse *)"
+          "Bash(git remote *)"
+          # Filesystem (read-only)
+          "Bash(ls *)"
+          "Bash(find *)"
+          "Bash(which *)"
+          "Bash(file *)"
+          # Nix
+          "Bash(nix eval *)"
+          "Bash(nix search *)"
+          "Bash(nix flake show *)"
+          "Bash(nix --version)"
         ];
       };
 
@@ -273,8 +292,8 @@
         "workspace 9, match:class F5 VPN"
       ];
       exec_once = [
-        "signal-desktop --password-store=\"gnome-libsecret\""
-        "discord --ozone-platform=wayland"
+        "signal-desktop --start-in-tray"
+        "discord --start-minimized"
         "zen-beta"
       ];
 

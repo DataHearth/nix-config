@@ -38,8 +38,8 @@
 
     # GUI
     obs-studio
-    signal-desktop
-    discord
+    (signal-desktop.override { commandLineArgs = ''--password-store="gnome-libsecret" --use-tray-icon''; })
+    (discord.override { commandLineArgs = "--ozone-platform=wayland"; })
     vlc
     obsidian
     rquickshare
