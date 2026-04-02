@@ -9,10 +9,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niri-flake = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     elephant = {
       url = "github:abenz1267/elephant";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,7 +45,6 @@
       catppuccin,
       sops-nix,
       home-manager,
-      niri-flake,
       elephant,
       awww,
       nixos-hardware,
@@ -73,7 +68,6 @@
               ./hosts/khazad-dum/configuration.nix
               home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
-              niri-flake.nixosModules.niri
               nixos-hardware.nixosModules.framework-16-7040-amd
               disko.nixosModules.disko
               lanzaboote.nixosModules.lanzaboote
@@ -107,7 +101,6 @@
               ./hosts/valinor/configuration.nix
               home-manager.nixosModules.home-manager
               sops-nix.nixosModules.sops
-              niri-flake.nixosModules.niri
               {
                 home-manager.sharedModules = [
                   catppuccin.homeModules.catppuccin

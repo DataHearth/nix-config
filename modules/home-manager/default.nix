@@ -8,7 +8,6 @@
   ./git.nix
   ./hyprland
   ./jujutsu.nix
-  ./niri
   ./nushell.nix
   ./ssh.nix
   ./swaync
