@@ -10,10 +10,21 @@ let
   hypridle-toggle = pkgs.writeShellScriptBin "hypridle-toggle" ''
     if systemctl --user is-active --quiet hypridle.service; then
       systemctl --user stop hypridle.service
+      while systemctl --user is-active --quiet hypridle.service; do sleep 0.1; done
     else
       systemctl --user start hypridle.service
+      while ! systemctl --user is-active --quiet hypridle.service; do sleep 0.1; done
     fi
     pkill -SIGRTMIN+8 waybar
+  '';
+
+  hypridle-sleep = pkgs.writeShellScriptBin "hypridle-sleep" ''
+    if ! systemctl --user is-active --quiet hypridle.service; then
+      systemctl --user start hypridle.service
+      while ! systemctl --user is-active --quiet hypridle.service; do sleep 0.1; done
+      pkill -SIGRTMIN+8 waybar
+    fi
+    systemctl suspend
   '';
 
   hypridle-status = pkgs.writeShellScriptBin "hypridle-status" ''
@@ -38,12 +49,19 @@ in
       readOnly = true;
       description = "Script to get hypridle status for waybar";
     };
+    sleepScript = lib.mkOption {
+      type = lib.types.package;
+      default = hypridle-sleep;
+      readOnly = true;
+      description = "Script to ensure hypridle is active before suspending";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     home.packages = [
       hypridle-toggle
       hypridle-status
+      hypridle-sleep
     ];
 
     services.hypridle = {

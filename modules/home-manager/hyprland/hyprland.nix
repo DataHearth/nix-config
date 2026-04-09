@@ -268,7 +268,7 @@ in
             "${mainMod} SHIFT, F, fullscreen"
             "${mainMod}, L, exec, loginctl lock-session"
             "${mainMod}, I, exec, ${lib.getExe config.home_modules.hyprland.hypridle.toggleScript}"
-            "${mainMod}, S, exec, systemctl suspend"
+            "${mainMod}, S, exec, ${lib.getExe config.home_modules.hyprland.hypridle.sleepScript}"
             "${mainMod} SHIFT, S, exec, systemctl poweroff"
             "${mainMod} SHIFT, R, exec, systemctl reboot"
 
