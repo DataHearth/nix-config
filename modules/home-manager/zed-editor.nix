@@ -133,7 +133,6 @@ in
         };
 
         # Behavior
-        autosave.after_delay.milliseconds = 1000;
         format_on_save = "on";
         linked_edits = true;
         prettier.allowed = false;
@@ -159,14 +158,6 @@ in
         file_types = {
           markdown = [ "*.mdx" ];
           plaintext = [ "LICENSE" ];
-        };
-
-        # Agent
-        agent = {
-          show_turn_stats = true;
-        };
-        agent_servers.claude.env = {
-          CLAUDE_CODE_EXECUTABLE = "${pkgs.claude-code}/bin/claude";
         };
 
         # LSP settings
