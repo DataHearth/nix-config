@@ -87,37 +87,7 @@
                 nixpkgs.overlays = [
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
-                    claude-code = super.callPackage ./packages/claude-code.nix { };
-                  })
-                ];
-              }
-            ];
-          };
-
-          Valinor = nixpkgs.lib.nixosSystem {
-            inherit system;
-
-            modules = [
-              ./hosts/valinor/configuration.nix
-              home-manager.nixosModules.home-manager
-              sops-nix.nixosModules.sops
-              {
-                home-manager.sharedModules = [
-                  catppuccin.homeModules.catppuccin
-                  sops-nix.homeManagerModules.sops
-                  elephant.homeManagerModules.default
-                  zen-browser.homeModules.beta
-                  nix-index-database.homeModules.nix-index
-                ];
-                home-manager.extraSpecialArgs = {
-                  inherit awww;
-                };
-              }
-              {
-                nixpkgs.overlays = [
-                  (self: super: {
-                    jj-lsp = jj-lsp.packages.${system}.default;
-                    claude-code = super.callPackage ./packages/claude-code.nix { };
+                    # claude-code = super.callPackage ./packages/claude-code.nix { };
                   })
                 ];
               }
