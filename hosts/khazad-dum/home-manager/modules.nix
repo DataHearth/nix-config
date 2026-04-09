@@ -135,6 +135,16 @@
     claude-code = {
       enable = true;
 
+      memory.text = ''
+        ## Tool Usage
+        - Always prefer native Claude Code tools (Glob, Grep, Read, Edit, Write) over system binaries (find, grep, cat, sed, awk).
+        - Only fall back to Bash system binaries when you need capabilities not available in native tools (e.g., file permissions, timestamps, exec).
+
+        ## Bash Tool
+        - Never use `2>&1`, `2>/dev/null`, or other stderr redirections — the Bash tool captures both stdout and stderr by default.
+        - If a command produces verbose output that may be truncated, use `tee /tmp/<descriptive-name>.log` to preserve the full output for later reading.
+      '';
+
       extraPackages = with pkgs; [
         # required for claude-mem
         bun
@@ -171,28 +181,16 @@
         permissions.allow = [
           "Read(//nix/store)"
           # MCP
-          "mcp__github__*"
-          "mcp__context7__*"
-          "mcp__claude-mem__*"
-          # Git (read-only)
-          "Bash(git diff *)"
-          "Bash(git log *)"
-          "Bash(git status *)"
-          "Bash(git blame *)"
-          "Bash(git branch *)"
-          "Bash(git show *)"
-          "Bash(git rev-parse *)"
-          "Bash(git remote *)"
-          # Filesystem (read-only)
-          "Bash(ls *)"
-          "Bash(find *)"
-          "Bash(which *)"
-          "Bash(file *)"
+          "mcp__plugin_claude-code-home-manager_github__*"
+          "mcp__plugin_claude-code-home-manager_context7__*"
+          "mcp__plugin_claude-mem_mcp-search__*"
           # Nix
           "Bash(nix eval *)"
           "Bash(nix search *)"
           "Bash(nix flake show *)"
           "Bash(nix --version)"
+          # Logging
+          "Bash(tee /tmp/*)"
         ];
       };
 
