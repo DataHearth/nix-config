@@ -8,6 +8,7 @@
   nixos_modules.greetd = {
     enable = true;
     greeter = "tuigreet";
+    defaultSession = "Hyprland";
   };
 
   # Shell

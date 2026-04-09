@@ -16,12 +16,17 @@ let
     default = "tuigreet";
     description = "Which greeter to use with greetd";
   };
+  defaultSession = lib.mkOption {
+    type = lib.types.nullOr lib.types.str;
+    default = null;
+    description = "Default session command to launch (e.g. Hyprland)";
+  };
 
   sessionData = config.services.displayManager.sessionData.desktops;
 in
 {
   options.nixos_modules.greetd = {
-    inherit enable greeter;
+    inherit enable greeter defaultSession;
   };
 
   config = lib.mkIf cfg.enable {
@@ -31,8 +36,9 @@ in
     services.greetd = lib.mkIf (cfg.greeter == "tuigreet") {
       enable = true;
       settings = {
+        terminal.vt = lib.mkForce 9;
         default_session = {
-          command = builtins.concatStringsSep " " [
+          command = builtins.concatStringsSep " " ([
             "${pkgs.tuigreet}/bin/tuigreet"
             "--time"
             "--time-format '%A, %B %d %Y  %H:%M'"
@@ -47,7 +53,9 @@ in
             "--container-padding 2"
             "--prompt-padding 1"
             "--theme 'border=#8aadf4;text=#cad3f5;time=#c6a0f6;container=#24273a;button=#a6da95;prompt=#f5bde6;action=#f5a97f;input=#f4dbd6'"
-          ];
+          ] ++ lib.optionals (cfg.defaultSession != null) [
+            "--cmd ${cfg.defaultSession}"
+          ]);
           user = config.users.users.datahearth.name;
         };
       };
