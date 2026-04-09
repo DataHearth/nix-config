@@ -2,7 +2,7 @@
 
 * {
   font-family: "JetBrainsMono Nerd Font";
-  font-size: 13px;
+  font-size: 14px;
   min-height: 0;
 }
 
@@ -12,35 +12,43 @@ window#waybar {
 }
 
 window#waybar.hidden {
-  opacity: 0.5;
+  opacity: 0.2;
 }
 
-/* Workspaces group */
-#workspaces {
-  background-color: @base;
-  border: 1px solid @surface0;
-  border-radius: 20px;
-  margin: 4px;
+/* ── Floating pill containers ── */
+#workspaces,
+#system,
+#hardware,
+#info,
+#clock,
+#tray {
+  background-color: alpha(@base, 0.9);
+  border: 1px solid @surface1;
+  border-radius: 14px;
+  margin: 6px 3px;
   padding: 0 4px;
 }
 
+/* ── Workspaces ── */
 #workspaces button {
-  padding: 0 8px;
+  padding: 0 7px;
+  margin: 4px 1px;
   color: @overlay0;
-  background-color: transparent;
-  border-radius: 16px;
-  margin: 4px 2px;
-  min-width: 20px;
+  background: transparent;
+  border-radius: 10px;
+  min-width: 12px;
+  transition: all 0.2s ease;
 }
 
 #workspaces button:hover {
-  background-color: @surface0;
+  background-color: alpha(@surface1, 0.5);
   color: @text;
 }
 
 #workspaces button.active {
   background-color: @green;
   color: @crust;
+  font-weight: bold;
 }
 
 #workspaces button.urgent {
@@ -48,22 +56,19 @@ window#waybar.hidden {
   color: @crust;
 }
 
-/* Module groups */
-#system,
-#hardware,
-#info {
-  background-color: @base;
-  background-image: none;
-  border: 1px solid @surface0;
-  border-radius: 20px;
-  margin: 4px;
-  padding: 0 8px;
+/* ── Clock ── */
+#clock {
+  padding: 0 14px;
+  color: @text;
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
 
-/* Individual modules inside groups */
+/* ── All modules base ── */
 #cpu,
 #memory,
 #temperature,
+#backlight,
 #pulseaudio,
 #network,
 #bluetooth,
@@ -72,49 +77,46 @@ window#waybar.hidden {
 #custom-hypridle,
 #custom-notification {
   padding: 0 8px;
-  margin: 4px 0;
-  background-color: transparent;
-  color: @text;
+  margin: 3px 3px;
+  background: transparent;
+  border-radius: 10px;
+  transition: all 0.2s ease;
 }
 
-#clock {
-  background-color: @base;
-  border: 1px solid @surface0;
-  border-radius: 20px;
-  margin: 4px;
-  padding: 0 16px;
-  color: @text;
-  font-weight: bold;
+/* ── Hover glow ── */
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#backlight:hover,
+#battery:hover,
+#pulseaudio:hover,
+#network:hover,
+#bluetooth:hover,
+#language:hover,
+#custom-hypridle:hover,
+#custom-notification:hover {
+  background-color: alpha(@surface0, 0.6);
 }
 
-#tray {
-  background-color: @base;
-  border: 1px solid @surface0;
-  border-radius: 20px;
-  margin: 4px;
-  padding: 0 8px;
-}
-
-#window {
-  padding: 0 12px;
-  color: @overlay0;
-}
-
-/* Module colors */
+/* ── Module colors ── */
 #cpu {
   color: @blue;
 }
 
 #memory {
-  color: @green;
+  color: @teal;
 }
 
 #temperature {
-  color: @yellow;
+  color: @peach;
 }
 
 #temperature.critical {
   color: @red;
+}
+
+#backlight {
+  color: @yellow;
 }
 
 #pulseaudio {
@@ -122,7 +124,7 @@ window#waybar.hidden {
 }
 
 #pulseaudio.muted {
-  color: @overlay0;
+  color: alpha(@overlay0, 0.5);
 }
 
 #network {
@@ -130,7 +132,7 @@ window#waybar.hidden {
 }
 
 #network.disconnected {
-  color: @overlay0;
+  color: alpha(@overlay0, 0.5);
 }
 
 #bluetooth {
@@ -139,7 +141,7 @@ window#waybar.hidden {
 
 #bluetooth.off,
 #bluetooth.disabled {
-  color: @overlay0;
+  color: alpha(@overlay0, 0.5);
 }
 
 #battery {
@@ -152,13 +154,13 @@ window#waybar.hidden {
 
 #battery.critical:not(.charging) {
   color: @red;
-  animation: blink 0.5s linear infinite alternate;
+  animation: pulse 1s ease-in-out infinite;
 }
 
-@keyframes blink {
-  to {
-    color: @text;
-  }
+@keyframes pulse {
+  from { opacity: 1; }
+  50% { opacity: 0.4; }
+  to { opacity: 1; }
 }
 
 #custom-notification {
@@ -173,22 +175,9 @@ window#waybar.hidden {
   color: @yellow;
 }
 
-#pulseaudio,
-#network,
-#bluetooth,
-#language,
-#custom-hypridle,
-#custom-notification {
-  border-radius: 12px;
-}
-
-#pulseaudio:hover,
-#network:hover,
-#bluetooth:hover,
-#language:hover,
-#custom-hypridle:hover,
-#custom-notification:hover {
-  background-color: @surface0;
+/* ── Tray ── */
+#tray {
+  padding: 0 6px;
 }
 
 #tray > .passive {
@@ -200,10 +189,19 @@ window#waybar.hidden {
   color: @red;
 }
 
+/* ── Window title ── */
+#window {
+  padding: 0 12px;
+  color: @overlay0;
+  font-style: italic;
+}
+
+/* ── Tooltip ── */
 tooltip {
-  background-color: @crust;
-  border: 1px solid @surface0;
-  border-radius: 12px;
+  background-color: alpha(@crust, 0.95);
+  border: 1px solid alpha(@surface0, 0.6);
+  border-radius: 10px;
+  padding: 4px;
 }
 
 tooltip label {

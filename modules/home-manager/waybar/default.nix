@@ -126,7 +126,7 @@ in
 
           memory = {
             format = " {}%";
-            tooltip-format = "{used:0.1f}GB / {total:0.1f}GB";
+            tooltip-format = "{used:0.1f}G / {total:0.1f}G ({percentage}%)";
             interval = 2;
           };
 
@@ -139,17 +139,19 @@ in
           };
 
           backlight = {
-            format = "{icon} {percent}%";
+            format = "{icon}";
             format-icons = [ "󰃞" "󰃟" "󰃠" ];
+            tooltip-format = "{percent}%";
             scroll-step = 5;
             on-scroll-up = "${pkgs.brightnessctl}/bin/brightnessctl -e4 -n2 set 5%+";
             on-scroll-down = "${pkgs.brightnessctl}/bin/brightnessctl -e4 -n2 set 5%-";
           };
 
           pulseaudio = {
-            format = "{icon} {volume}%";
-            format-bluetooth = "󰂱 {volume}%";
-            format-muted = "󰸈 muted";
+            format = "{icon}";
+            format-bluetooth = "󰂱";
+            format-muted = "󰸈";
+            tooltip-format = "{volume}% — {desc}";
             format-icons = {
               headphone = "󰋋";
               hands-free = "󰋎";
@@ -169,8 +171,8 @@ in
           };
 
           network = {
-            format-wifi = "󰤨 {signalStrength}%";
-            format-ethernet = "󰈀 {ipaddr}";
+            format-wifi = "󰤨";
+            format-ethernet = "󰈀";
             format-disconnected = "󰤭";
             tooltip-format-wifi = "{essid} ({signalStrength}%)";
             tooltip-format-ethernet = "{ifname}: {ipaddr}/{cidr}";
@@ -178,13 +180,13 @@ in
           };
 
           bluetooth = {
-            format = "󰂯 {status}";
-            format-connected = "󰂱 {device_alias}";
-            format-connected-battery = "󰂱 {device_alias} {device_battery_percentage}%";
-            tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
-            tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
-            tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
-            tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+            format = "󰂯";
+            format-connected = "󰂱";
+            format-connected-battery = "󰂱";
+            tooltip-format = "{controller_alias}\n{num_connections} connected";
+            tooltip-format-connected = "{controller_alias}\n{num_connections} connected\n\n{device_enumerate}";
+            tooltip-format-enumerate-connected = "{device_alias} — {device_address}";
+            tooltip-format-enumerate-connected-battery = "{device_alias} — {device_battery_percentage}%";
             on-click = "${pkgs.bzmenu}/bin/bzmenu -l custom --launcher-command 'walker -d' -s 3";
           };
 
@@ -207,7 +209,7 @@ in
             tooltip-format = "{timeTo} ({power} W)";
             on-click = let
               script = pkgs.writeShellScript "power-profile-menu" ''
-                choice=$(printf "󰌪 power-saver\n󰛲 balanced\n󰓅 performance" | walker -d)
+                choice=$(printf "󰌪  power-saver\n󰛲  balanced\n󰓅  performance" | walker -d --nosearch --height 3)
                 [ -z "$choice" ] && exit 0
                 profile=$(echo "$choice" | sed 's/^[^ ]* //')
                 powerprofilesctl set "$profile"
