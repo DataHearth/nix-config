@@ -49,7 +49,7 @@
             };
             ipv4 = {
               method = "auto";
-              dns = "192.168.1.102;1.1.1.1;1.0.0.1;";
+              dns = "192.168.1.102";
               ignore-auto-dns = "true";
             };
             ipv6 = {
@@ -73,7 +73,7 @@
             };
             ipv4 = {
               method = "auto";
-              dns = "192.168.1.102;1.1.1.1;1.0.0.1;";
+              dns = "192.168.1.102";
               ignore-auto-dns = "true";
             };
             ipv6 = {
@@ -89,9 +89,9 @@
   system.activationScripts.immutable-resolv-conf = lib.stringAfter [ "etc" ] ''
     ${pkgs.e2fsprogs}/bin/chattr -i /etc/resolv.conf 2>/dev/null || true
     cat > /etc/resolv.conf <<EOF
-    nameserver 127.0.0.53
-    search airbus.corp lan
-    EOF
+nameserver 127.0.0.53
+search airbus.corp lan
+EOF
     ${pkgs.e2fsprogs}/bin/chattr +i /etc/resolv.conf
   '';
 
@@ -100,21 +100,26 @@
   # while public DNS keeps working (bypasses svpn's resolv.conf overwriting).
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="net", KERNEL=="tun0", TAG+="systemd", ENV{SYSTEMD_WANTS}="f5vpn-fix.service"
-    ACTION=="add", SUBSYSTEM=="net", KERNEL=="tailscale0", TAG+="systemd", ENV{SYSTEMD_WANTS}="tailscale-dns.service"
   '';
 
   # Route all DNS through the tailnet PiHole (100.109.226.49).
   # MagicDNS is disabled; PiHole resolves both tailnet and public names.
+  # bindsTo tailscaled ensures ExecStop (resolvectl revert) runs when
+  # Tailscale stops, so queries fall back to wlan0's local DNS.
   systemd.services.tailscale-dns = {
     description = "Configure resolved DNS for Tailscale";
+    wantedBy = [ "tailscaled.service" ];
+    bindsTo = [ "tailscaled.service" ];
+    after = [ "tailscaled.service" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      Restart = "on-failure";
-      RestartSec = 5;
       ExecStart = pkgs.writeShellScript "tailscale-dns" ''
         ${pkgs.systemd}/bin/resolvectl dns tailscale0 100.109.226.49
         ${pkgs.systemd}/bin/resolvectl domain tailscale0 "~."
+      '';
+      ExecStop = pkgs.writeShellScript "tailscale-dns-stop" ''
+        ${pkgs.systemd}/bin/resolvectl revert tailscale0
       '';
     };
   };
