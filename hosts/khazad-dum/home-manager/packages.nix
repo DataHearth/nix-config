@@ -19,14 +19,12 @@
     zip
     git-filter-repo
     nixpkgs-review
-    nixfmt
-    nixd
     playerctl
     brightnessctl
     wl-clipboard
-    proton-vpn-cli
     sops
     rclone
+    restic
     gpclient
 
     # Fonts
@@ -38,12 +36,13 @@
 
     # GUI
     obs-studio
-    (signal-desktop.override { commandLineArgs = ''--password-store="gnome-libsecret" --use-tray-icon''; })
+    (signal-desktop.override {
+      commandLineArgs = ''--password-store="gnome-libsecret" --use-tray-icon'';
+    })
     (discord.override { commandLineArgs = "--ozone-platform=wayland"; })
     vlc
     obsidian
     rquickshare
-    qbittorrent
     virt-manager
     spice-gtk
     proton-authenticator

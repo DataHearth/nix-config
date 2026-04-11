@@ -148,9 +148,28 @@
       extraPackages = with pkgs; [
         # required for claude-mem
         bun
-        uv
         nodejs-slim
-        (python3.withPackages (ps: [ ps.chromadb ]))
+        python313
+        # uvx wrapper: inject native libs so uv-installed wheels (numpy, chromadb) find libstdc++/libz
+        # and force uv to use system Python instead of its own dynamically-linked managed copy
+        (symlinkJoin {
+          name = "uv-fhs";
+          paths = [ uv ];
+          nativeBuildInputs = [ makeWrapper ];
+          postBuild = ''
+            wrapProgram $out/bin/uvx \
+              --prefix LD_LIBRARY_PATH : "${
+                lib.makeLibraryPath [
+                  stdenv.cc.cc.lib
+                  zlib
+                ]
+              }" \
+              --set UV_PYTHON_PREFERENCE only-system
+          '';
+        })
+
+        # required by caveman
+        nodejs-slim
       ];
 
       plugins = {
@@ -158,6 +177,7 @@
         "claude-md-management@claude-plugins-official" = true;
         "claude-code-setup@claude-plugins-official" = true;
         "claude-mem@thedotmack" = true;
+        "caveman@caveman" = true;
       };
 
       mcpServers = {
@@ -199,6 +219,12 @@
           source = {
             source = "github";
             repo = "thedotmack/claude-mem";
+          };
+        };
+        "JuliusBrussee/caveman" = {
+          source = {
+            source = "github";
+            repo = "JuliusBrussee/caveman";
           };
         };
       };
