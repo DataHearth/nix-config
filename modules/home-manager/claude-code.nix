@@ -44,76 +44,16 @@ in
       description = "Extra JSON configuration merged into Claude Code settings.json";
     };
 
-    marketplaces = lib.mkOption {
-      type = lib.types.attrsOf jsonFormat.type;
-      default = { };
-      description = "Extra plugin marketplaces (extraKnownMarketplaces in settings.json)";
-      example = lib.literalExpression ''
-        {
-          superpowers-marketplace = {
-            source = {
-              source = "github";
-              repo = "obra/superpowers-marketplace";
-            };
-          };
-        }
-      '';
-    };
-
-    plugins = lib.mkOption {
-      type = lib.types.attrsOf lib.types.bool;
-      default = { };
-      description = "Plugins to enable/disable (enabledPlugins in settings.json)";
-      example = lib.literalExpression ''
-        {
-          "superpowers@superpowers-marketplace" = true;
-          "typescript-lsp@claude-plugins-official" = true;
-        }
-      '';
+    context = lib.mkOption {
+      type = lib.types.either lib.types.lines lib.types.path;
+      default = "";
+      description = "Global context for Claude Code, written to ~/.claude/CLAUDE.md";
     };
 
     mcpServers = lib.mkOption {
       type = lib.types.attrsOf jsonFormat.type;
       default = { };
       description = "MCP (Model Context Protocol) servers configuration";
-    };
-
-    memory = {
-      text = lib.mkOption {
-        type = lib.types.nullOr lib.types.lines;
-        default = null;
-        description = "Inline memory content for CLAUDE.md";
-      };
-
-      source = lib.mkOption {
-        type = lib.types.nullOr lib.types.path;
-        default = null;
-        description = "Path to a file containing memory content for CLAUDE.md";
-      };
-    };
-
-    rules = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
-      default = { };
-      description = "Modular rule files for Claude Code, stored in .claude/rules/";
-    };
-
-    rulesDir = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = "Path to a directory containing rule files";
-    };
-
-    skills = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
-      default = { };
-      description = "Custom skills for Claude Code, stored in .claude/skills/<name>/SKILL.md";
-    };
-
-    skillsDir = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = "Path to a directory containing skill directories";
     };
 
     extraPackages = lib.mkOption {
@@ -156,21 +96,8 @@ in
           command = toString statuslineScript;
         };
       }
-      // lib.optionalAttrs (cfg.marketplaces != { }) {
-        extraKnownMarketplaces = cfg.marketplaces;
-      }
-      // lib.optionalAttrs (cfg.plugins != { }) {
-        enabledPlugins = cfg.plugins;
-      }
       // cfg.settings;
-      inherit (cfg)
-        mcpServers
-        memory
-        rules
-        rulesDir
-        skills
-        skillsDir
-        ;
+      inherit (cfg) context mcpServers;
     };
   };
 }

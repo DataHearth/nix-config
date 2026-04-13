@@ -9,14 +9,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    elephant = {
-      url = "github:abenz1267/elephant";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    awww = {
-      url = "git+https://codeberg.org/LGFae/awww";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -45,8 +37,6 @@
       catppuccin,
       sops-nix,
       home-manager,
-      elephant,
-      awww,
       nixos-hardware,
       zen-browser,
       nix-index-database,
@@ -75,13 +65,9 @@
                 home-manager.sharedModules = [
                   catppuccin.homeModules.catppuccin
                   sops-nix.homeManagerModules.sops
-                  elephant.homeManagerModules.default
                   zen-browser.homeModules.beta
                   nix-index-database.homeModules.nix-index
                 ];
-                home-manager.extraSpecialArgs = {
-                  inherit awww;
-                };
               }
               {
                 nixpkgs.overlays = [

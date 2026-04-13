@@ -26,6 +26,8 @@
     rclone
     restic
     gpclient
+    docker-compose
+    docker-buildx
 
     # Fonts
     nerd-fonts.jetbrains-mono
@@ -46,8 +48,8 @@
     virt-manager
     spice-gtk
     proton-authenticator
-    docker-compose
-    docker-buildx
+    audacity
+    spotify
   ];
 
   programs = {

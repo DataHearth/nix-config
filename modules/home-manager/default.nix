@@ -5,6 +5,7 @@
   ./atuin.nix
   ./bat.nix
   ./direnv.nix
+  ./elephant.nix
   ./git.nix
   ./hyprland
   ./jujutsu.nix

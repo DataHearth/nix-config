@@ -135,7 +135,7 @@
     claude-code = {
       enable = true;
 
-      memory.text = ''
+      context = ''
         ## Tool Usage
         - Always prefer native Claude Code tools (Glob, Grep, Read, Edit, Write) over system binaries (find, grep, cat, sed, awk).
         - Only fall back to Bash system binaries when you need capabilities not available in native tools (e.g., file permissions, timestamps, exec).
@@ -172,14 +172,6 @@
         nodejs-slim
       ];
 
-      plugins = {
-        "feature-dev@claude-plugins-official" = true;
-        "claude-md-management@claude-plugins-official" = true;
-        "claude-code-setup@claude-plugins-official" = true;
-        "claude-mem@thedotmack" = true;
-        "caveman@caveman" = true;
-      };
-
       mcpServers = {
         github = {
           type = "http";
@@ -198,6 +190,27 @@
       };
 
       settings = {
+        enabledPlugins = {
+          "feature-dev@claude-plugins-official" = true;
+          "claude-md-management@claude-plugins-official" = true;
+          "claude-code-setup@claude-plugins-official" = true;
+          "claude-mem@thedotmack" = true;
+          "caveman@caveman" = true;
+        };
+        extraKnownMarketplaces = {
+          "thedotmack/claude-mem" = {
+            source = {
+              source = "github";
+              repo = "thedotmack/claude-mem";
+            };
+          };
+          "JuliusBrussee/caveman" = {
+            source = {
+              source = "github";
+              repo = "JuliusBrussee/caveman";
+            };
+          };
+        };
         permissions.allow = [
           "Read(//nix/store)"
           # MCP
@@ -212,21 +225,6 @@
           # Logging
           "Bash(tee /tmp/*)"
         ];
-      };
-
-      marketplaces = {
-        "thedotmack/claude-mem" = {
-          source = {
-            source = "github";
-            repo = "thedotmack/claude-mem";
-          };
-        };
-        "JuliusBrussee/caveman" = {
-          source = {
-            source = "github";
-            repo = "JuliusBrussee/caveman";
-          };
-        };
       };
     };
 

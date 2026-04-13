@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  awww,
   ...
 }:
 let
@@ -35,8 +34,7 @@ let
     };
   };
 
-  system = pkgs.stdenv.hostPlatform.system;
-  awwwPkg = awww.packages.${system}.awww;
+  awwwPkg = pkgs.awww;
   randomWallpaperScript = pkgs.writeShellScript "awww-random-wallpaper" ''
     dir="${cfg.awww.randomize.directory}"
     interval="${toString cfg.awww.randomize.interval}"
