@@ -126,7 +126,6 @@
     atuin.enable = true;
     bat.enable = true;
     direnv.enable = true;
-    nushell.enable = true;
     theme.enable = true;
     vscode.enable = true;
     yazi.enable = true;
@@ -196,6 +195,7 @@
           "claude-code-setup@claude-plugins-official" = true;
           "claude-mem@thedotmack" = true;
           "caveman@caveman" = true;
+          "andrej-karpathy-skills@karpathy-skills" = true;
         };
         extraKnownMarketplaces = {
           "thedotmack/claude-mem" = {
@@ -208,6 +208,12 @@
             source = {
               source = "github";
               repo = "JuliusBrussee/caveman";
+            };
+          };
+          "forrestchang/andrej-karpathy-skills" = {
+            source = {
+              source = "github";
+              repo = "forrestchang/andrej-karpathy-skills";
             };
           };
         };

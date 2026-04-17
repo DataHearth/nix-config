@@ -119,7 +119,7 @@ nix-config/
 │   │   ├── alacritty.nix, ashell.nix, atuin.nix, bat.nix
 │   │   ├── claude-code.nix, direnv.nix, git.nix, jujutsu.nix
 │   │   ├── hyprland/, neovim/, niri/, swaync/, waybar/, zellij/
-│   │   ├── nushell.nix, ssh.nix, theme.nix, vscode.nix
+│   │   ├── ssh.nix, theme.nix, vscode.nix
 │   │   ├── walker.nix, yazi.nix, zed-editor.nix, zsh.nix
 │   │   └── default.nix  # Module aggregator
 │   └── nixos/           # NixOS system modules
@@ -166,7 +166,6 @@ Available modules in `modules/home-manager/`:
 - **jujutsu.nix**: Jujutsu VCS configuration
 - **neovim/**: Neovim editor
 - **niri/**: Niri scrollable-tiling compositor (NixOS/standalone HM compatible)
-- **nushell.nix**: Nushell with carapace completions
 - **ssh.nix**: SSH client configuration
 - **swaync/**: Notification daemon
 - **theme.nix**: Catppuccin Macchiato theme (centralized via catppuccin/nix)

@@ -9,7 +9,6 @@
   ./git.nix
   ./hyprland
   ./jujutsu.nix
-  ./nushell.nix
   ./ssh.nix
   ./swaync
   ./theme.nix
