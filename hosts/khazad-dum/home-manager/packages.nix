@@ -50,6 +50,7 @@
     proton-authenticator
     audacity
     spotify
+    bruno
   ];
 
   programs = {
