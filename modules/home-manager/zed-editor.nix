@@ -60,7 +60,7 @@ in
         stylua
 
         # Zig
-        # zls # TODO: broken on nixpkgs-unstable
+        zls
 
         # Protobuf
         protobuf-language-server
@@ -93,14 +93,31 @@ in
         "helm"
         "docker-compose"
         "make"
+        "html"
+        "css"
+        "env"
+        "log"
+        "markdown-oxide"
+        "basher"
 
         # Version control
         "git-firefly"
+        "jjdescription"
       ];
 
       userSettings = {
         vim_mode = true;
         base_keymap = "VSCode";
+
+        # Kill all AI features (agent panel, assistant, predictions, etc.)
+        disable_ai = true;
+
+        # Use nixpkgs node instead of Zed downloading prebuilt binary
+        # (fails on NixOS due to dynamic linker mismatch)
+        node = {
+          path = lib.getExe pkgs.nodejs;
+          npm_path = "${pkgs.nodejs}/bin/npm";
+        };
 
         project_panel = {
           hide_root = true;
@@ -110,12 +127,11 @@ in
           inline.enabled = true;
         };
 
-        # Disable telemetry and AI
+        # Disable telemetry
         telemetry = {
           diagnostics = false;
           metrics = false;
         };
-        show_edit_predictions = false;
 
         # Appearance
         ui_font_size = 16;
@@ -136,6 +152,27 @@ in
         format_on_save = "on";
         linked_edits = true;
         prettier.allowed = false;
+        preview_tabs.enabled = false;
+        confirm_quit = true;
+
+        # Terminal
+        terminal = {
+          font_family = "Mononoki Nerd Font";
+          font_size = 14;
+          blinking = "on";
+          copy_on_select = true;
+        };
+
+        # Tab bar
+        tab_bar.show = true;
+        tabs = {
+          git_status = true;
+          file_icons = true;
+          close_position = "right";
+        };
+
+        # Scrollbar
+        scrollbar.show = "auto";
 
         # Exclusions
         file_scan_exclusions = [
@@ -148,6 +185,7 @@ in
 
         # Git
         git = {
+          git_gutter = "tracked_files";
           inline_blame = {
             enabled = true;
             show_commit_summary = true;
