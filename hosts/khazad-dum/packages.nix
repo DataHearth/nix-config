@@ -17,6 +17,10 @@ in
     duf
   ];
 
+  programs.steam = {
+    enable = true;
+  };
+
   systemd.tmpfiles.packages = [
     customPackages.f5vpn
     customPackages.f5epi
