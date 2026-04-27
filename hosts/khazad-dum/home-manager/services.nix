@@ -27,6 +27,7 @@ in
           --vfs-read-chunk-size 16M \
           --vfs-read-chunk-size-limit 256M \
           --buffer-size 64M \
+          --dir-cache-time 1m \
           --log-file /tmp/rclone-proton.log \
           --log-level INFO
       '';
