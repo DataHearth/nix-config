@@ -20,6 +20,16 @@
   dbus,
   cacert,
   gnutar,
+  libxkbcommon,
+  harfbuzz,
+  zstd,
+  krb5,
+  xcbutilcursor,
+  xcbutil,
+  xcbutilwm,
+  xcbutilimage,
+  xcbutilkeysyms,
+  xcbutilrenderutil,
 }:
 
 stdenv.mkDerivation {
@@ -28,7 +38,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "https://vpn.brown.edu/public/download/linux_f5epi.x86_64.rpm";
-    hash = "sha256-Xd5a2ePaFNGOAx90P+CvBdj516qP2uDVsXN9z+pc6sA=";
+    hash = "sha256-4wGMUtu1E7WRnoVLFPOASJqfWRNehxGYIZfFXUJVO88=";
   };
 
   nativeBuildInputs = [
@@ -50,6 +60,17 @@ stdenv.mkDerivation {
     freetype
     glib
     libGL
+    dbus
+    libxkbcommon
+    harfbuzz
+    zstd
+    krb5
+    xcbutilcursor
+    xcbutil
+    xcbutilwm
+    xcbutilimage
+    xcbutilkeysyms
+    xcbutilrenderutil
   ];
 
   unpackPhase = ''
@@ -67,7 +88,12 @@ stdenv.mkDerivation {
       --set QT_XKB_CONFIG_ROOT "${xkeyboard-config}/share/X11/xkb" \
       --set SSL_CERT_FILE "${cacert}/etc/ssl/certs/ca-bundle.crt" \
       --set SSL_CERT_DIR "${cacert}/etc/ssl/certs" \
-      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ dbus stdenv.cc.cc.lib ]}" \
+      --prefix LD_LIBRARY_PATH : "${
+        lib.makeLibraryPath [
+          dbus
+          stdenv.cc.cc.lib
+        ]
+      }" \
       --run "mkdir -p \$HOME/.F5Networks/Inspectors"
     ln -s $out/opt/f5/epi/f5PolicyServer $out/bin/f5PolicyServer
 
