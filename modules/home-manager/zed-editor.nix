@@ -22,56 +22,32 @@ in
 
       # LSPs, formatters, and tools available in Zed's environment
       extraPackages = with pkgs; [
-        # Nix
         nixd
         nixfmt
-
-        # Rust
         rust-analyzer
-
-        # Go
         gopls
         golangci-lint
-
-        # Python
         ruff
         pyright
-
-        # TypeScript/JavaScript
         vtsls
         eslint_d
-
-        # Web
         svelte-language-server
         tailwindcss-language-server
-
-        # YAML/JSON/TOML
         yaml-language-server
         vscode-langservers-extracted
         taplo
-
-        # Shell
         bash-language-server
         shfmt
         shellcheck
-
-        # Lua
         lua-language-server
         stylua
-
-        # Zig
         zls
-
-        # Protobuf
         protobuf-language-server
-
-        # Helm
         helm-ls
-
         nodejs
         jj-lsp
-
         dockerfile-language-server
+        markdown-oxide
       ];
 
       # Extensions from Zed's extension registry
