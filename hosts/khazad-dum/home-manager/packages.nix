@@ -51,6 +51,14 @@
     audacity
     spotify
     bruno
+    (pkgs.symlinkJoin {
+      name = "claude-desktop-fhs-wayland";
+      paths = [ claude-desktop-fhs ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/claude-desktop --set CLAUDE_USE_WAYLAND 1
+      '';
+    })
   ];
 
   programs = {
