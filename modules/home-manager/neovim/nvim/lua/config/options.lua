@@ -23,7 +23,7 @@ opt.splitbelow = true
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Enable treesitter highlighting
+-- Enable treesitter highlighting (parsers shipped via nix)
 vim.api.nvim_create_autocmd('FileType', {
   callback = function() pcall(vim.treesitter.start) end,
 })

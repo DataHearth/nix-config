@@ -39,8 +39,16 @@ in
       withRuby = true;
 
       plugins = with pkgs.vimPlugins; [
-        lazy-nvim
+        (nvim-treesitter.withPlugins (p: with p; [
+          bash c css diff dockerfile go gomod gosum
+          html javascript jsdoc json lua luadoc
+          markdown markdown_inline nix python query
+          regex rust svelte toml tsx typescript vim
+          vimdoc yaml
+        ]))
+        nvim-treesitter-textobjects
       ];
+
       extraPackages = with pkgs; [
         git
         gcc
@@ -59,14 +67,16 @@ in
         # conform.nvim
         stylua
         nixfmt
+        biome
         prettierd
-        eslint_d
         taplo
         ruff
         shfmt
-        shellcheck
         sqlfluff
         golangci-lint
+
+        # nvim-lint
+        shellcheck
 
         # LSP servers
         bash-language-server
@@ -81,6 +91,7 @@ in
         yaml-language-server
         typescript-language-server
         gopls
+        rust-analyzer
       ];
     };
   };

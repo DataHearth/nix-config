@@ -96,6 +96,7 @@ return {
 	{
 		"nvim-telescope/telescope.nvim",
 		version = "*",
+		cmd = "Telescope",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons",
@@ -129,12 +130,7 @@ return {
 		event = "VeryLazy",
 		dependencies = {
 			"MunifTanjim/nui.nvim",
-			{
-				"rcarriga/nvim-notify",
-				opts = {
-					background_colour = "#000000",
-				},
-			},
+			"folke/snacks.nvim",
 		},
 		opts = {
 			lsp = {
@@ -154,7 +150,54 @@ return {
 		},
 	},
 	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		opts = {
+			bigfile = { enabled = true },
+			quickfile = { enabled = true },
+			notifier = { enabled = true, timeout = 3000 },
+			indent = { enabled = true },
+			scope = { enabled = true },
+			words = { enabled = true },
+			bufdelete = { enabled = true },
+			dashboard = {
+				enabled = true,
+				preset = {
+					header = [[
+  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+					keys = {
+						{ icon = " ", key = "f", desc = "Find File", action = ":Telescope find_files" },
+						{ icon = " ", key = "r", desc = "Recent Files", action = ":Telescope oldfiles" },
+						{ icon = " ", key = "g", desc = "Live Grep", action = ":Telescope live_grep" },
+						{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+						{ icon = " ", key = "e", desc = "File Explorer", action = ":Yazi cwd" },
+						{ icon = " ", key = "c", desc = "Config", action = ":edit ~/.config/nix-config" },
+						{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+					},
+				},
+			},
+		},
+		keys = {
+			{ "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer (keep window)" },
+			{ "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss notifications" },
+		},
+	},
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		ft = { "markdown", "Avante" },
+		opts = {},
+	},
+	{
 		"Bekaboo/dropbar.nvim",
+		event = { "BufReadPost", "BufNewFile" },
 		dependencies = {
 			"nvim-telescope/telescope-fzf-native.nvim",
 			build = "make",
