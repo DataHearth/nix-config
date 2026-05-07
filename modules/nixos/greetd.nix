@@ -36,26 +36,28 @@ in
     services.greetd = lib.mkIf (cfg.greeter == "tuigreet") {
       enable = true;
       settings = {
-        terminal.vt = lib.mkForce 9;
         default_session = {
-          command = builtins.concatStringsSep " " ([
-            "${pkgs.tuigreet}/bin/tuigreet"
-            "--time"
-            "--time-format '%A, %B %d %Y  %H:%M'"
-            "--greeting 'Welcome back'"
-            "--remember"
-            "--remember-session"
-            "--sessions ${sessionData}/share/wayland-sessions"
-            "--asterisks"
-            "--asterisks-char '•'"
-            "--width 80"
-            "--window-padding 2"
-            "--container-padding 2"
-            "--prompt-padding 1"
-            "--theme 'border=#8aadf4;text=#cad3f5;time=#c6a0f6;container=#24273a;button=#a6da95;prompt=#f5bde6;action=#f5a97f;input=#f4dbd6'"
-          ] ++ lib.optionals (cfg.defaultSession != null) [
-            "--cmd ${cfg.defaultSession}"
-          ]);
+          command = builtins.concatStringsSep " " (
+            [
+              "${pkgs.tuigreet}/bin/tuigreet"
+              "--time"
+              "--time-format '%A, %B %d %Y  %H:%M'"
+              "--greeting 'Welcome back'"
+              "--remember"
+              "--remember-session"
+              "--sessions ${sessionData}/share/wayland-sessions"
+              "--asterisks"
+              "--asterisks-char '•'"
+              "--width 80"
+              "--window-padding 2"
+              "--container-padding 2"
+              "--prompt-padding 1"
+              "--theme 'border=#8aadf4;text=#cad3f5;time=#c6a0f6;container=#24273a;button=#a6da95;prompt=#f5bde6;action=#f5a97f;input=#f4dbd6'"
+            ]
+            ++ lib.optionals (cfg.defaultSession != null) [
+              "--cmd ${cfg.defaultSession}"
+            ]
+          );
           user = config.users.users.datahearth.name;
         };
       };
@@ -63,6 +65,17 @@ in
 
     programs.regreet = lib.mkIf (cfg.greeter == "regreet") {
       enable = true;
+      theme = {
+        name = "catppuccin-macchiato-mauve-standard";
+        package = pkgs.catppuccin-gtk.override {
+          variant = "macchiato";
+          accents = [ "mauve" ];
+        };
+      };
+      cursorTheme = {
+        name = "catppuccin-macchiato-mauve-cursors";
+        package = pkgs.catppuccin-cursors.macchiatoMauve;
+      };
     };
   };
 }

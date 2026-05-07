@@ -7,7 +7,7 @@
   # Display manager
   nixos_modules.greetd = {
     enable = true;
-    greeter = "tuigreet";
+    greeter = "regreet";
     defaultSession = "Hyprland";
   };
 
