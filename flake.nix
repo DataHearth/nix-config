@@ -4,10 +4,6 @@
     catppuccin.url = "github:catppuccin/nix";
     sops-nix.url = "github:Mic92/sops-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    claude-desktop = {
-      url = "github:aaddrick/claude-desktop-debian";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -47,7 +43,6 @@
       disko,
       lanzaboote,
       jj-lsp,
-      claude-desktop,
       ...
     }:
     {
@@ -76,7 +71,6 @@
               }
               {
                 nixpkgs.overlays = [
-                  claude-desktop.overlays.default
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
                     # claude-code = super.callPackage ./packages/claude-code.nix { };

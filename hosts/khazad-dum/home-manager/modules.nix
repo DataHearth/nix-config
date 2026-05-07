@@ -131,18 +131,9 @@
     yazi.enable = true;
     zed-editor.enable = false;
     zellij.enable = true;
+
     claude-code = {
       enable = true;
-
-      context = ''
-        ## Tool Usage
-        - Always prefer native Claude Code tools (Glob, Grep, Read, Edit, Write) over system binaries (find, grep, cat, sed, awk).
-        - Only fall back to Bash system binaries when you need capabilities not available in native tools (e.g., file permissions, timestamps, exec).
-
-        ## Bash Tool
-        - Never use `2>&1`, `2>/dev/null`, or other stderr redirections — the Bash tool captures both stdout and stderr by default.
-        - If a command produces verbose output that may be truncated, use `tee /tmp/<descriptive-name>.log` to preserve the full output for later reading.
-      '';
 
       extraPackages = with pkgs; [
         # required for claude-mem
@@ -166,9 +157,6 @@
               --set UV_PYTHON_PREFERENCE only-system
           '';
         })
-
-        # required by caveman
-        nodejs-slim
       ];
 
       mcpServers = {
@@ -191,10 +179,7 @@
       settings = {
         enabledPlugins = {
           "feature-dev@claude-plugins-official" = true;
-          "claude-md-management@claude-plugins-official" = true;
-          "claude-code-setup@claude-plugins-official" = true;
           "claude-mem@thedotmack" = true;
-          "caveman@caveman" = true;
           "andrej-karpathy-skills@karpathy-skills" = true;
         };
         extraKnownMarketplaces = {
@@ -202,12 +187,6 @@
             source = {
               source = "github";
               repo = "thedotmack/claude-mem";
-            };
-          };
-          "JuliusBrussee/caveman" = {
-            source = {
-              source = "github";
-              repo = "JuliusBrussee/caveman";
             };
           };
           "forrestchang/andrej-karpathy-skills" = {
