@@ -6,7 +6,8 @@
 }:
 let
   cfg = config.home_modules.zed-editor;
-
+  shared = import ../../lib { inherit pkgs lib; };
+  inherit (shared) lsp;
 in
 {
   options.home_modules.zed-editor = {
@@ -19,36 +20,20 @@ in
       mutableUserSettings = false;
       mutableUserTasks = false;
       mutableUserDebug = false;
+      mutableUserKeymaps = false;
+
+      userKeymaps = [
+        {
+          bindings = {
+            "ctrl-shift-b" = "workspace::ToggleLeftDock";
+          };
+        }
+      ];
 
       # LSPs, formatters, and tools available in Zed's environment
-      extraPackages = with pkgs; [
-        nixd
-        nixfmt
-        rust-analyzer
-        gopls
-        golangci-lint
-        ruff
-        pyright
-        vtsls
-        eslint_d
-        svelte-language-server
-        tailwindcss-language-server
-        yaml-language-server
-        vscode-langservers-extracted
-        taplo
-        bash-language-server
-        shfmt
-        shellcheck
-        lua-language-server
-        stylua
-        zls
-        protobuf-language-server
-        helm-ls
-        nodejs
-        jj-lsp
-        dockerfile-language-server
-        markdown-oxide
-      ];
+      extraPackages = lib.concatLists (
+        map (l: l.packages ++ l.deps) (builtins.attrValues lsp)
+      );
 
       # Extensions from Zed's extension registry
       extensions = [
@@ -85,8 +70,20 @@ in
         vim_mode = true;
         base_keymap = "VSCode";
 
-        # Kill all AI features (agent panel, assistant, predictions, etc.)
-        disable_ai = true;
+        agent_servers = {
+          claude-acp = {
+            type = "registry";
+            env = {
+              CLAUDE_CODE_EXECUTABLE = lib.getExe pkgs.claude-code;
+            };
+          };
+        };
+
+        # Kill Zed's own AI (Zeta predictions, cloud assistant). Keep agent panel for claude-code.
+        edit_predictions = {
+          provider = "none";
+        };
+        show_edit_predictions = false;
 
         # Use nixpkgs node instead of Zed downloading prebuilt binary
         # (fails on NixOS due to dynamic linker mismatch)
@@ -176,6 +173,12 @@ in
 
         # LSP settings
         lsp = {
+          jj_lsp = {
+            binary = {
+              path = lib.getExe pkgs.jj-lsp;
+              arguments = [ ];
+            };
+          };
           rust-analyzer = {
             initialization_options = {
               check.command = "clippy";

@@ -129,7 +129,7 @@
     theme.enable = true;
     vscode.enable = true;
     yazi.enable = true;
-    zed-editor.enable = true;
+    zed-editor.enable = false;
     zellij.enable = true;
     claude-code = {
       enable = true;
