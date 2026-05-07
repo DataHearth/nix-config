@@ -27,8 +27,8 @@ layout {
                 command_git_branch_interval    "10"
                 command_git_branch_rendermode  "static"
 
-                datetime        "#[fg=#6e738d,bold] {format} "
-                datetime_format "%A, %d %b %Y %H:%M"
+                datetime          "#[fg=#6e738d,bold] {format} "
+                datetime_format   "%A, %d %b %Y %H:%M"
                 datetime_timezone "Europe/Paris"
             }
         }
@@ -36,6 +36,10 @@ layout {
 
     tab name="Claude" focus=true {
         pane command="claude"
+    }
+
+    tab name="Nvim" {
+      pane command="nvim"
     }
 
     tab name="CLI" {

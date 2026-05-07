@@ -42,9 +42,8 @@ keybinds clear-defaults=true {
 
       // === Session ===
       bind "Alt s" {
-          LaunchOrFocusPlugin "session-manager" {
+          LaunchPlugin "session-manager" {
               floating true
-              move_to_focused_tab true
           }
       }
 

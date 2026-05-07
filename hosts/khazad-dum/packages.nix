@@ -17,8 +17,8 @@ in
     duf
   ];
 
-  programs.steam = {
-    enable = true;
+  programs = {
+    steam.enable = true;
   };
 
   systemd.tmpfiles.packages = [

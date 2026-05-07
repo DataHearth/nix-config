@@ -219,7 +219,6 @@ in
           [
             "${mainMod}, Return, exec, ${terminal}"
             "${mainMod}, Q, killactive,"
-            "${mainMod}, M, exit,"
             "${mainMod}, E, exec, ${pkgs.nautilus}/bin/nautilus"
             "${mainMod}, V, togglefloating,"
             "${mainMod}, C, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.walker}/bin/walker --dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
@@ -267,6 +266,7 @@ in
             "${mainMod} SHIFT, TAB, changegroupactive, b"
             "${mainMod} SHIFT, F, fullscreen"
             "${mainMod}, L, exec, loginctl lock-session"
+            "${mainMod} SHIFT, L, exec, hyprctl dispatch exit"
             "${mainMod}, I, exec, ${lib.getExe config.home_modules.hyprland.hypridle.toggleScript}"
             "${mainMod}, S, exec, ${lib.getExe config.home_modules.hyprland.hypridle.sleepScript}"
             "${mainMod} SHIFT, S, exec, systemctl poweroff"

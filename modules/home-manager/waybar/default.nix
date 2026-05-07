@@ -67,9 +67,11 @@ in
             orientation = "horizontal";
             modules = [
               "custom/hypridle"
-            ] ++ lib.optionals hasMultipleLayouts [
+            ]
+            ++ lib.optionals hasMultipleLayouts [
               "hyprland/language"
-            ] ++ [
+            ]
+            ++ [
               "custom/notification"
             ];
           };
@@ -140,7 +142,11 @@ in
 
           backlight = {
             format = "{icon}";
-            format-icons = [ "󰃞" "󰃟" "󰃠" ];
+            format-icons = [
+              "󰃞"
+              "󰃟"
+              "󰃠"
+            ];
             tooltip-format = "{percent}%";
             scroll-step = 5;
             on-scroll-up = "${pkgs.brightnessctl}/bin/brightnessctl -e4 -n2 set 5%+";
@@ -207,14 +213,16 @@ in
               "󰁹"
             ];
             tooltip-format = "{timeTo} ({power} W)";
-            on-click = let
-              script = pkgs.writeShellScript "power-profile-menu" ''
-                choice=$(printf "󰌪  power-saver\n󰛲  balanced\n󰓅  performance" | walker -d --nosearch --height 3)
-                [ -z "$choice" ] && exit 0
-                profile=$(echo "$choice" | sed 's/^[^ ]* //')
-                powerprofilesctl set "$profile"
-              '';
-            in "${script}";
+            on-click =
+              let
+                script = pkgs.writeShellScript "power-profile-menu" ''
+                  choice=$(printf "󰌪  power-saver\n󰛲  balanced\n󰓅  performance" | walker -d --nosearch --height 3)
+                  [ -z "$choice" ] && exit 0
+                  profile=$(echo "$choice" | sed 's/^[^ ]*  //')
+                  powerprofilesctl set "$profile"
+                '';
+              in
+              "${script}";
           };
 
           "hyprland/language" = lib.mkIf hasMultipleLayouts {
