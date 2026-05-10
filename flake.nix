@@ -4,6 +4,7 @@
     catppuccin.url = "github:catppuccin/nix";
     sops-nix.url = "github:Mic92/sops-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    zjstatus.url = "github:dj95/zjstatus";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -43,6 +44,7 @@
       disko,
       lanzaboote,
       jj-lsp,
+      zjstatus,
       ...
     }:
     {
@@ -73,6 +75,7 @@
                 nixpkgs.overlays = [
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
+                    zjstatus = zjstatus.packages.${system}.default;
                     # claude-code = super.callPackage ./packages/claude-code.nix { };
                   })
                 ];
