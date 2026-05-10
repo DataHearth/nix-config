@@ -1,7 +1,7 @@
 [
   ./alacritty.nix
   ./ashell.nix
-  ./claude-code.nix
+  ./claude-code
   ./atuin.nix
   ./bat.nix
   ./direnv.nix

@@ -8,6 +8,11 @@ let
   cfg = config.home_modules.claude-code;
   jsonFormat = pkgs.formats.json { };
 
+  globalContext = builtins.readFile ./context.md;
+  userContext =
+    if builtins.isPath cfg.context then builtins.readFile cfg.context else cfg.context;
+  composedContext = globalContext + lib.optionalString (userContext != "") ("\n" + userContext);
+
   statuslineScript = pkgs.writeShellScript "claude-statusline" ''
     input=$(cat)
 
@@ -79,7 +84,7 @@ in
           inherit (pkgs.claude-code) meta;
         }
       );
-      settings = {
+      settings = lib.recursiveUpdate {
         attribution = {
           commit = "";
           pr = "";
@@ -89,15 +94,20 @@ in
           "Read(./.env.*)"
           "Read(./secrets/**)"
           "Read(./**/credentials*)"
+          # Destructive jj ops — paired with the broad `Bash(jj *)` allow in host configs.
+          "Bash(jj git push*)"
+          "Bash(jj op abandon*)"
+          "Bash(jj workspace forget*)"
         ];
         cleanupPeriodDays = 7;
         statusLine = {
           type = "command";
           command = toString statuslineScript;
         };
-      }
-      // cfg.settings;
-      inherit (cfg) context mcpServers;
+      } cfg.settings;
+      context = composedContext;
+      skills.jj = ./skills/jj;
+      inherit (cfg) mcpServers;
     };
   };
 }
