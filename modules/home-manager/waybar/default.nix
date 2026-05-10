@@ -212,13 +212,25 @@ in
               "󰂀"
               "󰁹"
             ];
-            tooltip-format = "{timeTo} ({power} W)";
+            tooltip-format = "{timeTo}";
             on-click =
               let
                 script = pkgs.writeShellScript "power-profile-menu" ''
-                  choice=$(printf "󰌪  power-saver\n󰛲  balanced\n󰓅  performance" | walker -d --nosearch --height 3)
+                  current=$(powerprofilesctl get)
+                  entry() {
+                    if [ "$2" = "$current" ]; then
+                      printf '%s   %s   ●\n' "$1" "$2"
+                    else
+                      printf '%s   %s\n' "$1" "$2"
+                    fi
+                  }
+                  choice=$({
+                    entry "󰌪" "power-saver"
+                    entry "󰛲" "balanced"
+                    entry "󰓅" "performance"
+                  } | walker -d --nosearch --height 3)
                   [ -z "$choice" ] && exit 0
-                  profile=$(echo "$choice" | sed 's/^[^ ]*  //')
+                  profile=$(echo "$choice" | sed 's/^[^ ]*   //; s/   ●$//')
                   powerprofilesctl set "$profile"
                 '';
               in
