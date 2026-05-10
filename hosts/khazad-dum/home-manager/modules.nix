@@ -134,30 +134,6 @@
     claude-code = {
       enable = true;
 
-      extraPackages = with pkgs; [
-        # required for claude-mem
-        bun
-        nodejs-slim
-        python313
-        # uvx wrapper: inject native libs so uv-installed wheels (numpy, chromadb) find libstdc++/libz
-        # and force uv to use system Python instead of its own dynamically-linked managed copy
-        (symlinkJoin {
-          name = "uv-fhs";
-          paths = [ uv ];
-          nativeBuildInputs = [ makeWrapper ];
-          postBuild = ''
-            wrapProgram $out/bin/uvx \
-              --prefix LD_LIBRARY_PATH : "${
-                lib.makeLibraryPath [
-                  stdenv.cc.cc.lib
-                  zlib
-                ]
-              }" \
-              --set UV_PYTHON_PREFERENCE only-system
-          '';
-        })
-      ];
-
       mcpServers = {
         github = {
           type = "http";
@@ -178,29 +154,12 @@
       settings = {
         enabledPlugins = {
           "feature-dev@claude-plugins-official" = true;
-          "claude-mem@thedotmack" = true;
-          "andrej-karpathy-skills@karpathy-skills" = true;
-        };
-        extraKnownMarketplaces = {
-          "thedotmack/claude-mem" = {
-            source = {
-              source = "github";
-              repo = "thedotmack/claude-mem";
-            };
-          };
-          "forrestchang/andrej-karpathy-skills" = {
-            source = {
-              source = "github";
-              repo = "forrestchang/andrej-karpathy-skills";
-            };
-          };
         };
         permissions.allow = [
           "Read(//nix/store)"
           # MCP
           "mcp__plugin_claude-code-home-manager_github__*"
           "mcp__plugin_claude-code-home-manager_context7__*"
-          "mcp__plugin_claude-mem_mcp-search__*"
           # Nix
           "Bash(nix eval *)"
           "Bash(nix search *)"
@@ -208,6 +167,30 @@
           "Bash(nix --version)"
           # Logging
           "Bash(tee /tmp/*)"
+          # jj — read-only inspection
+          "Bash(jj st*)"
+          "Bash(jj status*)"
+          "Bash(jj log*)"
+          "Bash(jj diff*)"
+          "Bash(jj show*)"
+          "Bash(jj evolog*)"
+          "Bash(jj op log*)"
+          "Bash(jj op show*)"
+          "Bash(jj files*)"
+          "Bash(jj cat*)"
+          "Bash(jj file annotate*)"
+          "Bash(jj file show*)"
+          "Bash(jj file list*)"
+          "Bash(jj bookmark list*)"
+          "Bash(jj git remote list*)"
+          "Bash(jj config get*)"
+          "Bash(jj config list*)"
+          "Bash(jj root*)"
+          "Bash(jj help*)"
+          "Bash(jj --version)"
+          "Bash(jj version)"
+          # jj — remote read
+          "Bash(jj git fetch*)"
         ];
       };
     };
