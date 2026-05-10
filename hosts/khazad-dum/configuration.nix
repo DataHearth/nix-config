@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   ...
 }:
 {
@@ -16,6 +17,19 @@
     ./systemd.nix
   ]
   ++ (import ../../modules/nixos);
+
+  boot.kernelModules = [ "iptable_mangle" ];
+  boot.kernelPatches = [
+    {
+      name = "enable-iptables-legacy-mangle";
+      patch = null;
+      structuredExtraConfig = with lib.kernel; {
+        NETFILTER_XTABLES_LEGACY = yes;
+        IP_NF_IPTABLES_LEGACY = module;
+        IP_NF_MANGLE = module;
+      };
+    }
+  ];
 
   sops = {
     defaultSopsFile = ../../secrets/secrets.yml;
