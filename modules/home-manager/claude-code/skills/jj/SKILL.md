@@ -1,6 +1,6 @@
 ---
 name: jj
-description: Jujutsu (jj) command reference for version control. Use whenever a task involves VCS operations — status, log, diff, commit, branch, push, pull, fetch, rebase, undo, conflict resolution — instead of git. The user enforces jj over git everywhere; consult this skill for the jj equivalent of any git workflow before running commands. Triggers on mentions of git, commit, branch, push, pull, rebase, log, diff, status, stash, checkout, reset, merge, history.
+description: Use for any task that inspects or rewrites this repository's history or working copy — even when the user never says "git" or "jj". Trigger when they want to: commit, describe, or amend work; split, reorder, squash, or move changes within a stack; absorb loose hunks into the ancestor that introduced them; restore a file's contents from an earlier change; create or move bookmarks/branches; fetch, or fix a push that reports "nothing to push"; rebase a stack and resolve the resulting conflicts in place; or inspect the operation log to undo a bad rebase or operation. This user mandates Jujutsu (jj) over git for all such work — consult this skill for the jj approach before acting. Do NOT trigger for merely reading dependency metadata (flake.lock pinned revisions, an upstream project's git submodules or tags), diffing NixOS generations, or gh CLI PR/issue tasks — those are not local version-control operations.
 ---
 
 # Jujutsu (jj) — replaces git for this user
@@ -35,8 +35,11 @@ LFS/submodules, CI scripts already shelling out to git, the `gh` CLI).
 ## Running jj from Claude Code
 
 - jj pages its output by default. For any command whose output you need to
-  capture (log, diff, show, op log), pass `--no-pager` or set `JJ_PAGER=cat`
-  in the environment, otherwise the tool result is empty.
+  capture (log, diff, show, op log), pass `--no-pager` (preferably right
+  after `jj`: `jj --no-pager log`), otherwise the tool result is empty. Do
+  **not** use `JJ_PAGER=cat jj …`: the env-var prefix is not in the harness
+  allowlist and will prompt every single time. Only the plain `jj <cmd>`
+  and `jj --no-pager <cmd>` forms are pre-approved.
 - jj snapshots the working copy on every command. After editing files, the
   next `jj st` or `jj diff` already reflects the change. No explicit add.
 - **Mutating commands are not pre-approved** in the harness (`commit`,

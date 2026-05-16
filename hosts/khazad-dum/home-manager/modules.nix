@@ -197,6 +197,21 @@
           "Bash(jj help*)"
           "Bash(jj --version)"
           "Bash(jj version)"
+          # jj --no-pager — read-only inspection (skill prefers this form)
+          "Bash(jj --no-pager st*)"
+          "Bash(jj --no-pager status*)"
+          "Bash(jj --no-pager log*)"
+          "Bash(jj --no-pager diff*)"
+          "Bash(jj --no-pager show*)"
+          "Bash(jj --no-pager evolog*)"
+          "Bash(jj --no-pager op log*)"
+          "Bash(jj --no-pager op show*)"
+          "Bash(jj --no-pager files*)"
+          "Bash(jj --no-pager cat*)"
+          "Bash(jj --no-pager file annotate*)"
+          "Bash(jj --no-pager file show*)"
+          "Bash(jj --no-pager file list*)"
+          "Bash(jj --no-pager bookmark list*)"
           # jj — remote read
           "Bash(jj git fetch*)"
         ];
