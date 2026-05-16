@@ -151,6 +151,14 @@
         };
       };
 
+      lspServers = {
+        svelte = {
+          command = "${pkgs.svelte-language-server}/bin/svelteserver";
+          args = [ "--stdio" ];
+          extensionToLanguage.".svelte" = "svelte";
+        };
+      };
+
       settings = {
         enabledPlugins = {
           "feature-dev@claude-plugins-official" = true;

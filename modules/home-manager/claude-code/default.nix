@@ -61,6 +61,25 @@ in
       description = "MCP (Model Context Protocol) servers configuration";
     };
 
+    lspServers = lib.mkOption {
+      type = lib.types.attrsOf jsonFormat.type;
+      default = { };
+      description = ''
+        LSP (Language Server Protocol) servers exposed to Claude Code. Each
+        entry is bundled into an auto-loaded plugin (the same mechanism the
+        official `gopls`/`pyright` LSP plugins use), giving Claude live
+        diagnostics, go-to-definition and references. `command` should be an
+        absolute store path so the binary need not be on PATH.
+      '';
+      example = {
+        svelte = {
+          command = "/nix/store/.../bin/svelteserver";
+          args = [ "--stdio" ];
+          extensionToLanguage.".svelte" = "svelte";
+        };
+      };
+    };
+
     extraPackages = lib.mkOption {
       type = lib.types.listOf lib.types.package;
       default = [ ];
@@ -107,7 +126,7 @@ in
       } cfg.settings;
       context = composedContext;
       skills.jj = ./skills/jj;
-      inherit (cfg) mcpServers;
+      inherit (cfg) mcpServers lspServers;
     };
   };
 }
