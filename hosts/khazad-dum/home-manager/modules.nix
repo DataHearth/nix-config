@@ -121,28 +121,28 @@
 
     ssh = {
       enable = true;
-      matchBlocks =
+      settings =
         let
           keyNamePrefix = "id_ed25519";
         in
         {
           "github.com" = {
-            hostname = "github.com";
-            user = "git";
-            identityFile = "~/.ssh/${keyNamePrefix}_git";
-            identitiesOnly = true;
+            HostName = "github.com";
+            User = "git";
+            IdentityFile = "~/.ssh/${keyNamePrefix}_git";
+            IdentitiesOnly = true;
           };
           "gitlab.com" = {
-            hostname = "gitlab.com";
-            user = "git";
-            identityFile = "~/.ssh/${keyNamePrefix}_git";
-            identitiesOnly = true;
+            HostName = "gitlab.com";
+            User = "git";
+            IdentityFile = "~/.ssh/${keyNamePrefix}_git";
+            IdentitiesOnly = true;
           };
           "valinor" = {
-            hostname = "valinor";
-            user = "datahearth";
-            identityFile = "~/.ssh/${keyNamePrefix}";
-            identitiesOnly = true;
+            HostName = "valinor";
+            User = "datahearth";
+            IdentityFile = "~/.ssh/${keyNamePrefix}";
+            IdentitiesOnly = true;
           };
         };
     };

@@ -21,10 +21,10 @@ in
       description = "Add automatically private SSH keys to ssh-agent";
     };
 
-    matchBlocks = lib.mkOption {
+    settings = lib.mkOption {
       type = lib.types.attrs;
       default = { };
-      description = "SSH match blocks for host-specific configuration";
+      description = "SSH host configuration blocks (see programs.ssh.settings)";
     };
   };
 
@@ -32,11 +32,12 @@ in
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
+      settings = {
         "*" = {
-          addKeysToAgent = cfg.addKeysToAgent;
+          AddKeysToAgent = cfg.addKeysToAgent;
         };
-      } // cfg.matchBlocks;
+      }
+      // cfg.settings;
     };
   };
 }
