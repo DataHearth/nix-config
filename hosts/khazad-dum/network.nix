@@ -38,6 +38,7 @@
             connection = {
               id = "Cirdan";
               type = "wifi";
+              autoconnect = "false";
             };
             wifi = {
               ssid = "Cirdan";
@@ -55,6 +56,12 @@
             ipv6 = {
               method = "auto";
               ignore-auto-dns = "true";
+              # Bbox advertises a 1500 link MTU via RA, but Bouygues' native
+              # IPv6 path only carries 1420 bytes and ICMPv6 "Packet Too Big"
+              # is filtered upstream, so PMTUD blackholes: anything >1420
+              # silently dies and dual-stack sites time out. Clamp to the
+              # measured path MTU so the kernel never sends oversized packets.
+              mtu = "1420";
             };
           };
           cirdan-plus = {
@@ -79,6 +86,9 @@
             ipv6 = {
               method = "auto";
               ignore-auto-dns = "true";
+              # See Cirdan above: clamp IPv6 MTU to the Bbox path MTU (1420)
+              # to work around the upstream PMTUD blackhole.
+              mtu = "1420";
             };
           };
         };
