@@ -17,15 +17,12 @@
     wget
     xh
     zip
-    git-filter-repo
-    nixpkgs-review
     playerctl
     brightnessctl
     wl-clipboard
     sops
     rclone
     restic
-    gpclient
     docker-compose
     docker-buildx
 
@@ -37,16 +34,12 @@
     noto-fonts-cjk-sans # support for chinese/japanese characters
 
     # GUI
-    obs-studio
     (signal-desktop.override {
       commandLineArgs = ''--password-store="gnome-libsecret" --use-tray-icon'';
     })
     (discord.override { commandLineArgs = "--ozone-platform=wayland"; })
     vlc
-    obsidian
     rquickshare
-    virt-manager
-    spice-gtk
     proton-authenticator
     audacity
     spotify
