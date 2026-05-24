@@ -27,6 +27,9 @@ map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Diag loclist" })
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>W", "<cmd>wa<cr>", { desc = "Save all" })
 
+-- LSP (command defined in config/lsp.lua)
+map("n", "<leader>L", "<cmd>LspRestart<cr>", { desc = "Restart LSP" })
+
 -- Keep cursor centered
 map("n", "<C-d>", "<C-d>zz", { desc = "Half-page down (centered)" })
 map("n", "<C-u>", "<C-u>zz", { desc = "Half-page up (centered)" })

@@ -93,3 +93,58 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 	end,
 })
+
+-- :LspRestart [name ...] — stop and relaunch LSP clients (all attached by
+-- default, or only the named ones). We use the native vim.lsp API (no
+-- nvim-lspconfig), so this replicates its command: stop the clients, wait for
+-- the processes to exit, then re-fire FileType so vim.lsp.enable() relaunches
+-- them. Config edits live in lsp/*.lua and are read at startup, so this
+-- restarts servers with the *running* config (good for crashes/re-analysis);
+-- applying config changes still needs a rebuild + fresh nvim.
+vim.api.nvim_create_user_command("LspRestart", function(opts)
+	local clients = vim.lsp.get_clients()
+	if #opts.fargs > 0 then
+		clients = vim.tbl_filter(function(c)
+			return vim.tbl_contains(opts.fargs, c.name)
+		end, clients)
+	end
+	if #clients == 0 then
+		vim.notify("LspRestart: no matching clients", vim.log.levels.WARN)
+		return
+	end
+
+	local buffers = {}
+	for _, client in ipairs(clients) do
+		for buf in pairs(client.attached_buffers) do
+			buffers[buf] = true
+		end
+	end
+
+	vim.lsp.stop_client(clients)
+
+	-- stop_client is async; poll until every client has exited before
+	-- re-attaching, otherwise vim.lsp.start may reuse a half-stopped client.
+	local timer = assert(vim.uv.new_timer())
+	timer:start(100, 100, vim.schedule_wrap(function()
+		for _, client in ipairs(clients) do
+			if not client:is_stopped() then
+				return
+			end
+		end
+		timer:stop()
+		timer:close()
+		for buf in pairs(buffers) do
+			if vim.api.nvim_buf_is_valid(buf) then
+				vim.api.nvim_exec_autocmds("FileType", { buffer = buf })
+			end
+		end
+	end))
+end, {
+	nargs = "*",
+	desc = "Restart LSP client(s)",
+	complete = function()
+		return vim.tbl_map(function(c)
+			return c.name
+		end, vim.lsp.get_clients())
+	end,
+})
