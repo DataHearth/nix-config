@@ -5,8 +5,11 @@
   dpkg,
   autoPatchelfHook,
   makeWrapper,
+  runCommand,
   xkeyboard-config,
   openssl,
+  libxml2,
+  libxslt,
   libx11,
   libxrender,
   libxext,
@@ -55,11 +58,17 @@
 
 stdenv.mkDerivation {
   pname = "f5vpn";
-  version = "7262.0.0.2";
+  version = "7261.2025.1009.1";
 
+  # Sourced from Airbus's own BIG-IP APM portal so the client matches the
+  # exact build their gateway (and EPI posture check) expects. Earlier
+  # builds scavenged from third-party university portals (MTU's 7262.0.0.2)
+  # emitted rtnetlink route attrs that kernel 6.18.34's strict validation
+  # rejected ("netlink: 'svpn': attribute type N has an invalid length"),
+  # flapping the tunnel. The public /download/ endpoint needs no auth.
   src = fetchurl {
-    url = "https://vpn-mgmt.it.mtu.edu/public/download/linux_f5vpn.x86_64.deb";
-    hash = "sha256-W9mDSeW4PSfqCDlUPYg84vjZ5Uxc7mciC4uip+xT6g0=";
+    url = "https://axess.airbus.com/public/download/linux_f5vpn.x86_64.deb";
+    hash = "sha256-LKkzN+oQQt8R5dNb85A/Bf8dcOiuJtFI1ob/98rQpxQ=";
   };
 
   nativeBuildInputs = [
@@ -71,6 +80,16 @@ stdenv.mkDerivation {
   buildInputs = [
     stdenv.cc.cc.lib
     openssl
+    # Qt5WebKit (bundled in 7261.2025.1009.1, absent from the older client)
+    # needs libxslt.so.1 and libxml2.so.2. nixpkgs libxml2 2.15 ships soname
+    # libxml2.so.16 (meson build), so expose a .so.2 compat symlink — libxml2
+    # holds a stable 2.x ABI, and WebKit is legacy here anyway (the client
+    # uses QtWebEngine for the logon webview).
+    libxslt
+    (runCommand "libxml2-so2-compat" { } ''
+      mkdir -p $out/lib
+      ln -s ${lib.getLib libxml2}/lib/libxml2.so.16 $out/lib/libxml2.so.2
+    '')
     libx11
     libxrender
     libxext

@@ -34,11 +34,14 @@
 
 stdenv.mkDerivation {
   pname = "f5epi";
-  version = "7183.2020.0826.1";
+  version = "7261.2025.1009.1";
 
+  # Matched to the f5vpn client above (same 7261.2025.1009.1 release) from
+  # Airbus's own portal. The previous pin was a 2020 build (7183.2020.0826.1)
+  # scavenged from Brown's portal, badly out of step with the VPN client.
   src = fetchurl {
-    url = "https://vpn.brown.edu/public/download/linux_f5epi.x86_64.rpm";
-    hash = "sha256-4wGMUtu1E7WRnoVLFPOASJqfWRNehxGYIZfFXUJVO88=";
+    url = "https://axess.airbus.com/public/download/linux_f5epi.x86_64.rpm";
+    hash = "sha256-Xd5a2ePaFNGOAx90P+CvBdj516qP2uDVsXN9z+pc6sA=";
   };
 
   nativeBuildInputs = [
