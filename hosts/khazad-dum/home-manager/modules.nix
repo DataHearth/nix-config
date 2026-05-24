@@ -196,14 +196,44 @@
       display_manager = true;
       status_bar = "waybar";
       window_rules = [
-        "workspace 1, match:class Alacritty"
-        "workspace 2, match:class zen-beta, match:initial_title Zen Browser"
-        "workspace 3, match:class dev.zed.Zed"
-        "workspace 3, match:class code, match:initial_title Visual Studio Code"
-        "workspace 4, match:class discord"
-        "workspace 4, match:class signal"
-        "workspace 6, match:class spotify"
-        "workspace 9, match:class F5 VPN"
+        {
+          workspace = 1;
+          match.class = "Alacritty";
+        }
+        {
+          workspace = 2;
+          match = {
+            class = "zen-beta";
+            initial_title = "Zen Browser";
+          };
+        }
+        {
+          workspace = 3;
+          match.class = "dev.zed.Zed";
+        }
+        {
+          workspace = 3;
+          match = {
+            class = "code";
+            initial_title = "Visual Studio Code";
+          };
+        }
+        {
+          workspace = 4;
+          match.class = "discord";
+        }
+        {
+          workspace = 4;
+          match.class = "signal";
+        }
+        {
+          workspace = 6;
+          match.class = "Spotify";
+        }
+        {
+          workspace = 9;
+          match.class = "F5 VPN";
+        }
       ];
       exec_once = [
         "signal-desktop --start-in-tray"

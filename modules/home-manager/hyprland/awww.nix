@@ -57,7 +57,9 @@ in
   config = lib.mkIf cfg.awww.enable {
     home.packages = [ awwwPkg ];
 
-    wayland.windowManager.hyprland.settings.exec-once = [
+    # Fed into the hyprland module's `hl.on("hyprland.start", ...)` autostart
+    # hook; Lua has no `exec-once` config key (the hyphen isn't a valid call).
+    home_modules.hyprland.exec_once = [
       "${awwwPkg}/bin/awww-daemon"
     ]
     ++ (
