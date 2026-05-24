@@ -18,6 +18,7 @@
   ./yazi.nix
   ./zed-editor.nix
   ./zellij
+  ./zen-browser.nix
   ./zsh.nix
   ./neovim
 ]
