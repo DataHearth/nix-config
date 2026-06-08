@@ -5,6 +5,17 @@
   ...
 }:
 {
+  # zsh-completion-sync enables its "no-caching" optimization by default,
+  # which points ZSH_COMPDUMP/_comp_dumpfile at /dev/null. oh-my-zsh's
+  # `omz reload` then runs `rm -f /dev/null` and fails with "cannot remove
+  # /dev/null". Disabling no-caching gives each shell a real, removable
+  # per-shell compdump (under $TMPDIR) so reload works cleanly. The zstyle
+  # must be set before the plugin is sourced (home-manager sources zsh
+  # plugins at initContent order 900).
+  programs.zsh.initContent = lib.mkOrder 850 ''
+    zstyle ':completion-sync:compinit:optimizations:no-caching' enabled false
+  '';
+
   home_modules = {
     alacritty.enable = true;
     atuin.enable = true;
