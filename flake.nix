@@ -30,6 +30,10 @@
       url = "github:nilskch/jj-lsp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    claude-desktop = {
+      url = "github:aaddrick/claude-desktop-debian";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -45,6 +49,7 @@
       lanzaboote,
       jj-lsp,
       zjstatus,
+      claude-desktop,
       ...
     }:
     {
@@ -76,6 +81,23 @@
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
                     zjstatus = zjstatus.packages.${system}.default;
+                    claude-desktop =
+                      let
+                        cd = claude-desktop.packages.${system}.claude-desktop-fhs;
+                      in
+                      # Force Wayland (ozone). The launcher's auto-detect leaves it on
+                      # XWayland under Hyprland, which bitmap-upscales to a blurry window
+                      # on fractional scaling. CLAUDE_USE_WAYLAND=1 makes it pass
+                      # --ozone-platform=wayland (inherited into the FHS sandbox).
+                      super.symlinkJoin {
+                        name = "claude-desktop-wayland";
+                        paths = [ cd ];
+                        nativeBuildInputs = [ super.makeWrapper ];
+                        postBuild = ''
+                          wrapProgram $out/bin/claude-desktop \
+                            --set CLAUDE_USE_WAYLAND 1
+                        '';
+                      };
                     # claude-code = super.callPackage ./packages/claude-code.nix { };
                   })
                 ];
