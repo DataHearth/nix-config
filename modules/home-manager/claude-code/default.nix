@@ -9,8 +9,7 @@ let
   jsonFormat = pkgs.formats.json { };
 
   globalContext = builtins.readFile ./context.md;
-  userContext =
-    if builtins.isPath cfg.context then builtins.readFile cfg.context else cfg.context;
+  userContext = if builtins.isPath cfg.context then builtins.readFile cfg.context else cfg.context;
   composedContext = globalContext + lib.optionalString (userContext != "") ("\n" + userContext);
 
   statuslineScript = pkgs.writeShellScript "claude-statusline" ''
@@ -108,16 +107,21 @@ in
           commit = "";
           pr = "";
         };
-        permissions.deny = [
-          "Read(./.env)"
-          "Read(./.env.*)"
-          "Read(./secrets/**)"
-          "Read(./**/credentials*)"
-          # Destructive jj ops — paired with the broad `Bash(jj *)` allow in host configs.
-          "Bash(jj git push*)"
-          "Bash(jj op abandon*)"
-          "Bash(jj workspace forget*)"
-        ];
+        permissions = {
+          allow = [
+            "Read(./env.example)"
+          ];
+          deny = [
+            "Read(./.env)"
+            "Read(./.env.*)"
+            "Read(./secrets/**)"
+            "Read(./**/credentials*)"
+            # Destructive jj ops — paired with the broad `Bash(jj *)` allow in host configs.
+            "Bash(jj git push*)"
+            "Bash(jj op abandon*)"
+            "Bash(jj workspace forget*)"
+          ];
+        };
         cleanupPeriodDays = 7;
         statusLine = {
           type = "command";
