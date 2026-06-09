@@ -9,7 +9,7 @@ This repository contains NixOS and Home Manager configurations for multiple syst
 ### Khazad-dum
 - **OS**: NixOS (migrated from Arch Linux)
 - **Hardware**: Framework 16" laptop (AMD 7040, nixos-hardware module)
-- **WM/DE**: Hyprland, Niri, GNOME
+- **WM/DE**: Hyprland, GNOME
 - **Display Manager**: greetd with tuigreet (regreet available)
 - **Configuration**: Full NixOS system with Home Manager integration
 - **Package Channel**: nixpkgs-unstable
@@ -118,7 +118,7 @@ nix-config/
 │   ├── home-manager/    # Home Manager modules (options under home_modules.<name>)
 │   │   ├── alacritty.nix, ashell.nix, atuin.nix, bat.nix
 │   │   ├── claude-code.nix, direnv.nix, git.nix, jujutsu.nix
-│   │   ├── hyprland/, neovim/, niri/, swaync/, waybar/, zellij/
+│   │   ├── hyprland/, neovim/, swaync/, waybar/, zellij/
 │   │   ├── ssh.nix, theme.nix, vscode.nix
 │   │   ├── walker.nix, yazi.nix, zed-editor.nix, zsh.nix
 │   │   └── default.nix  # Module aggregator
@@ -135,7 +135,6 @@ nix-config/
 - **catppuccin**: Catppuccin theming module (system + HM)
 - **sops-nix**: Secrets management
 - **nixos-hardware**: Hardware-specific NixOS modules
-- **niri-flake**: Niri scrollable-tiling Wayland compositor
 - **elephant**: Elephant Home Manager module
 - **awww**: Awww wallpaper tool
 - **zen-browser**: Zen Browser flake
@@ -156,7 +155,7 @@ Available modules in `modules/nixos/`:
 
 Available modules in `modules/home-manager/`:
 - **alacritty.nix**: Terminal emulator configuration
-- **ashell.nix**: Ashell status bar for niri
+- **ashell.nix**: Ashell status bar for Hyprland
 - **atuin.nix**: Atuin shell history
 - **bat.nix**: Bat (cat replacement) with theme
 - **claude-code.nix**: Claude Code CLI with plugins, skills, and security defaults
@@ -165,7 +164,6 @@ Available modules in `modules/home-manager/`:
 - **hyprland/**: Hyprland window manager with keybinds, autostart, etc.
 - **jujutsu.nix**: Jujutsu VCS configuration
 - **neovim/**: Neovim editor
-- **niri/**: Niri scrollable-tiling compositor (NixOS/standalone HM compatible)
 - **ssh.nix**: SSH client configuration
 - **swaync/**: Notification daemon
 - **theme.nix**: Catppuccin Macchiato theme (centralized via catppuccin/nix)
@@ -201,4 +199,3 @@ Secrets are managed using sops-nix:
 - Both systems use nixos-unstable channel for latest packages
 - The repository follows a modular structure for easy maintenance
 - Khazad-dum uses nixos-hardware `framework-16-7040-amd` module for hardware support
-- The niri module uses `isStandalone` detection (`options.programs.niri ? enable`) to be compatible with both NixOS and standalone Home Manager
