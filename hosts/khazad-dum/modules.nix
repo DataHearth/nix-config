@@ -2,7 +2,14 @@
 {
   # Desktop sessions
   programs.hyprland.enable = true;
-  services.desktopManager.gnome.enable = true;
+
+  # GNOME desktop session is not used; keep only the supporting plumbing the
+  # Hyprland session relies on. (gnome-keyring is enabled in greetd.nix,
+  # udisks2 in services.nix, and the xdg portals come from programs.hyprland.)
+  programs.dconf.enable = true; # GTK app settings + catppuccin dconf theming
+  security.polkit.enable = true; # for the polkit-gnome agent (systemd.nix)
+  services.gvfs.enable = true; # nautilus trash/mounts, GTK file chooser
+  services.upower.enable = true; # battery status for the bar / notifications
 
   # Display manager
   nixos_modules.greetd = {
