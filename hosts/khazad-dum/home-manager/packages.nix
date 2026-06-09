@@ -34,6 +34,8 @@
     noto-fonts-cjk-sans # support for chinese/japanese characters
 
     # GUI
+    gnome-calculator
+    protonmail-bridge-gui
     (signal-desktop.override {
       commandLineArgs = ''--password-store="gnome-libsecret" --use-tray-icon'';
     })
@@ -44,6 +46,8 @@
     audacity
     spotify
     bruno
+    claude-desktop
+    thunderbird
   ];
 
   programs = {

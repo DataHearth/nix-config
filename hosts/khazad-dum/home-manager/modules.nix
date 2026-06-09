@@ -109,6 +109,7 @@
           "Bash(jj help*)"
           "Bash(jj --version)"
           "Bash(jj version)"
+          "Bash(jj split --help)"
           # jj --no-pager — read-only inspection (skill prefers this form)
           "Bash(jj --no-pager st*)"
           "Bash(jj --no-pager status*)"
@@ -230,6 +231,10 @@
           };
         }
         {
+          workspace = 3;
+          match.class = "thunderbird";
+        }
+        {
           workspace = 4;
           match.class = "discord";
         }
@@ -247,10 +252,16 @@
         }
       ];
       exec_once = [
+        # Commands that need arguments stay as raw strings.
         "signal-desktop --start-in-tray"
         "discord --start-minimized"
-        "zen-beta"
-        "spotify"
+      ]
+      # Bare program launches: resolve each package to its main executable.
+      ++ map lib.getExe [
+        config.programs.zen-browser.package
+        pkgs.spotify
+        pkgs.thunderbird
+        pkgs.protonmail-bridge-gui
       ];
 
       awww.randomize = {
