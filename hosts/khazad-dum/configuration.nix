@@ -40,9 +40,13 @@
         owner = config.users.users.datahearth.name;
       };
       "wifi/cirdan" = { };
+      "wifi/la-maison-du-bonheur" = { };
     };
-    templates."wifi-cirdan-env" = {
-      content = "WIFI_CIRDAN_PSK=${config.sops.placeholder."wifi/cirdan"}";
+    templates = {
+      "wifi-cirdan-env".content = "WIFI_CIRDAN_PSK=${config.sops.placeholder."wifi/cirdan"}";
+      "la-maison-du-bonheur-env".content = "WIFI_LA_MAISON_DU_BONHEUR_PSK=${
+        config.sops.placeholder."wifi/la-maison-du-bonheur"
+      }";
     };
   };
 

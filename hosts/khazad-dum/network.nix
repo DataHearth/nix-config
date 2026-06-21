@@ -86,6 +86,21 @@
               mtu = "1420";
             };
           };
+          la-maison-du-bonheur = {
+            connection = {
+              id = "LaMaisonDuBonheur";
+              type = "wifi";
+              autoconnect = "true";
+            };
+            wifi = {
+              ssid = "LaMaisonDuBonheur";
+              mode = "infrastructure";
+            };
+            wifi-security = {
+              key-mgmt = "wpa-psk";
+              psk = "$WIFI_LA_MAISON_DU_BONHEUR_PSK";
+            };
+          };
         };
       };
     };
