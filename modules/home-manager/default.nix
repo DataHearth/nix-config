@@ -4,11 +4,13 @@
   ./claude-code
   ./atuin.nix
   ./bat.nix
+  ./chromium.nix
   ./direnv.nix
   ./elephant.nix
   ./git.nix
   ./hyprland
   ./jujutsu.nix
+  ./okular.nix
   ./ssh.nix
   ./swaync
   ./theme.nix

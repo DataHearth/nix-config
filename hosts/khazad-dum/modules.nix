@@ -8,7 +8,6 @@
   # udisks2 in services.nix, and the xdg portals come from programs.hyprland.)
   programs.dconf.enable = true; # GTK app settings + catppuccin dconf theming
   security.polkit.enable = true; # for the polkit-gnome agent (systemd.nix)
-  services.gvfs.enable = true; # nautilus trash/mounts, GTK file chooser
   services.upower.enable = true; # battery status for the bar / notifications
 
   nixos_modules = {
@@ -20,6 +19,12 @@
       enable = true;
       greeter = "regreet";
       defaultSession = "Hyprland";
+    };
+
+    # File manager (owns services.gvfs for trash/mounts + the GTK file chooser).
+    nautilus = {
+      enable = true;
+      users = [ "datahearth" ];
     };
 
     nh = {

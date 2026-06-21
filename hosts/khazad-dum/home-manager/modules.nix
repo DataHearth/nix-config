@@ -21,10 +21,21 @@
     atuin.enable = true;
     bat.enable = true;
     direnv.enable = true;
+    okular.enable = true;
     theme.enable = true;
     yazi.enable = true;
     zed-editor.enable = false;
     zellij.enable = true;
+
+    chromium = {
+      enable = true;
+      claudeInChrome = true;
+      extensions = [
+        "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
+        "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite (MV3; classic uBO is MV2, disabled on Chromium 138+)
+        "pkehgijcmpdhfbdbbnkijodmdjhbjlgp" # Privacy Badger
+      ];
+    };
 
     zen-browser = {
       enable = true;
