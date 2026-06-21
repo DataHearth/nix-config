@@ -98,7 +98,7 @@
                             --set CLAUDE_USE_WAYLAND 1
                         '';
                       };
-                    # claude-code = super.callPackage ./packages/claude-code.nix { };
+                    claude-code = super.callPackage ./packages/claude-code.nix { };
                   })
                 ];
               }

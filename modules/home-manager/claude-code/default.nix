@@ -84,6 +84,15 @@ in
       default = [ ];
       description = "Extra packages to make available in Claude Code's PATH";
     };
+
+    plugins = lib.mkOption {
+      type = lib.types.listOf (lib.types.either lib.types.package lib.types.path);
+      default = [ ];
+      description = ''
+        Plugins to load via `--plugin-dir`. Each entry is a plugin directory,
+        either a local path or a fetcher output (e.g. `pkgs.fetchFromGitHub`).
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -130,7 +139,7 @@ in
       } cfg.settings;
       context = composedContext;
       skills.jj = ./skills/jj;
-      inherit (cfg) mcpServers lspServers;
+      inherit (cfg) mcpServers lspServers plugins;
     };
   };
 }

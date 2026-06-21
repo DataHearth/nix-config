@@ -57,6 +57,17 @@
     claude-code = {
       enable = true;
 
+      # "Lazy senior dev" plugin: enforces YAGNI / simplest-solution-that-works.
+      # https://github.com/DietrichGebert/ponytail
+      plugins = [
+        (pkgs.fetchFromGitHub {
+          owner = "DietrichGebert";
+          repo = "ponytail";
+          rev = "v4.7.0";
+          hash = "sha256-Q6vlkbTfBFrNFTxEwYeMe5ciOe6QdULegvExwT//gJs=";
+        })
+      ];
+
       mcpServers = {
         github = {
           type = "http";
@@ -83,18 +94,18 @@
       };
 
       settings = {
+        effortLevel = "xhigh";
         enabledPlugins = {
           "feature-dev@claude-plugins-official" = true;
         };
         permissions.allow = [
-          "Read(//nix/store)"
+          "Read(//nix/store/**)"
           # MCP
           "mcp__plugin_claude-code-home-manager_github__*"
           "mcp__plugin_claude-code-home-manager_context7__*"
           # Nix
           "Bash(nix eval *)"
           "Bash(nix search *)"
-          "Bash(nix flake show *)"
           "Bash(nix --version)"
           # Logging
           "Bash(tee /tmp/*)"
@@ -138,6 +149,49 @@
           "Bash(jj --no-pager bookmark list*)"
           # jj — remote read
           "Bash(jj git fetch*)"
+
+          # ── Universal grants ──────────────────────────────────────────────
+          # Hoisted out of per-project settings.local.json so they apply to
+          # every project and stop re-prompting. Content-reading shells
+          # (cat/grep/find/head/tail/env) are deliberately NOT hoisted: Bash
+          # bypasses the Read() deny rules that protect .env/secrets, so those
+          # stay per-project.
+          # Web
+          "WebSearch"
+          "WebFetch(domain:github.com)"
+          "WebFetch(domain:raw.githubusercontent.com)"
+          "WebFetch(domain:gist.github.com)"
+          "WebFetch(domain:wiki.nixos.org)"
+          "WebFetch(domain:search.nixos.org)"
+          # Nix — build/eval/query (build only realizes to the store)
+          "Bash(nix run *)"
+          "Bash(nix build *)"
+          "Bash(nix store *)"
+          "Bash(nix log *)"
+          "Bash(nix hash *)"
+          "Bash(nix flake *)"
+          "Bash(nix-prefetch-url *)"
+          "Bash(nix-instantiate --eval *)"
+          # gh — read-only PR/run inspection (jj does not replace gh)
+          "Bash(gh pr view *)"
+          "Bash(gh pr list *)"
+          "Bash(gh pr diff *)"
+          "Bash(gh pr checks *)"
+          "Bash(gh run view *)"
+          "Bash(gh run list *)"
+          "Bash(gh api repos/*)"
+          "Bash(gh search *)"
+          # git plumbing — no jj equivalent, read-only, non-secret
+          "Bash(git ls-remote *)"
+          "Bash(git symbolic-ref *)"
+          "Bash(git rev-list *)"
+          "Bash(git check-ignore *)"
+          # Filesystem inspection — metadata/lookup only, never file contents.
+          # (cat/grep/head/tail are NOT here: Bash reading file contents would
+          # bypass the Read() deny rules protecting .env/secrets.)
+          "Bash(ls *)"
+          "Bash(stat *)"
+          "Bash(command -v *)"
         ];
       };
     };
