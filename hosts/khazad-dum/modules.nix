@@ -11,11 +11,21 @@
   services.gvfs.enable = true; # nautilus trash/mounts, GTK file chooser
   services.upower.enable = true; # battery status for the bar / notifications
 
-  # Display manager
-  nixos_modules.greetd = {
-    enable = true;
-    greeter = "regreet";
-    defaultSession = "Hyprland";
+  nixos_modules = {
+    # F5 VPN (Airbus): client, split-tunnel routing/DNS, firewall, tailnet fix
+    f5.enable = true;
+
+    # Display manager
+    greetd = {
+      enable = true;
+      greeter = "regreet";
+      defaultSession = "Hyprland";
+    };
+
+    nh = {
+      enable = true;
+      settings.flake = "${config.users.users.datahearth.home}/.config/nix-config";
+    };
   };
 
   # Shell
@@ -30,10 +40,4 @@
     qemu.swtpm.enable = true;
   };
   virtualisation.spiceUSBRedirection.enable = true;
-
-  # nh
-  nixos_modules.nh = {
-    enable = true;
-    settings.flake = "${config.users.users.datahearth.home}/.config/nix-config";
-  };
 }

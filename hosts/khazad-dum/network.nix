@@ -8,12 +8,7 @@
   # systemd-resolved provides split-DNS: it routes queries to the right
   # DNS server based on the interface/domain (e.g. corporate domains go
   # through VPN DNS, everything else through the default interface).
-  # The F5 VPN client overwrites /etc/resolv.conf with corporate-only
-  # nameservers that return NXDOMAIN for public domains (like github.com).
-  # Tools using glibc/NSS (curl, xh) bypass this via systemd-resolved's
-  # stub listener, but Nix reads /etc/resolv.conf directly and fails.
-  # The activation script below makes /etc/resolv.conf immutable so the
-  # VPN can't overwrite it, forcing all DNS through the resolved stub.
+  # (F5-specific resolv.conf/DNS handling lives in modules/nixos/f5.nix.)
   services.resolved.enable = true;
 
   networking = {
@@ -96,22 +91,6 @@
     };
   };
 
-  system.activationScripts.immutable-resolv-conf = lib.stringAfter [ "etc" ] ''
-    ${pkgs.e2fsprogs}/bin/chattr -i /etc/resolv.conf 2>/dev/null || true
-    cat > /etc/resolv.conf <<EOF
-nameserver 127.0.0.53
-search airbus.corp lan
-EOF
-    ${pkgs.e2fsprogs}/bin/chattr +i /etc/resolv.conf
-  '';
-
-  # Fix F5 VPN connectivity issues when GlobalProtect is active:
-  # Configure per-link DNS in resolved so F5 internal names resolve
-  # while public DNS keeps working (bypasses svpn's resolv.conf overwriting).
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="net", KERNEL=="tun0", TAG+="systemd", ENV{SYSTEMD_WANTS}="f5vpn-fix.service"
-  '';
-
   # Route all DNS through the tailnet PiHole (100.109.226.49).
   # MagicDNS is disabled; PiHole resolves both tailnet and public names.
   # bindsTo tailscaled ensures ExecStop (resolvectl revert) runs when
@@ -130,22 +109,6 @@ EOF
       '';
       ExecStop = pkgs.writeShellScript "tailscale-dns-stop" ''
         ${pkgs.systemd}/bin/resolvectl revert tailscale0
-      '';
-    };
-  };
-
-  systemd.services.f5vpn-fix = {
-    description = "Fix routing and DNS for F5 VPN";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = pkgs.writeShellScript "f5vpn-fix" ''
-        # Remove GP's conflicting policy routing rule
-        ${pkgs.iproute2}/bin/ip rule del to 1.1.1.1 lookup 200 2>/dev/null || true
-
-        # Wait for interface to be registered with resolved
-        sleep 2
-        ${pkgs.systemd}/bin/resolvectl dns tun0 100.105.5.112 100.105.6.192
-        ${pkgs.systemd}/bin/resolvectl domain tun0 "~airbus.corp" "~intra.corp"
       '';
     };
   };
