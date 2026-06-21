@@ -309,7 +309,7 @@
         }
         {
           workspace = 6;
-          match.class = "Spotify";
+          match.class = "[Ss]potify"; # XWayland "Spotify" + native-Wayland "spotify"
         }
         {
           workspace = 9;
