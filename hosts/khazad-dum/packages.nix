@@ -4,7 +4,6 @@
     qt5.qtwayland
     qt6.qtwayland
 
-    clamav
     doggo
     sbctl
     procs

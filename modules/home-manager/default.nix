@@ -1,6 +1,5 @@
 [
   ./alacritty.nix
-  ./ashell.nix
   ./claude-code
   ./atuin.nix
   ./bat.nix
@@ -14,11 +13,9 @@
   ./ssh.nix
   ./swaync
   ./theme.nix
-  ./vscode.nix
   ./waybar
   ./walker.nix
   ./yazi.nix
-  ./zed-editor.nix
   ./zellij
   ./zen-browser.nix
   ./zsh.nix

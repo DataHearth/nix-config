@@ -24,7 +24,6 @@
     okular.enable = true;
     theme.enable = true;
     yazi.enable = true;
-    zed-editor.enable = false;
     zellij.enable = true;
 
     chromium = {

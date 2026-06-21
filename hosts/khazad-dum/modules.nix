@@ -15,11 +15,7 @@
     f5.enable = true;
 
     # Display manager
-    greetd = {
-      enable = true;
-      greeter = "regreet";
-      defaultSession = "Hyprland";
-    };
+    greetd.enable = true;
 
     # File manager (owns services.gvfs for trash/mounts + the GTK file chooser).
     nautilus = {

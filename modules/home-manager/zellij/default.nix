@@ -30,7 +30,7 @@ let
 in
 {
   options.home_modules.zellij = {
-    inherit cfg enable;
+    inherit enable;
   };
 
   config = lib.mkIf cfg.enable {

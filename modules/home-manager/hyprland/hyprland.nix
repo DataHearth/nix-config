@@ -30,11 +30,10 @@ let
   display_manager = lib.mkEnableOption "display_manager";
   status_bar = lib.mkOption {
     type = lib.types.enum [
-      "ashell"
       "waybar"
       "none"
     ];
-    default = "ashell";
+    default = "waybar";
     description = "Status bar to use";
   };
 
@@ -94,7 +93,6 @@ let
     "${pkgs.hyprland}/bin/hyprctl hyprpaper"
     terminal
   ]
-  ++ lib.optional (cfg.status_bar == "ashell") "ashell"
   ++ lib.optional (cfg.status_bar == "waybar") "waybar"
   ++ cfg.exec_once;
 
@@ -159,7 +157,6 @@ in
       swaync.enable = lib.mkDefault true;
       hyprland.awww.enable = lib.mkDefault true;
       waybar.enable = cfg.status_bar == "waybar";
-      ashell.enable = cfg.status_bar == "ashell";
     };
 
     wayland.windowManager.hyprland = {
