@@ -89,21 +89,11 @@ mutating command. Pipe through `--no-pager` to capture output.
 
 ## Templates
 
-`-T` lets you control `jj log` output format. Common building blocks:
-
-- `change_id.shortest()` — short change ID.
-- `commit_id.short()` — short hex commit ID.
-- `description.first_line()` — one-line message.
-- `author.email()`, `author.timestamp()`.
-- `bookmarks` — list of bookmarks at this commit.
-- `if(empty, "(empty) ")` — conditional.
-
-A compact one-liner:
+`-T` controls `jj log` output format — handy for confirming a revset selects
+exactly the commits and fields you expect. The full building-block list lives
+in `references/advanced.md`; the one you'll reach for most:
 
 ```
 jj --no-pager log -r 'main..@' \
   -T 'change_id.shortest() ++ " " ++ description.first_line() ++ "\n"'
 ```
-
-For a deeper dive: `jj help templates` and the official template language
-docs.

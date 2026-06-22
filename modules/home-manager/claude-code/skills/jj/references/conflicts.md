@@ -71,6 +71,12 @@ jj resolve PATH             # a specific file
 jj resolve --list           # show which files are conflicted, do nothing
 ```
 
+**In this harness the bare `jj resolve` hangs** — it launches an interactive
+merge tool with no inline escape. Only `jj resolve --list` is safe to run (it
+just reports). To actually resolve, edit the conflict markers in the file by
+hand (see above), then `jj squash`. Reach for `jj resolve` only when you're
+driving jj at a real terminal.
+
 It only handles 2-sides-plus-base conflicts. Conflicts between files and
 directories, or symlinks vs files, need manual editing.
 

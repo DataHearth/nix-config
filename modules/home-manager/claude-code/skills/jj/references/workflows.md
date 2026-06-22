@@ -38,8 +38,7 @@ There is no `git add`. Edits are part of `@` automatically.
 | Move content between commits        | `jj squash --from <src> --into <dst>`    |
 | Squash only some files              | `jj squash file1 file2`                  |
 | Use destination's message           | `jj squash --use-destination-message`    |
-| Split current change (interactive)  | `jj split`                               |
-| Split by path                       | `jj split <path>`                        |
+| Split a change (no editor)          | `jj split <paths> -m "msg"` — see below  |
 | Edit an older change directly       | `jj edit <rev>`                          |
 | Pipe message in                     | `jj describe --stdin`                    |
 
@@ -48,6 +47,12 @@ There is no `git add`. Edits are part of `@` automatically.
 - `describe` updates the message of `@`. `@` stays where it is.
 - `commit` finalizes `@` (locking content) and puts you on a fresh empty
   `@` on top. Use it when you're done with this change.
+
+`jj squash` opens an editor only when *both* the source and destination
+already have a description (it asks how to combine them). Pass `-m "msg"` to
+set the combined message, or `-u` / `--use-destination-message` to keep the
+destination's. Squashing into an undescribed parent needs no flag and won't
+prompt.
 
 ## Bookmarks (branches)
 
@@ -161,11 +166,27 @@ jj new trunk() -m "wip: thing"
 
 ### Split a change
 
+The default `jj split` opens a diff editor — unusable in the harness. Always
+split by **fileset**: the named paths go into the first (selected) commit,
+the rest into a child that becomes `@` and keeps the original description.
+
 ```
-jj split              # interactive: pick hunks for the new earlier change
-# or by path:
-jj split flake.nix
+jj split src/foo.rs src/bar.rs -m "first: the named paths"
+jj describe -m "second: the remainder"        # @ is now the remainder
 ```
+
+| Flag         | Effect                                                                                              |
+|--------------|-----------------------------------------------------------------------------------------------------|
+| `<filesets>` | These paths go into the **selected** (first) commit; the rest go to the remainder                   |
+| `-m "msg"`   | Describes the selected commit only — the remainder keeps the original message (rename it with a follow-up `jj describe` on `@`) |
+| `-r <rev>`   | Split a revision other than `@`                                                                      |
+| `-p`         | Make the two parts **siblings** instead of a parent/child stack                                      |
+| `-A <rev>`   | Extract the selected paths into a new commit **after** `<rev>` (remainder stays put)                 |
+| `-B <rev>`   | …**before** `<rev>`                                                                                  |
+| `-o <rev>`   | …**onto** `<rev>` (its alias is `-d`/`--destination`)                                                |
+
+Splitting a *hunk* (part of one file) requires the interactive editor, so it
+isn't possible here — split at file granularity instead.
 
 ### Reorder a stack
 

@@ -45,6 +45,20 @@ LFS/submodules, CI scripts already shelling out to git, the `gh` CLI).
 - **Mutating commands are not pre-approved** in the harness (`commit`,
   `describe`, `squash`, `rebase`, `abandon`, `restore`, `bookmark set/move`,
   `git push`). They prompt; confirm the plan with the user first.
+- **Several mutating commands open `$EDITOR` or an interactive diff/merge
+  tool by default.** That hangs the harness and the call gets rejected, so
+  always pass the non-interactive form. This is the single most common
+  reason to reach for `--help` — and you don't need to, because it's all here:
+
+  | Command       | Bare form opens…                                            | Use instead                                                       |
+  |---------------|-------------------------------------------------------------|-------------------------------------------------------------------|
+  | `jj describe` | editor for the message                                      | `jj describe -m "msg"`                                            |
+  | `jj commit`   | editor for the message                                      | `jj commit -m "msg"`                                             |
+  | `jj squash`   | editor — only when *both* source and dest already have a description | `jj squash -m "msg"`, or `jj squash -u` to keep the destination's |
+  | `jj split`    | diff editor                                                 | `jj split <paths> -m "msg"` — see "Splitting a change" below      |
+  | `jj resolve`  | 3-way merge tool                                            | edit the conflict markers by hand (`references/conflicts.md`)     |
+  | `jj diffedit` | diff editor                                                 | `jj edit <rev>`, edit files, then `jj squash`                    |
+
 - `jj git push` and `jj op abandon` are explicitly **denied** — never
   suggest running them, let the user invoke them.
 - Before any mutation, run `jj st` and `jj --no-pager log` so you and the
@@ -64,7 +78,7 @@ LFS/submodules, CI scripts already shelling out to git, the `gh` CLI).
 | New empty change on top         | `git commit --allow-empty`         | `jj new -m "..."`                           |
 | Squash @ into parent            | `git commit --amend --no-edit`     | `jj squash`                                 |
 | Squash into a specific commit   | (interactive rebase)               | `jj squash --into <rev>`                    |
-| Split a change                  | `git reset -p` + recommit          | `jj split`                                  |
+| Split a change                  | `git reset -p` + recommit          | `jj split <paths> -m "…"` (§ below)         |
 | Edit an older commit            | `git rebase -i` reword/edit        | `jj edit <rev>`                             |
 | Cherry-pick                     | `git cherry-pick <sha>`            | `jj duplicate <rev> -d @`                   |
 | Rebase a stack                  | `git rebase --onto x y`            | `jj rebase -s <rev> -d <new-parent>`        |
@@ -78,6 +92,29 @@ LFS/submodules, CI scripts already shelling out to git, the `gh` CLI).
 
 For the long form of any row — flags, edge cases, related commands — see
 `references/workflows.md`.
+
+## Splitting a change without an editor
+
+`jj split`'s default is an interactive diff editor — unusable here. Drive it
+with **filesets** instead: the paths you name go into the **first** commit,
+and everything else lands in a **child** commit that becomes the new `@`.
+
+```
+jj split path/a path/b -m "first commit — the named paths"
+jj describe -m "second commit — everything left behind"   # @ is the remainder
+```
+
+- `-m` describes only the *selected* (first) commit. The remainder keeps the
+  original message, so rename it with the follow-up `jj describe` on `@`.
+- After the split, `@-` is the first commit and `@` is the remainder.
+- `-r <rev>` splits a change other than `@`.
+- `-p` makes the two parts **siblings** (parallel) instead of stacked.
+- `-A <rev>` / `-B <rev>` / `-o <rev>` extract the selected paths into a new
+  commit placed *after* / *before* / *onto* `<rev>`, leaving the rest in place.
+
+Splitting by **hunk** (part of one file) needs the interactive editor and so
+isn't available here. Split at file granularity, or commit the pieces
+separately up front. Full flag table in `references/workflows.md`.
 
 ## Bookmarks: the most-missed gotcha
 
@@ -107,7 +144,9 @@ in `references/conflicts.md`.
 
 ## When in doubt
 
-- `jj help <command>` is short and accurate. `jj <cmd> --help` works too.
+- This skill's cheatsheet and `references/workflows.md` are harness-aware
+  (they show the non-interactive forms); reach for `jj help <command>` /
+  `jj <cmd> --help` only for a flag this skill genuinely doesn't cover.
 - `jj op log` shows every operation; `jj undo` reverses the last one.
 - Prefer small, frequent `jj commit`s — you can always `jj squash` later.
 - If a planned action mutates history, run `jj st` and
@@ -121,8 +160,9 @@ Load these when the task calls for them — don't read them upfront.
   common queries). Read when selecting commits by anything beyond `@`,
   `@-`, or a single change ID.
 - `references/workflows.md` — full command tables and recipes for
-  remote sync, rebase variants, bookmark management, restore, duplicate.
-  Read when the cheatsheet above isn't enough.
+  remote sync, rebase variants, bookmark management, restore, duplicate,
+  and the complete `jj split` flag table. Read when the cheatsheet above
+  isn't enough.
 - `references/conflicts.md` — conflict markers, `jj resolve` with merge
   tools, alternative `jj edit` workflow, partial resolutions. Read when
   handling a `(conflict)` state.
