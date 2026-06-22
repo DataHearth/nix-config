@@ -37,6 +37,22 @@ let
 
     echo "$output"
   '';
+
+  # PreToolUse guard: steer bare dev-tool invocations (python3/node/cargo/…)
+  # toward the project's devShell or `nix run`/`nix shell` on this NixOS box.
+  nixRunGuard = pkgs.writeShellApplication {
+    name = "claude-nix-run-guard";
+    runtimeInputs = [
+      pkgs.jq
+      pkgs.gnused
+      pkgs.coreutils
+    ];
+    bashOptions = [
+      "nounset"
+      "pipefail"
+    ];
+    text = builtins.readFile ./nix-run-guard.sh;
+  };
 in
 {
   options.home_modules.claude-code = {
@@ -135,6 +151,19 @@ in
         statusLine = {
           type = "command";
           command = toString statuslineScript;
+        };
+        hooks = {
+          PreToolUse = [
+            {
+              matcher = "Bash";
+              hooks = [
+                {
+                  type = "command";
+                  command = lib.getExe nixRunGuard;
+                }
+              ];
+            }
+          ];
         };
       } cfg.settings;
       context = composedContext;
