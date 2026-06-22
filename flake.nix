@@ -31,11 +31,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     claude-desktop = {
-      # Temporary: PR #730 fixes the readRegistryValues() startup hang (#729) that
-      # makes 1.13576.0/1.14271.0 wedge before showing a window. Pins app 1.14271.0.
-      # Revert to "github:aaddrick/claude-desktop-debian" once #730 merges (then the
-      # #718 patchedSrc block below can also be dropped — that fix is already upstream).
-      url = "github:colonelpanic8/claude-desktop-debian/7dbe93b317f568d1eb97f9eb0c6d6d81437425d7";
+      url = "github:aaddrick/claude-desktop-debian";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -85,45 +81,19 @@
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
                     zjstatus = zjstatus.packages.${system}.default;
-                    claude-desktop =
-                      let
-                        # Upstream bug aaddrick/claude-desktop-debian#718: the build-time
-                        # asar patch (scripts/patches/config.sh) asserts the Claude app
-                        # emits the --add-dir dispatch exactly once, but app v1.12603.1
-                        # emits it twice, so the build aborts with
-                        # "FATAL: --add-dir pattern matches 2 times (expected 1)".
-                        # Patch the script to drop the count assertion (1 -> 1e9) and
-                        # replace all occurrences (.replace -> .split/.join), then rebuild
-                        # the flake's package from the patched source (its ./.. sourceRoot
-                        # resolves to patchedSrc). Drop this once #718 lands upstream.
-                        patchedSrc = super.runCommand "claude-desktop-debian-718-src" { } ''
-                          cp -r ${claude-desktop} $out
-                          chmod -R u+w $out
-                          ${super.perl}/bin/perl -i -pe \
-                            's/allMatches\.length > 1\)/allMatches.length > 1e9)/; s/code = code\.replace\(match\[0\], filtered\)/code = code.split(match[0]).join(filtered)/' \
-                            $out/scripts/patches/config.sh
-                        '';
-                        node-pty = super.callPackage "${patchedSrc}/nix/node-pty.nix" { };
-                        cdUnwrapped = super.callPackage "${patchedSrc}/nix/claude-desktop.nix" {
-                          inherit node-pty;
-                        };
-                        cd = super.callPackage "${patchedSrc}/nix/fhs.nix" {
-                          claude-desktop = cdUnwrapped;
-                        };
-                      in
-                      # Force Wayland (ozone). The launcher's auto-detect leaves it on
-                      # XWayland under Hyprland, which bitmap-upscales to a blurry window
-                      # on fractional scaling. CLAUDE_USE_WAYLAND=1 makes it pass
-                      # --ozone-platform=wayland (inherited into the FHS sandbox).
-                      super.symlinkJoin {
-                        name = "claude-desktop-wayland";
-                        paths = [ cd ];
-                        nativeBuildInputs = [ super.makeWrapper ];
-                        postBuild = ''
-                          wrapProgram $out/bin/claude-desktop \
-                            --set CLAUDE_USE_WAYLAND 1
-                        '';
-                      };
+                    # Force Wayland (ozone). The launcher's auto-detect leaves it on
+                    # XWayland under Hyprland, which bitmap-upscales to a blurry window
+                    # on fractional scaling. CLAUDE_USE_WAYLAND=1 makes it pass
+                    # --ozone-platform=wayland (inherited into the FHS sandbox).
+                    claude-desktop = super.symlinkJoin {
+                      name = "claude-desktop-wayland";
+                      paths = [ claude-desktop.packages.${system}.default ];
+                      nativeBuildInputs = [ super.makeWrapper ];
+                      postBuild = ''
+                        wrapProgram $out/bin/claude-desktop \
+                          --set CLAUDE_USE_WAYLAND 1
+                      '';
+                    };
                     claude-code = super.callPackage ./packages/claude-code.nix { };
                     spotify =
                       # Force Wayland (ozone). Spotify's own wrapper only adds these
@@ -141,6 +111,18 @@
                         '';
                         meta.mainProgram = "spotify";
                       };
+                    # Temporary: afdko's otfautohint fails autohinting Cantarell's
+                    # variable font (afdko#657), which breaks cantarell-fonts on all
+                    # current nixos-unstable revs. It's uncached, and it's pulled into
+                    # the system closure via fontconfig/nixos-help/steam, so its failure
+                    # aborts the whole build. Skip the (optional) autohint step — the VF
+                    # renders fine un-hinted. Drop once nixpkgs builds cantarell again.
+                    cantarell-fonts = super.cantarell-fonts.overrideAttrs (old: {
+                      postPatch = (old.postPatch or "") + ''
+                        substituteInPlace scripts/make-variable-font.py \
+                          --replace-fail 'subprocess.check_call(' 'print("cantarell: autohint skipped:",'
+                      '';
+                    });
                   })
                 ];
               }
