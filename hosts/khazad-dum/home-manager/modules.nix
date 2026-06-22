@@ -326,7 +326,10 @@
         pkgs.spotify
         pkgs.thunderbird
         pkgs.protonmail-bridge-gui
-      ];
+      ]
+      # opencloud-desktop sets no meta.mainProgram and ships two binaries
+      # (GUI `opencloud`, CLI `opencloudcmd`); the GUI launches to tray by default.
+      ++ [ (lib.getExe' pkgs.opencloud-desktop "opencloud") ];
 
       awww.randomize = {
         enable = true;

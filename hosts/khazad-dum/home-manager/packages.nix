@@ -48,6 +48,7 @@
     bruno
     claude-desktop
     thunderbird
+    opencloud-desktop
   ];
 
   programs = {
