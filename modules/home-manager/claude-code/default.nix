@@ -53,6 +53,22 @@ let
     ];
     text = builtins.readFile ./nix-run-guard.sh;
   };
+
+  # PreToolUse guard: reject a leading `cd` into the directory Claude is
+  # already in, since it habitually prepends a redundant `cd <project> &&`.
+  cdGuard = pkgs.writeShellApplication {
+    name = "claude-cd-guard";
+    runtimeInputs = [
+      pkgs.jq
+      pkgs.gnused
+      pkgs.coreutils
+    ];
+    bashOptions = [
+      "nounset"
+      "pipefail"
+    ];
+    text = builtins.readFile ./cd-guard.sh;
+  };
 in
 {
   options.home_modules.claude-code = {
@@ -160,6 +176,10 @@ in
                 {
                   type = "command";
                   command = lib.getExe nixRunGuard;
+                }
+                {
+                  type = "command";
+                  command = lib.getExe cdGuard;
                 }
               ];
             }
