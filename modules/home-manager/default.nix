@@ -11,6 +11,7 @@
   ./jujutsu.nix
   ./okular.nix
   ./ssh.nix
+  ./starship.nix
   ./swaync
   ./theme.nix
   ./waybar

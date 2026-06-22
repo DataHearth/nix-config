@@ -267,6 +267,11 @@
       signingKey = "dev@antoine-langlois.net";
     };
 
+    starship = {
+      enable = true;
+      gitModules = "conditional";
+    };
+
     hyprland = {
       enable = true;
       display_manager = true;

@@ -57,7 +57,6 @@
     fzf.enable = true;
     gpg.enable = true;
     home-manager.enable = true;
-    starship.enable = true;
     zoxide.enable = true;
     mise.enable = true;
 
