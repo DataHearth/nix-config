@@ -3,6 +3,7 @@
   ./claude-code
   ./atuin.nix
   ./bat.nix
+  ./battery-notify.nix
   ./chromium.nix
   ./direnv.nix
   ./elephant.nix

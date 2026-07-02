@@ -20,6 +20,7 @@
     alacritty.enable = true;
     atuin.enable = true;
     bat.enable = true;
+    battery-notify.enable = true;
     direnv.enable = true;
     okular.enable = true;
     theme.enable = true;
