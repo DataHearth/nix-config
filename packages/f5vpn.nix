@@ -66,6 +66,7 @@ stdenv.mkDerivation {
   # emitted rtnetlink route attrs that kernel 6.18.34's strict validation
   # rejected ("netlink: 'svpn': attribute type N has an invalid length"),
   # flapping the tunnel. The public /download/ endpoint needs no auth.
+  # Refresh the hash with ./update.sh f5vpn.
   src = fetchurl {
     url = "https://axess.airbus.com/public/download/linux_f5vpn.x86_64.deb";
     hash = "sha256-LKkzN+oQQt8R5dNb85A/Bf8dcOiuJtFI1ob/98rQpxQ=";

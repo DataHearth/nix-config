@@ -1,6 +1,6 @@
 # Native-binary distribution (since 2.1.x): claude-code ships as a bun-compiled
 # binary per platform rather than a JS bundle. Mirrors the upstream nixpkgs
-# derivation. To update, run ./claude-code-update.sh <version> to refresh the
+# derivation. To update, run ./update.sh claude-code [version] to refresh the
 # manifest, then bump nothing else — the version/checksums come from the manifest.
 {
   lib,
