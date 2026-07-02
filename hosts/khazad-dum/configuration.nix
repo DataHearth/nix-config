@@ -20,6 +20,24 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # MT7922 (mt7921e) Wi-Fi intermittently fails its D3cold→D0 PCIe link
+  # transition on s2idle resume, hanging the machine (only a power-button
+  # hard reset recovers). disable_aspm=1 made it worse — every sleep hung
+  # (5 of the last 6 shutdowns were suspend hangs). Attack both halves:
+  #  - forbid D3cold on the card so the fatal link transition never happens
+  #    (it still reaches D3hot; costs a little battery while suspended)
+  #  - unload the driver across sleep so it re-probes with fresh firmware
+  #    state on resume; iwd/NM reconnect on their own afterwards
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x14c3", ATTR{device}=="0x0616", ATTR{d3cold_allowed}="0"
+  '';
+  powerManagement.powerDownCommands = ''
+    ${pkgs.kmod}/bin/modprobe -r mt7921e
+  '';
+  powerManagement.resumeCommands = ''
+    ${pkgs.kmod}/bin/modprobe mt7921e
+  '';
+
   # Emulate aarch64 (via binfmt/QEMU) so the laptop can build and run
   # aarch64-linux binaries — e.g. cross-building for an ARM target.
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
