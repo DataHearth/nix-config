@@ -27,6 +27,13 @@
       enable = true;
       settings.flake = "${config.users.users.datahearth.home}/.config/nix-config";
     };
+
+    # Host-side support for the Claude Desktop "Cowork" agent VM (OVMF firmware
+    # at the app's hardcoded path, vhost-vsock, kvm device access).
+    claude-desktop-cowork = {
+      enable = true;
+      users = [ "datahearth" ];
+    };
   };
 
   # Shell

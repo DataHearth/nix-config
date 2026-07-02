@@ -30,10 +30,6 @@
       url = "github:nilskch/jj-lsp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    claude-desktop = {
-      url = "github:aaddrick/claude-desktop-debian";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -49,7 +45,6 @@
       lanzaboote,
       jj-lsp,
       zjstatus,
-      claude-desktop,
       ...
     }:
     {
@@ -81,19 +76,10 @@
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
                     zjstatus = zjstatus.packages.${system}.default;
-                    # Force Wayland (ozone). The launcher's auto-detect leaves it on
-                    # XWayland under Hyprland, which bitmap-upscales to a blurry window
-                    # on fractional scaling. CLAUDE_USE_WAYLAND=1 makes it pass
-                    # --ozone-platform=wayland (inherited into the FHS sandbox).
-                    claude-desktop = super.symlinkJoin {
-                      name = "claude-desktop-wayland";
-                      paths = [ claude-desktop.packages.${system}.default ];
-                      nativeBuildInputs = [ super.makeWrapper ];
-                      postBuild = ''
-                        wrapProgram $out/bin/claude-desktop \
-                          --set CLAUDE_USE_WAYLAND 1
-                      '';
-                    };
+                    # Official Anthropic Linux client, packaged locally from the
+                    # upstream .deb (nixpkgs has no claude-desktop). The package
+                    # forces Wayland/ozone itself — see packages/claude-desktop.nix.
+                    claude-desktop = super.callPackage ./packages/claude-desktop.nix { };
                     claude-code = super.callPackage ./packages/claude-code.nix { };
                     spotify =
                       # Force Wayland (ozone). Spotify's own wrapper only adds these
