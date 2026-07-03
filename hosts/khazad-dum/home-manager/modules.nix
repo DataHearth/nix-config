@@ -302,7 +302,7 @@
         }
         {
           workspace = 3;
-          match.class = "thunderbird";
+          match.class = "claude-desktop";
         }
         {
           workspace = 4;
@@ -315,6 +315,10 @@
         {
           workspace = 6;
           match.class = "[Ss]potify"; # XWayland "Spotify" + native-Wayland "spotify"
+        }
+        {
+          workspace = 7;
+          match.class = "thunderbird";
         }
         {
           workspace = 9;
@@ -332,6 +336,7 @@
         pkgs.spotify
         pkgs.thunderbird
         pkgs.protonmail-bridge-gui
+        pkgs.claude-desktop
       ]
       # opencloud-desktop sets no meta.mainProgram and ships two binaries
       # (GUI `opencloud`, CLI `opencloudcmd`); the GUI launches to tray by default.

@@ -54,6 +54,21 @@ in
     # vhost-vsock backs the host<->guest control socket.
     boot.kernelModules = [ "vhost_vsock" ];
 
+    # Cowork's "local" (non-VM) mode runs the agent as a Claude Code CLI the app
+    # downloads to ~/.config/Claude/claude-code/<ver>/claude and execs directly on
+    # the host. That's an FHS-linked Node single-file binary; NixOS's stub-ld
+    # rejects it ("Could not start dynamically linked executable", exit 127 ->
+    # "Claude Code crashed"). nix-ld provides a real /lib64 loader + libs so it
+    # runs unmodified (patchelf corrupts the embedded SEA blob; can't rewrite it).
+    # VM-sandbox mode is unaffected — that CLI runs inside the Ubuntu guest, which
+    # has its own loader. NIX_LD_LIBRARY_PATH is picked up from a fresh login
+    # session, so re-login after switching for local mode to work.
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = with pkgs; [
+      stdenv.cc.cc.lib # libstdc++.so.6, libgcc_s.so.1
+      zlib
+    ];
+
     # The app probes hardcoded Debian paths with no override, so materialise the
     # host-side bits there. OVMF: it derives the (writable, copied-per-VM) VARS
     # template from the CODE path by name, so both must sit together. virtiofsd:
