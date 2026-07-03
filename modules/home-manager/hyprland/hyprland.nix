@@ -145,6 +145,17 @@ in
       ))
     ];
 
+    # The Hyprland portal only implements ScreenCast/Screenshot/GlobalShortcuts;
+    # its portal config (default = hyprland;gtk) routes everything else — crucially
+    # FileChooser, behind every native "open/attach file" dialog (Claude Desktop,
+    # browsers, ...) — to the GTK backend, which must be registered here. HM exposes
+    # only extraPortals to the xdg-desktop-portal frontend (via the profile's
+    # NIX_XDG_DESKTOP_PORTAL_DIR); a stray gtk.portal elsewhere in the system
+    # closure is invisible to it. Without this the frontend logs "Requested
+    # gtk.portal is unrecognized", FileChooser has no impl, and the file dialog
+    # hangs the calling app instead of opening.
+    xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
     programs.elephant = {
       enable = true;
       installService = true;
