@@ -54,7 +54,13 @@
   programs = {
     btop.enable = true;
     eza.enable = true;
-    fzf.enable = true;
+    fzf = {
+      enable = true;
+      # Atuin owns Ctrl-R (history search); yield fzf's competing binding to it
+      # while keeping fzf's Ctrl-T / Alt-C widgets. "" is the module's supported
+      # way to disable the Ctrl-R widget.
+      historyWidget.command = "";
+    };
     gpg.enable = true;
     home-manager.enable = true;
     zoxide.enable = true;
