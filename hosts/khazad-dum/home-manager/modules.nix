@@ -83,6 +83,10 @@
             CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
           };
         };
+        claude-design = {
+          type = "http";
+          url = "https://api.anthropic.com/v1/design/mcp";
+        };
       };
 
       lspServers = {
@@ -103,6 +107,11 @@
           # MCP
           "mcp__plugin_claude-code-home-manager_github__*"
           "mcp__plugin_claude-code-home-manager_context7__*"
+          # claude-design
+          "mcp__claude-design__get_*"
+          "mcp__claude-design__list_*"
+          "mcp__claude-design__read_*"
+          "mcp__claude-design__render_*"
           # Nix
           "Bash(nix eval *)"
           "Bash(nix search *)"
