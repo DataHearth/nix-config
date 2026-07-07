@@ -506,6 +506,7 @@ in
           (mkBind "${mainMod} + L" (execCmd "loginctl lock-session"))
           (mkBind "${mainMod} + SHIFT + L" "hl.dsp.exit()")
           (mkBind "${mainMod} + I" (execCmd "${lib.getExe config.home_modules.hyprland.hypridle.toggleScript}"))
+          (mkBind "${mainMod} + SHIFT + I" (execCmd "${lib.getExe config.home_modules.hyprland.hypridle.autoScript}"))
           (mkBind "${mainMod} + S" (execCmd "${lib.getExe config.home_modules.hyprland.hypridle.sleepScript}"))
           (mkBind "${mainMod} + SHIFT + S" (execCmd "systemctl poweroff"))
           (mkBind "${mainMod} + SHIFT + R" (execCmd "systemctl reboot"))
