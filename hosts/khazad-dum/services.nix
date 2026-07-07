@@ -1,4 +1,4 @@
-{ ... }:
+{ config, pkgs, ... }:
 {
   # Audio
   services.pipewire = {
@@ -22,8 +22,32 @@
   # Fingerprint reader
   services.fprintd.enable = true;
 
-  # Hyprlock PAM (required for password + fingerprint unlock)
-  security.pam.services.hyprlock = {};
+  security.pam.services = {
+    # Hyprlock PAM (required for password + fingerprint unlock)
+    hyprlock = { };
+
+    # Skip the fingerprint prompt for sudo while on battery, falling straight
+    # through to the password prompt. Evaluated live at every sudo via pam_exec:
+    # on battery the guard exits 0 and success=1 jumps over the fprintd line; on
+    # AC it exits non-zero and default=ignore leaves fingerprint auth in place.
+    sudo.rules.auth.gate-fprint-on-battery = {
+      order = config.security.pam.services.sudo.rules.auth.fprintd.order - 1;
+      control = "[success=1 default=ignore]";
+      modulePath = "${pkgs.pam}/lib/security/pam_exec.so";
+      args = [
+        "quiet"
+        (toString (pkgs.writeShellScript "sudo-fprint-battery-guard" ''
+          # exit 0 = on battery -> PAM skips the fingerprint line (password prompt)
+          # exit 1 = on AC power -> fingerprint stays enabled
+          for ps in /sys/class/power_supply/*; do
+            [ "$(cat "$ps/type")" = "Mains" ] || continue
+            [ "$(cat "$ps/online")" = "1" ] && exit 1
+          done
+          exit 0
+        ''))
+      ];
+    };
+  };
 
   # Tailscale VPN
   services.tailscale = {
