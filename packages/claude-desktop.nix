@@ -69,20 +69,28 @@
   libXtst,
   # Cowork micro-VM: qemu goes on the app's PATH (virtiofsd is bundled)
   qemu_kvm,
+  # Code tab: put direnv/nix (+ a base bash/coreutils) on the app's PATH so the
+  # shared SessionStart/CwdChanged devShell hook and Claude's own `nix`/`direnv`
+  # calls resolve, whatever PATH the graphical session hands the app. See
+  # modules/home-manager/claude-code/load-direnv.sh.
+  direnv,
+  nix,
+  bash,
+  coreutils,
   useWayland ? true,
   cowork ? true,
 }:
 let
-  version = "1.18286.0";
+  version = "1.18286.2";
   base = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop";
   srcs = {
     x86_64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_amd64.deb";
-      sha256 = "8f314ad1a80aab52711a8eaabc06aae48fb341f0adea4a0d7264db5cab9d0536";
+      sha256 = "56fa5de053e0a68dc7583677857bedcf4219b19d90201400e0237b7d74d512f1";
     };
     aarch64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_arm64.deb";
-      sha256 = "4820b989a9e4333956b6cbeaee2732dd2b49904fba540b472963c8003c8086c7";
+      sha256 = "38c65a1226dccc75a6b2418b9d4c064f4f9dc5331f89608aedd554d87d529ba3";
     };
   };
 in
@@ -180,6 +188,7 @@ stdenvNoCC.mkDerivation {
     makeWrapper $out/lib/claude-desktop/claude-desktop $out/bin/claude-desktop \
       "''${gappsWrapperArgs[@]}" \
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libglvnd ]}:/run/opengl-driver/lib" \
+      --prefix PATH : ${lib.makeBinPath [ direnv nix bash coreutils ]} \
       ${lib.optionalString cowork ''--prefix PATH : ${lib.makeBinPath [ qemu_kvm ]} ''}\
       ${lib.optionalString useWayland ''--add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime=true" ''}
 

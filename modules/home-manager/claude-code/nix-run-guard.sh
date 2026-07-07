@@ -35,6 +35,31 @@ attr_for() {
   esac
 }
 
+# The real Bash environment Claude runs commands in has the per-session direnv
+# snapshot sourced ahead of every command (see ./load-direnv.sh), so a project
+# devShell's tools (go, node, cargo, …) sit on that PATH. This guard, though,
+# runs as a bare PreToolUse subprocess that never gets the CLAUDE_ENV_FILE
+# prepend, so a naive `command -v` here checks a devShell-less PATH and would
+# wrongly flag every devShell-only tool as absent. Derive the snapshot path from
+# session_id exactly as load-direnv.sh does.
+sid=$(jq -r '.session_id // empty' <<<"$input")
+[ -n "$sid" ] || sid=${CLAUDE_CODE_SESSION_ID:-default}
+snapshot="${XDG_STATE_HOME:-$HOME/.local/state}/claude-code-direnv/$sid.env"
+
+# Resolve a tool against the env the command will actually run in. Subshell so
+# sourcing the snapshot (which sets an absolute PATH) can't clobber the PATH
+# this guard needs for its own jq/sed/coreutils further down; nounset off so a
+# stray unset-var reference in the snapshot can't abort the check. Missing or
+# inert snapshot -> nothing sourced -> falls back to today's behavior.
+tool_available() {
+  (
+    set +o nounset
+    # shellcheck disable=SC1090
+    [ -f "$snapshot" ] && . "$snapshot"
+    command -v "$1" >/dev/null 2>&1
+  )
+}
+
 # Inspect each pipeline/list segment's leading word so `cd x && python3 y` is
 # caught, not just a command that starts with the tool.
 missing=""
@@ -53,7 +78,7 @@ while IFS= read -r seg; do
   word=$1
   case "$word" in */*) continue ;; esac # skip explicit paths (./x, /usr/bin/x)
   case "$guarded" in *" $word "*) ;; *) continue ;; esac
-  if ! command -v "$word" >/dev/null; then
+  if ! tool_available "$word"; then
     case " $missing " in *" $word "*) ;; *) missing="$missing $word" ;; esac
   fi
 done < <(printf '%s\n' "$cmd" | sed -E 's/&&|\|\||[;|&]/\n/g')

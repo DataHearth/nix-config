@@ -69,6 +69,34 @@ let
     ];
     text = builtins.readFile ./cd-guard.sh;
   };
+
+  # SessionStart + CwdChanged hook: load the cwd's direnv/nix-direnv devShell
+  # into Claude Code's Bash environment. Chiefly for the Claude Desktop "Code"
+  # tab, which launches from the GUI and inherits no project devShell (see
+  # ./load-direnv.sh). Fully self-contained — bakes direnv/nix/bash so it works
+  # regardless of the PATH the graphical session hands the app.
+  loadDirenv = pkgs.writeShellApplication {
+    name = "claude-load-direnv";
+    runtimeInputs = [
+      pkgs.direnv
+      pkgs.nix
+      pkgs.bash
+      pkgs.jq
+      pkgs.gnugrep
+      pkgs.coreutils
+    ];
+    bashOptions = [
+      "nounset"
+      "pipefail"
+    ];
+    text = builtins.readFile ./load-direnv.sh;
+  };
+
+  # Only wire the devShell loader when direnv is actually configured.
+  devShellHooks = lib.optionalAttrs config.home_modules.direnv.enable {
+    SessionStart = [ { hooks = [ { type = "command"; command = lib.getExe loadDirenv; } ]; } ];
+    CwdChanged = [ { hooks = [ { type = "command"; command = lib.getExe loadDirenv; } ]; } ];
+  };
 in
 {
   options.home_modules.claude-code = {
@@ -184,7 +212,8 @@ in
               ];
             }
           ];
-        };
+        }
+        // devShellHooks;
       } cfg.settings;
       context = composedContext;
       skills.jj = ./skills/jj;
