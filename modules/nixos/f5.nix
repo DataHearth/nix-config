@@ -68,17 +68,24 @@ in
           # Remove the conflicting policy routing rule svpn installs
           ${pkgs.iproute2}/bin/ip rule del to 1.1.1.1 lookup 200 2>/dev/null || true
 
-          # The VPN only pushes routes for 14.0.0.0/8 and 100.96.0.0/12
-          # (see DNS_SPLIT/LAN0 in ~/.F5Networks/vpn.log). Private corporate
-          # instances live in 10.0.0.0/8 (e.g. the 10.84.x Jenkins boxes) and
-          # are NOT tunneled by policy, so add the route ourselves. Safe here:
-          # the local LAN is 192.168.1.0/24 and Docker is 172.x, no 10.x overlap.
+          # LAN0 only tunnels 14.0.0.0/8 and 100.96.0.0/12 (see szParams in
+          # ~/.F5Networks/vpn.log), but plenty of corporate services resolve
+          # into 10.0.0.0/8 and are NOT tunneled by policy — e.g. the modelops
+          # platform behind *.airbus-v.corp lands on 10.102.191.x. Route it
+          # ourselves. Safe: local LAN is 192.168.1.0/24, Docker is 172.x and
+          # the tailnet is 100.64.0.0/10 — nothing overlaps 10/8.
           ${pkgs.iproute2}/bin/ip route replace 10.0.0.0/8 dev tun0
 
           # Wait for interface to be registered with resolved
           sleep 2
           ${pkgs.systemd}/bin/resolvectl dns tun0 100.105.5.112 100.105.6.192
-          ${pkgs.systemd}/bin/resolvectl domain tun0 "~airbus.corp" "~intra.corp"
+          # Mirrors DNS_SPLIT0 from the VPN's negotiated policy (see szParams in
+          # ~/.F5Networks/vpn.log). resolved matches routing domains on label
+          # boundaries, so "~airbus.corp" does NOT cover airbus-v.corp — every
+          # split domain has to be listed explicitly or it resolves via public
+          # DNS and NXDOMAINs. Re-check this list if Airbus changes DNS_SPLIT0.
+          ${pkgs.systemd}/bin/resolvectl domain tun0 \
+            "~airbus.corp" "~airbus-v.corp" "~intra.corp" "~aero.bombardier.net"
         '';
       };
     };
