@@ -87,10 +87,17 @@ stdenv.mkDerivation (finalAttrs: {
   versionCheckKeepEnvironment = [ "HOME" ];
   versionCheckProgramArg = "--version";
 
+  # local update.sh is multi-package, so pass the package name as an argument
+  passthru.updateScript = [
+    ./update.sh
+    "claude-code"
+  ];
+
   meta = {
     description = "Agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster";
     homepage = "https://github.com/anthropics/claude-code";
-    downloadPage = "https://www.npmjs.com/package/@anthropic-ai/claude-code";
+    downloadPage = "https://claude.com/product/claude-code";
+    changelog = "https://github.com/anthropics/claude-code/blob/v${finalAttrs.version}/CHANGELOG.md";
     license = lib.licenses.unfree;
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
     platforms = [
