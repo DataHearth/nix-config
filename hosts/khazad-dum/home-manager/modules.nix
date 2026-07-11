@@ -311,7 +311,8 @@
         }
         {
           workspace = 3;
-          match.class = "claude-desktop";
+          # The app reports itself as "com.anthropic.Claude", not "claude-desktop".
+          match.class = "com\\.anthropic\\.Claude";
         }
         {
           workspace = 4;
