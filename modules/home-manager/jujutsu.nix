@@ -46,6 +46,12 @@ in
           name = cfg.user.name;
           email = cfg.user.email;
         };
+        # default is `less -FRX`; --mouse makes less handle wheel events itself
+        ui.pager.command = [
+          "less"
+          "-FRX"
+          "--mouse"
+        ];
       };
     };
   };
