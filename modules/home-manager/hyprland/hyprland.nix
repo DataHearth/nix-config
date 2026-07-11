@@ -90,7 +90,6 @@ let
 
   # exec_once equivalent: a `hl.on("hyprland.start", ...)` autostart hook.
   startupCmds = [
-    "${pkgs.hyprland}/bin/hyprctl hyprpaper"
     terminal
   ]
   ++ lib.optional (cfg.status_bar == "waybar") "waybar"
