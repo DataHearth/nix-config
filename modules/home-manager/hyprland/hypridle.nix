@@ -47,9 +47,12 @@ let
 
   hypridle-power-sync = pkgs.writeShellScript "hypridle-power-sync" ''
     cat=${pkgs.coreutils}/bin/cat
+    sleep=${pkgs.coreutils}/bin/sleep
     stdbuf=${pkgs.coreutils}/bin/stdbuf
     upower=${pkgs.upower}/bin/upower
     systemctl=${pkgs.systemd}/bin/systemctl
+    awk=${pkgs.gawk}/bin/awk
+    pgrep=${pkgs.procps}/bin/pgrep
     pkill=${pkgs.procps}/bin/pkill
 
     # Set by hypridle-toggle when the user takes manual control; while it exists
@@ -70,6 +73,36 @@ let
       return 1
     }
 
+    # Waybar arms its SIGRTMIN+8 handler only after it has finished loading its
+    # modules, roughly a second after exec. Until then the signal hits the
+    # default disposition for a real-time signal -- terminate -- so poking a
+    # still-initialising waybar kills it outright: no crash, no core dump, no
+    # log line. The first sync below runs ~1s into the session, squarely inside
+    # that window, which is why waybar never survived login. Wait for the
+    # handler to actually appear (SigCgt bit) before signalling.
+    poke_waybar() {
+      i=0
+      while [ "$i" -lt 50 ]; do
+        i=$((i + 1))
+        # comm is ".waybar-wrapped", so match on a substring rather than -x.
+        pid="$("$pgrep" -o waybar)"
+        # No waybar process at all: either it is not the configured bar, or it
+        # has yet to be exec'd -- in which case it reads hypridle's state itself
+        # on startup. Nothing to poke, and nothing to wait for.
+        [ -n "$pid" ] || return
+        if [ -r "/proc/$pid/status" ]; then
+          # SigCgt is a 64-bit hex mask of caught signals: bit N-1 is signal N,
+          # and SIGRTMIN+8 is signal 42 under glibc (where SIGRTMIN is 34).
+          cgt="$("$awk" '/^SigCgt:/ { print $2 }' "/proc/$pid/status")"
+          if [ -n "$cgt" ] && [ "$((0x$cgt >> 41 & 1))" -eq 1 ]; then
+            "$pkill" -SIGRTMIN+8 waybar
+            return
+          fi
+        fi
+        "$sleep" 0.1
+      done
+    }
+
     sync() {
       # Manual toggle wins: once the user has taken control this session, leave
       # hypridle exactly as they set it.
@@ -83,7 +116,7 @@ let
       else
         "$systemctl" --user start hypridle.service
       fi
-      "$pkill" -SIGRTMIN+8 waybar
+      poke_waybar
     }
 
     # Evaluate once, then block on UPower's event stream: plugging in/out wakes
