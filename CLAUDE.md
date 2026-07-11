@@ -2,11 +2,11 @@
 
 ## Repository Overview
 
-This repository contains NixOS and Home Manager configurations for multiple systems. It uses a flake-based structure with hosts, modules, and secrets management. The flake repository is always stored in `~/.config/nix-config`.
+This repository contains the NixOS and Home Manager configuration for a single machine. It uses a flake-based structure with hosts, modules, and secrets management. The flake repository is always stored in `~/.config/nix-config`.
 
 ## Systems
 
-### Khazad-dum
+### khazad-dum
 - **OS**: NixOS (migrated from Arch Linux)
 - **Hardware**: Framework 16" laptop (AMD 7040, nixos-hardware module)
 - **WM/DE**: Hyprland, GNOME
@@ -18,27 +18,20 @@ This repository contains NixOS and Home Manager configurations for multiple syst
 - **Host Files**:
   - `configuration.nix` - Main NixOS configuration
   - `hardware-configuration.nix` - Hardware-specific settings
+  - `disko.nix` - Declarative disk layout
+  - `lanzaboote.nix` - Secure Boot
+  - `network.nix` - NetworkManager/iwd, DNS, wlan0 operstate workaround
+  - `modules.nix` - Enabled NixOS modules (`nixos_modules.*`)
+  - `packages.nix` - System packages and `programs.*` toggles
+  - `services.nix` - System services
+  - `systemd.nix` - Systemd units
   - `users.nix` - User account definitions
   - `locales.nix` - Locale settings
   - `home-manager/home.nix` - Main Home Manager configuration
   - `home-manager/modules.nix` - Enabled Home Manager modules
   - `home-manager/packages.nix` - Package list
   - `home-manager/services.nix` - User services configuration
-
-### Valinor
-- **OS**: NixOS
-- **Purpose**: Homelab/production server
-- **Configuration**: Full NixOS system with Home Manager integration
-- **Package Channel**: nixpkgs-unstable
-- **Host Files**:
-  - `configuration.nix` - Main NixOS configuration
-  - `hardware-configuration.nix` - Hardware-specific settings
-  - `packages.nix` - System packages
-  - `services.nix` - System services
-  - `systemd.nix` - Systemd units configuration
-  - `users.nix` - User account definitions
-  - `locales.nix` - Locale settings
-  - `home-manager/` - Home Manager configuration for users
+  - `home-manager/root.nix` - Home Manager config for the root user
 
 ## Common Commands
 
@@ -47,18 +40,15 @@ This repository contains NixOS and Home Manager configurations for multiple syst
 The repository uses the `nh` utility for building and switching configurations:
 
 ```bash
-# For Khazad-dum (NixOS system)
-nh os build    # Build without switching
-nh os test     # Build and switch, but don't persist across reboots
-nh os switch   # Build and switch system
-
-# For Valinor (NixOS system)
 nh os build    # Build without switching
 nh os test     # Build and switch, but don't persist across reboots
 nh os switch   # Build and switch system
 
 # Dry-run build verification (no root needed)
-nix build .#nixosConfigurations.Khazad-dum.config.system.build.toplevel --dry-run
+nix build .#nixosConfigurations.khazad-dum.config.system.build.toplevel --dry-run
+
+# Evaluate a single option without a full build
+nix eval .#nixosConfigurations.khazad-dum.config.programs.steam.enable
 ```
 
 ### Updating Flake Inputs
@@ -95,36 +85,31 @@ nix-config/
 ├── flake.lock             # Locked dependency versions
 ├── .sops.yaml             # SOPS configuration for secrets
 ├── hosts/                 # Host-specific configurations
-│   ├── khazad-dum/       # Framework laptop (NixOS)
-│   │   ├── configuration.nix
-│   │   ├── hardware-configuration.nix
-│   │   ├── users.nix
-│   │   ├── locales.nix
-│   │   └── home-manager/
-│   │       ├── home.nix
-│   │       ├── modules.nix
-│   │       ├── packages.nix
-│   │       └── services.nix
-│   └── valinor/          # NixOS server
+│   └── khazad-dum/       # Framework laptop (NixOS)
 │       ├── configuration.nix
 │       ├── hardware-configuration.nix
-│       ├── packages.nix
-│       ├── services.nix
-│       ├── systemd.nix
-│       ├── users.nix
-│       ├── locales.nix
+│       ├── disko.nix, lanzaboote.nix, network.nix
+│       ├── modules.nix, packages.nix, services.nix, systemd.nix
+│       ├── users.nix, locales.nix
 │       └── home-manager/
+│           ├── home.nix
+│           ├── modules.nix
+│           ├── packages.nix
+│           ├── services.nix
+│           └── root.nix
 ├── modules/              # Shared modules
 │   ├── home-manager/    # Home Manager modules (options under home_modules.<name>)
-│   │   ├── alacritty.nix, ashell.nix, atuin.nix, bat.nix
-│   │   ├── claude-code.nix, direnv.nix, git.nix, jujutsu.nix
-│   │   ├── hyprland/, neovim/, swaync/, waybar/, zellij/
-│   │   ├── ssh.nix, theme.nix, vscode.nix
-│   │   ├── walker.nix, yazi.nix, zed-editor.nix, zsh.nix
+│   │   ├── alacritty.nix, atuin.nix, bat.nix, battery-notify.nix
+│   │   ├── chromium.nix, direnv.nix, elephant.nix, git.nix
+│   │   ├── jujutsu.nix, okular.nix, ssh.nix, starship.nix
+│   │   ├── theme.nix, walker.nix, yazi.nix, zen-browser.nix, zsh.nix
+│   │   ├── claude-code/, hyprland/, neovim/, swaync/, waybar/, zellij/
 │   │   └── default.nix  # Module aggregator
 │   └── nixos/           # NixOS system modules
-│       ├── greetd.nix, nh.nix, nvidia.nix, passthrough.nix
+│       ├── claude-desktop-cowork.nix, f5.nix, greetd.nix
+│       ├── nautilus.nix, nh.nix
 │       └── default.nix
+├── packages/             # Custom package derivations
 └── secrets/             # Encrypted secrets (sops-nix)
 ```
 
@@ -145,34 +130,38 @@ nix-config/
 
 ### NixOS Modules
 
-Available modules in `modules/nixos/`:
+Available modules in `modules/nixos/` (options under `nixos_modules.<name>`):
+- **claude-desktop-cowork.nix**: Claude Desktop Cowork support (nix-ld, libglvnd)
+- **f5.nix**: F5 VPN client and split-tunnel setup
 - **greetd.nix**: Display manager with tuigreet/regreet switching, gnome-keyring PAM integration
+- **nautilus.nix**: Nautilus file manager
 - **nh.nix**: nh build/switch utility
-- **nvidia.nix**: NVIDIA GPU configuration
-- **passthrough.nix**: GPU passthrough for VMs
 
 ### Home Manager Modules
 
 Available modules in `modules/home-manager/`:
 - **alacritty.nix**: Terminal emulator configuration
-- **ashell.nix**: Ashell status bar for Hyprland
 - **atuin.nix**: Atuin shell history
 - **bat.nix**: Bat (cat replacement) with theme
-- **claude-code.nix**: Claude Code CLI with plugins, skills, and security defaults
+- **battery-notify.nix**: Battery level notifications
+- **chromium.nix**: Chromium browser
+- **claude-code/**: Claude Code CLI with plugins, skills, and security defaults
 - **direnv.nix**: Direnv environment management
+- **elephant.nix**: Elephant data provider for Walker
 - **git.nix**: Git configuration
 - **hyprland/**: Hyprland window manager with keybinds, autostart, etc.
 - **jujutsu.nix**: Jujutsu VCS configuration
 - **neovim/**: Neovim editor
+- **okular.nix**: Okular document viewer
 - **ssh.nix**: SSH client configuration
+- **starship.nix**: Starship shell prompt
 - **swaync/**: Notification daemon
 - **theme.nix**: Catppuccin Macchiato theme (centralized via catppuccin/nix)
-- **vscode.nix**: Visual Studio Code
 - **walker.nix**: Walker application launcher
 - **waybar/**: Waybar status bar
 - **yazi.nix**: Yazi file manager
-- **zed-editor.nix**: Zed editor with LSPs and extensions
 - **zellij/**: Terminal multiplexer
+- **zen-browser.nix**: Zen Browser
 - **zsh.nix**: Zsh shell with plugins
 
 ## Development Workflow
@@ -195,7 +184,9 @@ Secrets are managed using sops-nix:
 ## Notes
 
 - Home Manager modules define options under `home_modules.<name>` namespace (e.g., `home_modules.claude-code.enable`), not directly under `programs`
-- Valinor's nixosConfiguration key is capitalized: `nixosConfigurations.Valinor`
-- Both systems use nixos-unstable channel for latest packages
+- NixOS modules define options under the `nixos_modules.<name>` namespace
+- The nixosConfiguration key is lowercase and matches the directory name: `nixosConfigurations.khazad-dum`
+- There is exactly one host; this repo is not currently multi-machine
+- The system uses the nixos-unstable channel for latest packages
 - The repository follows a modular structure for easy maintenance
-- Khazad-dum uses nixos-hardware `framework-16-7040-amd` module for hardware support
+- khazad-dum uses nixos-hardware `framework-16-7040-amd` module for hardware support
