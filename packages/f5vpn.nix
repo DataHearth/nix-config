@@ -69,7 +69,7 @@ stdenv.mkDerivation {
   # Refresh the hash with ./update.sh f5vpn.
   src = fetchurl {
     url = "https://axess.airbus.com/public/download/linux_f5vpn.x86_64.deb";
-    hash = "sha256-LKkzN+oQQt8R5dNb85A/Bf8dcOiuJtFI1ob/98rQpxQ=";
+    hash = "sha256-W9mDSeW4PSfqCDlUPYg84vjZ5Uxc7mciC4uip+xT6g0=";
   };
 
   nativeBuildInputs = [

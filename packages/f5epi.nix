@@ -30,19 +30,35 @@
   xcbutilimage,
   xcbutilkeysyms,
   xcbutilrenderutil,
+  # Runtime deps for the bundled libQt6WebEngineCore (Chromium) added in 7262.
+  nss,
+  nspr,
+  libopus,
+  libwebp,
+  alsa-lib,
+  snappy,
+  minizip,
+  libgbm,
+  lcms2,
+  libxcomposite,
+  libxdamage,
+  libxrandr,
+  libxtst,
+  libxshmfence,
+  libxkbfile,
 }:
 
 stdenv.mkDerivation {
   pname = "f5epi";
-  version = "7261.2025.1009.1";
+  version = "7262.0.0.2";
 
-  # Matched to the f5vpn client above (same 7261.2025.1009.1 release) from
+  # Matched to the f5vpn client above (same 7262.0.0.2 release) from
   # Airbus's own portal. The previous pin was a 2020 build (7183.2020.0826.1)
   # scavenged from Brown's portal, badly out of step with the VPN client.
   # Refresh the hash with ./update.sh f5epi.
   src = fetchurl {
     url = "https://axess.airbus.com/public/download/linux_f5epi.x86_64.rpm";
-    hash = "sha256-Xd5a2ePaFNGOAx90P+CvBdj516qP2uDVsXN9z+pc6sA=";
+    hash = "sha256-Q6yb9TKH6jYEGTWQ4tCx6wDfSKmjfSXg6CZGvwdAde8=";
   };
 
   nativeBuildInputs = [
@@ -75,6 +91,23 @@ stdenv.mkDerivation {
     xcbutilimage
     xcbutilkeysyms
     xcbutilrenderutil
+
+    # libQt6WebEngineCore (bundled since 7262) pulls in the Chromium runtime.
+    nss
+    nspr
+    libopus
+    libwebp
+    alsa-lib
+    snappy
+    minizip
+    libgbm
+    lcms2
+    libxcomposite
+    libxdamage
+    libxrandr
+    libxtst
+    libxshmfence
+    libxkbfile
   ];
 
   unpackPhase = ''
