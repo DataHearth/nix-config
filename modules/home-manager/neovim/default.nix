@@ -78,7 +78,6 @@ in
         # nvim-lint
         shellcheck
 
-        # LSP servers
         bash-language-server
         dockerfile-language-server
         vscode-langservers-extracted # html, css, json, eslint

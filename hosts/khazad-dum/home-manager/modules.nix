@@ -175,7 +175,6 @@
         };
         permissions.allow = [
           "Read(//nix/store/**)"
-          # MCP
           # GitHub — read-only only. Every mutating tool (merge_pull_request,
           # delete_file, push_files, create_*, *_write, …) avoids these
           # prefixes, so it keeps prompting like `gh` and jj's write ops do.
@@ -185,18 +184,14 @@
           "mcp__plugin_claude-code-home-manager_github__issue_read"
           "mcp__plugin_claude-code-home-manager_github__pull_request_read"
           "mcp__plugin_claude-code-home-manager_context7__*"
-          # claude-design
           "mcp__claude-design__get_*"
           "mcp__claude-design__list_*"
           "mcp__claude-design__read_*"
           "mcp__claude-design__render_*"
-          # Nix
           "Bash(nix eval *)"
           "Bash(nix search *)"
           "Bash(nix --version)"
-          # Logging
           "Bash(tee /tmp/*)"
-          # jj — read-only inspection
           "Bash(jj st*)"
           "Bash(jj status*)"
           "Bash(jj log*)"
@@ -219,7 +214,7 @@
           "Bash(jj --version)"
           "Bash(jj version)"
           "Bash(jj split --help)"
-          # jj --no-pager — read-only inspection (skill prefers this form)
+          # Duplicated for --no-pager because the jj skill prefers that form.
           "Bash(jj --no-pager st*)"
           "Bash(jj --no-pager status*)"
           "Bash(jj --no-pager log*)"
@@ -234,23 +229,20 @@
           "Bash(jj --no-pager file show*)"
           "Bash(jj --no-pager file list*)"
           "Bash(jj --no-pager bookmark list*)"
-          # jj — remote read
           "Bash(jj git fetch*)"
 
-          # ── Universal grants ──────────────────────────────────────────────
-          # Hoisted out of per-project settings.local.json so they apply to
-          # every project and stop re-prompting. Content-reading shells
-          # (cat/grep/find/head/tail/env) are deliberately NOT hoisted: Bash
-          # bypasses the Read() deny rules that protect .env/secrets, so those
-          # stay per-project.
-          # Web
+          # Everything below is hoisted out of per-project settings.local.json
+          # so it applies to every project and stops re-prompting.
+          # Content-reading shells (cat/grep/find/head/tail/env) are
+          # deliberately NOT hoisted: Bash bypasses the Read() deny rules that
+          # protect .env/secrets, so those stay per-project.
           "WebSearch"
           "WebFetch(domain:github.com)"
           "WebFetch(domain:raw.githubusercontent.com)"
           "WebFetch(domain:gist.github.com)"
           "WebFetch(domain:wiki.nixos.org)"
           "WebFetch(domain:search.nixos.org)"
-          # Nix — build/eval/query (build only realizes to the store)
+          # `nix build` only realizes to the store, so it is safe unattended.
           "Bash(nix run *)"
           "Bash(nix build *)"
           "Bash(nix store *)"
@@ -259,7 +251,7 @@
           "Bash(nix flake *)"
           "Bash(nix-prefetch-url *)"
           "Bash(nix-instantiate --eval *)"
-          # gh — read-only PR/run inspection (jj does not replace gh)
+          # jj does not replace gh, so read-only gh stays allowed.
           "Bash(gh pr view *)"
           "Bash(gh pr list *)"
           "Bash(gh pr diff *)"
@@ -268,7 +260,7 @@
           "Bash(gh run list *)"
           "Bash(gh api repos/*)"
           "Bash(gh search *)"
-          # git plumbing — no jj equivalent, read-only, non-secret
+          # Plumbing with no jj equivalent; read-only and non-secret.
           "Bash(git ls-remote *)"
           "Bash(git symbolic-ref *)"
           "Bash(git rev-list *)"

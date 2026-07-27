@@ -25,14 +25,12 @@
     docker-compose
     docker-buildx
 
-    # Fonts
     nerd-fonts.jetbrains-mono
     nerd-fonts.mononoki
     nerd-fonts.fira-code
     noto-fonts-cjk-serif # support for chinese/japanese characters
     noto-fonts-cjk-sans # support for chinese/japanese characters
 
-    # GUI
     gnome-calculator
     protonmail-bridge-gui
     (signal-desktop.override {

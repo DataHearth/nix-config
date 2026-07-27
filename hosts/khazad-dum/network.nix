@@ -10,9 +10,9 @@
   # (F5-specific resolv.conf/DNS handling lives in modules/nixos/f5.nix.)
   services.resolved = {
     enable = true;
-    # No fallback servers: if a link's DNS scope dies (e.g. the iwd
-    # dormant-operstate bug above), resolution must fail loudly instead of
-    # silently serving public answers for split-horizon names via 1.1.1.1.
+    # No fallback servers: if a link's DNS scope dies, resolution must fail
+    # loudly instead of silently serving public answers for split-horizon
+    # names via 1.1.1.1.
     # Must be an explicit empty assignment — an empty list would omit the
     # line and keep systemd's compiled-in fallback list.
     settings.Resolve.FallbackDNS = "";

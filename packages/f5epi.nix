@@ -134,14 +134,12 @@ stdenv.mkDerivation {
       --run "mkdir -p \$HOME/.F5Networks/Inspectors"
     ln -s $out/opt/f5/epi/f5PolicyServer $out/bin/f5PolicyServer
 
-    # Desktop entry
     install -Dm444 opt/f5/epi/com.f5.f5epi.desktop -t $out/share/applications
     substituteInPlace $out/share/applications/com.f5.f5epi.desktop \
       --replace-fail "/opt/f5/epi/f5epi" "$out/bin/f5epi" \
       --replace-fail "DBusActivatable=true" "DBusActivatable=false" \
       --replace-fail "MimeType=x-scheme-handler/f5-epi;" "MimeType=x-scheme-handler/f5-epi;x-scheme-handler/f5epi;"
 
-    # D-Bus service
     install -Dm444 opt/f5/epi/com.f5.f5epi.service -t $out/share/dbus-1/services
     substituteInPlace $out/share/dbus-1/services/com.f5.f5epi.service \
       --replace-fail "/opt/f5/epi/f5epi" "$out/bin/f5epi"
@@ -152,7 +150,6 @@ stdenv.mkDerivation {
     L+ /usr/local/bin/tar - - - - ${gnutar}/bin/tar
     EOF
 
-    # Icons
     for icon in opt/f5/epi/logos/*.png; do
       size=$(basename "$icon" .png)
       install -Dm444 "$icon" "$out/share/icons/hicolor/''${size}/apps/f5epi.png"

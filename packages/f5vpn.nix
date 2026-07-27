@@ -158,13 +158,11 @@ stdenv.mkDerivation {
     ln -s $out/opt/f5/vpn/f5vpn_launch_helper.sh $out/bin/f5vpn_launch_helper.sh
     ln -s $out/opt/f5/vpn/tunnelserver $out/bin/tunnelserver
 
-    # Desktop entry
     install -Dm444 opt/f5/vpn/com.f5.f5vpn.desktop -t $out/share/applications
     substituteInPlace $out/share/applications/com.f5.f5vpn.desktop \
       --replace-fail "/opt/f5/vpn/f5vpn" "$out/bin/f5vpn" \
       --replace-fail "DBusActivatable=true" "DBusActivatable=false"
 
-    # Icons
     for icon in opt/f5/vpn/logos/*.png; do
       size=$(basename "$icon" .png)
       install -Dm444 "$icon" "$out/share/icons/hicolor/''${size}/apps/f5vpn.png"

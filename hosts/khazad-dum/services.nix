@@ -1,6 +1,5 @@
 { config, pkgs, ... }:
 {
-  # Audio
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -9,21 +8,19 @@
   };
   security.rtkit.enable = true;
 
-  # Bluetooth
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
   };
 
-  # Power management
   services.power-profiles-daemon.enable = true;
   services.thermald.enable = true;
 
-  # Fingerprint reader
   services.fprintd.enable = true;
 
   security.pam.services = {
-    # Hyprlock PAM (required for password + fingerprint unlock)
+    # Empty entry is enough: it registers the PAM stack hyprlock needs for
+    # password + fingerprint unlock.
     hyprlock = { };
 
     # Skip the fingerprint prompt for sudo while on AC, falling straight through
@@ -49,20 +46,15 @@
     };
   };
 
-  # Tailscale VPN
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "client";
     openFirewall = true;
   };
 
-  # Removable device automounting
   services.udisks2.enable = true;
-
-  # Firmware updates
   services.fwupd.enable = true;
 
-  # Antivirus
   services.clamav = {
     daemon.enable = true;
     updater.enable = true;

@@ -1,6 +1,5 @@
 { config, ... }:
 {
-  # Desktop sessions
   programs.hyprland.enable = true;
 
   # GNOME desktop session is not used; keep only the supporting plumbing the
@@ -14,10 +13,9 @@
     # F5 VPN (Airbus): client, split-tunnel routing/DNS, firewall, tailnet fix
     f5.enable = true;
 
-    # Display manager
     greetd.enable = true;
 
-    # File manager (owns services.gvfs for trash/mounts + the GTK file chooser).
+    # Also owns services.gvfs for trash/mounts and the GTK file chooser.
     nautilus = {
       enable = true;
       users = [ "datahearth" ];
@@ -123,13 +121,10 @@
     };
   };
 
-  # Shell
   programs.zsh.enable = true;
 
-  # Docker
   virtualisation.docker.enable = true;
 
-  # Libvirt / QEMU
   virtualisation.libvirtd = {
     enable = true;
     qemu.swtpm.enable = true;

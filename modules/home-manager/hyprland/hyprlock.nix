@@ -89,7 +89,6 @@ in
             monitor = if cfg.default_display != null then cfg.default_display else "";
           in
           [
-            # TIME — top right
             {
               inherit monitor;
               text = "$TIME";
@@ -100,7 +99,6 @@ in
               valign = "top";
               halign = "right";
             }
-            # DATE — below time, top right
             {
               inherit monitor;
               text = ''cmd[update:43200000] date +"%A, %d %B %Y"'';
@@ -111,7 +109,6 @@ in
               valign = "top";
               halign = "right";
             }
-            # LAYOUT — top left
             {
               inherit monitor;
               text = "Layout: $LAYOUT";
@@ -122,7 +119,6 @@ in
               valign = "top";
               halign = "left";
             }
-            # FINGERPRINT
             {
               inherit monitor;
               text = "$FPRINTPROMPT";
@@ -133,7 +129,6 @@ in
               halign = "center";
               valign = "center";
             }
-            # MEDIA — bottom center
             {
               inherit monitor;
               text = ''cmd[update:1000] ${pkgs.playerctl}/bin/playerctl metadata --format "{{ artist }} - {{ album }} - {{ title }}"'';

@@ -94,33 +94,29 @@ in
         };
 
         settings = {
-          # Startup: restore session
+          # 3 = restore the previous session.
           "browser.startup.page" = 3;
           "browser.shell.checkDefaultBrowser" = true;
 
-          # Spellcheck
+          # 1 = multi-line text fields only (0 = off, 2 = every field).
           "layout.spellcheckDefault" = 1;
           "spellchecker.dictionary" = "fr,en-US";
 
-          # Search suggestions
           "browser.search.suggest.enabled" = true;
           "browser.urlbar.suggest.searches" = true;
 
-          # Sidebar + topbar layout
           "zen.view.use-single-toolbar" = false;
 
           # Fractional scaling breaks extension popups on wlroots compositors
           # (bugzilla#1849109). Disable until upstream fix lands.
           "widget.wayland.fractional-scale.enabled" = false;
 
-          # Disable all saving/autofill
           "signon.rememberSignons" = false;
           "signon.autofillForms" = false;
           "browser.formfill.enable" = false;
           "extensions.formautofill.addresses.enabled" = false;
           "extensions.formautofill.creditCards.enabled" = false;
 
-          # Telemetry
           "toolkit.telemetry.enabled" = false;
           "toolkit.telemetry.unified" = false;
           "datareporting.healthreport.uploadEnabled" = false;

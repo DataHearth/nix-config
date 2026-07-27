@@ -18,8 +18,7 @@
   ]
   ++ (import ../../modules/nixos);
 
-  # Emulate aarch64 (via binfmt/QEMU) so the laptop can build and run
-  # aarch64-linux binaries — e.g. cross-building for an ARM target.
+  # For cross-building and running ARM targets on this x86 laptop.
   boot.binfmt = {
     emulatedSystems = [ "aarch64-linux" ];
     preferStaticEmulators = true;
