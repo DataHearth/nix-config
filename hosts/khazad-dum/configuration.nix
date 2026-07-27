@@ -20,8 +20,10 @@
 
   # Emulate aarch64 (via binfmt/QEMU) so the laptop can build and run
   # aarch64-linux binaries — e.g. cross-building for an ARM target.
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  boot.binfmt.preferStaticEmulators = true;
+  boot.binfmt = {
+    emulatedSystems = [ "aarch64-linux" ];
+    preferStaticEmulators = true;
+  };
 
   hardware.enableAllFirmware = true;
   hardware.enableAllHardware = true;
