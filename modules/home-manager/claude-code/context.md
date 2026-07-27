@@ -22,3 +22,36 @@ Permitted git exceptions (jj has no equivalent):
 
 `jj git push` and `jj op abandon` are explicitly denied in the harness.
 Confirm push plans with the user and let them invoke push themselves.
+
+# Comments: only where the code cannot speak for itself
+
+Default to no comment. Write one only when someone fluent in the language,
+reading the code in front of them, still could not work out *why* it is the
+way it is. If clearer code would remove the question — a better name, a
+smaller function, a named constant — do that instead of explaining.
+
+Never write these, and delete them from any region being edited:
+- Restatements of the code: `# Enable bluetooth` above
+  `hardware.bluetooth.enable = true;`
+- Labels for the self-evident: `# Fonts` above a list of fonts, `# Imports`
+  above the imports
+- Section banners that only name a block: `# ── Universal grants ──`,
+  `# Web`, `# Nix — build/eval/query`
+- Changelog and attribution notes: what a value used to be, who changed it,
+  which request it came from. History records that; the file should not.
+
+These earn their place:
+- Why a non-obvious choice was made — especially when the obvious
+  alternative is wrong, or was tried and failed
+- Workarounds: name the upstream bug, the affected version, and the
+  condition under which the workaround can be removed
+- Ordering constraints and invariants a later edit would silently break
+- Traps: where the code reads as doing something other than what it does
+
+Length follows need. A real constraint deserves the four lines it takes to
+state properly — the goal is no noise, not no words.
+
+Scope: this governs comments being written, and the parts of a file already
+being changed. Do not sweep untouched regions of a file unless a cleanup was
+asked for. Doc comments that generate API documentation — nix option
+`description`, rustdoc, jsdoc — are out of scope; leave them.
