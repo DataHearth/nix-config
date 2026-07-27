@@ -89,6 +89,35 @@
         };
       };
 
+      # Appended to the module's global context.md. Lives here rather than in
+      # the module because it documents the MCP servers declared just above.
+      context = ''
+        # GitHub: MCP server, not the `gh` CLI
+
+        GitHub work goes through the **GitHub MCP server**
+        (`mcp__plugin_claude-code-home-manager_github__*`) whenever the server
+        exposes the operation — pull requests, issues, releases, commits, tags,
+        branches, file contents, and code/repo/user search. Reach for it before
+        shelling out to `gh` or fetching github.com with WebFetch. This narrows
+        the `gh` exception listed under the jj rules above.
+
+        Why: the MCP tools return structured JSON that needs no parsing, accept
+        `minimal_output` and pagination to keep context small, and authenticate
+        from the sops-managed `claude-code/github-mcp` token rather than
+        whatever `gh` auth state the shell happens to carry.
+
+        Fall back to `gh` only for what the MCP server does not expose — Actions
+        logs (`gh run view`, `gh run list`), `gh pr checks` — and to WebFetch
+        only for non-API pages.
+
+        Read-only MCP tools (`get_*`, `list_*`, `search_*`, `issue_read`,
+        `pull_request_read`) are allowed in the harness and run without
+        prompting. Every other GitHub MCP tool mutates a remote repository —
+        `merge_pull_request`, `delete_file`, `push_files`, `create_*`,
+        `*_write`, the comment tools — and will prompt. Confirm those with the
+        user instead of assuming approval.
+      '';
+
       lspServers = {
         svelte = {
           command = "${pkgs.svelte-language-server}/bin/svelteserver";
@@ -105,7 +134,14 @@
         permissions.allow = [
           "Read(//nix/store/**)"
           # MCP
-          "mcp__plugin_claude-code-home-manager_github__*"
+          # GitHub — read-only only. Every mutating tool (merge_pull_request,
+          # delete_file, push_files, create_*, *_write, …) avoids these
+          # prefixes, so it keeps prompting like `gh` and jj's write ops do.
+          "mcp__plugin_claude-code-home-manager_github__get_*"
+          "mcp__plugin_claude-code-home-manager_github__list_*"
+          "mcp__plugin_claude-code-home-manager_github__search_*"
+          "mcp__plugin_claude-code-home-manager_github__issue_read"
+          "mcp__plugin_claude-code-home-manager_github__pull_request_read"
           "mcp__plugin_claude-code-home-manager_context7__*"
           # claude-design
           "mcp__claude-design__get_*"
