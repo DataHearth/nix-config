@@ -354,7 +354,7 @@
 
       awww.randomize = {
         enable = true;
-        directory = "/run/media/datahearth/proton/medias/wallpapers";
+        directory = "${config.home.homeDirectory}/Documents/OpenCloud/Personal/medias/wallpapers";
       };
     };
   };

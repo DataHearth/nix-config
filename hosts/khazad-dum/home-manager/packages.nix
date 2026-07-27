@@ -21,7 +21,6 @@
     brightnessctl
     wl-clipboard
     sops
-    rclone
     restic
     docker-compose
     docker-buildx
