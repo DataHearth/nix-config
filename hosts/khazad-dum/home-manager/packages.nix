@@ -48,6 +48,7 @@
     claude-desktop
     thunderbird
     opencloud-desktop
+    obsidian
   ];
 
   programs = {

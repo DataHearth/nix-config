@@ -202,6 +202,34 @@
           "Bash(stat *)"
           "Bash(command -v *)"
         ];
+
+        # obsidian-wiki auto-capture. The upstream script lives in the checkout
+        # (so `jj git fetch` upgrades it) but needs python3, which is not in the
+        # global profile — this wrapper supplies it.
+        hooks.Stop = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = lib.getExe (
+                  pkgs.writeShellApplication {
+                    name = "wiki-stop-capture";
+                    runtimeInputs = [
+                      pkgs.bash
+                      pkgs.python3
+                      pkgs.coreutils
+                      pkgs.gawk
+                    ];
+                    text = ''
+                      exec bash ${config.home.homeDirectory}/.obsidian-wiki/repo/.claude/hooks/wiki-stop-capture.sh
+                    '';
+                  }
+                );
+              }
+            ];
+          }
+        ];
       };
     };
 
