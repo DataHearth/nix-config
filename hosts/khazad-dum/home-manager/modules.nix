@@ -59,14 +59,12 @@
 
       # "Lazy senior dev" plugin: enforces YAGNI / simplest-solution-that-works.
       # https://github.com/DietrichGebert/ponytail
-      plugins = [
-        (pkgs.fetchFromGitHub {
-          owner = "DietrichGebert";
-          repo = "ponytail";
-          rev = "v4.7.0";
-          hash = "sha256-Q6vlkbTfBFrNFTxEwYeMe5ciOe6QdULegvExwT//gJs=";
-        })
-      ];
+      plugins.ponytail = pkgs.fetchFromGitHub {
+        owner = "DietrichGebert";
+        repo = "ponytail";
+        rev = "v4.7.0";
+        hash = "sha256-Q6vlkbTfBFrNFTxEwYeMe5ciOe6QdULegvExwT//gJs=";
+      };
 
       mcpServers = {
         github = {

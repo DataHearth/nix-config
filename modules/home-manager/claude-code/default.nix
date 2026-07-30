@@ -146,11 +146,12 @@ in
     };
 
     plugins = lib.mkOption {
-      type = lib.types.listOf (lib.types.either lib.types.package lib.types.path);
-      default = [ ];
+      type = lib.types.attrsOf (lib.types.either lib.types.package lib.types.path);
+      default = { };
       description = ''
-        Plugins to load via `--plugin-dir`. Each entry is a plugin directory,
-        either a local path or a fetcher output (e.g. `pkgs.fetchFromGitHub`).
+        Plugins to load. The attribute name becomes the plugin directory name;
+        the value is a plugin directory, either a local path or a fetcher
+        output (e.g. `pkgs.fetchFromGitHub`).
       '';
     };
   };
