@@ -29,6 +29,10 @@ in
 
       catppuccin.cursors.enable = true;
 
+      # catppuccin/nix only fills in `home.pointerCursor.{name,package}`; Home
+      # Manager deprecated inferring `enable` from those, so set it here.
+      home.pointerCursor.enable = true;
+
       gtk = {
         enable = true;
         gtk4.theme = null;
