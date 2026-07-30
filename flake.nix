@@ -83,7 +83,14 @@
                     # upstream .deb (nixpkgs has no claude-desktop). The package
                     # forces Wayland/ozone itself — see packages/claude-desktop.nix.
                     claude-desktop = super.callPackage ./packages/claude-desktop.nix { };
-                    claude-code = super.callPackage ./packages/claude-code.nix { };
+                    # Track claude-code releases independently of the nixpkgs
+                    # channel: the derivation reads version + per-platform
+                    # checksums from a manifest, so pointing it at a local copy
+                    # (refreshed by ./packages/update.sh claude-code) bumps the
+                    # package without waiting on a channel roll.
+                    claude-code = super.claude-code.override {
+                      manifest = super.lib.importJSON ./packages/claude-code-manifest.json;
+                    };
                     spotify =
                       # Force Wayland (ozone). Spotify's own wrapper only adds these
                       # flags when NIXOS_OZONE_WL + WAYLAND_DISPLAY are set at launch,
