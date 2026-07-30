@@ -2,33 +2,7 @@ layout {
     default_tab_template {
         children
         pane size=1 borderless=true {
-            plugin location="file:@zjstatus@" {
-                format_left   "{mode} #[fg=#8aadf4,bold]{session}"
-                format_center "{tabs}"
-                format_right  "{command_git_branch} {datetime}"
-                format_space  ""
-
-                border_enabled  "false"
-                border_char     "─"
-                border_format   "#[fg=#6e738d]{char}"
-                border_position "top"
-
-                mode_normal  "#[bg=#8aadf4] "
-                mode_tmux    "#[bg=#a6da95] "
-                mode_locked  "#[bg=#f5a97f] "
-
-                tab_normal   "#[fg=#6e738d] {name} "
-                tab_active   "#[fg=#939ab7,bold,italic] {name} "
-
-                command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
-                command_git_branch_format      "#[fg=blue] {stdout} "
-                command_git_branch_interval    "10"
-                command_git_branch_rendermode  "static"
-
-                datetime        "#[fg=#6e738d,bold] {format} "
-                datetime_format "%A, %d %b %Y %H:%M"
-                datetime_timezone "Europe/Paris"
-            }
+            plugin location="compact-bar"
         }
     }
 }

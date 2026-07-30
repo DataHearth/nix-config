@@ -1,3 +1,12 @@
+// Well below zellij's 10000 default. This bounds per-pane grid memory and
+// nothing else. It is specifically not a mitigation for the plugin-exec CPU
+// burn, which is the obvious reason to assume for a cap this low: sessions
+// created with the cap already live still climbed to 246% within 23 minutes.
+// The grid is a small share of the growth anyway — 1000 lines x 8 panes is
+// ~25 MB against 203 MB held. That burn was a leak of session-manager plugin
+// instances; see the "Alt s" binding below.
+scroll_buffer_size 1000
+
 copy_on_select true
 mouse_mode true
 theme "catppuccin-macchiato"
@@ -42,9 +51,16 @@ keybinds clear-defaults=true {
       bind "Alt f" { ToggleFocusFullscreen; }
 
       // === Session ===
+      // LaunchOrFocus, not LaunchPlugin: LaunchPlugin spawns a fresh plugin
+      // instance per press, and dismissing the pane never unloads it. Each
+      // surviving instance polls every session's session-metadata.kdl, so the
+      // plugin-exec threads' CPU grows superlinearly with the press count
+      // (measured: 5 instances 11%, 9 -> 47%, 13 -> 223%). Only a server
+      // restart clears it.
       bind "Alt s" {
-          LaunchPlugin "session-manager" {
+          LaunchOrFocusPlugin "session-manager" {
               floating true
+              move_to_focused_tab true
           }
       }
 
