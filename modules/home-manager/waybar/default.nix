@@ -11,6 +11,24 @@ let
 
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
 
+  power-menu = pkgs.writeShellScript "power-menu" ''
+    choice=$(printf '%s\n' \
+      "󰌾   Lock" \
+      "󰒲   Suspend" \
+      "󰍃   Log out" \
+      "󰜉   Reboot" \
+      "󰐥   Shut down" \
+      | walker -d --nosearch --height 5)
+    [ -z "$choice" ] && exit 0
+    case "$choice" in
+      *"Lock") loginctl lock-session ;;
+      *"Suspend") ${lib.getExe config.home_modules.hyprland.hypridle.sleepScript} ;;
+      *"Log out") ${hyprctl} dispatch 'hl.dsp.exit()' ;;
+      *"Reboot") systemctl reboot ;;
+      *"Shut down") systemctl poweroff ;;
+    esac
+  '';
+
   enable = lib.mkEnableOption "waybar";
 in
 {
@@ -19,6 +37,18 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # Hyprland blurs the bar's layer surface into the glass backdrop.
+    # ignore_alpha must stay below the lowest background alpha in style.css
+    # (the 0.75 gradient stop) or the surface itself is excluded from the blur.
+    wayland.windowManager.hyprland.settings.layer_rule = [
+      {
+        match.namespace = "waybar";
+        blur = true;
+        blur_popups = true;
+        ignore_alpha = 0.35;
+      }
+    ];
+
     programs.waybar = {
       enable = true;
       systemd.enable = false;
@@ -27,12 +57,12 @@ in
         mainBar = {
           layer = "top";
           position = "top";
-          height = 34;
-          spacing = 4;
+          height = 36;
+          spacing = 6;
 
           modules-left = [
             "hyprland/workspaces"
-            "group/system"
+            "hyprland/window"
           ];
 
           modules-center = [
@@ -40,9 +70,11 @@ in
           ];
 
           modules-right = [
+            "group/system"
             "group/hardware"
             "group/info"
             "tray"
+            "custom/power"
           ];
 
           "group/system" = {
@@ -115,8 +147,8 @@ in
             format = "{:%a %d %b %H:%M}";
             tooltip-format = "<tt>{calendar}</tt>";
             calendar = {
-              mode = "year";
-              mode-mon-col = 4;
+              mode = "month";
+              on-scroll = 1;
               weeks-pos = "right";
               format = {
                 months = "<span color='#f4dbd6'><b>{}</b></span>";
@@ -125,6 +157,11 @@ in
                 weekdays = "<span color='#a6da95'>{}</span>";
                 today = "<span color='#ed8796'><b><u>{}</u></b></span>";
               };
+            };
+            actions = {
+              on-scroll-up = "shift_up";
+              on-scroll-down = "shift_down";
+              on-click-middle = "shift_reset";
             };
           };
 
@@ -270,6 +307,12 @@ in
 
           tray = {
             spacing = 10;
+          };
+
+          "custom/power" = {
+            format = "󰐥";
+            tooltip = false;
+            on-click = "${power-menu}";
           };
         };
       };

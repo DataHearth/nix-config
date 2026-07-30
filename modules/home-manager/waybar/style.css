@@ -2,12 +2,16 @@
 
 * {
   font-family: "JetBrainsMono Nerd Font";
-  font-size: 14px;
+  font-size: 13px;
   min-height: 0;
 }
 
+/* The gradient's low stop (0.75) is the blur threshold anchor: the Hyprland
+   layer rule in default.nix sets ignore_alpha below it, so lowering either
+   alpha further silently drops the glass blur. */
 window#waybar {
-  background-color: transparent;
+  background: linear-gradient(to bottom, alpha(@base, 0.85), alpha(@mantle, 0.75));
+  border-bottom: 1px solid alpha(@mauve, 0.45);
   color: @text;
 }
 
@@ -15,56 +19,62 @@ window#waybar.hidden {
   opacity: 0.2;
 }
 
-/* ── Floating pill containers ── */
-#workspaces,
 #system,
 #hardware,
-#info,
-#clock,
-#tray {
-  background-color: alpha(@base, 0.9);
-  border: 1px solid @surface1;
-  border-radius: 14px;
-  margin: 6px 3px;
-  padding: 0 4px;
+#info {
+  margin: 0 4px;
 }
 
-/* ── Workspaces ── */
+#workspaces {
+  margin-left: 6px;
+}
+
 #workspaces button {
-  padding: 0 7px;
-  margin: 4px 1px;
+  padding: 0 9px;
+  margin: 5px 2px;
   color: @overlay0;
   background: transparent;
-  border-radius: 10px;
-  min-width: 12px;
-  transition: all 0.2s ease;
+  border-radius: 7px;
+  box-shadow: inset 0 -2px transparent;
+  transition: all 0.25s ease;
 }
 
 #workspaces button:hover {
-  background-color: alpha(@surface1, 0.5);
-  color: @text;
+  color: @subtext1;
+  background: alpha(@surface0, 0.55);
 }
 
 #workspaces button.active {
-  background-color: @green;
-  color: @crust;
+  color: @mauve;
+  background: alpha(@mauve, 0.14);
+  box-shadow: inset 0 -2px @mauve;
   font-weight: bold;
 }
 
 #workspaces button.urgent {
-  background-color: @red;
-  color: @crust;
+  color: @red;
+  background: alpha(@red, 0.14);
+  box-shadow: inset 0 -2px @red;
 }
 
-/* ── Clock ── */
+#window {
+  margin: 0 10px;
+  color: @subtext0;
+  font-style: italic;
+}
+
 #clock {
   padding: 0 14px;
   color: @text;
   font-weight: bold;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.7px;
+  transition: color 0.25s ease;
 }
 
-/* ── All modules base ── */
+#clock:hover {
+  color: @mauve;
+}
+
 #cpu,
 #memory,
 #temperature,
@@ -75,30 +85,29 @@ window#waybar.hidden {
 #battery,
 #language,
 #custom-hypridle,
-#custom-notification {
-  padding: 0 8px;
-  margin: 3px 3px;
+#custom-notification,
+#custom-power {
+  padding: 0 9px;
+  margin: 5px 1px;
   background: transparent;
-  border-radius: 10px;
-  transition: all 0.2s ease;
+  border-radius: 7px;
+  transition: all 0.25s ease;
 }
 
-/* ── Hover glow ── */
 #cpu:hover,
 #memory:hover,
 #temperature:hover,
 #backlight:hover,
-#battery:hover,
 #pulseaudio:hover,
 #network:hover,
 #bluetooth:hover,
+#battery:hover,
 #language:hover,
 #custom-hypridle:hover,
 #custom-notification:hover {
   background-color: alpha(@surface0, 0.6);
 }
 
-/* ── Module colors ── */
 #cpu {
   color: @blue;
 }
@@ -175,9 +184,19 @@ window#waybar.hidden {
   color: @yellow;
 }
 
-/* ── Tray ── */
+#custom-power {
+  color: @red;
+  padding: 0 11px;
+  margin-right: 8px;
+}
+
+#custom-power:hover {
+  background-color: alpha(@red, 0.18);
+}
+
 #tray {
-  padding: 0 6px;
+  padding: 0 8px;
+  margin: 5px 2px;
 }
 
 #tray > .passive {
@@ -189,19 +208,11 @@ window#waybar.hidden {
   color: @red;
 }
 
-/* ── Window title ── */
-#window {
-  padding: 0 12px;
-  color: @overlay0;
-  font-style: italic;
-}
-
-/* ── Tooltip ── */
 tooltip {
-  background-color: alpha(@crust, 0.95);
-  border: 1px solid alpha(@surface0, 0.6);
-  border-radius: 10px;
-  padding: 4px;
+  background-color: alpha(@base, 0.85);
+  border: 1px solid alpha(@surface1, 0.6);
+  border-radius: 12px;
+  padding: 6px;
 }
 
 tooltip label {
