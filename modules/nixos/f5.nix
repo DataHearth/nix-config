@@ -43,8 +43,22 @@ in
     # the systemd-resolved stub, but Nix reads /etc/resolv.conf directly and
     # fails. Pin it immutable so the VPN can't overwrite it, forcing all DNS
     # through the resolved stub (which does split-DNS per the f5-fix service).
+    # The pin must be lifted *before* setup-etc.pl runs, not after: resolved
+    # declares /etc/resolv.conf as a symlink to its stub, and an immutable file
+    # sitting there makes the `etc` step fail, aborting the whole activation
+    # before any later script could unlock it.
+    system.activationScripts.unlock-resolv-conf.text = ''
+      if [ -f /etc/resolv.conf ] && [ ! -L /etc/resolv.conf ]; then
+        ${pkgs.e2fsprogs}/bin/chattr -i /etc/resolv.conf
+      fi
+    '';
+    system.activationScripts.etc.deps = [ "unlock-resolv-conf" ];
+
     system.activationScripts.immutable-resolv-conf = lib.stringAfter [ "etc" ] ''
-      ${pkgs.e2fsprogs}/bin/chattr -i /etc/resolv.conf 2>/dev/null || true
+      # setup-etc.pl has just put resolved's stub symlink back. Writing through
+      # it would truncate the stub and pin resolved's own file immutable, so
+      # replace the symlink with a regular file instead.
+      rm -f /etc/resolv.conf
       cat > /etc/resolv.conf <<EOF
       nameserver 127.0.0.53
       search airbus.corp lan
