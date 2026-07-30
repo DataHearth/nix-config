@@ -33,8 +33,19 @@
 
     gnome-calculator
     protonmail-bridge-gui
-    (signal-desktop.override {
-      commandLineArgs = ''--password-store="gnome-libsecret" --use-tray-icon'';
+    # signal-desktop deprecated its `commandLineArgs` override argument in
+    # favour of a wrapper. Its desktop entry execs `signal-desktop` by name, so
+    # shadowing the binary on PATH covers launcher starts too.
+    (symlinkJoin {
+      name = "signal-desktop-wrapped";
+      paths = [ signal-desktop ];
+      nativeBuildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/signal-desktop \
+          --add-flags --password-store=gnome-libsecret \
+          --add-flags --use-tray-icon
+      '';
+      inherit (signal-desktop) meta;
     })
     (discord.override { commandLineArgs = "--ozone-platform=wayland"; })
     vlc
