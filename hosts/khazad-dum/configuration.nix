@@ -65,6 +65,12 @@
   };
 
   boot = {
+    # Tracks mainline rather than the nixpkgs default. This follows the newest
+    # series, so `nix flake update` can cross a major bump (6.18 -> 7.1) with no
+    # warning; framework-laptop-kmod is out-of-tree and has to build against
+    # whatever lands, so check it after an update before switching.
+    kernelPackages = pkgs.linuxPackages_latest;
+
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
