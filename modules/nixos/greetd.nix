@@ -26,7 +26,7 @@ let
   # output, so instead we host the greeter under a throwaway Hyprland: ReGreet
   # fills the internal panel (correctly centred) and every other output is
   # disabled so nothing shows on the externals.
-  regreetBin = lib.getExe config.programs.regreet.package;
+  regreetBin = lib.getExe config.services.displayManager.regreet.package;
   hyprctlBin = lib.getExe' pkgs.hyprland "hyprctl";
 
   greeterSession = pkgs.writeShellScript "regreet-session" ''
@@ -72,7 +72,7 @@ in
     security.pam.services.greetd.enableGnomeKeyring = true;
     services.gnome.gnome-keyring.enable = true;
 
-    programs.regreet = {
+    services.displayManager.regreet = {
       enable = true;
       theme = {
         name = "catppuccin-macchiato-mauve-standard";
