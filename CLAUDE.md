@@ -58,8 +58,8 @@ nix eval .#nixosConfigurations.khazad-dum.config.programs.steam.enable
 nix flake update
 
 # Update a specific input
-nix flake lock --update-input nixpkgs
-nix flake lock --update-input home-manager
+nix flake update nixpkgs
+nix flake update home-manager
 ```
 
 ### Cleaning Up
@@ -120,8 +120,7 @@ nix-config/
 - **catppuccin**: Catppuccin theming module (system + HM)
 - **sops-nix**: Secrets management
 - **nixos-hardware**: Hardware-specific NixOS modules
-- **elephant**: Elephant Home Manager module
-- **awww**: Awww wallpaper tool
+- **zjstatus**: Zellij status bar plugin (follows nixpkgs)
 - **zen-browser**: Zen Browser flake
 - **nix-index-database**: Prebuilt nix-index database
 - **disko**: Declarative disk partitioning
@@ -170,7 +169,7 @@ Available modules in `modules/home-manager/`:
 2. Test build: `nh os build`
 3. Review changes before applying
 4. Switch configuration: `nh os switch`
-5. Commit changes to git
+5. Seal the change with `jj describe` (this repo uses Jujutsu, not git)
 6. If updating flake: `nix flake update` then rebuild
 
 ## Secrets Management
