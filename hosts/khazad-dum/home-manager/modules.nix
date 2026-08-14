@@ -268,6 +268,21 @@
           "Bash(ls *)"
           "Bash(stat *)"
           "Bash(command -v *)"
+          # obsidian-wiki. The checkout is upstream-managed (`jj git fetch`
+          # upgrades it), so it stays read-only; notes go into the vault.
+          # `Edit()` is the only editing verb file checks match — a
+          # `Write()`/`NotebookEdit()` rule parses but never matches and warns
+          # at startup (2.1.210+), so Edit covers every write to the vault.
+          "Read(~/.obsidian-wiki/**)"
+          "Read(~/Documents/obsidian-wiki-vault/**)"
+          "Edit(~/Documents/obsidian-wiki-vault/**)"
+        ];
+
+        # Both live outside whatever project Claude was launched from, so the
+        # allow rules above are inert until the paths are part of the workspace.
+        permissions.additionalDirectories = [
+          "${config.home.homeDirectory}/.obsidian-wiki"
+          "${config.home.homeDirectory}/Documents/obsidian-wiki-vault"
         ];
 
         # obsidian-wiki auto-capture. The upstream script lives in the checkout
