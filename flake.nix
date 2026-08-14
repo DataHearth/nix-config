@@ -4,10 +4,6 @@
     catppuccin.url = "github:catppuccin/nix";
     sops-nix.url = "github:Mic92/sops-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    zjstatus = {
-      url = "github:dj95/zjstatus";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -47,7 +43,6 @@
       disko,
       lanzaboote,
       jj-lsp,
-      zjstatus,
       ...
     }:
     {
@@ -78,7 +73,6 @@
                 nixpkgs.overlays = [
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
-                    zjstatus = zjstatus.packages.${system}.default;
                     # Official Anthropic Linux client, packaged locally from the
                     # upstream .deb (nixpkgs has no claude-desktop). The package
                     # forces Wayland/ozone itself — see packages/claude-desktop.nix.
