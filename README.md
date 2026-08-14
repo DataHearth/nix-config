@@ -1,53 +1,45 @@
 # nix-config
 
-Personal NixOS and Home Manager configurations for multiple systems, managed with Nix flakes.
+Personal NixOS and Home Manager configuration, managed with Nix flakes.
 
 ## Overview
 
-This repository contains declarative configurations for my development environments and systems:
+This repository holds the declarative configuration for a single machine:
 
-- **Khazad-dum**: Framework 16" laptop running Arch Linux with Home Manager, featuring Hyprland and GNOME
-- **Valinor**: NixOS homelab server with full system configuration
+- **khazad-dum**: Framework 16" laptop (AMD 7040) running NixOS with integrated Home Manager, on the `nixos-unstable` channel
 
 ## Features
 
 - Flake-based configuration for reproducibility
-- Modular design with reusable components
-- Home Manager integration for user environment management
+- Modular design: NixOS modules under `nixos_modules.<name>`, Home Manager modules under `home_modules.<name>`
+- Home Manager wired into the NixOS system (no standalone HM profile)
+- Declarative disk layout with disko (LUKS + ext4)
+- Secure Boot via lanzaboote
 - Secrets management with sops-nix
-- Custom Neovim configuration via nixvim
-- Hyprland window manager setup with hyprlock
+- Hyprland window manager with hypridle, hyprlock and hyprshot
+- Catppuccin Macchiato theming, centralised through catppuccin/nix
 - Terminal multiplexer (Zellij) and emulator (Alacritty) configurations
-- Shell environment with custom tooling (ashell)
 
 ## Quick Start
 
 ### Prerequisites
 
 - Nix with flakes enabled
-- For Home Manager configurations: `nh` utility (Nix Helper)
-- For secrets: sops-nix setup with appropriate keys
+- `nh` (Nix Helper) for building and switching
+- For secrets: sops-nix set up with the appropriate age keys
 
-### Building Configurations
-
-#### Khazad-dum (Home Manager)
+### Building
 
 ```bash
-# Build configuration
-nh home build -c Khazad-dum
+nh os build    # Build without switching
+nh os test     # Build and switch, but don't persist across reboots
+nh os switch   # Build and switch the system
 
-# Build and activate
-nh home switch -c Khazad-dum
-```
+# Dry-run build verification (no root needed)
+nix build .#nixosConfigurations.khazad-dum.config.system.build.toplevel --dry-run
 
-#### Valinor (NixOS)
-
-```bash
-# Build system configuration
-nh os build
-
-# Build and activate
-nh os switch
+# Evaluate a single option without a full build
+nix eval .#nixosConfigurations.khazad-dum.config.programs.steam.enable
 ```
 
 ### Updating Dependencies
@@ -56,20 +48,20 @@ nh os switch
 # Update all flake inputs
 nix flake update
 
-# Update specific input
-nix flake lock --update-input nixpkgs
+# Update a specific input
+nix flake update nixpkgs
 ```
 
 ### Cleaning Up
 
 ```bash
-# Clean old generations and optimize Nix store
+# Clean old generations and optimize the Nix store
 nh clean all
 
-# Clean only user profile
+# Clean only the user profile
 nh clean user
 
-# Clean only system profile
+# Clean only the system profile
 nh clean system
 ```
 
@@ -77,81 +69,93 @@ nh clean system
 
 ```
 nix-config/
-├── flake.nix                 # Main flake configuration
-├── flake.lock                # Locked dependency versions
-├── .sops.yaml                # Secrets configuration
-├── hosts/                    # Host-specific configurations
-│   ├── khazad-dum/          # Framework laptop
-│   │   ├── home.nix         # Home Manager entry point
-│   │   ├── modules.nix      # Enabled modules
-│   │   ├── packages.nix     # User packages
-│   │   └── services.nix     # User services
-│   └── valinor/             # NixOS server
-│       ├── configuration.nix
+├── flake.nix                      # Main flake configuration
+├── flake.lock                     # Locked dependency versions
+├── .sops.yaml                     # Secrets configuration
+├── hosts/
+│   └── khazad-dum/                # Framework 16" laptop
+│       ├── configuration.nix      # Main NixOS configuration
 │       ├── hardware-configuration.nix
-│       ├── packages.nix
-│       ├── services.nix
-│       ├── systemd.nix
-│       ├── users.nix
-│       ├── locales.nix
+│       ├── disko.nix              # Declarative disk layout
+│       ├── lanzaboote.nix         # Secure Boot
+│       ├── network.nix            # NetworkManager/iwd, DNS
+│       ├── modules.nix            # Enabled NixOS modules
+│       ├── packages.nix           # System packages
+│       ├── services.nix           # System services
+│       ├── systemd.nix            # Systemd units
+│       ├── users.nix              # User accounts
+│       ├── locales.nix            # Locale settings
 │       └── home-manager/
-├── modules/                  # Shared modules
-│   ├── home-manager/        # Home Manager modules
-│   │   ├── alacritty.nix   # Terminal emulator
-│   │   ├── ashell.nix      # Shell environment
-│   │   ├── git.nix         # Git configuration
-│   │   ├── hyprland.nix    # Hyprland WM
-│   │   ├── hyprlock.nix    # Lockscreen
-│   │   ├── ssh.nix         # SSH client
-│   │   ├── swaync/         # Notifications
-│   │   └── zellij/         # Terminal multiplexer
-│   ├── nh.nix              # nh utility
-│   ├── nvidia.nix          # NVIDIA drivers
-│   └── passthrough.nix     # GPU passthrough
-└── secrets/                 # Encrypted secrets
+│           ├── home.nix           # Home Manager entry point
+│           ├── modules.nix        # Enabled Home Manager modules
+│           ├── packages.nix       # User packages
+│           ├── services.nix       # User services
+│           └── root.nix           # Home Manager config for root
+├── modules/
+│   ├── home-manager/              # Options under home_modules.<name>
+│   │   ├── alacritty.nix          # Terminal emulator
+│   │   ├── claude-code/           # Claude Code CLI
+│   │   ├── hyprland/              # Hyprland, hypridle, hyprlock, hyprshot
+│   │   ├── neovim/                # Editor
+│   │   ├── swaync/                # Notifications
+│   │   ├── waybar/                # Status bar
+│   │   ├── zellij/                # Terminal multiplexer
+│   │   └── …                      # git, jujutsu, ssh, starship, zsh, …
+│   └── nixos/                     # Options under nixos_modules.<name>
+│       ├── claude-desktop-cowork.nix
+│       ├── f5.nix                 # F5 VPN client and split tunnel
+│       ├── greetd.nix             # Display manager
+│       ├── nautilus.nix           # File manager
+│       └── nh.nix                 # nh utility
+├── packages/                      # Custom package derivations
+│   ├── claude-desktop.nix
+│   ├── f5epi.nix, f5vpn.nix
+│   └── update.sh                  # Refreshes pinned versions/checksums
+├── docs/plans/                    # Design and migration notes
+└── secrets/                       # Encrypted secrets
 ```
 
-## System Configurations
+## System Configuration
 
-### Khazad-dum
+### khazad-dum
 
-Framework 16" laptop configuration running on Arch Linux (non-NixOS) with Home Manager.
+Framework 16" laptop (AMD 7040) running NixOS, using the nixos-hardware
+`framework-16-7040-amd` module.
 
 **Environment:**
-- OS: Arch Linux
+- OS: NixOS (`nixos-unstable`)
 - WM: Hyprland (primary) / GNOME
-- Display Manager: GDM or hyprlock
+- Display Manager: greetd running ReGreet
 - Terminal: Alacritty
-- Shell: Custom ashell configuration
+- Shell: zsh with starship
 - Multiplexer: Zellij
-- Editor: Neovim (nixvim)
+- Editor: Neovim
+- Launcher: Walker, backed by elephant
+- Status bar: Waybar
+- Notifications: swaync
 
-**Special Features:**
-- nixGL for OpenGL support on non-NixOS
-- Hyprland keybinds including suspend/hibernate
-- Notification system with swaync
+**Storage and boot:**
+- LUKS + ext4, partitioned declaratively with disko
+- systemd-boot with Secure Boot via lanzaboote
 
-### Valinor
-
-NixOS server configuration for homelab/production use.
-
-**Environment:**
-- OS: NixOS
-- Purpose: Server/homelab
-- Configuration: Full system + Home Manager
+**Networking:**
+- NetworkManager with the iwd backend
+- nftables firewall
 
 ## Flake Inputs
 
-| Input | Version | Description |
-|-------|---------|-------------|
-| nixpkgs | 25.05 | Stable NixOS packages |
-| nixpkgs-unstable | unstable | Latest packages |
-| home-manager | 25.05 | Stable Home Manager |
-| home-manager-unstable | unstable | Latest Home Manager |
-| sops-nix | latest | Secrets management |
-| nixvim | custom | Personal Neovim config |
-| nixGL | latest | OpenGL for non-NixOS |
-| zjstatus | latest | Zellij status bar |
+| Input | Description |
+|-------|-------------|
+| nixpkgs | NixOS packages (`nixos-unstable`) |
+| home-manager | Home Manager (follows nixpkgs) |
+| catppuccin | Catppuccin theming for both system and Home Manager |
+| sops-nix | Secrets management |
+| nixos-hardware | Hardware-specific NixOS modules |
+| zen-browser | Zen Browser |
+| nix-index-database | Prebuilt nix-index database |
+| disko | Declarative disk partitioning |
+| lanzaboote | Secure Boot support |
+| jj-lsp | Jujutsu LSP server (applied as an overlay) |
 
 ## Secrets Management
 
@@ -160,7 +164,7 @@ Secrets are encrypted using sops-nix:
 1. Configure age keys in `.sops.yaml`
 2. Store encrypted secrets in `secrets/`
 3. Reference secrets in configurations
-4. Secrets are automatically decrypted at build time
+4. Secrets are decrypted at build time
 
 ## Development
 
@@ -169,30 +173,31 @@ Secrets are encrypted using sops-nix:
 1. Edit configuration files
 2. Test build without activating:
    ```bash
-   nh home build -c Khazad-dum  # or nh os build
+   nh os build
    ```
 3. Review changes
-4. Activate configuration:
+4. Activate the configuration:
    ```bash
-   nh home switch -c Khazad-dum  # or nh os switch
+   nh os switch
    ```
 5. Commit to version control
 
 ### Adding Modules
 
-1. Create module in `modules/home-manager/` or `modules/`
-2. Import module in host configuration
-3. Configure module options as needed
+1. Create the module in `modules/home-manager/` or `modules/nixos/`
+2. Add it to the matching `default.nix` aggregator
+3. Enable it from `hosts/khazad-dum/modules.nix` or
+   `hosts/khazad-dum/home-manager/modules.nix`
 
 ### Managing Secrets
 
-1. Create/edit secret file
-2. Encrypt with sops:
+1. Create or edit the secret file
+2. Encrypt it with sops:
    ```bash
    sops secrets/filename.yaml
    ```
-3. Reference in configuration
-4. Rebuild system
+3. Reference it in the configuration
+4. Rebuild the system
 
 ## Resources
 

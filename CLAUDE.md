@@ -10,7 +10,7 @@ This repository contains the NixOS and Home Manager configuration for a single m
 - **OS**: NixOS (migrated from Arch Linux)
 - **Hardware**: Framework 16" laptop (AMD 7040, nixos-hardware module)
 - **WM/DE**: Hyprland, GNOME
-- **Display Manager**: greetd with tuigreet (regreet available)
+- **Display Manager**: greetd running ReGreet, hosted under a throwaway Hyprland so the greeter can be pinned to the internal panel
 - **Configuration**: Full NixOS system with Home Manager integration
 - **Package Channel**: nixpkgs-unstable
 - **Disk**: LUKS + ext4
@@ -120,7 +120,6 @@ nix-config/
 - **catppuccin**: Catppuccin theming module (system + HM)
 - **sops-nix**: Secrets management
 - **nixos-hardware**: Hardware-specific NixOS modules
-- **zjstatus**: Zellij status bar plugin (follows nixpkgs)
 - **zen-browser**: Zen Browser flake
 - **nix-index-database**: Prebuilt nix-index database
 - **disko**: Declarative disk partitioning
@@ -132,7 +131,7 @@ nix-config/
 Available modules in `modules/nixos/` (options under `nixos_modules.<name>`):
 - **claude-desktop-cowork.nix**: Claude Desktop Cowork support (nix-ld, libglvnd)
 - **f5.nix**: F5 VPN client and split-tunnel setup
-- **greetd.nix**: Display manager with tuigreet/regreet switching, gnome-keyring PAM integration
+- **greetd.nix**: Display manager running ReGreet on the internal panel, gnome-keyring PAM integration
 - **nautilus.nix**: Nautilus file manager
 - **nh.nix**: nh build/switch utility
 
