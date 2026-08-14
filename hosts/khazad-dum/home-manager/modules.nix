@@ -167,7 +167,6 @@
       };
 
       settings = {
-        effortLevel = "xhigh";
         enabledPlugins = {
           "feature-dev@claude-plugins-official" = true;
         };
