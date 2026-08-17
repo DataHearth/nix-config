@@ -209,6 +209,7 @@ in
               ];
             };
             cleanupPeriodDays = 7;
+            disableAgentView = true;
             statusLine = {
               type = "command";
               command = toString statuslineScript;
