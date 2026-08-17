@@ -9,7 +9,8 @@ let
 
   hypridle-toggle = pkgs.writeShellScriptBin "hypridle-toggle" ''
     # Taking manual control pins the state: hypridle-power-sync stops overriding
-    # it on AC/battery changes until the marker clears at logout.
+    # it on AC/battery changes until a manual suspend -- or logout -- clears the
+    # marker.
     touch "$XDG_RUNTIME_DIR/hypridle-manual"
     if systemctl --user is-active --quiet hypridle.service; then
       systemctl --user stop hypridle.service
@@ -22,12 +23,22 @@ let
   '';
 
   hypridle-sleep = pkgs.writeShellScriptBin "hypridle-sleep" ''
+    # hypridle owns before_sleep_cmd and the logind lock signal, so it has to be
+    # running for the suspend to pause media and lock the session.
     if ! systemctl --user is-active --quiet hypridle.service; then
       systemctl --user start hypridle.service
       while ! systemctl --user is-active --quiet hypridle.service; do sleep 0.1; done
       pkill -SIGRTMIN+8 waybar
     fi
+
+    # The suspend job only completes once the machine has resumed, so systemctl
+    # blocks here and everything below runs after the wake.
     systemctl suspend
+
+    # Sleeping manually ends the manual pin: drop the marker and restart the
+    # sync, which re-evaluates AC/battery from scratch and pokes waybar itself.
+    rm -f "$XDG_RUNTIME_DIR/hypridle-manual"
+    systemctl --user restart hypridle-power-sync.service
   '';
 
   hypridle-status = pkgs.writeShellScriptBin "hypridle-status" ''
@@ -36,13 +47,6 @@ let
     else
       echo '{"alt": "disabled", "tooltip": "Idle: disabled", "class": "disabled"}'
     fi
-  '';
-
-  hypridle-auto = pkgs.writeShellScriptBin "hypridle-auto" ''
-    # Drop the manual pin and restart the sync so hypridle immediately snaps
-    # back to whatever the current power source dictates.
-    rm -f "$XDG_RUNTIME_DIR/hypridle-manual"
-    systemctl --user restart hypridle-power-sync.service
   '';
 
   hypridle-power-sync = pkgs.writeShellScript "hypridle-power-sync" ''
@@ -56,8 +60,8 @@ let
     pkill=${pkgs.procps}/bin/pkill
 
     # Set by hypridle-toggle when the user takes manual control; while it exists
-    # we leave hypridle exactly as they set it. Lives in the runtime dir, so it
-    # clears at logout and automatic power control resumes next session.
+    # we leave hypridle exactly as they set it. hypridle-sleep clears it on the
+    # way out of a manual suspend, and the runtime dir clears it at logout.
     marker="$XDG_RUNTIME_DIR/hypridle-manual"
 
     # Last power state acted on ("" until the first sync). Gating on it means we
@@ -157,12 +161,6 @@ in
       readOnly = true;
       description = "Script to ensure hypridle is active before suspending";
     };
-    autoScript = lib.mkOption {
-      type = lib.types.package;
-      default = hypridle-auto;
-      readOnly = true;
-      description = "Script to re-enable automatic power-based hypridle control";
-    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -170,7 +168,6 @@ in
       hypridle-toggle
       hypridle-status
       hypridle-sleep
-      hypridle-auto
     ];
 
     services.hypridle = {
