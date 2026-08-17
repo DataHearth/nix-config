@@ -20,16 +20,46 @@ in
       style = ''
         ${catppuccinBase}
 
-        /* ── Stacked notification controls ──
-           Targets the buttons rendered on a notification group:
-           - close-all-button: clears the whole stack
-           - collapse-button:  expands/collapses the stack
-           Plus a subtler close (X) on each entry inside an opened stack. */
+        /* The title widget sits flush against the mpris player below it;
+           swaync gives neither a margin, so they read as one block. */
+        .control-center .widget-title {
+          margin-bottom: 14px;
+        }
+
+        /* Catppuccin renders every close (X) as a solid red square, which reads
+           as a destructive action on notifications that are merely dismissable.
+           A filled surface chip keeps it legible against the notification
+           background and saves the red for the hover state. */
+        .notification-background .close-button {
+          background-color: #494d64;
+          color: #cad3f5;
+          box-shadow: inset 0 0 0 1px #5b6078;
+          border-radius: 8px;
+          padding: 2px 6px;
+          margin: 6px;
+          min-width: 22px;
+          min-height: 22px;
+          transition: background-color 180ms ease,
+                      color 180ms ease,
+                      box-shadow 180ms ease;
+        }
+
+        .notification-background .close-button:hover {
+          background-color: #ed8796;
+          color: #24273a;
+          box-shadow: inset 0 0 0 1px #ed8796;
+        }
+
+        .notification-background .close-button:active {
+          background-color: #ee99a0;
+          color: #24273a;
+        }
+
         .notification-group-close-all-button,
         .notification-group-collapse-button {
           color: #cad3f5;
-          background-color: #363a4f;
-          box-shadow: inset 0 0 0 1px #494d64;
+          background-color: #494d64;
+          box-shadow: inset 0 0 0 1px #5b6078;
           border-radius: 8px;
           padding: 4px 10px;
           margin: 4px;
@@ -51,41 +81,6 @@ in
         .notification-group-collapse-button:active {
           background-color: #b7bdf8;
           color: #24273a;
-        }
-
-        .notification-group:focus .notification-group-close-all-button,
-        .notification-group:focus .notification-group-collapse-button {
-          box-shadow: inset 0 0 0 1px #5b6078;
-        }
-
-        /* Individual close (X) on stacked notifications when the group is open.
-           Catppuccin makes it a solid red square — soften it so it sits quietly
-           until hovered, and matches the group buttons. */
-        .control-center .notification-group .notification-background .close-button,
-        .notification-group .notification-background .close-button {
-          background-color: transparent;
-          color: #a5adcb;
-          box-shadow: inset 0 0 0 1px #494d64;
-          border-radius: 8px;
-          padding: 2px 6px;
-          margin: 6px;
-          min-width: 22px;
-          min-height: 22px;
-          transition: background-color 180ms ease,
-                      color 180ms ease,
-                      box-shadow 180ms ease;
-        }
-
-        .control-center .notification-group .notification-background .close-button:hover,
-        .notification-group .notification-background .close-button:hover {
-          background-color: #ed8796;
-          color: #24273a;
-          box-shadow: inset 0 0 0 1px #ed8796;
-        }
-
-        .control-center .notification-group .notification-background .close-button:active,
-        .notification-group .notification-background .close-button:active {
-          background-color: #ee99a0;
         }
       '';
 
