@@ -94,8 +94,26 @@ let
 
   # Only wire the devShell loader when direnv is actually configured.
   devShellHooks = lib.optionalAttrs config.home_modules.direnv.enable {
-    SessionStart = [ { hooks = [ { type = "command"; command = lib.getExe loadDirenv; } ]; } ];
-    CwdChanged = [ { hooks = [ { type = "command"; command = lib.getExe loadDirenv; } ]; } ];
+    SessionStart = [
+      {
+        hooks = [
+          {
+            type = "command";
+            command = lib.getExe loadDirenv;
+          }
+        ];
+      }
+    ];
+    CwdChanged = [
+      {
+        hooks = [
+          {
+            type = "command";
+            command = lib.getExe loadDirenv;
+          }
+        ];
+      }
+    ];
   };
 in
 {
@@ -172,50 +190,61 @@ in
           inherit (pkgs.claude-code) meta;
         }
       );
-      settings = lib.recursiveUpdate {
-        attribution = {
-          commit = "";
-          pr = "";
-        };
-        permissions = {
-          allow = [
-            "Read(./env.example)"
-          ];
-          deny = [
-            "Read(./.env)"
-            "Read(./.env.*)"
-            "Read(./secrets/**)"
-            "Read(./**/credentials*)"
-            # Destructive jj ops — paired with the broad `Bash(jj *)` allow in host configs.
-            "Bash(jj git push*)"
-            "Bash(jj op abandon*)"
-            "Bash(jj workspace forget*)"
-          ];
-        };
-        cleanupPeriodDays = 7;
-        statusLine = {
-          type = "command";
-          command = toString statuslineScript;
-        };
-        hooks = {
-          PreToolUse = [
-            {
-              matcher = "Bash";
-              hooks = [
+      settings =
+        let
+          defaults = {
+            attribution = {
+              commit = "";
+              pr = "";
+            };
+            permissions = {
+              allow = [
+                "Read(./env.example)"
+              ];
+              deny = [
+                "Read(./.env)"
+                "Read(./.env.*)"
+                "Read(./secrets/**)"
+                "Read(./**/credentials*)"
+              ];
+            };
+            cleanupPeriodDays = 7;
+            statusLine = {
+              type = "command";
+              command = toString statuslineScript;
+            };
+            hooks = {
+              PreToolUse = [
                 {
-                  type = "command";
-                  command = lib.getExe nixRunGuard;
-                }
-                {
-                  type = "command";
-                  command = lib.getExe cdGuard;
+                  matcher = "Bash";
+                  hooks = [
+                    {
+                      type = "command";
+                      command = lib.getExe nixRunGuard;
+                    }
+                    {
+                      type = "command";
+                      command = lib.getExe cdGuard;
+                    }
+                  ];
                 }
               ];
             }
-          ];
-        }
-        // devShellHooks;
-      } cfg.settings;
+            // devShellHooks;
+          };
+          merged = lib.recursiveUpdate defaults cfg.settings;
+          userPermissions = cfg.settings.permissions or { };
+        in
+        merged
+        // {
+          # recursiveUpdate replaces lists outright, so a host that sets any
+          # permission rule of its own would silently drop the secret-protecting
+          # denies above. Concatenate instead.
+          permissions = merged.permissions // {
+            allow = defaults.permissions.allow ++ (userPermissions.allow or [ ]);
+            deny = defaults.permissions.deny ++ (userPermissions.deny or [ ]);
+          };
+        };
       context = composedContext;
       skills.jj = ./skills/jj;
       inherit (cfg) mcpServers lspServers plugins;

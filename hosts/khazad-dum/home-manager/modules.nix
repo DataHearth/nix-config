@@ -170,120 +170,197 @@
         enabledPlugins = {
           "feature-dev@claude-plugins-official" = true;
         };
-        permissions.allow = [
-          "Read(//nix/store/**)"
-          # GitHub — read-only only. Every mutating tool (merge_pull_request,
-          # delete_file, push_files, create_*, *_write, …) avoids these
-          # prefixes, so it keeps prompting like `gh` and jj's write ops do.
-          "mcp__plugin_claude-code-home-manager_github__get_*"
-          "mcp__plugin_claude-code-home-manager_github__list_*"
-          "mcp__plugin_claude-code-home-manager_github__search_*"
-          "mcp__plugin_claude-code-home-manager_github__issue_read"
-          "mcp__plugin_claude-code-home-manager_github__pull_request_read"
-          "mcp__plugin_claude-code-home-manager_context7__*"
-          "mcp__claude-design__get_*"
-          "mcp__claude-design__list_*"
-          "mcp__claude-design__read_*"
-          "mcp__claude-design__render_*"
-          "Bash(nix eval *)"
-          "Bash(nix search *)"
-          "Bash(nix --version)"
-          "Bash(tee /tmp/*)"
-          "Bash(jj st*)"
-          "Bash(jj status*)"
-          "Bash(jj log*)"
-          "Bash(jj diff*)"
-          "Bash(jj show*)"
-          "Bash(jj evolog*)"
-          "Bash(jj op log*)"
-          "Bash(jj op show*)"
-          "Bash(jj files*)"
-          "Bash(jj cat*)"
-          "Bash(jj file annotate*)"
-          "Bash(jj file show*)"
-          "Bash(jj file list*)"
-          "Bash(jj bookmark list*)"
-          "Bash(jj git remote list*)"
-          "Bash(jj config get*)"
-          "Bash(jj config list*)"
-          "Bash(jj root*)"
-          "Bash(jj help*)"
-          "Bash(jj --version)"
-          "Bash(jj version)"
-          "Bash(jj split --help)"
-          # Duplicated for --no-pager because the jj skill prefers that form.
-          "Bash(jj --no-pager st*)"
-          "Bash(jj --no-pager status*)"
-          "Bash(jj --no-pager log*)"
-          "Bash(jj --no-pager diff*)"
-          "Bash(jj --no-pager show*)"
-          "Bash(jj --no-pager evolog*)"
-          "Bash(jj --no-pager op log*)"
-          "Bash(jj --no-pager op show*)"
-          "Bash(jj --no-pager files*)"
-          "Bash(jj --no-pager cat*)"
-          "Bash(jj --no-pager file annotate*)"
-          "Bash(jj --no-pager file show*)"
-          "Bash(jj --no-pager file list*)"
-          "Bash(jj --no-pager bookmark list*)"
-          "Bash(jj git fetch*)"
 
-          # Everything below is hoisted out of per-project settings.local.json
-          # so it applies to every project and stops re-prompting.
-          # Content-reading shells (cat/grep/find/head/tail/env) are
-          # deliberately NOT hoisted: Bash bypasses the Read() deny rules that
-          # protect .env/secrets, so those stay per-project.
-          "WebSearch"
-          "WebFetch(domain:github.com)"
-          "WebFetch(domain:raw.githubusercontent.com)"
-          "WebFetch(domain:gist.github.com)"
-          "WebFetch(domain:wiki.nixos.org)"
-          "WebFetch(domain:search.nixos.org)"
-          # `nix build` only realizes to the store, so it is safe unattended.
-          "Bash(nix run *)"
-          "Bash(nix build *)"
-          "Bash(nix store *)"
-          "Bash(nix log *)"
-          "Bash(nix hash *)"
-          "Bash(nix flake *)"
-          "Bash(nix-prefetch-url *)"
-          "Bash(nix-instantiate --eval *)"
-          # jj does not replace gh, so read-only gh stays allowed.
-          "Bash(gh pr view *)"
-          "Bash(gh pr list *)"
-          "Bash(gh pr diff *)"
-          "Bash(gh pr checks *)"
-          "Bash(gh run view *)"
-          "Bash(gh run list *)"
-          "Bash(gh api repos/*)"
-          "Bash(gh search *)"
-          # Plumbing with no jj equivalent; read-only and non-secret.
-          "Bash(git ls-remote *)"
-          "Bash(git symbolic-ref *)"
-          "Bash(git rev-list *)"
-          "Bash(git check-ignore *)"
-          # Filesystem inspection — metadata/lookup only, never file contents.
-          # (cat/grep/head/tail are NOT here: Bash reading file contents would
-          # bypass the Read() deny rules protecting .env/secrets.)
-          "Bash(ls *)"
-          "Bash(stat *)"
-          "Bash(command -v *)"
-          # obsidian-wiki. The checkout is upstream-managed (`jj git fetch`
-          # upgrades it), so it stays read-only; notes go into the vault.
-          # `Edit()` is the only editing verb file checks match — a
-          # `Write()`/`NotebookEdit()` rule parses but never matches and warns
-          # at startup (2.1.210+), so Edit covers every write to the vault.
-          "Read(~/.obsidian-wiki/**)"
-          "Read(~/Documents/obsidian-wiki-vault/**)"
-          "Edit(~/Documents/obsidian-wiki-vault/**)"
-        ];
+        # Auto-mode classifier context for every repo on this machine. Only
+        # ~/.claude/settings.json is read for this — the classifier ignores
+        # `autoMode` in project settings on purpose, so a checked-out repo
+        # cannot widen its own trust boundary.
+        autoMode = import ./claude-auto-mode.nix;
 
-        # Both live outside whatever project Claude was launched from, so the
-        # allow rules above are inert until the paths are part of the workspace.
-        permissions.additionalDirectories = [
-          "${config.home.homeDirectory}/.obsidian-wiki"
-          "${config.home.homeDirectory}/Documents/obsidian-wiki-vault"
-        ];
+        permissions = {
+          allow = [
+            "Read(//nix/store/**)"
+            # GitHub — read-only only. Every mutating tool (merge_pull_request,
+            # delete_file, push_files, create_*, *_write, …) avoids these
+            # prefixes, so it keeps prompting like `gh` and jj's write ops do.
+            "mcp__plugin_claude-code-home-manager_github__get_*"
+            "mcp__plugin_claude-code-home-manager_github__list_*"
+            "mcp__plugin_claude-code-home-manager_github__search_*"
+            "mcp__plugin_claude-code-home-manager_github__issue_read"
+            "mcp__plugin_claude-code-home-manager_github__pull_request_read"
+            "mcp__plugin_claude-code-home-manager_context7__*"
+            "mcp__claude-design__get_*"
+            "mcp__claude-design__list_*"
+            "mcp__claude-design__read_*"
+            "mcp__claude-design__render_*"
+            "Bash(nix eval *)"
+            "Bash(nix search *)"
+            "Bash(nix --version)"
+            "Bash(tee /tmp/*)"
+            "Bash(jj st*)"
+            "Bash(jj status*)"
+            "Bash(jj log*)"
+            "Bash(jj diff*)"
+            "Bash(jj show*)"
+            "Bash(jj evolog*)"
+            "Bash(jj op log*)"
+            "Bash(jj op show*)"
+            "Bash(jj files*)"
+            "Bash(jj cat*)"
+            "Bash(jj file annotate*)"
+            "Bash(jj file show*)"
+            "Bash(jj file list*)"
+            "Bash(jj bookmark list*)"
+            "Bash(jj git remote list*)"
+            "Bash(jj config get*)"
+            "Bash(jj config list*)"
+            "Bash(jj root*)"
+            "Bash(jj help*)"
+            "Bash(jj --version)"
+            "Bash(jj version)"
+            # Duplicated for --no-pager because the jj skill prefers that form.
+            "Bash(jj --no-pager st*)"
+            "Bash(jj --no-pager status*)"
+            "Bash(jj --no-pager log*)"
+            "Bash(jj --no-pager diff*)"
+            "Bash(jj --no-pager show*)"
+            "Bash(jj --no-pager evolog*)"
+            "Bash(jj --no-pager op log*)"
+            "Bash(jj --no-pager op show*)"
+            "Bash(jj --no-pager files*)"
+            "Bash(jj --no-pager cat*)"
+            "Bash(jj --no-pager file annotate*)"
+            "Bash(jj --no-pager file show*)"
+            "Bash(jj --no-pager file list*)"
+            "Bash(jj --no-pager bookmark list*)"
+            "Bash(jj git fetch*)"
+
+            # Everything below is hoisted out of per-project settings.local.json
+            # so it applies to every project and stops re-prompting.
+            # Content-reading shells (cat/grep/find/head/tail/env) are
+            # deliberately NOT hoisted: Bash bypasses the Read() deny rules that
+            # protect .env/secrets, so those stay per-project.
+            "WebSearch"
+            "WebFetch(domain:github.com)"
+            "WebFetch(domain:raw.githubusercontent.com)"
+            "WebFetch(domain:gist.github.com)"
+            "WebFetch(domain:wiki.nixos.org)"
+            "WebFetch(domain:search.nixos.org)"
+            # `nix build` only realizes to the store, so it is safe unattended.
+            "Bash(nix run *)"
+            "Bash(nix build *)"
+            "Bash(nix store *)"
+            "Bash(nix log *)"
+            "Bash(nix hash *)"
+            "Bash(nix flake *)"
+            "Bash(nix-prefetch-url *)"
+            "Bash(nix-instantiate --eval *)"
+            # jj does not replace gh, so read-only gh stays allowed.
+            "Bash(gh pr view *)"
+            "Bash(gh pr list *)"
+            "Bash(gh pr diff *)"
+            "Bash(gh pr checks *)"
+            "Bash(gh run view *)"
+            "Bash(gh run list *)"
+            "Bash(gh api repos/*)"
+            "Bash(gh search *)"
+            # Plumbing with no jj equivalent; read-only and non-secret.
+            "Bash(git ls-remote *)"
+            "Bash(git symbolic-ref *)"
+            "Bash(git rev-list *)"
+            "Bash(git check-ignore *)"
+            # Filesystem inspection — metadata/lookup only, never file contents.
+            # (cat/grep/head/tail are NOT here: Bash reading file contents would
+            # bypass the Read() deny rules protecting .env/secrets.)
+            "Bash(ls *)"
+            "Bash(stat *)"
+            "Bash(command -v *)"
+            # obsidian-wiki. The checkout is upstream-managed (`jj git fetch`
+            # upgrades it), so it stays read-only; notes go into the vault.
+            # `Edit()` is the only editing verb file checks match — a
+            # `Write()`/`NotebookEdit()` rule parses but never matches and warns
+            # at startup (2.1.210+), so Edit covers every write to the vault.
+            "Read(~/.obsidian-wiki/**)"
+            "Read(~/Documents/obsidian-wiki-vault/**)"
+            "Edit(~/Documents/obsidian-wiki-vault/**)"
+          ];
+          # Split by recoverability, not by verb. `deny` is for operations that
+          # destroy work with no way back — Claude cannot run these at all, in
+          # any permission mode, and hands them over for the user to invoke.
+          # `ask` is for operations that reach the remote or the colocated git
+          # repo but stay recoverable; those prompt instead of blocking.
+          #
+          # Precedence is deny > ask > allow, first match wins, and specificity
+          # does not reorder it: `jj git fetch` is absent from both lists
+          # because a rule here would override the allow above and it is the
+          # sanctioned way to pull. Both lists survive auto mode — the
+          # classifier never sees a call these match — which a conversational
+          # "don't push" does not, since compaction can drop it from context.
+          #
+          # Matching is literal-prefix with no argument normalization, so
+          # `jj --no-pager abandon` and `git -C dir push` match neither list and
+          # fall through to a normal prompt. This is a guardrail, not a sandbox.
+          deny = [
+            "Bash(jj abandon*)"
+            "Bash(jj op abandon*)"
+            "Bash(jj op restore*)"
+            "Bash(jj util gc*)"
+            "Bash(jj workspace forget*)"
+
+            # git has no operation log to fall back on, so the same verb has a
+            # wider blast radius here. `git submodule` and `git lfs` stay absent
+            # — they are the documented exceptions where jj has no equivalent.
+            "Bash(git branch -D *)"
+            "Bash(git branch -d *)"
+            "Bash(git checkout*)"
+            "Bash(git clean*)"
+            "Bash(git filter-branch*)"
+            "Bash(git gc*)"
+            "Bash(git prune*)"
+            "Bash(git reflog delete*)"
+            "Bash(git reflog expire*)"
+            "Bash(git repack*)"
+            "Bash(git reset --hard*)"
+            "Bash(git restore*)"
+            "Bash(git stash clear*)"
+            "Bash(git stash drop*)"
+            "Bash(git worktree prune*)"
+            "Bash(git worktree remove*)"
+          ];
+
+          ask = [
+            "Bash(jj bookmark delete*)"
+            "Bash(jj bookmark forget*)"
+            "Bash(jj bookmark untrack*)"
+            "Bash(jj git export*)"
+            "Bash(jj git import*)"
+            "Bash(jj git push*)"
+            "Bash(jj git remote add*)"
+            "Bash(jj git remote remove*)"
+            "Bash(jj git remote rename*)"
+            "Bash(jj git remote set-url*)"
+            "Bash(jj op undo*)"
+            "Bash(jj undo*)"
+
+            "Bash(git fetch*)"
+            "Bash(git pull*)"
+            "Bash(git push*)"
+            "Bash(git remote add*)"
+            "Bash(git remote remove*)"
+            "Bash(git remote rename*)"
+            "Bash(git remote set-url*)"
+            "Bash(git rm*)"
+            "Bash(git tag -d *)"
+            "Bash(git update-ref*)"
+          ];
+
+          # Both live outside whatever project Claude was launched from, so the
+          # allow rules above are inert until the paths are part of the workspace.
+          additionalDirectories = [
+            "${config.home.homeDirectory}/.obsidian-wiki"
+            "${config.home.homeDirectory}/Documents/obsidian-wiki-vault"
+          ];
+        };
 
         # obsidian-wiki auto-capture. The upstream script lives in the checkout
         # (so `jj git fetch` upgrades it) but needs python3, which is not in the
