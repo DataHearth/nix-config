@@ -74,6 +74,7 @@
     home-manager.enable = true;
     zoxide.enable = true;
     mise.enable = true;
+    qmd.enable = true;
 
     nh = {
       enable = true;

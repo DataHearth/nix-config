@@ -29,6 +29,11 @@
       url = "github:nilskch/jj-lsp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Deliberately not following our nixpkgs: qmd vendors its node_modules as a
+    # fixed-output derivation whose hash was computed with the bun from its own
+    # pin. A different bun rewrites that tree and the build fails on a hash
+    # mismatch we cannot fix from here.
+    qmd.url = "github:tobi/qmd";
   };
 
   outputs =
@@ -43,6 +48,7 @@
       disko,
       lanzaboote,
       jj-lsp,
+      qmd,
       ...
     }:
     {
@@ -67,6 +73,7 @@
                   sops-nix.homeManagerModules.sops
                   zen-browser.homeModules.beta
                   nix-index-database.homeModules.nix-index
+                  qmd.homeModules.default
                 ];
               }
               {
