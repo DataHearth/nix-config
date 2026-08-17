@@ -4,6 +4,53 @@
   pkgs,
   ...
 }:
+let
+  # Every skill directory in the obsidian-wiki checkout. Upstream's setup.sh
+  # planted symlinks for four of them and left the rest uninstalled — which is
+  # how `_raw/` ended up with no promoter (wiki-ingest) reachable as a slash
+  # command. Spelled out rather than read from the directory: a flake cannot
+  # readDir an absolute path outside itself under pure evaluation, so this list
+  # needs a look after an upstream `jj git fetch` adds skills.
+  wikiSkills = [
+    "claude-history-ingest"
+    "codex-history-ingest"
+    "copilot-history-ingest"
+    "cross-linker"
+    "daily-update"
+    "graph-colorize"
+    "hermes-history-ingest"
+    "impl-validator"
+    "llm-wiki"
+    "memory-bridge"
+    "obsidian-layout-adjustment"
+    "openclaw-history-ingest"
+    "pi-history-ingest"
+    "skill-creator"
+    "tag-taxonomy"
+    "vault-skill-factory"
+    "wiki-agent"
+    "wiki-capture"
+    "wiki-context-pack"
+    "wiki-dashboard"
+    "wiki-dedup"
+    "wiki-digest"
+    "wiki-export"
+    "wiki-history-ingest"
+    "wiki-import"
+    "wiki-ingest"
+    "wiki-lint"
+    "wiki-narrate"
+    "wiki-query"
+    "wiki-rebuild"
+    "wiki-research"
+    "wiki-setup"
+    "wiki-stage-commit"
+    "wiki-status"
+    "wiki-switch"
+    "wiki-synthesize"
+    "wiki-update"
+  ];
+in
 {
   # zsh-completion-sync enables its "no-caching" optimization by default,
   # which points ZSH_COMPDUMP/_comp_dumpfile at /dev/null. oh-my-zsh's
@@ -15,6 +62,20 @@
   programs.zsh.initContent = lib.mkOrder 850 ''
     zstyle ':completion-sync:compinit:optimizations:no-caching' enabled false
   '';
+
+  # Symlinks into the checkout rather than copies into the store, so the skills
+  # stay upstream-managed and `jj git fetch` upgrades them in place. `force`
+  # adopts the four symlinks setup.sh planted by hand; without it activation
+  # aborts on the unmanaged files already sitting at those paths.
+  home.file = builtins.listToAttrs (
+    map (skill: {
+      name = ".claude/skills/${skill}";
+      value = {
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.obsidian-wiki/repo/.skills/${skill}";
+        force = true;
+      };
+    }) wikiSkills
+  );
 
   home_modules = {
     alacritty.enable = true;
@@ -67,20 +128,6 @@
       };
 
       mcpServers = {
-        github = {
-          type = "http";
-          url = "https://api.githubcopilot.com/mcp";
-          headers = {
-            Authorization = "Bearer \${GITHUB_TOKEN}";
-          };
-        };
-        context7 = {
-          type = "http";
-          url = "https://mcp.context7.com/mcp";
-          headers = {
-            CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
-          };
-        };
         claude-design = {
           type = "http";
           url = "https://api.anthropic.com/v1/design/mcp";
@@ -132,30 +179,18 @@
         **not** granted. Never request or rely on a blanket `Read(/tmp/**)` /
         `Write(/tmp/**)`; scope every tmp permission to the project subdir.
 
-        # GitHub: MCP server, not the `gh` CLI
+        # GitHub: the `gh` CLI
 
-        GitHub work goes through the **GitHub MCP server**
-        (`mcp__plugin_claude-code-home-manager_github__*`) whenever the server
-        exposes the operation — pull requests, issues, releases, commits, tags,
-        branches, file contents, and code/repo/user search. Reach for it before
-        shelling out to `gh` or fetching github.com with WebFetch. This narrows
-        the `gh` exception listed under the jj rules above.
+        GitHub work — pull requests, issues, releases, Actions logs, code and
+        repo search — goes through the `gh` CLI, the exception already carved
+        out under the jj rules above. Reach for `gh` before fetching
+        github.com with WebFetch; keep WebFetch for non-API pages.
 
-        Why: the MCP tools return structured JSON that needs no parsing, accept
-        `minimal_output` and pagination to keep context small, and authenticate
-        from the sops-managed `claude-code/github-mcp` token rather than
-        whatever `gh` auth state the shell happens to carry.
-
-        Fall back to `gh` only for what the MCP server does not expose — Actions
-        logs (`gh run view`, `gh run list`), `gh pr checks` — and to WebFetch
-        only for non-API pages.
-
-        Read-only MCP tools (`get_*`, `list_*`, `search_*`, `issue_read`,
-        `pull_request_read`) are allowed in the harness and run without
-        prompting. Every other GitHub MCP tool mutates a remote repository —
-        `merge_pull_request`, `delete_file`, `push_files`, `create_*`,
-        `*_write`, the comment tools — and will prompt. Confirm those with the
-        user instead of assuming approval.
+        Read-only subcommands (`gh pr view|list|diff|checks`, `gh run
+        view|list`, `gh api repos/*`, `gh search`) run without prompting.
+        Anything that writes to a remote repository — creating or merging
+        PRs, editing issues, posting comments — will prompt. Confirm those
+        with the user instead of assuming approval.
       '';
 
       lspServers = {
@@ -180,15 +215,6 @@
         permissions = {
           allow = [
             "Read(//nix/store/**)"
-            # GitHub — read-only only. Every mutating tool (merge_pull_request,
-            # delete_file, push_files, create_*, *_write, …) avoids these
-            # prefixes, so it keeps prompting like `gh` and jj's write ops do.
-            "mcp__plugin_claude-code-home-manager_github__get_*"
-            "mcp__plugin_claude-code-home-manager_github__list_*"
-            "mcp__plugin_claude-code-home-manager_github__search_*"
-            "mcp__plugin_claude-code-home-manager_github__issue_read"
-            "mcp__plugin_claude-code-home-manager_github__pull_request_read"
-            "mcp__plugin_claude-code-home-manager_context7__*"
             "mcp__claude-design__get_*"
             "mcp__claude-design__list_*"
             "mcp__claude-design__read_*"
@@ -283,6 +309,36 @@
             "Read(~/.obsidian-wiki/**)"
             "Read(~/Documents/obsidian-wiki-vault/**)"
             "Edit(~/Documents/obsidian-wiki-vault/**)"
+            # qmd is the vault search backend the wiki skills call. Query verbs
+            # print indexed document contents, so unlike the other hoisted
+            # commands they can surface file bodies — but only from collections
+            # the user indexed by hand, never an arbitrary path, which keeps the
+            # .env/secret deny rules intact. Index and collection writes are
+            # absent on purpose: those reshape the index and stay prompted.
+            "Bash(qmd query *)"
+            "Bash(qmd search *)"
+            "Bash(qmd vsearch *)"
+            "Bash(qmd get *)"
+            "Bash(qmd multi-get *)"
+            "Bash(qmd ls*)"
+            "Bash(qmd status*)"
+            # The wiki skills reach for a shell only where the file tools
+            # cannot: creating a category directory and archiving a promoted
+            # `_raw/` note. Both ends of `mv` are pinned to the vault so a move
+            # cannot carry a note out of it, and both path spellings are listed
+            # because Bash matching is literal — `~/…` and the expanded form are
+            # different strings, and a `$VAULT`-style variable matches neither.
+            # Vault reads (cat/sed/grep/jq) and `>` redirects already run
+            # unprompted: those are recognized file commands, checked against the
+            # Read()/Edit() rules above rather than needing a Bash rule.
+            "Bash(mkdir -p ~/Documents/obsidian-wiki-vault/*)"
+            "Bash(mkdir -p ${config.home.homeDirectory}/Documents/obsidian-wiki-vault/*)"
+            "Bash(mv ~/Documents/obsidian-wiki-vault/* ~/Documents/obsidian-wiki-vault/*)"
+            "Bash(mv ${config.home.homeDirectory}/Documents/obsidian-wiki-vault/* ${config.home.homeDirectory}/Documents/obsidian-wiki-vault/*)"
+            # Frontmatter and log timestamps. `date` is absent from the built-in
+            # read-only set, so every note the skills write stops on it.
+            "Bash(date)"
+            "Bash(date *)"
           ];
           # Split by recoverability, not by verb. `deny` is for operations that
           # destroy work with no way back — Claude cannot run these at all, in
@@ -432,20 +488,11 @@
       extraAliases = {
         open = "xdg-open";
       };
-      envExtra =
-        lib.optionalString config.home_modules.direnv.enable ''
-          if [[ -n "$CLAUDECODE" ]]; then
-            eval "$(${config.programs.direnv.package}/bin/direnv hook zsh)"
-          fi
-        ''
-        + lib.optionalString config.home_modules.claude-code.enable ''
-          if [[ -r /run/secrets/claude-code/github-mcp ]]; then
-            export GITHUB_TOKEN="$(${pkgs.coreutils}/bin/cat /run/secrets/claude-code/github-mcp)"
-          fi
-          if [[ -r /run/secrets/claude-code/context7-mcp ]]; then
-            export CONTEXT7_API_KEY="$(${pkgs.coreutils}/bin/cat /run/secrets/claude-code/context7-mcp)"
-          fi
-        '';
+      envExtra = lib.optionalString config.home_modules.direnv.enable ''
+        if [[ -n "$CLAUDECODE" ]]; then
+          eval "$(${config.programs.direnv.package}/bin/direnv hook zsh)"
+        fi
+      '';
     };
 
     neovim = {

@@ -31,12 +31,6 @@
     defaultSopsFile = ../../secrets/secrets.yml;
     age.keyFile = "${config.users.users.datahearth.home}/.config/sops/age/keys.txt";
     secrets = {
-      "claude-code/github-mcp" = {
-        owner = config.users.users.datahearth.name;
-      };
-      "claude-code/context7-mcp" = {
-        owner = config.users.users.datahearth.name;
-      };
       "wifi/cirdan" = { };
       "wifi/la-maison-du-bonheur" = { };
     };
