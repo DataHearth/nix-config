@@ -8,10 +8,8 @@ let
   cfg = config.home_modules.hyprland;
 
   hypridle-toggle = pkgs.writeShellScriptBin "hypridle-toggle" ''
-    # Taking manual control pins the state: hypridle-power-sync stops overriding
-    # it on AC/battery changes until a manual suspend -- or logout -- clears the
-    # marker.
-    touch "$XDG_RUNTIME_DIR/hypridle-manual"
+    # A toggle holds only until the next AC<->battery transition, at which point
+    # hypridle-power-sync takes the state back.
     if systemctl --user is-active --quiet hypridle.service; then
       systemctl --user stop hypridle.service
       while systemctl --user is-active --quiet hypridle.service; do sleep 0.1; done
@@ -35,9 +33,9 @@ let
     # blocks here and everything below runs after the wake.
     systemctl suspend
 
-    # Sleeping manually ends the manual pin: drop the marker and restart the
-    # sync, which re-evaluates AC/battery from scratch and pokes waybar itself.
-    rm -f "$XDG_RUNTIME_DIR/hypridle-manual"
+    # Starting hypridle above may have contradicted the power state, and the sync
+    # only acts on transitions -- so it would sit on a stale decision. Restarting
+    # it forces a fresh evaluation, and it pokes waybar itself.
     systemctl --user restart hypridle-power-sync.service
   '';
 
@@ -59,14 +57,10 @@ let
     pgrep=${pkgs.procps}/bin/pgrep
     pkill=${pkgs.procps}/bin/pkill
 
-    # Set by hypridle-toggle when the user takes manual control; while it exists
-    # we leave hypridle exactly as they set it. hypridle-sleep clears it on the
-    # way out of a manual suspend, and the runtime dir clears it at logout.
-    marker="$XDG_RUNTIME_DIR/hypridle-manual"
-
     # Last power state acted on ("" until the first sync). Gating on it means we
-    # only start/stop hypridle and poke waybar on an actual AC<->battery flip,
-    # not on every UPower percentage tick.
+    # only touch hypridle on an actual AC<->battery flip, not on every UPower
+    # percentage tick -- which is also what lets a manual toggle stand until the
+    # next transition.
     last=""
 
     on_ac() {
@@ -108,9 +102,6 @@ let
     }
 
     sync() {
-      # Manual toggle wins: once the user has taken control this session, leave
-      # hypridle exactly as they set it.
-      [ -e "$marker" ] && return
       if on_ac; then cur="ac"; else cur="battery"; fi
       [ "$cur" = "$last" ] && return
       last="$cur"
@@ -195,8 +186,7 @@ in
       };
     };
 
-    # Drive hypridle from power source: off on AC, on on battery. Manual toggles
-    # (Super+I / waybar click) still apply between transitions.
+    # Drive hypridle from power source: off on AC, on on battery.
     systemd.user.services.hypridle-power-sync = {
       Unit = {
         Description = "Toggle hypridle based on AC/battery power";
