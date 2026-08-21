@@ -120,6 +120,22 @@
                           --replace-fail 'subprocess.check_call(' 'print("cantarell: autohint skipped:",'
                       '';
                     });
+                    # fw-fanctrl polls `ectool temps all` once a second (the
+                    # sleep(1) in FanController.run; fanSpeedUpdateFrequency only
+                    # gates the duty write, not the read). ectool prints a
+                    # "Sensor N disabled" line per disabled sensor on stderr, and
+                    # this is the one ectool call that does not redirect it --
+                    # is_on_ac right below it passes stderr=DEVNULL. The daemon's
+                    # own --silent does not reach a subprocess's inherited stderr,
+                    # so journald logs one line per second under the unit: 67% of
+                    # this machine's journal. Still unfixed on upstream main,
+                    # where the same asymmetry survived the port to framework_tool.
+                    fw-fanctrl = super.fw-fanctrl.overrideAttrs (old: {
+                      postPatch = (old.postPatch or "") + ''
+                        substituteInPlace src/fw_fanctrl/hardwareController/EctoolHardwareController.py \
+                          --replace-fail '"ectool temps all",' '"ectool temps all", stderr=subprocess.DEVNULL,'
+                      '';
+                    });
                   })
                 ];
               }
