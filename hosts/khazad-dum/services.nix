@@ -36,9 +36,17 @@
         (toString (pkgs.writeShellScript "sudo-fprint-ac-guard" ''
           # exit 0 = on AC power -> PAM skips the fingerprint line (password prompt)
           # exit 1 = on battery -> fingerprint stays enabled
+          #
+          # Reads with the `read` builtin rather than cat: pam_exec hands the
+          # script the PAM environment, which at auth time has no PATH at all,
+          # so any external command silently fails. An unqualified `cat` here
+          # made every branch fall through to `exit 1`, which looks like correct
+          # battery behaviour and quietly disables the AC skip.
           for ps in /sys/class/power_supply/*; do
-            [ "$(cat "$ps/type")" = "Mains" ] || continue
-            [ "$(cat "$ps/online")" = "1" ] && exit 0
+            read -r type < "$ps/type" || continue
+            [ "$type" = "Mains" ] || continue
+            read -r online < "$ps/online" || continue
+            [ "$online" = "1" ] && exit 0
           done
           exit 1
         ''))
