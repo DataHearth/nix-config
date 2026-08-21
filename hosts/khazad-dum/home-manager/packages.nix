@@ -82,7 +82,7 @@
       clean = {
         enable = true;
         dates = "monthly";
-        extraArgs = "--keep 3 --keep-since 72h --optimise";
+        extraArgs = "--keep 3 --keep-since 30d --optimise";
       };
     };
   };
