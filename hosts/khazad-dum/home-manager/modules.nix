@@ -561,10 +561,6 @@ in
           match.class = "[Ss]potify"; # XWayland "Spotify" + native-Wayland "spotify"
         }
         {
-          workspace = 7;
-          match.class = "thunderbird";
-        }
-        {
           workspace = 9;
           match.class = "F5 VPN";
         }
@@ -578,8 +574,6 @@ in
       ++ map lib.getExe [
         config.programs.zen-browser.package
         pkgs.spotify
-        pkgs.thunderbird
-        pkgs.protonmail-bridge-gui
         pkgs.claude-desktop
       ]
       # opencloud-desktop sets no meta.mainProgram and ships two binaries

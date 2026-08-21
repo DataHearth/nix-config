@@ -32,7 +32,6 @@
     noto-fonts-cjk-sans # support for chinese/japanese characters
 
     gnome-calculator
-    protonmail-bridge-gui
     # signal-desktop deprecated its `commandLineArgs` override argument in
     # favour of a wrapper. Its desktop entry execs `signal-desktop` by name, so
     # shadowing the binary on PATH covers launcher starts too.
@@ -55,7 +54,6 @@
     spotify
     bruno
     claude-desktop
-    thunderbird
     opencloud-desktop
     obsidian
   ];
