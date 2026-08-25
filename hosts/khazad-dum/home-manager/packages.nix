@@ -72,7 +72,10 @@
     home-manager.enable = true;
     zoxide.enable = true;
     mise.enable = true;
-    qmd.enable = true;
+    qmd = {
+      enable = true;
+      package = pkgs.qmd;
+    };
 
     nh = {
       enable = true;

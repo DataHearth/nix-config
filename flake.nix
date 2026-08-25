@@ -80,6 +80,26 @@
                 nixpkgs.overlays = [
                   (self: super: {
                     jj-lsp = jj-lsp.packages.${system}.default;
+                    # qmd's wrapper hard-`--set`s LD_LIBRARY_PATH, so the Vulkan
+                    # loader and the NixOS driver path are invisible to the
+                    # prebuilt node-llama-cpp Vulkan addon (`libvulkan.so.1 =>
+                    # not found`) and llama.cpp silently falls back to CPU.
+                    # Prepending both is enough — qmd's own `auto` probe then
+                    # picks the 780M, cutting a full vault embed from ~2m15s to
+                    # ~50s. An outer wrapper cannot fix this: the inner wrapper
+                    # would overwrite the variable again.
+                    qmd = qmd.packages.${system}.default.overrideAttrs (old: {
+                      postFixup = (old.postFixup or "") + ''
+                        substituteInPlace $out/bin/qmd \
+                          --replace-fail "export LD_LIBRARY_PATH='" \
+                            "export LD_LIBRARY_PATH='${
+                              super.lib.makeLibraryPath [
+                                super.vulkan-loader
+                                "/run/opengl-driver"
+                              ]
+                            }:"
+                      '';
+                    });
                     # Official Anthropic Linux client, packaged locally from the
                     # upstream .deb (nixpkgs has no claude-desktop). The package
                     # forces Wayland/ozone itself — see packages/claude-desktop.nix.
