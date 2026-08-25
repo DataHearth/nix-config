@@ -202,10 +202,6 @@ in
       };
 
       settings = {
-        enabledPlugins = {
-          "feature-dev@claude-plugins-official" = true;
-        };
-
         # Auto-mode classifier context for every repo on this machine. Only
         # ~/.claude/settings.json is read for this — the classifier ignores
         # `autoMode` in project settings on purpose, so a checked-out repo
