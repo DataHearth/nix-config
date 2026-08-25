@@ -71,6 +71,7 @@ let
   };
 
   hyprshot_bin = "${pkgs.hyprshot}/bin/hyprshot";
+  hyprlock_bin = "${pkgs.hyprlock}/bin/hyprlock";
   wpctl_bin = "${pkgs.wireplumber}/bin/wpctl";
   brightnessctl_bin = "${pkgs.brightnessctl}/bin/brightnessctl";
   playerctl_bin = "${pkgs.playerctl}/bin/playerctl";
@@ -502,7 +503,12 @@ in
           (mkBind "${mainMod} + TAB" "hl.dsp.group.next()")
           (mkBind "${mainMod} + SHIFT + TAB" "hl.dsp.group.prev()")
           (mkBind "${mainMod} + SHIFT + F" "hl.dsp.window.fullscreen()")
-          (mkBind "${mainMod} + L" (execCmd "loginctl lock-session"))
+          # Not `loginctl lock-session`: that only emits logind's Lock signal, and
+          # hypridle -- the sole listener for it -- is stopped whenever the machine
+          # is on AC, so the signal goes nowhere. Call hyprlock directly; it
+          # refuses to start a second instance, so hypridle's idle lock on battery
+          # still composes with this.
+          (mkBind "${mainMod} + L" (execCmd hyprlock_bin))
           (mkBind "${mainMod} + SHIFT + L" "hl.dsp.exit()")
           (mkBind "${mainMod} + I" (execCmd "${lib.getExe config.home_modules.hyprland.hypridle.toggleScript}"))
           (mkBind "${mainMod} + S" (execCmd "${lib.getExe config.home_modules.hyprland.hypridle.sleepScript}"))
