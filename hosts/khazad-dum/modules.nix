@@ -15,6 +15,11 @@
   services.upower.enable = true; # battery status for the bar / notifications
 
   nixos_modules = {
+    # The Yeti's own USB connector is intermittent (see the module): this only
+    # ships the `yeti-reset` recovery command and pins autosuspend off, it does
+    # not fix the drops.
+    blue-yeti.enable = true;
+
     # F5 VPN (Airbus): client, split-tunnel routing/DNS, firewall, tailnet fix
     f5.enable = true;
 
