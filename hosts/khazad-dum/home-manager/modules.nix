@@ -139,17 +139,60 @@ in
         # NixOS system
 
         This machine runs NixOS. Software is managed declaratively, so binaries
-        are not installed ad hoc with apt/brew/pip. To run a tool that is not
-        already on PATH — i.e. not provided by the project's root flake
-        (devShell, packages, or apps) — use `nix run` instead of expecting it to
-        be installable:
+        are not installed ad hoc: do not suggest `apt install`, `brew install`,
+        `pip install --user`, or any other imperative install.
 
-            nix run nixpkgs#<package> -- <args>
+        Resolve a tool in this order, and stop at the first that works:
 
-        Do not suggest `apt install`, `brew install`, `pip install --user`, or
-        other imperative installs. If a tool will be used repeatedly, prefer
-        adding it to the appropriate nix configuration; for one-off invocations,
-        `nix run` is fine.
+        1. Whatever is already on PATH — the system and home-manager profiles,
+           plus the project's flake devShell, which is loaded into the Bash
+           environment for you (direnv, per session). Call the binary bare:
+           `go build`, `cargo test`, `npm run dev`. `command -v <tool>` settles
+           whether it is there; a PreToolUse guard also speaks up when a dev
+           tool really is missing.
+        2. The project's own flake, when the repo provides the tool but it is
+           not on PATH — `nix run .#<app>`, `nix develop -c <cmd>`.
+        3. `nix run nixpkgs#<package> -- <args>`, for a one-off nothing local
+           provides.
+
+        Step 3 is the last resort, not the reflex. It resolves against the
+        flake registry rather than this machine's package set, so it can
+        download a second copy of something already installed here and run a
+        different version than the project expects. A tool needed repeatedly
+        belongs in the nix configuration, not in an ephemeral invocation.
+
+        # CLI tooling: modern replacements
+
+        These are all installed here, and each is the default choice over its
+        GNU counterpart — faster, and they skip `.git`, `node_modules` and
+        everything in `.gitignore` without being told:
+
+        - `rg` over `grep`, and over any `find … | xargs grep` pipeline
+        - `fd` over `find`
+        - `sd` over `sed` for substitutions
+        - `eza` over `ls` (`eza -T` for trees; there is no `tree` here)
+        - `dust` over `du`, `duf` over `df`, `procs` over `ps`
+        - `doggo` over `dig`, `xh` over `curl` for ad-hoc HTTP
+        - `difft` over `diff` when the structural diff reads better
+        - `hyperfine` over `time` for anything worth measuring twice
+
+        `rg` and `fd` skip hidden and `.gitignore`d paths by default. That is
+        usually what you want; when it is not — searching `.direnv`, a build
+        tree, a dotfile — pass `--hidden --no-ignore` (`-u` for `rg`) rather
+        than falling back to `grep`/`find`.
+
+        `fd` matches a regex against the basename, not a shell glob: `fd -e
+        nix`, `fd -g '*.lock'`, `-t f`/`-t d` to filter by type. `rg` is
+        line-oriented — patterns that span lines need `-U`.
+
+        The Grep and Glob tools already run ripgrep, so prefer them to a
+        shell; reach for `rg`/`fd` in Bash for flags or pipelines those tools
+        do not expose. `bat` is for the user's eyes — reading a file yourself,
+        plain `cat`/`sed -n` avoids the decorations and the pager.
+
+        Scope: this governs commands run here, ad hoc. Scripts committed to a
+        repo, CI steps, and anything expected to run on another machine keep
+        the POSIX tools unless that repo already depends on `rg`/`fd`.
 
         # Temporary files and directories
 
