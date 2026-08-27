@@ -140,7 +140,7 @@ in
             actions = [
               {
                 label = "󰍁";
-                command = "hyprlock";
+                command = "loginctl lock-session";
               }
               {
                 label = "󰤄";

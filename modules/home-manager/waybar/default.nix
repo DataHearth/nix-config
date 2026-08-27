@@ -21,8 +21,8 @@ let
       | walker -d --nosearch --height 5)
     [ -z "$choice" ] && exit 0
     case "$choice" in
-      *"Lock") loginctl lock-session ;;
-      *"Suspend") ${lib.getExe config.home_modules.hyprland.hypridle.sleepScript} ;;
+      *"Lock") ${pkgs.systemd}/bin/loginctl lock-session ;;
+      *"Suspend") systemctl suspend ;;
       *"Log out") ${hyprctl} dispatch 'hl.dsp.exit()' ;;
       *"Reboot") systemctl reboot ;;
       *"Shut down") systemctl poweroff ;;

@@ -20,25 +20,6 @@ let
     pkill -SIGRTMIN+8 waybar
   '';
 
-  hypridle-sleep = pkgs.writeShellScriptBin "hypridle-sleep" ''
-    # hypridle owns before_sleep_cmd and the logind lock signal, so it has to be
-    # running for the suspend to pause media and lock the session.
-    if ! systemctl --user is-active --quiet hypridle.service; then
-      systemctl --user start hypridle.service
-      while ! systemctl --user is-active --quiet hypridle.service; do sleep 0.1; done
-      pkill -SIGRTMIN+8 waybar
-    fi
-
-    # The suspend job only completes once the machine has resumed, so systemctl
-    # blocks here and everything below runs after the wake.
-    systemctl suspend
-
-    # Starting hypridle above may have contradicted the power state, and the sync
-    # only acts on transitions -- so it would sit on a stale decision. Restarting
-    # it forces a fresh evaluation, and it pokes waybar itself.
-    systemctl --user restart hypridle-power-sync.service
-  '';
-
   hypridle-status = pkgs.writeShellScriptBin "hypridle-status" ''
     if systemctl --user is-active --quiet hypridle.service; then
       echo '{"alt": "enabled", "tooltip": "Idle: enabled", "class": "enabled"}'
@@ -146,28 +127,20 @@ in
       readOnly = true;
       description = "Script to get hypridle status for waybar";
     };
-    sleepScript = lib.mkOption {
-      type = lib.types.package;
-      default = hypridle-sleep;
-      readOnly = true;
-      description = "Script to ensure hypridle is active before suspending";
-    };
   };
 
   config = lib.mkIf cfg.enable {
     home.packages = [
       hypridle-toggle
       hypridle-status
-      hypridle-sleep
     ];
 
     services.hypridle = {
       enable = true;
       settings = {
-        general = {
-          lock_cmd = "${pkgs.hyprlock}/bin/hyprlock";
-          before_sleep_cmd = "${pkgs.playerctl}/bin/playerctl pause --all-players && loginctl lock-session";
-        };
+        # No general block: locking and the pre-sleep media pause are both
+        # lock.target/sleep.target units now. A lock_cmd here would additionally
+        # race systemd-lock-handler for the same hyprlock on every Lock signal.
         listener = [
           {
             timeout = 450; # 4:30min
