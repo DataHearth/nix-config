@@ -9,6 +9,14 @@ scroll_buffer_size 1000
 
 copy_on_select true
 mouse_mode true
+
+// Opt out of 0.45.0's scroll-mode sync (zellij#5299): a mouse scroll up in a
+// focused pane would flip the session into Scroll mode, and refocusing a pane
+// left scrolled would silently put it back there. The toggle only exists from
+// 0.45.1 (zellij#5532) — older zellij drops the key without a word, so a stale
+// pin reads as "the setting does nothing" rather than as an error.
+scroll_mode_sync false
+
 theme "catppuccin-macchiato"
 default_layout "base"
 show_startup_tips false
@@ -57,9 +65,13 @@ keybinds clear-defaults=true {
       // plugin-exec threads' CPU grows superlinearly with the press count
       // (measured: 5 instances 11%, 9 -> 47%, 13 -> 223%). Only a server
       // restart clears it.
+      //
+      // in_place, not floating: a floating plugin pane makes the whole
+      // floating layer visible, so every pane hidden with "Alt z" comes back
+      // with it — zellij has no way to show one floating pane on its own.
       bind "Alt s" {
           LaunchOrFocusPlugin "session-manager" {
-              floating true
+              in_place true
               move_to_focused_tab true
           }
       }
