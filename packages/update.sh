@@ -39,7 +39,7 @@ sha256_for_version() {
 update_claude_code() {
   local base="https://downloads.claude.ai/claude-code-releases"
   local version="${1:-$(curl -fsSL "$base/latest")}"
-  curl -fsSL "$base/$version/manifest.json" --output claude-code-manifest.json
+  curl -fsSL "$base/$version/manifest.zst.json" --output claude-code-manifest.json
   echo "claude-code: manifest updated to $version"
 }
 
