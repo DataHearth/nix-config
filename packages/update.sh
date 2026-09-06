@@ -1,5 +1,5 @@
 #!/usr/bin/env nix
-#!nix shell --ignore-environment nixpkgs#cacert nixpkgs#coreutils nixpkgs#curl nixpkgs#gnused nixpkgs#gawk nixpkgs#nix nixpkgs#bash --command bash
+#!nix shell --ignore-environment nixpkgs#cacert nixpkgs#coreutils nixpkgs#curl nixpkgs#gnused nixpkgs#gnugrep nixpkgs#gawk nixpkgs#nix nixpkgs#bash --command bash
 
 # Update the manually-packaged apps in this directory: refresh version(s) and
 # hash(es) in place so a plain `nh os build` picks up the new release.
@@ -39,6 +39,12 @@ sha256_for_version() {
 update_claude_code() {
   local base="https://downloads.claude.ai/claude-code-releases"
   local version="${1:-$(curl -fsSL "$base/latest")}"
+  local current
+  current=$(sed -n 's/^  "version": "\([^"]*\)",$/\1/p' claude-code-manifest.json)
+  if [ "$version" = "$current" ]; then
+    echo "claude-code: already up to date"
+    return
+  fi
   curl -fsSL "$base/$version/manifest.zst.json" --output claude-code-manifest.json
   echo "claude-code: manifest updated to $version"
 }
@@ -58,6 +64,12 @@ update_claude_desktop() {
     echo "claude-desktop: version $version not found in apt index" >&2
     exit 1
   fi
+  if grep -q "version = \"$version\";" claude-desktop.nix \
+    && grep -q "sha256 = \"$amd64\";" claude-desktop.nix \
+    && grep -q "sha256 = \"$arm64\";" claude-desktop.nix; then
+    echo "claude-desktop: already up to date"
+    return
+  fi
   sed -i \
     -e "s/version = \"[^\"]*\";/version = \"$version\";/" \
     -e "/_amd64.deb/{n;s/sha256 = \"[^\"]*\"/sha256 = \"$amd64\"/;}" \
@@ -69,6 +81,10 @@ update_claude_desktop() {
 update_f5vpn() {
   local sri
   sri=$(prefetch_sri "https://axess.airbus.com/public/download/linux_f5vpn.x86_64.deb")
+  if grep -q "hash = \"$sri\";" f5vpn.nix; then
+    echo "f5vpn: already up to date"
+    return
+  fi
   sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$sri\"|" f5vpn.nix
   echo "f5vpn: hash updated to $sri"
 }
@@ -76,6 +92,10 @@ update_f5vpn() {
 update_f5epi() {
   local sri
   sri=$(prefetch_sri "https://axess.airbus.com/public/download/linux_f5epi.x86_64.rpm")
+  if grep -q "hash = \"$sri\";" f5epi.nix; then
+    echo "f5epi: already up to date"
+    return
+  fi
   sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$sri\"|" f5epi.nix
   echo "f5epi: hash updated to $sri"
 }
