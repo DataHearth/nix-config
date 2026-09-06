@@ -81,16 +81,16 @@
   cowork ? true,
 }:
 let
-  version = "1.46388.2";
+  version = "1.52386.6";
   base = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop";
   srcs = {
     x86_64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_amd64.deb";
-      sha256 = "98bf54e85e4916068c4281459b0f0431d8ff68034773f3ee98311d7206566ab1";
+      sha256 = "2e83a76c6ed9187671bfe80664fc6d59840171f4a2a81f408662c879a67f4e0a";
     };
     aarch64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_arm64.deb";
-      sha256 = "b944a2154528815bb476bfb1e7091f8a3e329b3c67f6c11de8d41668a603bd9e";
+      sha256 = "882f4a52a86b07ecff989d8db87c5ec292d43f21d0a6557d3e8b01e113b18190";
     };
   };
 in
@@ -188,8 +188,15 @@ stdenvNoCC.mkDerivation {
     makeWrapper $out/lib/claude-desktop/claude-desktop $out/bin/claude-desktop \
       "''${gappsWrapperArgs[@]}" \
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libglvnd ]}:/run/opengl-driver/lib" \
-      --prefix PATH : ${lib.makeBinPath [ direnv nix bash coreutils ]} \
-      ${lib.optionalString cowork ''--prefix PATH : ${lib.makeBinPath [ qemu_kvm ]} ''}\
+      --prefix PATH : ${
+        lib.makeBinPath [
+          direnv
+          nix
+          bash
+          coreutils
+        ]
+      } \
+      ${lib.optionalString cowork "--prefix PATH : ${lib.makeBinPath [ qemu_kvm ]} "}\
       ${lib.optionalString useWayland ''--add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --enable-wayland-ime=true" ''}
 
     runHook postInstall
