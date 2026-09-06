@@ -210,6 +210,7 @@ in
             };
             cleanupPeriodDays = 7;
             disableAgentView = true;
+            remoteControlAtStartup = false;
             statusLine = {
               type = "command";
               command = toString statuslineScript;
