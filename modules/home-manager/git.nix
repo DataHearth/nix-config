@@ -63,13 +63,15 @@ in
           logs = "log --graph --oneline";
           update-remote = "remote update origin --prune";
           tags = "git tag --list";
-        } // cfg.extraAliases;
+        }
+        // cfg.extraAliases;
         user = {
           name = cfg.user.name;
           email = cfg.user.email;
         };
         init.defaultBranch = "main";
-      } // cfg.extraConfig;
+      }
+      // cfg.extraConfig;
     };
 
     programs.difftastic = lib.mkIf cfg.difftastic.enable {

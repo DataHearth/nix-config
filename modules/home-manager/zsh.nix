@@ -44,20 +44,20 @@ in
       syntaxHighlighting.enable = true;
       oh-my-zsh.enable = true;
 
-      plugins =
-        [
-          {
-            name = "zsh-autopair";
-            src = pkgs.zsh-autopair;
-            file = "share/zsh/zsh-autopair/autopair.zsh";
-          }
-        ]
-        ++ cfg.extraPlugins;
+      plugins = [
+        {
+          name = "zsh-autopair";
+          src = pkgs.zsh-autopair;
+          file = "share/zsh/zsh-autopair/autopair.zsh";
+        }
+      ]
+      ++ cfg.extraPlugins;
 
       shellAliases = {
         cat = "bat";
         cd = "z";
-      } // cfg.extraAliases;
+      }
+      // cfg.extraAliases;
 
       initContent = lib.mkIf (cfg.initContent != "") cfg.initContent;
       envExtra = lib.mkIf (cfg.envExtra != "") cfg.envExtra;
