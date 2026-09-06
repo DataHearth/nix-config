@@ -46,32 +46,28 @@ in
         };
         ExtensionSettings =
           let
-            ext = id: url: {
+            ext = url: {
               install_url = "https://addons.mozilla.org/firefox/downloads/latest/${url}/latest.xpi";
               installation_mode = "force_installed";
             };
-            extDisabled = id: url: {
+            extDisabled = url: {
               install_url = "https://addons.mozilla.org/firefox/downloads/latest/${url}/latest.xpi";
               installation_mode = "normal_installed";
             };
           in
           {
-            "uBlock0@raymondhill.net" = ext "uBlock0@raymondhill.net" "ublock-origin";
-            "jid1-MnnxcxisBPnSXQ@jetpack" = ext "jid1-MnnxcxisBPnSXQ@jetpack" "privacy-badger17";
-            "{446900e4-71c2-419f-a6a7-df9c091e268b}" =
-              ext "{446900e4-71c2-419f-a6a7-df9c091e268b}" "bitwarden-password-manager";
-            "addon@darkreader.org" = ext "addon@darkreader.org" "darkreader";
-            "{cf3dba12-a848-4f68-8e2d-f9fadc0721de}" =
-              ext "{cf3dba12-a848-4f68-8e2d-f9fadc0721de}" "google-lighthouse";
-            "78272b6fa58f4a1abaac99321d503a20@proton.me" =
-              extDisabled "78272b6fa58f4a1abaac99321d503a20@proton.me" "proton-pass";
-            "vpn@proton.ch" = ext "vpn@proton.ch" "proton-vpn-firefox-extension";
-            "sponsorBlocker@ajay.app" = ext "sponsorBlocker@ajay.app" "sponsorblock";
-            "fr-dicollecte@dictionaries.addons.mozilla.org" =
-              ext "fr-dicollecte@dictionaries.addons.mozilla.org" "dictionnaire-fran%C3%A7ais1";
+            "uBlock0@raymondhill.net" = ext "ublock-origin";
+            "jid1-MnnxcxisBPnSXQ@jetpack" = ext "privacy-badger17";
+            "{446900e4-71c2-419f-a6a7-df9c091e268b}" = ext "bitwarden-password-manager";
+            "addon@darkreader.org" = ext "darkreader";
+            "{cf3dba12-a848-4f68-8e2d-f9fadc0721de}" = ext "google-lighthouse";
+            "78272b6fa58f4a1abaac99321d503a20@proton.me" = extDisabled "proton-pass";
+            "vpn@proton.ch" = ext "proton-vpn-firefox-extension";
+            "sponsorBlocker@ajay.app" = ext "sponsorblock";
+            "fr-dicollecte@dictionaries.addons.mozilla.org" = ext "dictionnaire-fran%C3%A7ais1";
             "ef-french-simplified-orthograph@dictionaries.addons.mozilla.org" =
-              ext "ef-french-simplified-orthograph@dictionaries.addons.mozilla.org" "corecteur-ortografe-simplifiee";
-            "langpack-fr@firefox.mozilla.org" = ext "langpack-fr@firefox.mozilla.org" "francais-language-pack";
+              ext "corecteur-ortografe-simplifiee";
+            "langpack-fr@firefox.mozilla.org" = ext "francais-language-pack";
           };
       };
 

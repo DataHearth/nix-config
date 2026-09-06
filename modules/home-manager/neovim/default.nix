@@ -28,7 +28,7 @@ in
 
     programs.neovim = {
       enable = true;
-      defaultEditor = cfg.defaultEditor;
+      inherit (cfg) defaultEditor;
 
       viAlias = true;
       vimAlias = true;
@@ -39,13 +39,38 @@ in
       withRuby = true;
 
       plugins = with pkgs.vimPlugins; [
-        (nvim-treesitter.withPlugins (p: with p; [
-          bash c css diff dockerfile go gomod gosum
-          html javascript jsdoc json lua luadoc
-          markdown markdown_inline nix python query
-          regex rust svelte toml tsx typescript vim
-          vimdoc yaml
-        ]))
+        (nvim-treesitter.withPlugins (
+          p: with p; [
+            bash
+            c
+            css
+            diff
+            dockerfile
+            go
+            gomod
+            gosum
+            html
+            javascript
+            jsdoc
+            json
+            lua
+            luadoc
+            markdown
+            markdown_inline
+            nix
+            python
+            query
+            regex
+            rust
+            svelte
+            toml
+            tsx
+            typescript
+            vim
+            vimdoc
+            yaml
+          ]
+        ))
         nvim-treesitter-textobjects
       ];
 

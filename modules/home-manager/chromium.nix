@@ -55,8 +55,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.chromium = {
       enable = true;
-      package = cfg.package;
-      commandLineArgs = cfg.commandLineArgs;
+      inherit (cfg) package commandLineArgs;
       extensions = cfg.extensions ++ lib.optional cfg.claudeInChrome claudeExtensionId;
     };
 
@@ -64,14 +63,15 @@ in
     # `/chrome`; Chromium does not, so declare it at the per-user location
     # (~/.config/chromium/NativeMessagingHosts) Chromium reads on startup.
     xdg.configFile."chromium/NativeMessagingHosts/com.anthropic.claude_code_browser_extension.json" =
-      lib.mkIf cfg.claudeInChrome {
-        text = builtins.toJSON {
-          name = "com.anthropic.claude_code_browser_extension";
-          description = "Claude Code browser extension native messaging host";
-          path = "${config.home.homeDirectory}/.claude/chrome/chrome-native-host";
-          type = "stdio";
-          allowed_origins = [ "chrome-extension://${claudeExtensionId}/" ];
+      lib.mkIf cfg.claudeInChrome
+        {
+          text = builtins.toJSON {
+            name = "com.anthropic.claude_code_browser_extension";
+            description = "Claude Code browser extension native messaging host";
+            path = "${config.home.homeDirectory}/.claude/chrome/chrome-native-host";
+            type = "stdio";
+            allowed_origins = [ "chrome-extension://${claudeExtensionId}/" ];
+          };
         };
-      };
   };
 }

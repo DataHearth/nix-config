@@ -78,7 +78,7 @@
               }
               {
                 nixpkgs.overlays = [
-                  (self: super: {
+                  (_self: super: {
                     # hyprlock 0.9.6 never exits after a successful password
                     # unlock when it was started into a suspend and resumed
                     # (hyprwm/hyprlock#1055): CPam::terminate() joins a PAM

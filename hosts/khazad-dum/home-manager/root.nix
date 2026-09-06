@@ -1,5 +1,5 @@
 {
-  imports = [ ] ++ (import ../../../modules/home-manager);
+  imports = import ../../../modules/home-manager;
 
   home = {
     username = "root";

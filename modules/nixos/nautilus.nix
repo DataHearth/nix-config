@@ -61,7 +61,7 @@ in
     # choice to a locked system dconf profile.
     programs.nautilus-open-any-terminal = lib.mkIf (cfg.terminal != null) {
       enable = true;
-      terminal = cfg.terminal;
+      inherit (cfg) terminal;
     };
 
     # Per-user default file-manager association.

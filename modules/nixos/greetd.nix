@@ -70,27 +70,29 @@ in
 
   config = lib.mkIf cfg.enable {
     security.pam.services.greetd.enableGnomeKeyring = true;
-    services.gnome.gnome-keyring.enable = true;
 
-    services.displayManager.regreet = {
-      enable = true;
-      theme = {
-        name = "catppuccin-macchiato-mauve-standard";
-        package = pkgs.catppuccin-gtk.override {
-          variant = "macchiato";
-          accents = [ "mauve" ];
+    services = {
+      gnome.gnome-keyring.enable = true;
+
+      displayManager.regreet = {
+        enable = true;
+        theme = {
+          name = "catppuccin-macchiato-mauve-standard";
+          package = pkgs.catppuccin-gtk.override {
+            variant = "macchiato";
+            accents = [ "mauve" ];
+          };
+        };
+        cursorTheme = {
+          name = "catppuccin-macchiato-mauve-cursors";
+          package = pkgs.catppuccin-cursors.macchiatoMauve;
         };
       };
-      cursorTheme = {
-        name = "catppuccin-macchiato-mauve-cursors";
-        package = pkgs.catppuccin-cursors.macchiatoMauve;
-      };
-    };
 
-    # Replace the regreet module's cage-based session (set with mkDefault) with
-    # the internal-panel-only Hyprland greeter above. dbus-run-session gives
-    # ReGreet's GTK a session bus, matching what the upstream cage command provided.
-    services.greetd.settings.default_session.command =
-      "${lib.getExe' pkgs.dbus "dbus-run-session"} ${lib.getExe pkgs.hyprland} --config ${greeterConfig}";
+      # Replace the regreet module's cage-based session (set with mkDefault) with
+      # the internal-panel-only Hyprland greeter above. dbus-run-session gives
+      # ReGreet's GTK a session bus, matching what the upstream cage command provided.
+      greetd.settings.default_session.command = "${lib.getExe' pkgs.dbus "dbus-run-session"} ${lib.getExe pkgs.hyprland} --config ${greeterConfig}";
+    };
   };
 }

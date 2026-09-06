@@ -5,12 +5,16 @@
   ...
 }:
 {
-  programs.hyprland.enable = true;
+  programs = {
+    hyprland.enable = true;
+    dconf.enable = true; # GTK app settings + catppuccin dconf theming
+    zsh.enable = true;
+  };
 
   # GNOME desktop session is not used; keep only the supporting plumbing the
-  # Hyprland session relies on. (gnome-keyring is enabled in greetd.nix,
-  # udisks2 in services.nix, and the xdg portals come from programs.hyprland.)
-  programs.dconf.enable = true; # GTK app settings + catppuccin dconf theming
+  # Hyprland session relies on -- these two plus programs.dconf above.
+  # (gnome-keyring is enabled in greetd.nix, udisks2 in services.nix, and the
+  # xdg portals come from programs.hyprland.)
   security.polkit.enable = true; # for the polkit-gnome agent (systemd.nix)
   services.upower.enable = true; # battery status for the bar / notifications
 
@@ -60,113 +64,115 @@
     config = {
       defaultStrategy = "quiet"; # on AC
       strategyOnDischarging = "quiet"; # on battery
-      strategies.lap-cool = {
-        fanSpeedUpdateFrequency = 5; # seconds between duty updates
-        movingAverageInterval = 20; # temperature averaging window (seconds)
-        speedCurve = [
-          {
-            temp = 0;
-            speed = 15;
-          }
-          {
-            temp = 45;
-            speed = 15;
-          }
-          {
-            temp = 50;
-            speed = 22;
-          }
-          {
-            temp = 60;
-            speed = 45;
-          }
-          {
-            temp = 70;
-            speed = 60;
-          }
-          {
-            temp = 80;
-            speed = 85;
-          }
-          {
-            temp = 85;
-            speed = 100;
-          }
-        ];
-      };
-      # Docked / on a stand: airflow is unobstructed and fan noise matters less,
-      # so ramp harder above the quiet floor to keep the chips (and chassis)
-      # cooler. Not the default — switch to it when docked with
-      # `fw-fanctrl use stand` (and back with `fw-fanctrl use lap-cool`).
-      strategies.stand = {
-        fanSpeedUpdateFrequency = 5;
-        movingAverageInterval = 15; # snappier than lap-cool
-        speedCurve = [
-          {
-            temp = 0;
-            speed = 20;
-          }
-          {
-            temp = 40;
-            speed = 20;
-          }
-          {
-            temp = 50;
-            speed = 35;
-          }
-          {
-            temp = 60;
-            speed = 70;
-          }
-          {
-            temp = 70;
-            speed = 90;
-          }
-          {
-            temp = 80;
-            speed = 100;
-          }
-        ];
-      };
-      # Silence over thermals: fans fully off below 50 °C and inaudible to ~65 °C,
-      # accepting that sustained load heat-soaks the chassis and clocks down
-      # sooner than lap-cool would. The long averaging window matters as much as
-      # the low duty here — audible ramping up and down draws more attention than
-      # a steady speed does, so smooth the response rather than tracking every
-      # spike. Above 72 °C it ramps hard, because by then quiet has lost.
-      strategies.quiet = {
-        fanSpeedUpdateFrequency = 5;
-        movingAverageInterval = 40;
-        speedCurve = [
-          {
-            temp = 0;
-            speed = 0;
-          }
-          {
-            temp = 50;
-            speed = 0;
-          }
-          {
-            temp = 65;
-            speed = 15;
-          }
-          {
-            temp = 72;
-            speed = 30;
-          }
-          {
-            temp = 80;
-            speed = 55;
-          }
-          {
-            temp = 85;
-            speed = 75;
-          }
-          {
-            temp = 90;
-            speed = 100;
-          }
-        ];
+      strategies = {
+        lap-cool = {
+          fanSpeedUpdateFrequency = 5; # seconds between duty updates
+          movingAverageInterval = 20; # temperature averaging window (seconds)
+          speedCurve = [
+            {
+              temp = 0;
+              speed = 15;
+            }
+            {
+              temp = 45;
+              speed = 15;
+            }
+            {
+              temp = 50;
+              speed = 22;
+            }
+            {
+              temp = 60;
+              speed = 45;
+            }
+            {
+              temp = 70;
+              speed = 60;
+            }
+            {
+              temp = 80;
+              speed = 85;
+            }
+            {
+              temp = 85;
+              speed = 100;
+            }
+          ];
+        };
+        # Docked / on a stand: airflow is unobstructed and fan noise matters less,
+        # so ramp harder above the quiet floor to keep the chips (and chassis)
+        # cooler. Not the default — switch to it when docked with
+        # `fw-fanctrl use stand` (and back with `fw-fanctrl use lap-cool`).
+        stand = {
+          fanSpeedUpdateFrequency = 5;
+          movingAverageInterval = 15; # snappier than lap-cool
+          speedCurve = [
+            {
+              temp = 0;
+              speed = 20;
+            }
+            {
+              temp = 40;
+              speed = 20;
+            }
+            {
+              temp = 50;
+              speed = 35;
+            }
+            {
+              temp = 60;
+              speed = 70;
+            }
+            {
+              temp = 70;
+              speed = 90;
+            }
+            {
+              temp = 80;
+              speed = 100;
+            }
+          ];
+        };
+        # Silence over thermals: fans fully off below 50 °C and inaudible to ~65 °C,
+        # accepting that sustained load heat-soaks the chassis and clocks down
+        # sooner than lap-cool would. The long averaging window matters as much as
+        # the low duty here — audible ramping up and down draws more attention than
+        # a steady speed does, so smooth the response rather than tracking every
+        # spike. Above 72 °C it ramps hard, because by then quiet has lost.
+        quiet = {
+          fanSpeedUpdateFrequency = 5;
+          movingAverageInterval = 40;
+          speedCurve = [
+            {
+              temp = 0;
+              speed = 0;
+            }
+            {
+              temp = 50;
+              speed = 0;
+            }
+            {
+              temp = 65;
+              speed = 15;
+            }
+            {
+              temp = 72;
+              speed = 30;
+            }
+            {
+              temp = 80;
+              speed = 55;
+            }
+            {
+              temp = 85;
+              speed = 75;
+            }
+            {
+              temp = 90;
+              speed = 100;
+            }
+          ];
+        };
       };
     };
   };
@@ -181,30 +187,27 @@
   # by hand. Keeping the derivation name "custom.json" identical to the module's
   # makes the two evaluate to the same store path, so this symlink resolves to the
   # exact file the running daemon has open rather than a copy that could drift.
-  environment.etc."fw-fanctrl/config.json".source =
-    (pkgs.formats.json { }).generate "custom.json" (
-      lib.recursiveUpdate (builtins.fromJSON (
-        builtins.readFile "${config.hardware.fw-fanctrl.package}/share/fw-fanctrl/config.json"
-      )) config.hardware.fw-fanctrl.config
-    );
+  environment.etc."fw-fanctrl/config.json".source = (pkgs.formats.json { }).generate "custom.json" (
+    lib.recursiveUpdate (builtins.fromJSON (builtins.readFile "${config.hardware.fw-fanctrl.package}/share/fw-fanctrl/config.json")) config.hardware.fw-fanctrl.config
+  );
 
-  programs.zsh.enable = true;
-
-  virtualisation.docker = {
-    enable = true;
-    autoPrune = {
+  virtualisation = {
+    docker = {
       enable = true;
-      dates = "weekly";
-      flags = [
-        "--all"
-        "--filter=until=336h"
-      ];
+      autoPrune = {
+        enable = true;
+        dates = "weekly";
+        flags = [
+          "--all"
+          "--filter=until=336h"
+        ];
+      };
     };
-  };
 
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu.swtpm.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu.swtpm.enable = true;
+    };
+    spiceUSBRedirection.enable = true;
   };
-  virtualisation.spiceUSBRedirection.enable = true;
 }

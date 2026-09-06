@@ -56,8 +56,19 @@ let
 
   # home-manager renders `{ _args = [...]; }` entries as `hl.bind(a, b, ...)`.
   execCmd = cmd: ''hl.dsp.exec_cmd("${cmd}")'';
-  mkBind = keys: dispatcher: { _args = [ keys (inline dispatcher) ]; };
-  mkBindO = keys: dispatcher: opts: { _args = [ keys (inline dispatcher) opts ]; };
+  mkBind = keys: dispatcher: {
+    _args = [
+      keys
+      (inline dispatcher)
+    ];
+  };
+  mkBindO = keys: dispatcher: opts: {
+    _args = [
+      keys
+      (inline dispatcher)
+      opts
+    ];
+  };
 
   lockedRepeat = {
     locked = true;
@@ -97,9 +108,7 @@ let
   ++ cfg.exec_once;
 
   startHook = inline (
-    "function()\n"
-    + lib.concatMapStringsSep "\n" (c: ''hl.exec_cmd("${c}")'') startupCmds
-    + "\nend"
+    "function()\n" + lib.concatMapStringsSep "\n" (c: ''hl.exec_cmd("${c}")'') startupCmds + "\nend"
   );
 
   # "VAR,value" -> hl.env("VAR", "value")
@@ -133,7 +142,7 @@ in
       # nwg-displays 0.4.3 is the first release that writes monitors.lua /
       # workspaces.lua (loaded below via require); nixpkgs is still on 0.4.1.
       (lib.mkIf cfg.display_manager (
-        pkgs.nwg-displays.overrideAttrs (old: {
+        pkgs.nwg-displays.overrideAttrs (_: {
           version = "0.4.3";
           src = pkgs.fetchFromGitHub {
             owner = "nwg-piotr";
@@ -172,7 +181,7 @@ in
 
     wayland.windowManager.hyprland = {
       enable = true;
-      package = cfg.package;
+      inherit (cfg) package;
 
       configType = "lua";
 
@@ -297,8 +306,14 @@ in
               {
                 type = "bezier";
                 points = [
-                  [ 0.23 1 ]
-                  [ 0.32 1 ]
+                  [
+                    0.23
+                    1
+                  ]
+                  [
+                    0.32
+                    1
+                  ]
                 ];
               }
             ];
@@ -309,8 +324,14 @@ in
               {
                 type = "bezier";
                 points = [
-                  [ 0.65 0.05 ]
-                  [ 0.36 1 ]
+                  [
+                    0.65
+                    0.05
+                  ]
+                  [
+                    0.36
+                    1
+                  ]
                 ];
               }
             ];
@@ -321,8 +342,14 @@ in
               {
                 type = "bezier";
                 points = [
-                  [ 0 0 ]
-                  [ 1 1 ]
+                  [
+                    0
+                    0
+                  ]
+                  [
+                    1
+                    1
+                  ]
                 ];
               }
             ];
@@ -333,8 +360,14 @@ in
               {
                 type = "bezier";
                 points = [
-                  [ 0.5 0.5 ]
-                  [ 0.75 1 ]
+                  [
+                    0.5
+                    0.5
+                  ]
+                  [
+                    0.75
+                    1
+                  ]
                 ];
               }
             ];
@@ -345,8 +378,14 @@ in
               {
                 type = "bezier";
                 points = [
-                  [ 0.15 0 ]
-                  [ 0.1 1 ]
+                  [
+                    0.15
+                    0
+                  ]
+                  [
+                    0.1
+                    1
+                  ]
                 ];
               }
             ];
@@ -481,7 +520,9 @@ in
           (mkBind "${mainMod} + Q" "hl.dsp.window.close()")
           (mkBind "${mainMod} + E" (execCmd "${pkgs.nautilus}/bin/nautilus"))
           (mkBind "${mainMod} + V" ''hl.dsp.window.float({ action = "toggle" })'')
-          (mkBind "${mainMod} + C" (execCmd "${pkgs.cliphist}/bin/cliphist list | ${pkgs.walker}/bin/walker --dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"))
+          (mkBind "${mainMod} + C" (
+            execCmd "${pkgs.cliphist}/bin/cliphist list | ${pkgs.walker}/bin/walker --dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
+          ))
           (mkBind "${mainMod} + Space" (execCmd "${config.services.walker.package}/bin/walker"))
           (mkBind "${mainMod} + P" "hl.dsp.window.pseudo()")
           (mkBind "${mainMod} + J" ''hl.dsp.layout("togglesplit")'')
@@ -509,7 +550,9 @@ in
           # lock-before-suspend on one path with one instance.
           (mkBind "${mainMod} + L" (execCmd "${loginctl_bin} lock-session"))
           (mkBind "${mainMod} + SHIFT + L" "hl.dsp.exit()")
-          (mkBind "${mainMod} + I" (execCmd "${lib.getExe config.home_modules.hyprland.hypridle.toggleScript}"))
+          (mkBind "${mainMod} + I" (
+            execCmd "${lib.getExe config.home_modules.hyprland.hypridle.toggleScript}"
+          ))
           (mkBind "${mainMod} + S" (execCmd "${pkgs.systemd}/bin/systemctl suspend"))
           (mkBind "${mainMod} + SHIFT + S" (execCmd "systemctl poweroff"))
           (mkBind "${mainMod} + SHIFT + R" (execCmd "systemctl reboot"))
@@ -521,10 +564,16 @@ in
         ++ workspaceBinds
         ++ [
           # bindel: locked + repeating (volume / brightness)
-          (mkBindO "XF86AudioRaiseVolume" (execCmd "${wpctl_bin} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+") lockedRepeat)
-          (mkBindO "XF86AudioLowerVolume" (execCmd "${wpctl_bin} set-volume @DEFAULT_AUDIO_SINK@ 5%-") lockedRepeat)
+          (mkBindO "XF86AudioRaiseVolume" (execCmd "${wpctl_bin} set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+")
+            lockedRepeat
+          )
+          (mkBindO "XF86AudioLowerVolume" (execCmd "${wpctl_bin} set-volume @DEFAULT_AUDIO_SINK@ 5%-")
+            lockedRepeat
+          )
           (mkBindO "XF86AudioMute" (execCmd "${wpctl_bin} set-mute @DEFAULT_AUDIO_SINK@ toggle") lockedRepeat)
-          (mkBindO "XF86AudioMicMute" (execCmd "${wpctl_bin} set-mute @DEFAULT_AUDIO_SOURCE@ toggle") lockedRepeat)
+          (mkBindO "XF86AudioMicMute" (execCmd "${wpctl_bin} set-mute @DEFAULT_AUDIO_SOURCE@ toggle")
+            lockedRepeat
+          )
           (mkBindO "XF86MonBrightnessUp" (execCmd "${brightnessctl_bin} -e4 -n2 set 5%+") lockedRepeat)
           (mkBindO "XF86MonBrightnessDown" (execCmd "${brightnessctl_bin} -e4 -n2 set 5%-") lockedRepeat)
 
