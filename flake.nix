@@ -79,6 +79,24 @@
               {
                 nixpkgs.overlays = [
                   (self: super: {
+                    # hyprlock 0.9.6 never exits after a successful password
+                    # unlock when it was started into a suspend and resumed
+                    # (hyprwm/hyprlock#1055): CPam::terminate() joins a PAM
+                    # thread still blocked in pam_authenticate(). The process
+                    # lives on rendering nothing, hyprlock.service stays active,
+                    # lock.target with it, and every later lock request is a
+                    # no-op. Fixed upstream by #1059 (2026-08-07), unreleased.
+                    # Drop once nixpkgs ships a hyprlock newer than 0.9.6 --
+                    # the patch will refuse to apply at that point.
+                    hyprlock = super.hyprlock.overrideAttrs (old: {
+                      patches = (old.patches or [ ]) ++ [
+                        (super.fetchpatch {
+                          name = "hyprlock-pam-fix-deadlock-on-terminate.patch";
+                          url = "https://github.com/hyprwm/hyprlock/commit/1f337a4713e981e75ad4912cbbb5c3dccb7b6717.patch";
+                          hash = "sha256-i/vawI+dIjGGl2nWfSMBYSulaY3YOYq3j/dtrQWbqKU=";
+                        })
+                      ];
+                    });
                     jj-lsp = jj-lsp.packages.${system}.default;
                     # qmd's wrapper hard-`--set`s LD_LIBRARY_PATH, so the Vulkan
                     # loader and the NixOS driver path are invisible to the
