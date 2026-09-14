@@ -4,6 +4,7 @@
   ./atuin.nix
   ./bat.nix
   ./battery-notify.nix
+  ./power-profile.nix
   ./chromium.nix
   ./direnv.nix
   ./elephant.nix

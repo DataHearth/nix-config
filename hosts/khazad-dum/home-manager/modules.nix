@@ -84,6 +84,7 @@ in
     battery-notify.enable = true;
     direnv.enable = true;
     okular.enable = true;
+    power-profile.enable = true;
     theme.enable = true;
     yazi.enable = true;
     zellij.enable = true;
