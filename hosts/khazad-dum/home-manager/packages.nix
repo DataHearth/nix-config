@@ -8,6 +8,7 @@
     dust
     fd
     gh
+    gpclient
     hyperfine
     jq
     libnotify

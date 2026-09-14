@@ -38,6 +38,12 @@
         "x-scheme-handler/https" = "zen-beta.desktop";
         "x-scheme-handler/chrome" = "zen-beta.desktop";
 
+        # Google refuses the embedded WebKit view, so SAML login needs the real
+        # browser, which ends by redirecting to globalprotectcallback:<blob>.
+        # With no handler the payload never reaches the gpauth listener and
+        # `gpclient connect --default-browser` hangs.
+        "x-scheme-handler/globalprotectcallback" = "gpgui.desktop";
+
         "text/html" = "zen-beta.desktop";
 
         "application/x-extension-htm" = "zen-beta.desktop";
