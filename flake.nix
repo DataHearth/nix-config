@@ -216,18 +216,6 @@
                       '';
                       meta.mainProgram = "spotify";
                     };
-                  # Temporary: afdko's otfautohint fails autohinting Cantarell's
-                  # variable font (afdko#657), which breaks cantarell-fonts on all
-                  # current nixos-unstable revs. It's uncached, and it's pulled into
-                  # the system closure via fontconfig/nixos-help/steam, so its failure
-                  # aborts the whole build. Skip the (optional) autohint step — the VF
-                  # renders fine un-hinted. Drop once nixpkgs builds cantarell again.
-                  cantarell-fonts = super.cantarell-fonts.overrideAttrs (old: {
-                    postPatch = (old.postPatch or "") + ''
-                      substituteInPlace scripts/make-variable-font.py \
-                        --replace-fail 'subprocess.check_call(' 'print("cantarell: autohint skipped:",'
-                    '';
-                  });
                   # fw-fanctrl polls `ectool temps all` once a second (the
                   # sleep(1) in FanController.run; fanSpeedUpdateFrequency only
                   # gates the duty write, not the read). ectool prints a
