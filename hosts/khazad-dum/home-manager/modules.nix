@@ -574,10 +574,6 @@ in
         }
         {
           workspace = 3;
-          match.class = "dev.zed.Zed";
-        }
-        {
-          workspace = 3;
           match = {
             class = "code";
             initial_title = "Visual Studio Code";
