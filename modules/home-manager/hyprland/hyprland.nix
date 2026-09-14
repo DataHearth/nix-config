@@ -111,6 +111,49 @@ let
     "function()\n" + lib.concatMapStringsSep "\n" (c: ''hl.exec_cmd("${c}")'') startupCmds + "\nend"
   );
 
+  # Waybar builds one bar per output when the output appears and never revisits
+  # it. An output that shows up without a usable mode (seen after a
+  # suspend/resume left a stale CRTC: the monitor sat at 0x0 until a later
+  # modeset succeeded) therefore ends up with no bar at all. A SIGUSR2 reload
+  # rebuilds every bar from the outputs as they are now.
+  waybarReload = pkgs.writeShellScript "status-bar-reload" ''
+    flock=${pkgs.util-linux}/bin/flock
+    sleep=${pkgs.coreutils}/bin/sleep
+    pgrep=${pkgs.procps}/bin/pgrep
+    awk=${pkgs.gawk}/bin/awk
+
+    # One hotplug fires a burst of monitor events (added, then layout changes);
+    # the first takes the lock, waits the burst out, and reloads once for all.
+    exec 9>"''${XDG_RUNTIME_DIR:-/tmp}/status-bar-reload.lock"
+    "$flock" -n 9 || exit 0
+    "$sleep" 1
+
+    # The anchored pattern keeps this script's own process out of the match.
+    pid="$("$pgrep" -o '^\.?waybar')"
+    [ -n "$pid" ] || exit 0
+
+    # Waybar installs its SIGUSR2 handler only once its modules are loaded;
+    # before that the default disposition applies and the signal terminates it.
+    # SigCgt is a hex mask of caught signals, bit 11 is SIGUSR2 (signal 12).
+    cgt="$("$awk" '/^SigCgt:/ { print $2 }' "/proc/$pid/status")"
+    [ -n "$cgt" ] && [ "$((0x$cgt >> 11 & 1))" -eq 1 ] || exit 0
+    kill -USR2 "$pid"
+  '';
+
+  monitorHooks = lib.optionals (cfg.status_bar == "waybar") (
+    map
+      (event: {
+        _args = [
+          event
+          (inline ''function() hl.exec_cmd("${waybarReload}") end'')
+        ];
+      })
+      [
+        "monitor.added"
+        "monitor.layout_changed"
+      ]
+  );
+
   # "VAR,value" -> hl.env("VAR", "value")
   mkEnv =
     s:
@@ -607,12 +650,15 @@ in
         ]
         ++ cfg.window_rules;
 
-        on = {
-          _args = [
-            "hyprland.start"
-            startHook
-          ];
-        };
+        on = [
+          {
+            _args = [
+              "hyprland.start"
+              startHook
+            ];
+          }
+        ]
+        ++ monitorHooks;
       };
 
       # nwg-displays (0.4.3+) writes these Lua files; pcall keeps startup safe
