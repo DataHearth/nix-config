@@ -232,6 +232,19 @@
                         --replace-fail '"ectool temps all",' '"ectool temps all", stderr=subprocess.DEVNULL,'
                     '';
                   });
+                  # libcap-ng 0.9.5's file_caps_test defines its own fgetxattr
+                  # and fsetxattr to mock the syscalls; musl 1.2.6 now provides
+                  # both, so the static link pulls libc.a's copies in alongside
+                  # and fails on multiple definition (libcap-ng#85). Only
+                  # boot.binfmt.preferStaticEmulators makes this reachable
+                  # here -- via pkgsStatic.qemu-user -> glib -> util-linux.
+                  # Gated on isStatic so the dynamic build keeps doCheck = true
+                  # and does not rebuild systemd and the rest of the closure.
+                  # Fixed upstream by nixpkgs#562812; drop once nixos-unstable
+                  # carries it.
+                  libcap_ng = super.libcap_ng.overrideAttrs (_: {
+                    doCheck = !super.stdenv.hostPlatform.isStatic;
+                  });
                 })
               ];
             }
