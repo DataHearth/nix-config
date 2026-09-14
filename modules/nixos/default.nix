@@ -5,4 +5,5 @@
   ./greetd.nix
   ./nautilus.nix
   ./nh.nix
+  ./nix-builder.nix
 ]
