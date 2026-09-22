@@ -45,6 +45,7 @@ let
     runtimeInputs = [
       pkgs.jq
       pkgs.gnused
+      pkgs.gawk
       pkgs.coreutils
     ];
     bashOptions = [

@@ -60,6 +60,70 @@ tool_available() {
   )
 }
 
+# Strip quoted spans and heredoc bodies before looking for command boundaries.
+# A `;`, `|` or `&&` inside an argument is not a boundary, and splitting on it
+# anyway promotes a tool name that is merely being *mentioned* into a segment
+# head: `git commit -m "docs; npm install"` and a heredoc whose body line reads
+# `node index.js` would both be denied. It is also what keeps a command the
+# container or the remote host runs -- `docker exec app sh -c "cd /app && npm
+# ci"`, `kubectl exec pod -- sh -c "…"`, `ssh host "cd /srv && python3 x.py"`
+# -- out of the guard: none of those resolve against this machine's PATH.
+# Worth the care because the guard otherwise contradicts itself; the compound
+# form it recommends below, `nix develop -c bash -c '<cmd>'`, splits on the
+# quoted `&&` and gets denied in turn, so a deny can suggest a command that
+# denies again.
+#
+# The trade is under-firing: a genuinely local `bash -c "npm ci"` now reads as
+# a bare `bash` and passes. That direction is the safe one -- the command just
+# fails with "command not found", which is the outcome this guard improves on,
+# not one it has to prevent.
+cleaned=$(printf '%s\n' "$cmd" | awk '
+  BEGIN { sq = sprintf("%c", 39); dq = sprintf("%c", 34); q = ""; hd = ""; strip = 0 }
+  {
+    line = $0
+    if (hd != "") {
+      t = line
+      if (strip) sub(/^\t+/, "", t)
+      if (t == hd) hd = ""
+      next
+    }
+    out = ""
+    n = length(line)
+    i = 1
+    while (i <= n) {
+      c = substr(line, i, 1)
+      if (q != "") {
+        if (q == dq && c == "\\") { i += 2; continue }
+        if (c == q) q = ""
+        i++
+        continue
+      }
+      if (c == "\\") { i += 2; continue }
+      if (c == sq || c == dq) { q = c; i++; continue }
+      if (c == "<" && substr(line, i + 1, 1) == "<") {
+        j = i + 2
+        if (substr(line, j, 1) == "<") { i = j + 1; continue }
+        strip = 0
+        if (substr(line, j, 1) == "-") { strip = 1; j++ }
+        while (substr(line, j, 1) == " ") j++
+        w = ""
+        while (j <= n) {
+          ch = substr(line, j, 1)
+          if (ch ~ /[ \t;|&<>()]/) break
+          if (ch != sq && ch != dq && ch != "\\") w = w ch
+          j++
+        }
+        hd = w
+        i = j
+        continue
+      }
+      out = out c
+      i++
+    }
+    print out
+  }
+')
+
 # Inspect each pipeline/list segment's leading word so `cd x && python3 y` is
 # caught, not just a command that starts with the tool.
 missing=""
@@ -81,7 +145,7 @@ while IFS= read -r seg; do
   if ! tool_available "$word"; then
     case " $missing " in *" $word "*) ;; *) missing="$missing $word" ;; esac
   fi
-done < <(printf '%s\n' "$cmd" | sed -E 's/&&|\|\||[;|&]/\n/g')
+done < <(printf '%s\n' "$cleaned" | sed -E 's/&&|\|\||[;|&]/\n/g')
 
 [ -n "$missing" ] || exit 0
 missing="${missing# }"
@@ -116,8 +180,10 @@ for t in $missing; do
 done
 
 # How to run the original command inside the devShell. `nix develop -c` only
-# takes one simple command, so wrap compound commands in bash -c.
-case "$cmd" in
+# takes one simple command, so wrap compound commands in bash -c. Tested on the
+# cleaned text: an operator inside a quoted argument does not make the command
+# compound, and suggesting the bash -c wrapper for one is just noise.
+case "$cleaned" in
   *"&&"* | *"||"* | *";"* | *"|"*) devrun="nix develop -c bash -c '<your full command>'" ;;
   *) devrun="nix develop -c $cmd" ;;
 esac

@@ -78,6 +78,7 @@
           jujutsu
           jj-lsp.packages.${system}.default
           fd
+          jq
           shellcheck
           shfmt
         ];
@@ -107,6 +108,12 @@
               # all, so shellcheck cannot infer the dialect from the file.
               fd -e sh . -X shellcheck -s bash
             '';
+          }
+          {
+            name = "test-hooks";
+            category = "checks";
+            help = "Run the table tests for the Claude Code PreToolUse guards";
+            command = ''bash "$PRJ_ROOT/modules/home-manager/claude-code/nix-run-guard-test.sh"'';
           }
           {
             name = "check";
