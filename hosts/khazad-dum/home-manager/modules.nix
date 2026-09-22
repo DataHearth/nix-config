@@ -119,6 +119,12 @@ in
     claude-code = {
       enable = true;
 
+      # Claude Code reaches for Python constantly for ad-hoc scripting, and
+      # several skills ship .py helpers (skill-creator's quick_validate imports
+      # yaml). Scoped to claude's own PATH rather than home.packages: this is an
+      # interpreter for the agent, not one for the user profile.
+      extraPackages = [ (pkgs.python3.withPackages (ps: [ ps.pyyaml ])) ];
+
       # "Lazy senior dev" plugin: enforces YAGNI / simplest-solution-that-works.
       # https://github.com/DietrichGebert/ponytail
       plugins.ponytail = pkgs.fetchFromGitHub {
