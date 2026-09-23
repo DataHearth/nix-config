@@ -188,12 +188,17 @@ in
         # project in a Bash call makes the shell's direnv hook restore the
         # pre-load environment recorded there, which predates every PATH
         # prefix added below and inside pkgs.claude-code — python3, rg,
-        # bubblewrap and socat then vanish mid-session. Unloading before
-        # prefixing puts claude on the clean base PATH; the SessionStart hook
-        # and the shell's own direnv hook reload the devShell from there.
+        # bubblewrap and socat then vanish mid-session. Dropping only direnv's
+        # bookkeeping leaves nothing to restore while keeping the devShell's
+        # variables: fully unloading it instead strips NODE_EXTRA_CA_CERTS,
+        # which node reads once at startup, so HTTP MCPs behind a corporate
+        # CA fail TLS and no SessionStart hook can put it back.
         postBuild = ''
           wrapProgram $out/bin/claude \
-            --run 'if [ -n "''${DIRENV_DIR-}" ]; then eval "$(cd / && ${lib.getExe pkgs.direnv} export bash)"; fi' \
+            --unset DIRENV_DIR \
+            --unset DIRENV_FILE \
+            --unset DIRENV_DIFF \
+            --unset DIRENV_WATCHES \
             ${lib.optionalString (cfg.extraPackages != [ ]) "--prefix PATH : ${lib.makeBinPath cfg.extraPackages}"}
         '';
         inherit (pkgs.claude-code) meta version;
