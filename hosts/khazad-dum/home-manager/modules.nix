@@ -288,6 +288,11 @@ in
             "Bash(jj config list*)"
             "Bash(jj root*)"
             "Bash(jj help*)"
+            # Does not cover `jj git push --help` or `jj abandon --help`: the
+            # ask/deny prefixes below match first. `jj help git push` does.
+            "Bash(jj --help)"
+            "Bash(jj * --help*)"
+            "Bash(jj * -h)"
             "Bash(jj --version)"
             "Bash(jj version)"
             # Duplicated for --no-pager because the jj skill prefers that form.

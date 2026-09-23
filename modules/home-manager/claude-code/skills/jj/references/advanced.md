@@ -75,7 +75,7 @@ in another, without cloning.
 ```
 jj workspace add ../other-tree
 jj workspace list
-jj workspace forget <name>     # remove a workspace
+jj workspace forget <name>     # denied to Claude — hand to the user
 ```
 
 Each workspace has its own `@` change ID. Use `-w` on most commands to
@@ -88,9 +88,26 @@ jj file list -r <rev>             # files at a revision
 jj file show -r <rev> PATH        # contents of a file at a revision
 jj file annotate PATH             # blame, with change IDs
 jj file track PATH                # explicitly track (rare; auto by default)
-jj file untrack PATH              # mark as untracked (denied here — destructive)
-jj file chmod ugo+x PATH          # set executable bit in a commit
+jj file untrack PATH              # stop tracking (must already be ignored)
+jj file chmod x PATH              # set executable bit in a commit
 ```
+
+Some repos keep files deliberately untracked (a local `flake.nix` listed in
+`.git/info/exclude`, for example). Don't track them or flag their absence
+from a commit.
+
+## Tags
+
+```
+jj tag list                       # replaces `git tag`
+jj tag set v1.2.3 -r <rev>        # lightweight tag; --allow-move to retarget
+jj git push -t v1.2.3             # push a tag (prompts)
+jj log -r 'tags()'                # tagged commits
+jj log -r 'v1.2.0..v1.3.0'        # tags work as revisions
+```
+
+Annotated tags (`git tag -a`) still need git: that is one of the
+sanctioned exceptions.
 
 ## Templates (`-T`) — controlling output format
 

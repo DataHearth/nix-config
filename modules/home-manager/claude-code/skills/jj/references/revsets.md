@@ -37,11 +37,14 @@ range over commits explicitly.
 
 ## Predicates (filters)
 
-- `description(substring)` — commits whose message contains `substring`.
-- `description(regex:pattern)` — same with a regex.
+- `description(substring-i:"x")` — message contains `x`, any case.
+  `subject(...)` matches the first line only.
+- `description(regex:"pattern")` — same with a regex.
 - `author(string)`, `committer(string)` — match author/committer name or email.
-- `file(path)` — touched the given path (glob OK).
-- `diff_contains(regex)` — diff content matches.
+- `files("path")` — touched the given path (a fileset; `glob:"src/**"`
+  works). `file()` no longer exists.
+- `diff_lines(substring:"text" [, files])` — an added or removed line
+  matches (git's `-S`/`-G`). `diff_contains` is the deprecated name.
 - `empty()` — commits with no changes (e.g. an empty `@` after `jj commit`).
 - `conflicts()` — commits currently in a conflicted state.
 - `present(name)` — true if `name` resolves to a single commit.
@@ -62,8 +65,8 @@ range over commits explicitly.
 | Same, including @                         | `main..@` (already inclusive of @)           |
 | Tip of every branch I own                 | `heads(mine())`                              |
 | Recent commits I haven't pushed           | `remote_bookmarks()..mine() & ~empty()`      |
-| Commits touching a file                   | `file('flake.nix')`                          |
-| Commits with "wip" in the message         | `description(regex:wip)`                     |
+| Commits touching a file                   | `files('flake.nix')`                         |
+| Commits with "wip" in the message         | `description(substring-i:wip)`               |
 | Everything not on trunk                   | `~::trunk()`                                 |
 | All my conflicted commits                 | `conflicts() & mine()`                       |
 | The change one before @                   | `@--`                                        |
@@ -77,15 +80,25 @@ Most commands take `-r REVSET`. Examples:
 
 ```
 jj log -r 'main..@'                          # range
-jj log -r 'description(regex:wip)' --no-pager
+jj log -r 'description(substring-i:wip)'
 jj diff -r '@-'                              # last finalized change
-jj show -r 'mine() & ~empty()' --limit 3     # last 3 non-empty mine
-jj rebase -s 'wq..@' -d 'trunk()'            # rebase a stack
-jj abandon -r 'empty() & mine()'             # nuke empty changes I authored
+jj log -r 'mine() & ~empty()' -n 3          # last 3 non-empty mine
+jj rebase -s 'roots(trunk()..@)' -o 'trunk()'  # rebase a stack
+jj log -r 'files("flake.nix") & mine()'      # my changes to a file
 ```
 
 `jj log` is the usual playground for testing a revset before using it in a
-mutating command. Pipe through `--no-pager` to capture output.
+mutating command.
+
+## String patterns
+
+Predicates that take text (`description`, `subject`, `author`,
+`bookmarks`, `diff_lines`, …) accept a pattern kind prefix: `exact:`,
+`substring:`, `substring-i:`, `glob:`, `regex:`. **Always write the
+prefix.** In 0.45 the bare-string default differs between functions: for
+`diff_lines` it is a glob that must match the whole line, so
+`diff_lines("TODO")` finds nothing while `diff_lines(substring:"TODO")`
+works.
 
 ## Templates
 

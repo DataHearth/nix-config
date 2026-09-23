@@ -23,7 +23,7 @@ The canonical flow is **new-on-top, resolve, squash back**:
 
 ```
 jj new <conflicted-rev>           # working-copy commit on top of the mess
-# Edit the file(s) to resolve, OR run `jj resolve` for an external tool.
+# Edit the conflict markers by hand (`jj resolve` launches a merge tool and hangs here).
 jj diff                           # inspect the resolution
 jj squash                         # fold the resolution into the conflicted commit
 ```
@@ -124,7 +124,7 @@ new conflicts you can resolve the same way.
 ## What you'll see, end to end
 
 ```
-$ jj rebase -d main
+$ jj rebase -b @ -o main
 Rebased 3 commits onto destination
 3 files were updated; 1 conflict remains in 1 commit
 Hint: There are unresolved conflicts at these paths:
