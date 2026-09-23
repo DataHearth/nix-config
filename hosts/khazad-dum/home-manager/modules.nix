@@ -254,6 +254,9 @@ in
         # cannot widen its own trust boundary.
         autoMode = import ./claude-auto-mode.nix;
 
+        modelSettings."claude-opus-5-5".effortLevel = "high";
+        env.CLAUDE_CODE_SUBAGENT_MODEL = "sonnet";
+
         # Only an explicit `false` vetoes the sync; an absent key defers to the
         # claude.ai account toggle, which is on.
         syncClaudeAiPlugins = false;
