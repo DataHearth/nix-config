@@ -28,7 +28,8 @@ progressive — load a reference file only when the task actually calls
 for that area (revset construction, conflict resolution, etc.).
 
 Permitted git exceptions, and nothing beyond them (jj has no equivalent):
-- Raw git plumbing (`git rev-parse`, `git config` for remotes)
+- `git ls-remote` (query a remote without fetching) and `git check-ignore`
+- Annotated tags (`git tag -a`); plain tags are `jj tag set`
 - LFS / submodule operations
 - CI scripts and tooling that already shell out to git
 - The `gh` CLI (PRs, issues) — jj does not replace it
@@ -53,8 +54,9 @@ normally rather than handing them off.
 - git: `push`, `fetch`, `pull`, `rm`, `tag -d`, `update-ref`,
   `remote` writes
 
-Everything else in jj stays available and unprompted — `describe`, `new`,
-`squash`, `split`, `rebase`, `absorb`, and `jj git fetch` all run normally.
+Read-only jj commands and `jj git fetch` run unprompted. Local rewrites —
+`describe`, `new`, `squash`, `split`, `rebase`, `absorb` — are not
+restricted; they follow the session's normal permission mode.
 
 A prompt is the user's decision point, not a formality: state what the
 command will do before running it, especially for anything that reaches the

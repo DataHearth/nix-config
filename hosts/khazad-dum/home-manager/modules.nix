@@ -204,16 +204,15 @@ in
         # Temporary files and directories
 
         When you need scratch space (downloaded archives, intermediate output,
-        dumps for inspection, log captures), it **MUST** go in a
-        **project-scoped subdirectory of `/tmp`** — never directly in `/tmp` and
-        never in the project tree:
+        dumps for inspection, log captures), put it in a project-scoped
+        subdirectory of `/tmp` — not directly in `/tmp`, and not in the
+        project tree:
 
             /tmp/<project>/...
 
         where `<project>` is the basename of the current working directory (e.g.
         `/tmp/nix-config/` when working in `~/.config/nix-config`). `mkdir -p`
-        it on first use. This is a hard rule, not a default: every downloaded,
-        generated, or intermediate file lands under `/tmp/<project>/`.
+        it on first use.
 
         Why a per-project subdir:
         - Keeps unrelated tasks from colliding on the same filenames.
@@ -222,12 +221,9 @@ in
           `Write(/tmp/<project>/**)`) instead of granting `/tmp/**` blanket
           access.
 
-        The grant model follows from this: the `/tmp/<project>/` subdirectory
-        gets full `Read` + `Write` + `Edit` access (the recursive
-        `/tmp/<project>/**` form — see the `Read(~/.config)` note: a bare
-        directory path does not cover its contents), while `/tmp` itself is
-        **not** granted. Never request or rely on a blanket `Read(/tmp/**)` /
-        `Write(/tmp/**)`; scope every tmp permission to the project subdir.
+        When scratch space needs a permission rule, scope it to
+        `/tmp/<project>/**` (a bare directory path does not cover its
+        contents), never to `/tmp/**`.
 
         # GitHub: the `gh` CLI
 
@@ -289,7 +285,9 @@ in
             "Bash(jj file show*)"
             "Bash(jj file list*)"
             "Bash(jj bookmark list*)"
+            "Bash(jj tag list*)"
             "Bash(jj git remote list*)"
+            "Bash(jj git root*)"
             "Bash(jj config get*)"
             "Bash(jj config list*)"
             "Bash(jj root*)"
@@ -349,8 +347,6 @@ in
             "Bash(gh search *)"
             # Plumbing with no jj equivalent; read-only and non-secret.
             "Bash(git ls-remote *)"
-            "Bash(git symbolic-ref *)"
-            "Bash(git rev-list *)"
             "Bash(git check-ignore *)"
             # Filesystem inspection — metadata/lookup only, never file contents.
             # (cat/grep/head/tail are NOT here: Bash reading file contents would

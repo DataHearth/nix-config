@@ -1,14 +1,16 @@
 ---
 name: jj
-description: Jujutsu (jj) is this user's only VCS — git is never used for version control here. Load this BEFORE running any jj command other than st/log/diff, and BEFORE reaching for git to inspect history (git log -S / --grep / -- path, git show rev:file, git blame, git branch --contains, git tag, git mv, git status). Trigger on terse requests such as "describe", "split", "split onto master", "push", "describe and push", "rebase onto main", "create a bookmark", "new revision", "squash into X", "cherry-pick", "undo that"; on any jj push/fetch error (stale info, conflicted bookmark, non-tracking remote bookmark, refusing to move backwards, immutable commit); and on (conflict) after a rebase. Not for reading flake.lock metadata, diffing NixOS generations, or gh PR/issue work.
+description: Jujutsu (jj) is this user's only VCS — git is never used for version control here. Load this BEFORE running any jj command other than st/log/diff, and BEFORE reaching for git to inspect history (git log -S / --grep / -- path, git show rev:file, git blame, git branch --contains, git tag, git mv, git status). Also load it for terse VCS requests — describe, split, squash, rebase, push, bookmark, new revision, cherry-pick, undo, alone or combined, with or without a target like "onto main"; for any jj push, fetch or bookmark error; and for a (conflict) after a rebase. Not for reading flake.lock metadata, diffing NixOS generations, or gh PR/issue work.
 ---
 
 # Jujutsu (jj) — replaces git for this user
 
 Repositories are colocated (`.git` exists) but every VCS operation goes
-through `jj`. git is allowed only for plumbing with no jj counterpart
-(`git rev-parse`, `git check-ignore`, `git ls-remote`), LFS/submodules,
-annotated tags, CI scripts that already shell out to git, and `gh`.
+through `jj`. git is allowed only where jj has no counterpart:
+`git ls-remote`, `git check-ignore`, annotated tags (`git tag -a`),
+LFS/submodules, CI scripts that already shell out to git, and `gh`.
+`rev-parse`, `rev-list`, `symbolic-ref`, `remote`, `config` and plain
+`tag` all have jj forms (table below).
 
 Installed version: **jj 0.45**. Several flags seen in older docs and in
 model memory no longer exist — trust the tables here over recall.
@@ -39,7 +41,8 @@ model memory no longer exist — trust the tables here over recall.
   Check this file first; the common flags are all here.
 - **Permissions:**
   - Read-only (`st`, `log`, `diff`, `show`, `evolog`, `op log`, `file
-    show/list/annotate`, `bookmark list`, `help`) and `jj git fetch` run
+    show/list/annotate`, `bookmark list`, `tag list`, `root`, `git root`,
+    `git remote list`, `config get`, `help`) and `jj git fetch` run
     unprompted.
   - Local rewrites (`describe`, `new`, `split`, `squash`, `rebase`,
     `restore`, `duplicate`, `bookmark create/set/move/track`) prompt.
@@ -65,8 +68,7 @@ model memory no longer exist — trust the tables here over recall.
   commit stacked on the WIP pile: `jj split -o 'trunk()' <paths> -m "…"`.
 - **"push" means the bookmark the change is already on, or trunk.** Don't
   invent a `fix/…` bookmark or PR unless asked. If the target is
-  ambiguous, ask which one — the user rejected branch pushes with "why a
-  branch?" and "master".
+  ambiguous, ask which one.
 - **Each push needs its own go-ahead.** Saying "push" once doesn't cover
   the next change. If the same message also asks a question, answer it
   before pushing.
@@ -153,10 +155,16 @@ unprompted in jj form.
 | `git blame` / `git log -L`             | `jj file annotate path`                                         |
 | `git branch -r --contains X`           | `jj log -r 'X:: & remote_bookmarks()'`                          |
 | `git tag`                              | `jj tag list`                                                   |
+| `git tag v1 X`                         | `jj tag set v1 -r X`                                            |
 | `git status --porcelain`               | `jj diff --summary`                                             |
 | `git ls-files`                          | `jj file list`                                                  |
 | `git mv a b`                           | `mv a b` (jj detects the rename)                                |
-| `git rev-parse HEAD`                   | `jj log -r @- --no-graph -T commit_id` (or keep git: plumbing)  |
+| `git rev-parse HEAD`                   | `jj log -r @- --no-graph -T commit_id`                          |
+| `git rev-parse --show-toplevel` / `--git-dir` | `jj root` / `jj git root`                                |
+| `git rev-list A..B`                    | `jj log -r 'A..B' --no-graph -T 'commit_id ++ "\n"'`            |
+| `git symbolic-ref refs/remotes/origin/HEAD` | `jj log -r 'trunk()'` (default branch)                     |
+| `git remote -v` / `git remote add`     | `jj git remote list` / `jj git remote add` (and `set-url`)      |
+| `git config <key>`                     | `jj config get <key>`                                           |
 
 **Always give string patterns an explicit prefix** (`substring:`,
 `substring-i:`, `regex:`, `glob:`). In 0.45 a bare string such as
