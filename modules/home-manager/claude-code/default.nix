@@ -196,7 +196,7 @@ in
             --run 'if [ -n "''${DIRENV_DIR-}" ]; then eval "$(cd / && ${lib.getExe pkgs.direnv} export bash)"; fi' \
             ${lib.optionalString (cfg.extraPackages != [ ]) "--prefix PATH : ${lib.makeBinPath cfg.extraPackages}"}
         '';
-        inherit (pkgs.claude-code) meta;
+        inherit (pkgs.claude-code) meta version;
       };
       settings =
         let
