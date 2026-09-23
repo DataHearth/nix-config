@@ -179,18 +179,25 @@ in
     programs.claude-code = {
       enable = true;
       enableMcpIntegration = true;
-      package = lib.mkIf (cfg.extraPackages != [ ]) (
-        pkgs.symlinkJoin {
-          name = "claude-code-with-deps";
-          paths = [ pkgs.claude-code ];
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-          postBuild = ''
-            wrapProgram $out/bin/claude \
-              --prefix PATH : ${lib.makeBinPath cfg.extraPackages}
-          '';
-          inherit (pkgs.claude-code) meta;
-        }
-      );
+      package = pkgs.symlinkJoin {
+        name = "claude-code-with-deps";
+        paths = [ pkgs.claude-code ];
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        # Launched from a shell where direnv already loaded a project, claude
+        # inherits that devShell's DIRENV_DIFF. The first `cd` out of the
+        # project in a Bash call makes the shell's direnv hook restore the
+        # pre-load environment recorded there, which predates every PATH
+        # prefix added below and inside pkgs.claude-code — python3, rg,
+        # bubblewrap and socat then vanish mid-session. Unloading before
+        # prefixing puts claude on the clean base PATH; the SessionStart hook
+        # and the shell's own direnv hook reload the devShell from there.
+        postBuild = ''
+          wrapProgram $out/bin/claude \
+            --run 'if [ -n "''${DIRENV_DIR-}" ]; then eval "$(cd / && ${lib.getExe pkgs.direnv} export bash)"; fi' \
+            ${lib.optionalString (cfg.extraPackages != [ ]) "--prefix PATH : ${lib.makeBinPath cfg.extraPackages}"}
+        '';
+        inherit (pkgs.claude-code) meta;
+      };
       settings =
         let
           defaults = {
