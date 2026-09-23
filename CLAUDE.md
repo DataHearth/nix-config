@@ -101,13 +101,13 @@ nix-config/
 │   ├── home-manager/    # Home Manager modules (options under home_modules.<name>)
 │   │   ├── alacritty.nix, atuin.nix, bat.nix, battery-notify.nix
 │   │   ├── chromium.nix, direnv.nix, elephant.nix, git.nix
-│   │   ├── jujutsu.nix, okular.nix, ssh.nix, starship.nix
+│   │   ├── jujutsu.nix, okular.nix, power-profile.nix, ssh.nix, starship.nix
 │   │   ├── theme.nix, walker.nix, yazi.nix, zen-browser.nix, zsh.nix
 │   │   ├── claude-code/, hyprland/, neovim/, swaync/, waybar/, zellij/
 │   │   └── default.nix  # Module aggregator
 │   └── nixos/           # NixOS system modules
 │       ├── claude-desktop-cowork.nix, f5.nix, greetd.nix
-│       ├── nautilus.nix, nh.nix
+│       ├── blue-yeti.nix, nautilus.nix, nh.nix, nix-builder.nix
 │       └── default.nix
 ├── packages/             # Custom package derivations
 └── secrets/             # Encrypted secrets (sops-nix)
@@ -129,11 +129,13 @@ nix-config/
 ### NixOS Modules
 
 Available modules in `modules/nixos/` (options under `nixos_modules.<name>`):
+- **blue-yeti.nix**: Blue Yeti USB microphone recovery tooling
 - **claude-desktop-cowork.nix**: Claude Desktop Cowork support (nix-ld, libglvnd)
 - **f5.nix**: F5 VPN client and split-tunnel setup
 - **greetd.nix**: Display manager running ReGreet on the internal panel, gnome-keyring PAM integration
 - **nautilus.nix**: Nautilus file manager
 - **nh.nix**: nh build/switch utility
+- **nix-builder.nix**: Offloading nix builds to a remote builder
 
 ### Home Manager Modules
 
@@ -151,6 +153,7 @@ Available modules in `modules/home-manager/`:
 - **jujutsu.nix**: Jujutsu VCS configuration
 - **neovim/**: Neovim editor
 - **okular.nix**: Okular document viewer
+- **power-profile.nix**: power-profiles-daemon switching on AC/battery transitions
 - **ssh.nix**: SSH client configuration
 - **starship.nix**: Starship shell prompt
 - **swaync/**: Notification daemon
@@ -167,7 +170,7 @@ Available modules in `modules/home-manager/`:
 1. Make changes to configuration files
 2. Test build: `nh os build`
 3. Review changes before applying
-4. Switch configuration: `nh os switch`
+4. Hand `nh os switch` to the user (it needs sudo)
 5. Seal the change with `jj describe` (this repo uses Jujutsu, not git)
 6. If updating flake: `nix flake update` then rebuild
 
