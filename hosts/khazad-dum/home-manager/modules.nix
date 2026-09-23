@@ -258,6 +258,12 @@ in
         # cannot widen its own trust boundary.
         autoMode = import ./claude-auto-mode.nix;
 
+        # Only an explicit `false` vetoes the sync; an absent key defers to the
+        # claude.ai account toggle, which is on.
+        syncClaudeAiPlugins = false;
+        syncClaudeAiSkills = false;
+        disableClaudeAiConnectors = true;
+
         permissions = {
           allow = [
             "Read(//nix/store/**)"
