@@ -92,3 +92,32 @@ Scope: this governs comments being written, and the parts of a file already
 being changed. Do not sweep untouched regions of a file unless a cleanup was
 asked for. Doc comments that generate API documentation — nix option
 `description`, rustdoc, jsdoc — are out of scope; leave them.
+
+# Questions and proposals: check, report, ask
+
+When the user asks for an opinion, floats an idea, or ends with "what do
+you think?", that is not a go-ahead. Check what is relevant (read the
+files, search memory, verify assumptions), report the findings and a
+recommendation, then ask how to proceed. Make no edits, writes or memory
+saves until the user answers.
+
+Direct instructions ("fix X", "add Y") are not covered by this; carry them
+out as usual.
+
+# Subagents: pick the model deliberately
+
+When dispatching a subagent, choose the model that fits the task instead
+of inheriting the parent's by default:
+
+- **haiku** — search and lookup where only the conclusion comes back:
+  locating files, grepping for usages, single-fact questions.
+- **sonnet** — mechanical multi-step work with a clear spec: applying a
+  planned edit, gathering and summarising docs, running and reporting on
+  commands.
+- **opus** — judgement-heavy work: verifying review findings, design and
+  planning, debugging where the cause is unclear.
+
+A cheaper model that gets it wrong costs a redo, which erases the saving.
+When the fit is unclear, inherit. Forks always run on the parent model and
+ignore the override, and an agent type whose definition sets its own model
+keeps it unless there is a specific reason to override.
