@@ -12,31 +12,20 @@ let
   userContext = if builtins.isPath cfg.context then builtins.readFile cfg.context else cfg.context;
   composedContext = globalContext + lib.optionalString (userContext != "") ("\n" + userContext);
 
-  statuslineScript = pkgs.writeShellScript "claude-statusline" ''
-    input=$(cat)
-
-    cwd=$(echo "$input" | ${lib.getExe pkgs.jq} -r '.workspace.current_dir')
-    model=$(echo "$input" | ${lib.getExe pkgs.jq} -r '.model.display_name')
-
-    if [ "$cwd" = "$HOME" ]; then
-      dir="~"
-    elif [ "$cwd" = "/" ]; then
-      dir="/"
-    else
-      dir=$(basename "$cwd")
-    fi
-
-    output=$(printf "\033[36m%s\033[0m" "$dir")
-
-    if ${lib.getExe pkgs.git} -C "$cwd" rev-parse --git-dir > /dev/null 2>&1; then
-      branch=$(${lib.getExe pkgs.git} -C "$cwd" branch --show-current 2>/dev/null || echo "detached")
-      output="$output $(printf "\033[35m%s\033[0m" "$branch")"
-    fi
-
-    output="$output $(printf "\033[34m[%s]\033[0m" "$model")"
-
-    echo "$output"
-  '';
+  statusline = pkgs.writeShellApplication {
+    name = "claude-statusline";
+    runtimeInputs = [
+      pkgs.jq
+      pkgs.jujutsu
+      pkgs.git
+      pkgs.coreutils
+    ];
+    bashOptions = [
+      "nounset"
+      "pipefail"
+    ];
+    text = builtins.readFile ./statusline.sh;
+  };
 
   # PreToolUse guard: steer bare dev-tool invocations (python3/node/cargo/…)
   # toward the project's devShell or `nix run`/`nix shell` on this NixOS box.
@@ -226,7 +215,8 @@ in
             remoteControlAtStartup = false;
             statusLine = {
               type = "command";
-              command = toString statuslineScript;
+              command = lib.getExe statusline;
+              hideVimModeIndicator = true;
             };
             hooks = {
               PreToolUse = [
