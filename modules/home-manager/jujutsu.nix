@@ -52,6 +52,29 @@ in
           "-FRX"
           "--mouse"
         ];
+        # difftastic 0.71 stopped reading the width from /dev/tty once stdin,
+        # stdout and stderr are all redirected, which is how jj runs it when
+        # paging, so it falls back to 80 columns
+        # (https://github.com/Wilfred/difftastic/issues/1064). Same as the
+        # Home Manager formatter plus jj's own `$width`; drop once a fixed
+        # difftastic release lands.
+        ui.diff-formatter = lib.mkIf config.programs.difftastic.jujutsu.enable (
+          lib.mkForce (
+            [ (lib.getExe config.programs.difftastic.package) ]
+            ++ lib.cli.toCommandLineGNU { } (
+              config.programs.difftastic.options
+              // {
+                color = "always";
+                sort-paths = true;
+                width = "$width";
+              }
+            )
+            ++ [
+              "$left"
+              "$right"
+            ]
+          )
+        );
       };
     };
   };
