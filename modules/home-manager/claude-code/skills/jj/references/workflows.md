@@ -163,7 +163,10 @@ jj git push -b main                       # force-with-lease; user must agree
 
 Only with explicit consent: this rewrites published history.
 
-## Integrating subagent / worktree commits
+## Integrating subagent / workspace commits
+
+Agents run in jj workspaces; finding their commits, landing them and
+cleaning up is in `references/workspaces.md`. In short:
 
 `jj duplicate <agent-commit> -o <stack-tip>` copies the agent's work in
 without touching its branch. Run `jj new <tip>` before editing, then check

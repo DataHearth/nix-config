@@ -16,7 +16,9 @@ not to reach for git and note the exception afterwards. jj covers the whole
 surface: `jj st`/`jj log`/`jj diff` for inspection, `jj describe` to seal,
 `jj new`/`jj squash`/`jj split`/`jj absorb` to shape a stack, `jj rebase`
 to move it, `jj bookmark` for branches, `jj git fetch`/`jj git push` for
-the remote, `jj undo` and `jj op log` for recovery. Only when the operation
+the remote, `jj undo` and `jj op log` for recovery, jj workspaces via
+`claude-jj-workspace add|remove` for parallel working copies (never
+`git worktree`). Only when the operation
 genuinely has no jj counterpart — the short list below — does git apply.
 When unsure whether a counterpart exists, consult the `jj` skill or ask;
 do not guess with git.
@@ -26,6 +28,12 @@ The **`jj` skill** is the canonical reference: a lean `SKILL.md` plus
 Consult it before running unfamiliar jj commands. Skill loading is
 progressive — load a reference file only when the task actually calls
 for that area (revset construction, conflict resolution, etc.).
+
+Claude Code's worktree isolation (`isolation: "worktree"`, `--worktree`)
+creates jj workspaces here, not git worktrees. An agent running in one
+has no `.git`; it seals its work with `jj describe -m` and reports the
+change ID in its final message, because the workspace is forgotten when
+it exits and the ID is how the spawning session finds the commit.
 
 Permitted git exceptions, and nothing beyond them (jj has no equivalent):
 - `git ls-remote` (query a remote without fetching) and `git check-ignore`
@@ -40,7 +48,7 @@ The harness splits the dangerous commands by recoverability.
 any permission mode. Propose the command and let the user invoke it with
 `!`; do not route around it with a git equivalent or a shell trick.
 
-- jj: `abandon`, `op abandon`, `op restore`, `util gc`, `workspace forget`
+- jj: `abandon`, `op abandon`, `op restore`, `util gc`
 - git: `checkout`, `restore`, `clean`, `reset --hard`, `branch -d|-D`,
   `filter-branch`, `gc`, `prune`, `repack`, `reflog delete|expire`,
   `stash drop|clear`, `worktree remove|prune`

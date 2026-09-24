@@ -294,6 +294,8 @@ in
             "Bash(jj config get*)"
             "Bash(jj config list*)"
             "Bash(jj root*)"
+            "Bash(jj workspace list*)"
+            "Bash(jj workspace root*)"
             "Bash(jj help*)"
             # Does not cover `jj git push --help` or `jj abandon --help`: the
             # ask/deny prefixes below match first. `jj help git push` does.
@@ -417,7 +419,6 @@ in
             "Bash(jj op abandon*)"
             "Bash(jj op restore*)"
             "Bash(jj util gc*)"
-            "Bash(jj workspace forget*)"
 
             # git has no operation log to fall back on, so the same verb has a
             # wider blast radius here. `git submodule` and `git lfs` stay absent

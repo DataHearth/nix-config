@@ -68,18 +68,8 @@ jj diffedit -r <rev>     # edit a specific commit
 
 ## `jj workspace` — multiple working copies
 
-A workspace is an extra checkout sharing the same repository data — useful
-when you want to keep a long-running build going in one tree while editing
-in another, without cloning.
-
-```
-jj workspace add ../other-tree
-jj workspace list
-jj workspace forget <name>     # denied to Claude — hand to the user
-```
-
-Each workspace has its own `@` change ID. Use `-w` on most commands to
-target a specific workspace.
+Covered in full, with parallel features and Claude Code agent isolation,
+in `references/workspaces.md`.
 
 ## `jj file ...` — file-level inspection
 

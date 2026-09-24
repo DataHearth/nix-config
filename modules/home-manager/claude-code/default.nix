@@ -82,6 +82,20 @@ let
     text = builtins.readFile ./load-direnv.sh;
   };
 
+  jjWorkspace = pkgs.writeShellApplication {
+    name = "claude-jj-workspace";
+    runtimeInputs = [
+      pkgs.jujutsu
+      pkgs.git
+      pkgs.direnv
+      pkgs.jq
+      pkgs.findutils
+      pkgs.gawk
+      pkgs.coreutils
+    ];
+    text = builtins.readFile ./jj-workspace.sh;
+  };
+
   # Only wire the devShell loader when direnv is actually configured.
   devShellHooks = lib.optionalAttrs config.home_modules.direnv.enable {
     SessionStart = [
@@ -188,7 +202,7 @@ in
             --unset DIRENV_FILE \
             --unset DIRENV_DIFF \
             --unset DIRENV_WATCHES \
-            ${lib.optionalString (cfg.extraPackages != [ ]) "--prefix PATH : ${lib.makeBinPath cfg.extraPackages}"}
+            --prefix PATH : ${lib.makeBinPath ([ jjWorkspace ] ++ cfg.extraPackages)}
         '';
         inherit (pkgs.claude-code) meta version;
       };
@@ -230,6 +244,26 @@ in
                     {
                       type = "command";
                       command = lib.getExe cdGuard;
+                    }
+                  ];
+                }
+              ];
+              WorktreeCreate = [
+                {
+                  hooks = [
+                    {
+                      type = "command";
+                      command = lib.getExe jjWorkspace;
+                    }
+                  ];
+                }
+              ];
+              WorktreeRemove = [
+                {
+                  hooks = [
+                    {
+                      type = "command";
+                      command = lib.getExe jjWorkspace;
                     }
                   ];
                 }

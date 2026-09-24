@@ -1,6 +1,6 @@
 ---
 name: jj
-description: Jujutsu (jj) is this user's only VCS — git is never used for version control here. Load this BEFORE running any jj command other than st/log/diff, and BEFORE reaching for git to inspect history (git log -S / --grep / -- path, git show rev:file, git blame, git branch --contains, git tag, git mv, git status). Also load it for terse VCS requests — describe, split, squash, rebase, push, bookmark, new revision, cherry-pick, undo, alone or combined, with or without a target like "onto main"; for any jj push, fetch or bookmark error; and for a (conflict) after a rebase. Not for reading flake.lock metadata, diffing NixOS generations, or gh PR/issue work.
+description: Jujutsu (jj) is this user's only VCS — git is never used for version control here. Load this BEFORE running any jj command other than st/log/diff, and BEFORE reaching for git to inspect history (git log -S / --grep / -- path, git show rev:file, git blame, git branch --contains, git tag, git mv, git status). Also load it for terse VCS requests — describe, split, squash, rebase, push, bookmark, new revision, cherry-pick, undo, alone or combined, with or without a target like "onto main"; for any jj push, fetch or bookmark error; and for a (conflict) after a rebase. Also load it for parallel work — git worktree, jj workspace, working on several features at once, spawning or running as an isolated agent, or landing a subagent's commits. Not for reading flake.lock metadata, diffing NixOS generations, or gh PR/issue work.
 ---
 
 # Jujutsu (jj) — replaces git for this user
@@ -45,11 +45,12 @@ model memory no longer exist — trust the tables here over recall.
     `git remote list`, `config get`, `help`) and `jj git fetch` run
     unprompted.
   - Local rewrites (`describe`, `new`, `split`, `squash`, `rebase`,
-    `restore`, `duplicate`, `bookmark create/set/move/track`) prompt.
+    `restore`, `duplicate`, `bookmark create/set/move/track`, `workspace
+    add/forget`) prompt.
   - `jj git push`, `jj undo`, `bookmark delete/forget/untrack`, `git
     import/export` prompt — state what they will do before running them.
   - **Denied** — hand to the user as `! <cmd>`: `jj abandon`, `jj op
-    abandon`, `jj op restore`, `jj util gc`, `jj workspace forget`.
+    abandon`, `jj op restore`, `jj util gc`.
 - Run jj from inside the repo directory; don't use `-R`/`--repository`.
 - Output is not paged when captured, so `jj log` and `jj --no-pager log`
   both work. Don't prefix env vars (`JJ_EDITOR=…`, `JJ_PAGER=…`) — that
@@ -171,6 +172,29 @@ unprompted in jj form.
 `diff_lines("guard")` is a glob that has to match the whole line, so it
 silently returns nothing. `file()` is gone; use `files()`.
 
+## Workspaces and parallel work
+
+Parallel lines of work use jj workspaces, never `git worktree`, and are
+made with `claude-jj-workspace add <name> [base]` / `remove <name>` rather
+than a bare `jj workspace add`: the helper puts them under
+`~/.claude/workspaces/<repo>/<name>` and copies every gitignored file
+(`.env`, kubeconfigs…) except regenerable output. Claude Code's worktree
+isolation (`isolation: "worktree"`, `--worktree`) runs the same helper,
+basing the workspace on the spawning session's `@`.
+
+- Another workspace's `@` is the revset `<name>@`; there is no `-w` flag.
+- Added workspaces have no `.git`: git and `gh` don't work inside them.
+- **As an isolated agent**, finish with `jj describe -m "…"` on your work
+  and put its change ID in your final message; the workspace label is
+  gone once you exit, so the ID is how your work gets found.
+- **Landing an agent's commit**: it is usually already a child of `@`,
+  so `jj new X` (not a rebase) brings its files into the working copy.
+- Workspaces are Claude's to manage: create, finish and forget them
+  without handing off to the user.
+
+Parallel features by hand, integration cases, finding orphaned agent
+commits and the gotchas: `references/workspaces.md`.
+
 ## Conflicts
 
 A conflicted commit stays in the graph (`(conflict)` in `jj log`). Resolve
@@ -188,5 +212,7 @@ Load only when the task needs them.
   rebase variants, rewriting pushed commits, integrating agent work.
 - `references/conflicts.md` — marker format, partial resolution, picking a
   side.
-- `references/advanced.md` — `absorb`, `parallelize`, `fix`, workspaces,
-  templates (`-T`), config.
+- `references/workspaces.md` — workspaces replacing `git worktree`:
+  parallel features, agent isolation, integrating and cleaning up.
+- `references/advanced.md` — `absorb`, `parallelize`, `fix`, templates
+  (`-T`), config.
