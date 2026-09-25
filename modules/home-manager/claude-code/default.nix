@@ -89,8 +89,6 @@ let
       pkgs.git
       pkgs.direnv
       pkgs.jq
-      pkgs.findutils
-      pkgs.gawk
       pkgs.coreutils
     ];
     text = builtins.readFile ./jj-workspace.sh;

@@ -18,13 +18,29 @@
 #
 # Only the last stdout line of WorktreeCreate is read, as the workspace path;
 # everything else goes to stderr.
+#
+# WorktreeRemove never fires for a subagent's workspace (Claude Code 2.1.282).
+# Claude Code removes a hook-based worktree only when it has a way to tell
+# whether it changed: `git rev-parse HEAD`, which fails without .git, or a
+# file snapshot whose function (`jut`) is still a stub that returns nothing.
+# So every isolated subagent leaves its workspace behind until someone runs
+# `remove`. A SubagentStop hook calling `remove` would clean up, but it would
+# break resuming a finished agent through SendMessage. Check again after
+# Claude Code updates: once the snapshot is implemented, the leftovers stop.
 
 root="$HOME/.claude/workspaces"
 
-# Regenerable build and cache output: everything else that is ignored (.env,
-# local kubeconfigs, credentials) is copied so a workspace doesn't drift from
-# the configuration of the tree it came from.
-regenerable='(^|/)(\.jj|\.direnv|node_modules|target|result(-[^/]*)?|\.venv|venv|dist|build|__pycache__|\.terraform|\.cache|\.next|\.gradle|\.pytest_cache|\.mypy_cache|\.zig-cache|zig-cache)(/|$)'
+# Ignored entries are copied so a workspace keeps the configuration of the tree
+# it came from (.env, kubeconfigs, credential dirs, an ignored flake.nix or
+# CLAUDE.md). Entries over this size are dependency trees, build output and
+# scratch data: they are listed in .jj/skipped-ignored instead, for the agent
+# to copy on demand. Besides the copy time, a workspace has no .git, so
+# `use flake` loads it as a path: flake and copies the whole tree, ignored
+# files included, into the store.
+#
+# The size is apparent, not on-disk: a sparse file costs nothing to cp but Nix
+# reads every byte of it.
+max_copy_bytes=$((10 * 1024 * 1024))
 
 repo_dir() {
   local git_dir main
@@ -35,7 +51,8 @@ repo_dir() {
 }
 
 create() {
-  local name=$1 rev=$2 src git_dir dir
+  local name=$1 rev=$2 src git_dir dir skipped path size
+  local -a copy=()
   if ! src=$(jj workspace root); then
     echo "claude-jj-workspace: $PWD is not a jj repo; run 'jj git init --colocate' to use worktree isolation here" >&2
     exit 1
@@ -46,13 +63,30 @@ create() {
 
   jj workspace add --name "$name" -r "$rev" "$dir" >&2
 
+  skipped="$dir/.jj/skipped-ignored"
+  {
+    echo "# Ignored entries of $src not copied into this workspace (bytes, path)."
+    echo "# Copy what the task needs: cp -a --parents -t . -- <path>, run from $src"
+  } >"$skipped"
+
   # git only lists the ignored paths; --git-dir keeps that working when the
   # source is itself a secondary, git-less workspace. --directory reports an
-  # ignored directory as one entry, so the filter can drop it whole.
-  git --git-dir="$git_dir" --work-tree="$src" -C "$src" \
-    ls-files -z --others --ignored --exclude-standard --directory \
-    | re=$regenerable awk -v RS='\0' -v ORS='\0' '$0 !~ ENVIRON["re"]' \
-    | (cd "$src" && xargs -0 -r cp -a --parents -t "$dir" --)
+  # ignored directory as one entry, so it is measured and copied whole. The
+  # source's .jj is reported because jj ignores its contents; the workspace
+  # already has its own, which a copy would overwrite.
+  while IFS= read -r -d '' path; do
+    [[ $path == .jj/* ]] && continue
+    if size=$(du -sb -- "$src/$path") && ((${size%%$'\t'*} <= max_copy_bytes)); then
+      copy+=("$path")
+    else
+      printf '%s\t%s\n' "${size%%$'\t'*}" "$path" >>"$skipped"
+    fi
+  done < <(git --git-dir="$git_dir" --work-tree="$src" -C "$src" \
+    ls-files -z --others --ignored --exclude-standard --directory)
+
+  if ((${#copy[@]})); then
+    (cd "$src" && cp -a --parents -t "$dir" -- "${copy[@]}")
+  fi
 
   # direnv keys its allow-list on the .envrc path, which is new here.
   if [ -f "$dir/.envrc" ]; then

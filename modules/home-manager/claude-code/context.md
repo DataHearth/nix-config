@@ -34,6 +34,10 @@ creates jj workspaces here, not git worktrees. An agent running in one
 has no `.git`; it seals its work with `jj describe -m` and reports the
 change ID in its final message, because the workspace is forgotten when
 it exits and the ID is how the spawning session finds the commit.
+Gitignored entries over 10 MB in the source checkout (dependency trees,
+build output, scratch data) are not copied into the workspace;
+`.jj/skipped-ignored` lists them with the source path, so copy one over
+when the task needs it.
 
 Permitted git exceptions, and nothing beyond them (jj has no equivalent):
 - `git ls-remote` (query a remote without fetching) and `git check-ignore`

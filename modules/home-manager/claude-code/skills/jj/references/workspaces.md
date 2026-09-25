@@ -27,10 +27,11 @@ Claude Code's isolation runs, so every workspace:
 
 - lives at `~/.claude/workspaces/<repo>/<name>` — outside the repo tree,
   with `<name>` as the jj workspace name, so `jj log` labels it `<name>@`;
-- gets **every gitignored file** of the tree it was made from (`.env`,
-  kubeconfigs, credentials, local config), so it runs exactly like the
-  original. Only regenerable output is skipped: `node_modules`, `target`,
-  `.direnv`, `.venv`, `dist`, `build`, `result*`, `.terraform`, caches;
+- gets **every gitignored entry up to 10 MB** of the tree it was made
+  from (`.env`, kubeconfigs, credential dirs, local config), so it runs
+  like the original. Bigger entries — `node_modules`, `.venv`, build
+  output, scratch data — are listed in `.jj/skipped-ignored` with the
+  source path instead; copy one over when the task needs it;
 - has its `.envrc` `direnv allow`ed, so the devShell loads.
 
 A bare `jj workspace add` does none of that; the workspace starts
@@ -47,6 +48,11 @@ hooks:
 - On removal the hook snapshots, forgets the workspace and deletes the
   directory. **The agent's commit survives** in the repo, unlabelled; a
   workspace with no changes leaves nothing behind.
+- **Subagent workspaces are never removed** (Claude Code 2.1.282): the
+  removal hook doesn't run when a subagent finishes, even if it changed
+  nothing. Once you have the agent's change ID, run
+  `claude-jj-workspace remove agent-<agentId>` yourself. List leftovers
+  with `jj workspace list`.
 - Only jj repos get isolation. In a plain git repo creation fails; the
   fix is `jj git init --colocate`, not a manual `git worktree add`.
 
