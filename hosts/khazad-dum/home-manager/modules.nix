@@ -123,7 +123,12 @@ in
       # several skills ship .py helpers (skill-creator's quick_validate imports
       # yaml). Scoped to claude's own PATH rather than home.packages: this is an
       # interpreter for the agent, not one for the user profile.
-      extraPackages = [ (pkgs.python3.withPackages (ps: [ ps.pyyaml ])) ];
+      # archify's validate/deliver CLI is plain Node; its visual-check and
+      # exports drive the chromium already on the user profile.
+      extraPackages = [
+        (pkgs.python3.withPackages (ps: [ ps.pyyaml ]))
+        pkgs.nodejs
+      ];
 
       # "Lazy senior dev" plugin: enforces YAGNI / simplest-solution-that-works.
       # https://github.com/DietrichGebert/ponytail
@@ -133,6 +138,17 @@ in
         rev = "v4.7.0";
         hash = "sha256-Q6vlkbTfBFrNFTxEwYeMe5ciOe6QdULegvExwT//gJs=";
       };
+
+      # Interactive architecture/workflow/sequence diagrams as standalone HTML.
+      # https://github.com/tt-a1i/archify
+      skills.archify = "${
+        pkgs.fetchFromGitHub {
+          owner = "tt-a1i";
+          repo = "archify";
+          rev = "v2.16.0";
+          hash = "sha256-0/zwilbuarvLfqH+oNgJoKtQ5cpJKD+Nz3VtOmhZB6U=";
+        }
+      }/archify";
 
       mcpServers = {
         claude-design = {

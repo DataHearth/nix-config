@@ -176,6 +176,17 @@ in
         output (e.g. `pkgs.fetchFromGitHub`).
       '';
     };
+
+    skills = lib.mkOption {
+      type = lib.types.attrsOf lib.types.path;
+      default = { };
+      description = ''
+        Extra skills, merged with the module's built-in ones. The attribute
+        name becomes the skill directory name; the value is a directory
+        containing a `SKILL.md`, either a local path or a store path (e.g. a
+        subdirectory of a `pkgs.fetchFromGitHub` output).
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -285,7 +296,10 @@ in
           };
         };
       context = composedContext;
-      skills.jj = ./skills/jj;
+      skills = {
+        jj = ./skills/jj;
+      }
+      // cfg.skills;
       inherit (cfg) mcpServers lspServers plugins;
     };
   };
