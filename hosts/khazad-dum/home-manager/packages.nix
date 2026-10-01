@@ -5,6 +5,7 @@
 }:
 {
   home.packages = with pkgs; [
+    ccusage
     dust
     fd
     gh
