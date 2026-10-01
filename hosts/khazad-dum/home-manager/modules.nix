@@ -256,6 +256,36 @@ in
       '';
 
       lspServers = {
+        gopls = {
+          command = "${pkgs.gopls}/bin/gopls";
+          extensionToLanguage.".go" = "go";
+        };
+        pyright = {
+          command = "${pkgs.pyright}/bin/pyright-langserver";
+          args = [ "--stdio" ];
+          extensionToLanguage = {
+            ".py" = "python";
+            ".pyi" = "python";
+          };
+        };
+        rust-analyzer = {
+          command = "${pkgs.rust-analyzer}/bin/rust-analyzer";
+          extensionToLanguage.".rs" = "rust";
+        };
+        typescript = {
+          command = "${pkgs.typescript-language-server}/bin/typescript-language-server";
+          args = [ "--stdio" ];
+          extensionToLanguage = {
+            ".ts" = "typescript";
+            ".tsx" = "typescriptreact";
+            ".js" = "javascript";
+            ".jsx" = "javascriptreact";
+            ".mts" = "typescript";
+            ".cts" = "typescript";
+            ".mjs" = "javascript";
+            ".cjs" = "javascript";
+          };
+        };
         svelte = {
           command = "${pkgs.svelte-language-server}/bin/svelteserver";
           args = [ "--stdio" ];
