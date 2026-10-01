@@ -14,6 +14,43 @@ let
     example = true;
     description = "Set NeoVim as default editor";
   };
+
+  # Keys must equal lazy.nvim's plugin names (repo basename, or the spec's
+  # `name`): lazy resolves each spec to `<dev.path>/<name>`.
+  lazyPlugins = pkgs.linkFarm "lazy-plugins" (
+    with pkgs.vimPlugins;
+    {
+      "blink.cmp" = blink-cmp;
+      "bufferline.nvim" = bufferline-nvim;
+      "catppuccin" = catppuccin-nvim;
+      "conform.nvim" = conform-nvim;
+      "diffview.nvim" = diffview-nvim;
+      "dropbar.nvim" = dropbar-nvim;
+      "flash.nvim" = flash-nvim;
+      "friendly-snippets" = friendly-snippets;
+      "gitsigns.nvim" = gitsigns-nvim;
+      "lualine.nvim" = lualine-nvim;
+      "mini.ai" = mini-ai;
+      "noice.nvim" = noice-nvim;
+      "nui.nvim" = nui-nvim;
+      "nvim-autopairs" = nvim-autopairs;
+      "nvim-lint" = nvim-lint;
+      "nvim-surround" = nvim-surround;
+      "nvim-ufo" = nvim-ufo;
+      "nvim-web-devicons" = nvim-web-devicons;
+      "persistence.nvim" = persistence-nvim;
+      "plenary.nvim" = plenary-nvim;
+      "promise-async" = promise-async;
+      "render-markdown.nvim" = render-markdown-nvim;
+      "schemastore.nvim" = SchemaStore-nvim;
+      "snacks.nvim" = snacks-nvim;
+      "telescope-fzf-native.nvim" = telescope-fzf-native-nvim;
+      "todo-comments.nvim" = todo-comments-nvim;
+      "trouble" = trouble-nvim;
+      "which-key.nvim" = which-key-nvim;
+      "yazi.nvim" = yazi-nvim;
+    }
+  );
 in
 {
   options.home_modules.neovim = {
@@ -25,6 +62,12 @@ in
       source = ./nvim;
       recursive = true;
     };
+    xdg.configFile."nvim/lua/nix-paths.lua".text = ''
+      return {
+        lazy = "${pkgs.vimPlugins.lazy-nvim}",
+        plugins = "${lazyPlugins}",
+      }
+    '';
 
     programs.neovim = {
       enable = true;
@@ -33,10 +76,8 @@ in
       viAlias = true;
       vimAlias = true;
 
-      withNodeJs = true;
-      withPerl = true;
-      withPython3 = true;
-      withRuby = true;
+      withPython3 = false;
+      withRuby = false;
 
       plugins = with pkgs.vimPlugins; [
         (nvim-treesitter.withPlugins (
@@ -76,14 +117,8 @@ in
 
       extraPackages = with pkgs; [
         git
-        gcc
-        gnumake
-        unzip
 
-        # lazy.nvim
-        luajitPackages.luarocks
-
-        # telescope.nvim
+        # snacks.picker
         fd
 
         # yazi.nvim

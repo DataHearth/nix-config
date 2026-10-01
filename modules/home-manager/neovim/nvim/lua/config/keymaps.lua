@@ -21,14 +21,12 @@ map("v", ">", ">gv", { desc = "Indent right (keep selection)" })
 map("n", "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next diagnostic" })
 map("n", "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev diagnostic" })
 map("n", "<leader>e", vim.diagnostic.open_float, { desc = "Line diagnostics" })
-map("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Diag loclist" })
 
 -- Save
 map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<leader>W", "<cmd>wa<cr>", { desc = "Save all" })
 
--- LSP (command defined in config/lsp.lua)
-map("n", "<leader>L", "<cmd>LspRestart<cr>", { desc = "Restart LSP" })
+map("n", "<leader>L", "<cmd>lsp restart<cr>", { desc = "Restart LSP" })
 
 -- Keep cursor centered
 map("n", "<C-d>", "<C-d>zz", { desc = "Half-page down (centered)" })

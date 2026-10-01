@@ -1,11 +1,5 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  vim.fn.system({
-    "git", "clone", "--filter=blob:none", "--branch=stable",
-    "https://github.com/folke/lazy.nvim.git", lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
+local nix = require("nix-paths")
+vim.opt.rtp:prepend(nix.lazy)
 
 -- Nix-shipped plugins live in pack/hm/start/* and are stripped by lazy's
 -- default rtp reset. Re-add them so treesitter parsers/queries stay reachable.
@@ -16,6 +10,11 @@ local nix_pack_paths = vim.split(
 )
 
 require("lazy").setup({
+  -- Every plugin comes from the nix store (see ../../default.nix); a spec
+  -- without a matching store entry fails instead of being cloned.
+  dev = { path = nix.plugins, patterns = { "" }, fallback = false },
+  install = { missing = false },
+  rocks = { enabled = false },
   performance = {
     rtp = {
       paths = nix_pack_paths,

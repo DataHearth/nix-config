@@ -21,28 +21,17 @@ return {
 	},
 	{
 		"nvim-lualine/lualine.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin", "trouble" },
-		opts = function()
-			local trouble = require("trouble")
-			local symbols = trouble.statusline({
-				mode = "lsp_document_symbols",
-				groups = {},
-				title = false,
-				filter = { range = true },
-				format = "{kind_icon}{symbol.name:Normal}",
-				hl_group = "lualine_c_normal",
-			})
-			return {
-				sections = {
-					lualine_a = { "mode" },
-					lualine_b = { "branch", "diff", "diagnostics" },
-					lualine_c = { "filename", { symbols.get, cond = symbols.has } },
-					lualine_x = { "encoding", "fileformat", "filetype" },
-					lualine_y = { "progress" },
-					lualine_z = { "location" },
-				},
-			}
-		end,
+		dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },
+		opts = {
+			sections = {
+				lualine_a = { "mode" },
+				lualine_b = { "branch", "diff", "diagnostics" },
+				lualine_c = { "filename" },
+				lualine_x = { "encoding", "fileformat", "filetype" },
+				lualine_y = { "progress" },
+				lualine_z = { "location" },
+			},
+		},
 	},
 	{
 		"folke/which-key.nvim",
@@ -60,7 +49,6 @@ return {
 	},
 	{
 		"mikavilpas/yazi.nvim",
-		version = "*",
 		event = "VeryLazy",
 		dependencies = {
 			{ "nvim-lua/plenary.nvim", lazy = true },
@@ -92,38 +80,6 @@ return {
 		init = function()
 			vim.g.loaded_netrwPlugin = 1
 		end,
-	},
-	{
-		"nvim-telescope/telescope.nvim",
-		version = "*",
-		cmd = "Telescope",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons",
-			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-			"trouble",
-		},
-		keys = {
-			{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
-			{ "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
-			{ "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Buffers" },
-			{ "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
-			{ "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
-		},
-		opts = {
-			defaults = {
-				hidden = true,
-				file_ignore_patterns = { "^.git/" },
-			},
-			pickers = {
-				find_files = {
-					hidden = true,
-				},
-				live_grep = {
-					additional_args = { "--hidden" },
-				},
-			},
-		},
 	},
 	{
 		"folke/noice.nvim",
@@ -161,6 +117,13 @@ return {
 			scope = { enabled = true },
 			words = { enabled = true },
 			bufdelete = { enabled = true },
+			picker = {
+				enabled = true,
+				sources = {
+					files = { hidden = true },
+					grep = { hidden = true },
+				},
+			},
 			dashboard = {
 				enabled = true,
 				preset = {
@@ -172,9 +135,9 @@ return {
   ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
   ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
 					keys = {
-						{ icon = " ", key = "f", desc = "Find File", action = ":Telescope find_files" },
-						{ icon = " ", key = "r", desc = "Recent Files", action = ":Telescope oldfiles" },
-						{ icon = " ", key = "g", desc = "Live Grep", action = ":Telescope live_grep" },
+						{ icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.picker.files()" },
+						{ icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.picker.recent()" },
+						{ icon = " ", key = "g", desc = "Live Grep", action = ":lua Snacks.picker.grep()" },
 						{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
 						{ icon = " ", key = "e", desc = "File Explorer", action = ":Yazi cwd" },
 						{ icon = " ", key = "c", desc = "Config", action = ":edit ~/.config/nix-config" },
@@ -185,6 +148,11 @@ return {
 			},
 		},
 		keys = {
+			{ "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
+			{ "<leader>fg", function() Snacks.picker.grep() end, desc = "Live Grep" },
+			{ "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
+			{ "<leader>fh", function() Snacks.picker.help() end, desc = "Help" },
+			{ "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent Files" },
 			{ "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer (keep window)" },
 			{ "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss notifications" },
 		},
@@ -192,16 +160,13 @@ return {
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		ft = { "markdown", "Avante" },
+		ft = "markdown",
 		opts = {},
 	},
 	{
 		"Bekaboo/dropbar.nvim",
 		event = { "BufReadPost", "BufNewFile" },
-		dependencies = {
-			"nvim-telescope/telescope-fzf-native.nvim",
-			build = "make",
-		},
+		dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
 		config = function()
 			local dropbar_api = require("dropbar.api")
 			vim.keymap.set("n", "<Leader>;", dropbar_api.pick, { desc = "Pick symbols in winbar" })

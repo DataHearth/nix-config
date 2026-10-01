@@ -13,11 +13,6 @@ return {
     },
   },
   {
-    'numToStr/Comment.nvim',
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {},
-  },
-  {
     "folke/flash.nvim",
     event = "VeryLazy",
     opts = {},
@@ -128,7 +123,6 @@ return {
   {
     'saghen/blink.cmp',
     dependencies = { 'rafamadriz/friendly-snippets' },
-    version = '1.*',
     opts = {
       keymap = { preset = 'enter' },
       appearance = { nerd_font_variant = 'mono' },
@@ -157,7 +151,10 @@ return {
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
-      fuzzy = { implementation = "prefer_rust_with_warning" }
+      fuzzy = {
+        implementation = "prefer_rust_with_warning",
+        prebuilt_binaries = { download = false },
+      },
     },
     opts_extend = { "sources.default" }
   },
@@ -173,7 +170,7 @@ return {
     opts = {},
     keys = {
       { "<leader>xt", "<cmd>Trouble todo<cr>", desc = "Todo (Trouble)" },
-      { "<leader>ft", "<cmd>TodoTelescope<cr>", desc = "Todo (Telescope)" },
+      { "<leader>ft", function() Snacks.picker.todo_comments() end, desc = "Todo (picker)" },
       { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo" },
       { "[t", function() require("todo-comments").jump_prev() end, desc = "Prev todo" },
     },
@@ -211,7 +208,12 @@ return {
         go = { "golangcilint" },
       }
       vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
-        callback = function()
+        callback = function(ev)
+          -- golangcilint blocks on two system() calls per run and lints the
+          -- package from disk, so only the saved state is worth linting.
+          if ev.event ~= "BufWritePost" and vim.bo[ev.buf].filetype == "go" then
+            return
+          end
           lint.try_lint()
         end,
       })

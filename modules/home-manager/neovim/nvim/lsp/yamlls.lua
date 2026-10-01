@@ -7,7 +7,10 @@ return {
         enable = false,
         url = '',
       },
-      schemas = require('schemastore').yaml.schemas(),
     },
   },
+  -- Mutate in place: the client already holds a reference to config.settings.
+  before_init = function(_, config)
+    config.settings.yaml.schemas = require('schemastore').yaml.schemas()
+  end,
 }
