@@ -233,7 +233,8 @@ in
                 "Read(./**/credentials*)"
               ];
             };
-            cleanupPeriodDays = 7;
+            # Effectively "never": there is no disable value, and 0 fails validation.
+            cleanupPeriodDays = 36500;
             disableAgentView = true;
             remoteControlAtStartup = false;
             statusLine = {
