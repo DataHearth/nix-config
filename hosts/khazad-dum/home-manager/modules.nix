@@ -145,8 +145,8 @@ in
         pkgs.fetchFromGitHub {
           owner = "tt-a1i";
           repo = "archify";
-          rev = "v2.16.0";
-          hash = "sha256-0/zwilbuarvLfqH+oNgJoKtQ5cpJKD+Nz3VtOmhZB6U=";
+          rev = "v3.0.1";
+          hash = "sha256-i7+M5PdQkGiC/Sow9Vtfh+ZHnOMVM9uBOtdzkKZhzLY=";
         }
       }/archify";
 
