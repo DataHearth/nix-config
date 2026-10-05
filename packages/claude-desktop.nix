@@ -179,15 +179,11 @@ stdenvNoCC.mkDerivation {
     cp -r usr/share/applications $out/share/
     cp -r usr/share/icons $out/share/
 
-    # The bundled ANGLE (libEGL.so) dlopens the *native* libEGL.so.1 by soname to
-    # reach the GPU; that dispatch lib ships in libglvnd (NOT /run/opengl-driver,
-    # which only has the mesa vendor libGLX_mesa). Without it on the search path
-    # ANGLE's eglInitialize fails, Chromium falls back to use-gl=disabled, and the
-    # whole UI composites in software (janky modals). Give the loader libglvnd for
-    # the glvnd dispatch libs plus the impure driver dir it dispatches into.
+    # No LD_LIBRARY_PATH here: the Code tab's agent and every command it runs
+    # inherit it, breaking devshells on an older glibc. ANGLE's dlopen of
+    # libEGL.so.1 already resolves through libglvnd in runtimeDependencies.
     makeWrapper $out/lib/claude-desktop/claude-desktop $out/bin/claude-desktop \
       "''${gappsWrapperArgs[@]}" \
-      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libglvnd ]}:/run/opengl-driver/lib" \
       --prefix PATH : ${
         lib.makeBinPath [
           direnv

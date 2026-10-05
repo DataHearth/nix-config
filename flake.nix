@@ -204,9 +204,38 @@
                   # checksums from a manifest, so pointing it at a local copy
                   # (refreshed by ./packages/update.sh claude-code) bumps the
                   # package without waiting on a channel roll.
-                  claude-code = super.claude-code.override {
-                    manifest = super.lib.importJSON ./packages/claude-code-manifest.json;
-                  };
+                  #
+                  # The wrapper's `--prefix LD_LIBRARY_PATH : alsa-lib` (for the
+                  # embedded voice-mode audio-capture.node) leaks into every Bash
+                  # tool call, so devshells on an older glibc can't start
+                  # ffmpeg/chromium (`GLIBC_2.43' not found). The addon has no
+                  # RUNPATH, and glibc falls back to the executable's DT_RPATH but
+                  # not its DT_RUNPATH, hence --force-rpath. Delete this override
+                  # once NixOS/nixpkgs#569098 lands: the assert then fails.
+                  claude-code =
+                    (super.claude-code.override {
+                      manifest = super.lib.importJSON ./packages/claude-code-manifest.json;
+                    }).overrideAttrs
+                      (
+                        old:
+                        let
+                          ldPrefix = "--prefix LD_LIBRARY_PATH : ${
+                            super.lib.makeLibraryPath [ super.alsa-lib ]
+                          } \\\n";
+                          installPhase = super.lib.replaceStrings [ ldPrefix ] [ "" ] old.installPhase;
+                        in
+                        assert installPhase != old.installPhase;
+                        {
+                          inherit installPhase;
+                          dontAutoPatchelf = true;
+                          postFixup = (old.postFixup or "") + ''
+                            autoPatchelf $out
+                            patchelf --force-rpath --add-rpath ${
+                              super.lib.makeLibraryPath [ super.alsa-lib ]
+                            } $out/bin/.claude-wrapped
+                          '';
+                        }
+                      );
                   spotify =
                     # Force Wayland (ozone). Spotify's own wrapper only adds these
                     # flags when NIXOS_OZONE_WL + WAYLAND_DISPLAY are set at launch,
