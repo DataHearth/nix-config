@@ -59,16 +59,15 @@
   # agile, deaf…) stays selectable at runtime with `fw-fanctrl use <name>`.
   # Every curve here holds a flat floor and only ramps above it: anything past
   # ~25% duty is clearly audible on this chassis, and idle temps sit in that range
-  # most of the time. Both power states deliberately select "quiet", so the AC
-  # check fw-fanctrl runs every cycle is a no-op — plugging in no longer buys
-  # cooling at the cost of noise. "lap-cool" and "stand" remain as manual
-  # escalation steps for when quiet heat-soaks too far: `fw-fanctrl use lap-cool`
-  # (or `stand`) overrides the selection until `fw-fanctrl reset`.
+  # most of the time. On AC the power profile is "performance", so the fans ramp
+  # with "stand"; on battery ("power-saver") "lap-cool" is enough. A manual
+  # `fw-fanctrl use <name>` overrides the AC/battery selection until
+  # `fw-fanctrl reset`.
   hardware.fw-fanctrl = {
     enable = true;
     config = {
-      defaultStrategy = "quiet"; # on AC
-      strategyOnDischarging = "quiet"; # on battery
+      defaultStrategy = "stand"; # on AC
+      strategyOnDischarging = "lap-cool"; # on battery
       strategies = {
         lap-cool = {
           fanSpeedUpdateFrequency = 5; # seconds between duty updates
@@ -106,8 +105,7 @@
         };
         # Docked / on a stand: airflow is unobstructed and fan noise matters less,
         # so ramp harder above the quiet floor to keep the chips (and chassis)
-        # cooler. Not the default — switch to it when docked with
-        # `fw-fanctrl use stand` (and back with `fw-fanctrl use lap-cool`).
+        # cooler.
         stand = {
           fanSpeedUpdateFrequency = 5;
           movingAverageInterval = 15; # snappier than lap-cool
