@@ -228,7 +228,6 @@ in
               ];
               deny = [
                 "Read(./.env)"
-                "Read(./.env.*)"
                 "Read(./secrets/**)"
                 "Read(./**/credentials*)"
               ];
