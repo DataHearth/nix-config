@@ -26,14 +26,6 @@
               randomEncryption = true;
             };
           };
-          development = {
-            size = "100G";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/mnt/development";
-            };
-          };
           luks = {
             size = "100%";
             content = {
