@@ -125,9 +125,14 @@ in
       # interpreter for the agent, not one for the user profile.
       # archify's validate/deliver CLI is plain Node; its visual-check and
       # exports drive the chromium already on the user profile.
+      # watermarks-remover's cleaning scripts silently skip PDF and image
+      # metadata stripping when exiftool, qpdf and c2patool are absent.
       extraPackages = [
         (pkgs.python3.withPackages (ps: [ ps.pyyaml ]))
         pkgs.nodejs
+        pkgs.exiftool
+        pkgs.qpdf
+        pkgs.c2patool
       ];
 
       # "Lazy senior dev" plugin: enforces YAGNI / simplest-solution-that-works.
