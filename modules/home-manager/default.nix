@@ -18,6 +18,7 @@
   ./theme.nix
   ./waybar
   ./walker.nix
+  ./watermarks-remover.nix
   ./yazi.nix
   ./zellij
   ./zen-browser.nix

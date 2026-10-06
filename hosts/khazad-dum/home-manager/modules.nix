@@ -86,6 +86,7 @@ in
     okular.enable = true;
     power-profile.enable = true;
     theme.enable = true;
+    watermarks-remover.enable = true;
     yazi.enable = true;
     zellij.enable = true;
 
@@ -126,13 +127,15 @@ in
       # archify's validate/deliver CLI is plain Node; its visual-check and
       # exports drive the chromium already on the user profile.
       # watermarks-remover's cleaning scripts silently skip PDF and image
-      # metadata stripping when exiftool, qpdf and c2patool are absent.
+      # metadata stripping when exiftool, qpdf and c2patool are absent, and
+      # leave metadata inside a PDF's embedded images without ghostscript.
       extraPackages = [
         (pkgs.python3.withPackages (ps: [ ps.pyyaml ]))
         pkgs.nodejs
         pkgs.exiftool
         pkgs.qpdf
         pkgs.c2patool
+        pkgs.ghostscript
       ];
 
       # "Lazy senior dev" plugin: enforces YAGNI / simplest-solution-that-works.
