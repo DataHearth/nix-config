@@ -49,9 +49,12 @@ in
             # that forks only once the screen is actually covered (swaylock -f).
             # hyprlock has no such flag, so systemd calls this started at exec and
             # the lock is merely very likely -- not guaranteed -- to be painted
-            # before the suspend proceeds.
+            # before the suspend proceeds. Skipping the fade-in and the wait for
+            # background resources shrinks that window from 2-8 s to near zero;
+            # without them a suspend can freeze hyprlock before it ever locks,
+            # and the machine resumes unlocked.
             Type = "simple";
-            ExecStart = lib.getExe pkgs.hyprlock;
+            ExecStart = "${lib.getExe pkgs.hyprlock} --immediate-render --no-fade-in";
             Restart = "on-failure";
           };
           Install.WantedBy = [ "lock.target" ];

@@ -41,7 +41,6 @@ in
         auth.fingerprint.enabled = true;
 
         general = {
-          grace = 0;
           hide_cursor = true;
           ignore_empty_input = false;
         };
@@ -131,7 +130,12 @@ in
             }
             {
               inherit monitor;
-              text = ''cmd[update:1000] ${pkgs.playerctl}/bin/playerctl metadata --format "{{ artist }} - {{ album }} - {{ title }}"'';
+              # Wrapped in a script because hyprlang evaluates `{{ … }}` as an
+              # arithmetic expression, so playerctl's format string can't sit
+              # in the config inline.
+              text = "cmd[update:1000] ${pkgs.writeShellScript "hyprlock-now-playing" ''
+                exec ${lib.getExe pkgs.playerctl} metadata --format "{{ artist }} - {{ album }} - {{ title }}"
+              ''}";
               font_family = "$font";
               color = "$subtext0";
               font_size = 18;
