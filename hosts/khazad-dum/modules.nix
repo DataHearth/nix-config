@@ -103,32 +103,34 @@
             }
           ];
         };
-        # Docked / on a stand: airflow is unobstructed and fan noise matters less,
-        # so ramp harder above the quiet floor to keep the chips (and chassis)
-        # cooler.
+        # On the desk: noise is the priority while idle or lightly loaded, so hold
+        # a near-silent floor through 50 °C and stay under the ~25% audible line
+        # until 60 °C. Unobstructed airflow lets it wait longer than lap-cool,
+        # then ramp hard once real load arrives. The 30 s average keeps short
+        # spikes (builds starting, page loads) from making the fans surge.
         stand = {
           fanSpeedUpdateFrequency = 5;
-          movingAverageInterval = 15; # snappier than lap-cool
+          movingAverageInterval = 30;
           speedCurve = [
             {
               temp = 0;
-              speed = 20;
-            }
-            {
-              temp = 40;
-              speed = 20;
+              speed = 10;
             }
             {
               temp = 50;
-              speed = 35;
+              speed = 10;
             }
             {
               temp = 60;
-              speed = 70;
+              speed = 25;
             }
             {
-              temp = 70;
-              speed = 90;
+              temp = 68;
+              speed = 55;
+            }
+            {
+              temp = 75;
+              speed = 85;
             }
             {
               temp = 80;
