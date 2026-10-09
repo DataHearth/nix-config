@@ -81,16 +81,16 @@
   cowork ? true,
 }:
 let
-  version = "2.9939.4";
+  version = "2.31226.1";
   base = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop";
   srcs = {
     x86_64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_amd64.deb";
-      sha256 = "3cfddb23bf2911e05e27b4ed3856b8e795df94643b2c35b59deb317cf995bca0";
+      sha256 = "5a9bebdfcb1df6ce38767b373f3a7fabf77156a2ddd8a3f5d04961da5bde305e";
     };
     aarch64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_arm64.deb";
-      sha256 = "108ed79ea164b08c4fa0bb4387deef4779957b3f0f9b2d9898e359f363ebf1bc";
+      sha256 = "d2f57a38ffc73cfda660f8772a5f8bada05e6d74399948a268c6f5d53593ee8f";
     };
   };
 in
@@ -122,6 +122,7 @@ stdenvNoCC.mkDerivation {
     nspr
     nss
     pango
+    pipewire
     systemd
     libseccomp
     libcap_ng
