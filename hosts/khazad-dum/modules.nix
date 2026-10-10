@@ -35,10 +35,7 @@
       users = [ "datahearth" ];
     };
 
-    # Offloads `nix build` to the remote builder. Off until that host actually
-    # exists: with it on and the builder unreachable, every build first pays
-    # the ssh ConnectTimeout before nix gives up and falls back to local.
-    nix-builder.enable = false;
+    nix-builder.enable = true;
 
     nh = {
       enable = true;

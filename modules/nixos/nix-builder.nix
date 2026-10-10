@@ -42,11 +42,9 @@ in
           protocol = "ssh-ng";
           system = "x86_64-linux";
           speedFactor = 4;
-          supportedFeatures = [
-            "big-parallel"
-            "kvm"
-            "nixos-test"
-          ];
+          # The builder pod has no /dev/kvm, so VM tests (`kvm`, `nixos-test`)
+          # must stay local; advertising them would send those builds there.
+          supportedFeatures = [ "big-parallel" ];
           inherit (cfg) maxJobs sshKey;
         }
       ];
@@ -62,9 +60,10 @@ in
       knownHosts."nix-builder.nerds.casa".publicKey =
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBK0AD9BS0GmSgoEVseK4d8cvkoBML+uCyxeMcOjSeN+";
 
-      # On a foreign network the name still resolves, to a host that does not
-      # serve this. Without a bound, every build stalls on the TCP timeout
-      # before nix gives up and falls back to building locally.
+      # The name resolves everywhere: to a LAN or tailnet address at home, to
+      # the public edge's port 22 elsewhere. If the builder is down, the bound
+      # keeps each build from stalling on the TCP timeout before nix falls
+      # back to building locally.
       extraConfig = ''
         Host nix-builder.nerds.casa
           ConnectTimeout 5
