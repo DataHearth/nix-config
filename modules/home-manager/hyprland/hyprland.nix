@@ -214,6 +214,12 @@ in
     };
 
     services.cliphist.enable = lib.mkDefault true;
+    # After a Hyprland restart the units can start before the new wayland
+    # socket accepts; the default 100ms RestartSec exhausts the start limit
+    # in under a second and leaves the clipboard unwatched until relogin.
+    systemd.user.services = lib.genAttrs [ "cliphist" "cliphist-images" ] (_: {
+      Service.RestartSec = 3;
+    });
 
     home_modules = {
       walker.enable = lib.mkDefault true;
