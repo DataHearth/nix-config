@@ -208,10 +208,12 @@
                   # The wrapper's `--prefix LD_LIBRARY_PATH : alsa-lib` (for the
                   # embedded voice-mode audio-capture.node) leaks into every Bash
                   # tool call, so devshells on an older glibc can't start
-                  # ffmpeg/chromium (`GLIBC_2.43' not found). The addon has no
-                  # RUNPATH, and glibc falls back to the executable's DT_RPATH but
-                  # not its DT_RUNPATH, hence --force-rpath. Delete this override
-                  # once NixOS/nixpkgs#569098 lands: the assert then fails.
+                  # ffmpeg/chromium (`GLIBC_2.43' not found). Strip it and accept
+                  # that voice mode can't load libasound (unused here).
+                  # Don't swap in an RPATH instead (NixOS/nixpkgs#569098's
+                  # approach): from 2.1.302 any `patchelf --add-rpath` on the Bun
+                  # binary makes it segfault on start; only --set-interpreter is
+                  # safe. The assert fails once upstream drops the prefix.
                   claude-code =
                     (super.claude-code.override {
                       manifest = super.lib.importJSON ./packages/claude-code-manifest.json;
@@ -227,13 +229,6 @@
                         assert installPhase != old.installPhase;
                         {
                           inherit installPhase;
-                          dontAutoPatchelf = true;
-                          postFixup = (old.postFixup or "") + ''
-                            autoPatchelf $out
-                            patchelf --force-rpath --add-rpath ${
-                              super.lib.makeLibraryPath [ super.alsa-lib ]
-                            } $out/bin/.claude-wrapped
-                          '';
                         }
                       );
                   spotify =
