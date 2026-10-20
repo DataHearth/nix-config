@@ -135,3 +135,15 @@ A cheaper model that gets it wrong costs a redo, which erases the saving.
 When the fit is unclear, inherit. Forks always run on the parent model and
 ignore the override, and an agent type whose definition sets its own model
 keeps it unless there is a specific reason to override.
+
+# Background tasks: leave output on stdout
+
+When a command runs with `run_in_background`, do not redirect its output
+to a file (`> log 2>&1`, `&> log`, `| tee log >/dev/null`, `nohup`). The
+harness already captures stdout/stderr and the user follows it live in
+the Claude Code TUI; a redirect leaves that view empty, and the user
+cannot see what the task is doing. Read the output through the harness
+too, not by tailing a log file.
+
+A file is fine only when the output itself is the artifact (a dump to
+inspect or diff later) — then `tee` it so stdout still carries it.
