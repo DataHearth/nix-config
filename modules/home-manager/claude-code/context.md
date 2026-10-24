@@ -23,6 +23,16 @@ genuinely has no jj counterpart — the short list below — does git apply.
 When unsure whether a counterpart exists, consult the `jj` skill or ask;
 do not guess with git.
 
+The user names revisions by a change-ID prefix, usually the bold part
+`jj log` highlights: the shortest prefix unique within
+`revsets.short-prefixes`, so one, two, three or more letters, growing
+with the repo. "rebase pr onto master", "squash kxw into @", "describe
+z". Change IDs use only the letters `k`–`z`, so a lowercase token made of
+those letters, where a revision fits, is a change ID, even when it reads
+as a word or an acronym ("pr" is `prommkwk`, not a pull request). Pass
+it to jj verbatim (`jj log -r pr`); ask only if jj reports it missing or
+ambiguous.
+
 The **`jj` skill** is the canonical reference: a lean `SKILL.md` plus
 `references/` for revsets, workflows, conflicts, and advanced commands.
 Consult it before running unfamiliar jj commands. Skill loading is
