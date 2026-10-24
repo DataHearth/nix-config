@@ -33,8 +33,17 @@
     secrets = {
       "wifi/cirdan" = { };
       "wifi/la-maison-du-bonheur" = { };
+      "attic/builder" = { };
     };
     templates = {
+      # nix's default netrc-file; the daemon reads it as root.
+      "nix-netrc" = {
+        path = "/etc/nix/netrc";
+        content = ''
+          machine nix.nerds.casa
+          password ${config.sops.placeholder."attic/builder"}
+        '';
+      };
       "wifi-cirdan-env".content = "WIFI_CIRDAN_PSK=${config.sops.placeholder."wifi/cirdan"}";
       "la-maison-du-bonheur-env".content = "WIFI_LA_MAISON_DU_BONHEUR_PSK=${
         config.sops.placeholder."wifi/la-maison-du-bonheur"
@@ -56,6 +65,14 @@
       "root"
       "datahearth"
     ];
+
+    # extra-* because setting `substituters` would drop the cache.nixos.org
+    # default. These are forwarded to the remote builder too, where
+    # nix.nerds.casa is blocked by its egress policy; the short timeout lets it
+    # give up on that cache quickly instead of stalling each build.
+    extra-substituters = [ "https://nix.nerds.casa/builder" ];
+    extra-trusted-public-keys = [ "builder:QmlzOq6fo2gPZ6Vt++ulIK+FCc0r86e8ydE60L9DBys=" ];
+    connect-timeout = 5;
   };
 
   boot = {
