@@ -80,7 +80,27 @@
     # series, so `nix flake update` can cross a major bump (6.18 -> 7.1) with no
     # warning; framework-laptop-kmod is out-of-tree and has to build against
     # whatever lands, so check it after an update before switching.
-    kernelPackages = pkgs.linuxPackages_latest;
+    #
+    # framework-laptop-kmod installs its .ko by hand, skipping Kbuild's
+    # modules_install, which since NixOS/nixpkgs#571181 is what signs the
+    # module and writes its .ko.cer; aggregating the modules tree then fails
+    # on `cat: extra/framework_laptop.ko.cer`. This mirrors the upstream fix
+    # (nixpkgs e81ffa28fd, see #575192), on master but not yet on
+    # nixos-unstable. Drop the extend once the channel has it: the package
+    # will already list modules_install in installTargets.
+    kernelPackages = pkgs.linuxPackages_latest.extend (
+      _: prev: {
+        framework-laptop-kmod = prev.framework-laptop-kmod.overrideAttrs (old: {
+          makeFlags = old.makeFlags ++ [
+            "INSTALL_MOD_PATH=${placeholder "out"}"
+            "INSTALL_MOD_DIR=extra"
+            "DEPMOD=true"
+          ];
+          installTargets = [ "modules_install" ];
+          installPhase = null;
+        });
+      }
+    );
 
     loader = {
       systemd-boot.enable = true;
