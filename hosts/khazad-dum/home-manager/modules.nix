@@ -221,9 +221,15 @@ in
         do not expose. `bat` is for the user's eyes — reading a file yourself,
         plain `cat`/`sed -n` avoids the decorations and the pager.
 
-        Scope: this governs commands run here, ad hoc. Scripts committed to a
-        repo, CI steps, and anything expected to run on another machine keep
-        the POSIX tools unless that repo already depends on `rg`/`fd`.
+        Scope: this governs commands run on this machine, ad hoc. A command
+        that executes somewhere else — inside a container (`docker exec`,
+        `podman run`, `kubectl exec`), over `ssh`, in a VM or chroot — uses
+        the POSIX tools unless the tool is already known to exist there (an
+        earlier `command -v` in that environment, or its image or package
+        list). Don't assume a container has `rg` because this host does.
+        Scripts committed to a repo, CI steps, and anything expected to run on
+        another machine keep the POSIX tools unless that repo already depends
+        on `rg`/`fd`.
 
         # Temporary files and directories
 
