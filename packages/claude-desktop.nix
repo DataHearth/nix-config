@@ -81,16 +81,16 @@
   cowork ? true,
 }:
 let
-  version = "2.42304.0";
+  version = "3.6556.2";
   base = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop";
   srcs = {
     x86_64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_amd64.deb";
-      sha256 = "74cd2ccc29d24165144e455cbc872c6cc2a24a263b83e73420e95f89166d4aa4";
+      sha256 = "0f6ed1f2845c30419b8545a8320676d7464a19f625e05e02919238aa6978ecb4";
     };
     aarch64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_arm64.deb";
-      sha256 = "8fb3c4203e53882f037acc822f350c7d3da66cd691e39b98aeed4d66d7328648";
+      sha256 = "5b70aeb6bb335b3d4684ed106ad68c7da44ff3aa47ff8db2fefe55bde810c10b";
     };
   };
 in
