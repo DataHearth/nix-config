@@ -6,26 +6,51 @@
 }:
 let
   cfg = config.nixos_modules.f5;
-  customPackages = import ../../packages { inherit pkgs; };
+  f5vpn-ng = (import ../../packages { inherit pkgs; }).f5vpn-ng;
 in
 {
   options.nixos_modules.f5 = {
     enable = lib.mkEnableOption "F5 VPN (Airbus) client with split-tunnel routing/DNS fixes and supporting kernel/firewall settings";
+
+    users = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "datahearth" ];
+      description = ''
+        Users allowed to run `ip route add|del` as root without a password.
+        The client adds a host route to the BIG-IP gateway this way before
+        handing over to svpn; the rule mirrors the sudoers file the .deb's
+        postinst writes for the installing user.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [
-      customPackages.f5vpn
-      customPackages.f5epi
-    ];
+    environment.systemPackages = [ f5vpn-ng ];
 
     # svpn needs setuid root to create tun devices
     security.wrappers.svpn = {
-      source = "${customPackages.f5vpn}/opt/f5/vpn/svpn";
+      source = "${f5vpn-ng}/libexec/f5vpn-ng/svpn";
       owner = "root";
       group = "root";
       setuid = true;
     };
+
+    security.sudo.extraRules = lib.mkIf (cfg.users != [ ]) [
+      {
+        inherit (cfg) users;
+        commands = [
+          {
+            command = "/sbin/ip route add *";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "/sbin/ip route del *";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
 
     # Without this the firewall silently drops the VPN's inbound return traffic
     # on tun0: replies are visible in tcpdump but never delivered to the socket
@@ -72,10 +97,7 @@ in
     '';
 
     systemd = {
-      tmpfiles.packages = [
-        customPackages.f5vpn
-        customPackages.f5epi
-      ];
+      tmpfiles.packages = [ f5vpn-ng ];
 
       services.f5-fix = {
         description = "Fix routing and DNS for F5 VPN";
@@ -84,14 +106,6 @@ in
           ExecStart = pkgs.writeShellScript "f5-fix" ''
             # Remove the conflicting policy routing rule svpn installs
             ${pkgs.iproute2}/bin/ip rule del to 1.1.1.1 lookup 200 2>/dev/null || true
-
-            # LAN0 only tunnels 14.0.0.0/8 and 100.96.0.0/12 (see szParams in
-            # ~/.F5Networks/vpn.log), but plenty of corporate services resolve
-            # into 10.0.0.0/8 and are NOT tunneled by policy — e.g. the modelops
-            # platform behind *.airbus-v.corp lands on 10.102.191.x. Route it
-            # ourselves. Safe: local LAN is 192.168.1.0/24, Docker is 172.x and
-            # the tailnet is 100.64.0.0/10 — nothing overlaps 10/8.
-            ${pkgs.iproute2}/bin/ip route replace 10.0.0.0/8 dev tun0
 
             # Wait for interface to be registered with resolved
             sleep 2

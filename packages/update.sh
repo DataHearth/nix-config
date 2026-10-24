@@ -9,10 +9,9 @@
 #   all                        update every package below to its latest
 #   claude-code    [version]   refresh claude-code-manifest.json   (default: latest)
 #   claude-desktop [version]   bump version + both .deb hashes      (default: latest in apt index)
-#   f5vpn                      re-prefetch the latest linux_f5vpn.x86_64.deb
-#   f5epi                      re-prefetch the latest linux_f5epi.x86_64.rpm
+#   f5vpn-ng                   re-prefetch the latest linux_f5vpn.x86_64.deb
 #
-# f5vpn/f5epi track a fixed "latest" URL on Airbus's portal, so they take no
+# f5vpn-ng tracks a fixed "latest" URL on Airbus's portal, so it takes no
 # version argument.
 set -euo pipefail
 
@@ -78,45 +77,32 @@ update_claude_desktop() {
   echo "claude-desktop: bumped to $version"
 }
 
-update_f5vpn() {
+update_f5vpn_ng() {
   local sri
   sri=$(prefetch_sri "https://axess.airbus.com/public/download/linux_f5vpn.x86_64.deb")
-  if grep -q "hash = \"$sri\";" f5vpn.nix; then
-    echo "f5vpn: already up to date"
+  if grep -q "hash = \"$sri\";" f5vpn-ng.nix; then
+    echo "f5vpn-ng: already up to date"
     return
   fi
-  sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$sri\"|" f5vpn.nix
-  echo "f5vpn: hash updated to $sri"
-}
-
-update_f5epi() {
-  local sri
-  sri=$(prefetch_sri "https://axess.airbus.com/public/download/linux_f5epi.x86_64.rpm")
-  if grep -q "hash = \"$sri\";" f5epi.nix; then
-    echo "f5epi: already up to date"
-    return
-  fi
-  sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$sri\"|" f5epi.nix
-  echo "f5epi: hash updated to $sri"
+  sed -i "s|hash = \"sha256-[^\"]*\"|hash = \"$sri\"|" f5vpn-ng.nix
+  echo "f5vpn-ng: hash updated to $sri (check the .deb's Version: against f5vpn-ng.nix)"
 }
 
 case "${1:-}" in
   all)
     update_claude_code
     update_claude_desktop ""
-    update_f5vpn
-    update_f5epi
+    update_f5vpn_ng
     ;;
   claude-code)    update_claude_code    "${2:-}" ;;
   claude-desktop) update_claude_desktop "${2:-}" ;;
-  f5vpn)          update_f5vpn ;;
-  f5epi)          update_f5epi ;;
+  f5vpn-ng)       update_f5vpn_ng ;;
   "" | -h | --help | help)
-    sed -n '4,16p' "$0"
+    sed -n '4,15p' "$0"
     ;;
   *)
     echo "unknown package: ${1:-}" >&2
-    echo "  known: all, claude-code, claude-desktop, f5vpn, f5epi" >&2
+    echo "  known: all, claude-code, claude-desktop, f5vpn-ng" >&2
     exit 1
     ;;
 esac

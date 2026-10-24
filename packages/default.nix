@@ -1,6 +1,5 @@
 { pkgs }:
 {
-  f5vpn = pkgs.callPackage ./f5vpn.nix { };
-  f5epi = pkgs.callPackage ./f5epi.nix { };
+  f5vpn-ng = pkgs.callPackage ./f5vpn-ng.nix { };
   claude-desktop = pkgs.callPackage ./claude-desktop.nix { };
 }

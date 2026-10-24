@@ -25,7 +25,10 @@
     blue-yeti.enable = true;
 
     # F5 VPN (Airbus): client, split-tunnel routing/DNS, firewall, tailnet fix
-    f5.enable = true;
+    f5 = {
+      enable = true;
+      users = [ "datahearth" ];
+    };
 
     greetd.enable = true;
 

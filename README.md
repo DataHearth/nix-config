@@ -109,7 +109,7 @@ nix-config/
 │       └── nh.nix                 # nh utility
 ├── packages/                      # Custom package derivations
 │   ├── claude-desktop.nix
-│   ├── f5epi.nix, f5vpn.nix
+│   ├── f5vpn-ng.nix
 │   └── update.sh                  # Refreshes pinned versions/checksums
 ├── docs/plans/                    # Design and migration notes
 └── secrets/                       # Encrypted secrets
