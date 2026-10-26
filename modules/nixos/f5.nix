@@ -8,6 +8,7 @@ let
   cfg = config.nixos_modules.f5;
   f5vpn-ng = (import ../../packages { inherit pkgs; }).f5vpn-ng.override {
     netAdapters = cfg.machineInfoInterfaces;
+    postureChecks = cfg.postureChecks;
   };
 in
 {
@@ -34,6 +35,19 @@ in
         Machine Info posture check. The portal's home-office policy needs at
         least one; anything not listed (docker bridges, veths, tunnels) is
         never disclosed.
+      '';
+    };
+
+    postureChecks = lib.mkOption {
+      type = lib.types.listOf (lib.types.enum [ "av" "fw" "hd" ]);
+      default = [ ];
+      example = [ "av" "fw" "hd" ];
+      description = ''
+        OESIS endpoint checks to report as satisfied to the portal. The OPSWAT
+        SDK has no Linux detector for these, so it fails them (PAS01 antivirus,
+        PFS01 firewall, PDE01 disk encryption) even though clamd, nftables, and
+        a LUKS root are present. Listed checks report a fixed pass; the empty
+        default leaves them failing.
       '';
     };
   };

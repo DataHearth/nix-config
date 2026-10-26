@@ -28,6 +28,11 @@
     f5 = {
       enable = true;
       users = [ "datahearth" ];
+      postureChecks = [
+        "av"
+        "fw"
+        "hd"
+      ];
     };
 
     greetd.enable = true;

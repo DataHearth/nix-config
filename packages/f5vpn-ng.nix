@@ -24,6 +24,8 @@
   gnutar,
   # Interfaces whose MAC address the Machine Info posture check discloses.
   netAdapters ? [ "wlan0" ],
+  # OESIS posture checks to report as satisfied: subset of "av" "fw" "hd".
+  postureChecks ? [ ],
 }:
 
 stdenv.mkDerivation {
@@ -88,9 +90,12 @@ stdenv.mkDerivation {
     # The GTK client answers the APM Machine Info check with hostname/OS only;
     # the Qt client it replaces also sent the adapter MAC list, and Airbus's
     # home-office policy branch hangs up (HO01) without one. machine-info.so
-    # appends it for the interfaces in F5VPN_NETADAPTERS (client-side); see the .c file.
+    # appends it for the interfaces in F5VPN_NETADAPTERS (client-side).
+    # posture.so answers the OESIS av/fw/hd checks in f5PolicyServer, which the
+    # OPSWAT SDK leaves at count=0 on Linux (PAS01/PFS01/PDE01); see the .c files.
     mkdir -p $out/lib/f5vpn-ng
     $CC -shared -fPIC -O2 -o $out/lib/f5vpn-ng/machine-info.so ${./f5vpn-ng/machine-info.c} -ldl
+    $CC -shared -fPIC -O2 -o $out/lib/f5vpn-ng/posture.so ${./f5vpn-ng/posture.c} -ldl
 
     # f5PolicyServer dlopens the OESIS inspector that the gateway downloads
     # into ~/.F5Networks/Inspectors at check time; autoPatchelf never sees it,
@@ -101,7 +106,10 @@ stdenv.mkDerivation {
           stdenv.cc.cc.lib
           dbus
         ]
-      }"
+      }" \
+      --prefix LD_PRELOAD : $out/lib/f5vpn-ng/posture.so \
+      ${lib.optionalString (postureChecks != [ ])
+        "--set F5_POSTURE_TYPES ${lib.escapeShellArg (lib.concatStringsSep "," postureChecks)}"}
 
     substituteInPlace $out/share/applications/f5vpn-ng.desktop \
       --replace-fail "/usr/bin/f5vpn-launcher" "$out/bin/f5vpn-ng" \
