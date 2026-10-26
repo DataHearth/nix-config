@@ -22,6 +22,8 @@
   procps,
   coreutils,
   gnutar,
+  # Interfaces whose MAC address the Machine Info posture check discloses.
+  netAdapters ? [ "wlan0" ],
 }:
 
 stdenv.mkDerivation {
@@ -83,6 +85,13 @@ stdenv.mkDerivation {
     install -Dm755 $out/share/f5vpn-ng/svpn -t $out/libexec/f5vpn-ng
     ln -sf /run/wrappers/bin/svpn $out/share/f5vpn-ng/svpn
 
+    # The GTK client answers the APM Machine Info check with hostname/OS only;
+    # the Qt client it replaces also sent the adapter MAC list, and Airbus's
+    # home-office policy branch hangs up (HO01) without one. machine-info.so
+    # appends it for the interfaces in F5VPN_NETADAPTERS (client-side); see the .c file.
+    mkdir -p $out/lib/f5vpn-ng
+    $CC -shared -fPIC -O2 -o $out/lib/f5vpn-ng/machine-info.so ${./f5vpn-ng/machine-info.c} -ldl
+
     # f5PolicyServer dlopens the OESIS inspector that the gateway downloads
     # into ~/.F5Networks/Inspectors at check time; autoPatchelf never sees it,
     # so its libstdc++/libgcc_s (and dbus for the checks) come from here.
@@ -130,7 +139,9 @@ stdenv.mkDerivation {
   # the setuid wrapper would then run as root with the caller's environment.
   dontWrapGApps = true;
   postFixup = ''
-    wrapGApp $out/bin/f5vpn-ng
+    wrapGApp $out/bin/f5vpn-ng \
+      --prefix LD_PRELOAD : $out/lib/f5vpn-ng/machine-info.so \
+      --set F5VPN_NETADAPTERS ${lib.escapeShellArg (lib.concatStringsSep "," netAdapters)}
   '';
 
   meta = with lib; {

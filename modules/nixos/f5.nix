@@ -6,7 +6,9 @@
 }:
 let
   cfg = config.nixos_modules.f5;
-  f5vpn-ng = (import ../../packages { inherit pkgs; }).f5vpn-ng;
+  f5vpn-ng = (import ../../packages { inherit pkgs; }).f5vpn-ng.override {
+    netAdapters = cfg.machineInfoInterfaces;
+  };
 in
 {
   options.nixos_modules.f5 = {
@@ -21,6 +23,17 @@ in
         The client adds a host route to the BIG-IP gateway this way before
         handing over to svpn; the rule mirrors the sudoers file the .deb's
         postinst writes for the installing user.
+      '';
+    };
+
+    machineInfoInterfaces = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ "wlan0" ];
+      description = ''
+        Interfaces whose name and MAC address the client reports in the APM
+        Machine Info posture check. The portal's home-office policy needs at
+        least one; anything not listed (docker bridges, veths, tunnels) is
+        never disclosed.
       '';
     };
   };
