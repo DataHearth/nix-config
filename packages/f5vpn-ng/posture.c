@@ -1,9 +1,9 @@
 /*
  * f5PolicyServer shim: answers the APM endpoint posture checks (OESIS av/fw/hd)
  * with a passing result. The OPSWAT OESIS SDK ships no Linux detector for these
- * product classes, so it returns count=0 even though this host runs antivirus
- * (clamd), an nftables firewall, and a LUKS-encrypted root; the portal then
- * raises PAS01/PFS01/PDE01. This reports each selected check as satisfied.
+ * product classes, so it returns count=0 even on a host with an nftables
+ * firewall and a LUKS-encrypted root; the portal then raises
+ * PAS01/PFS01/PDE01. This reports each selected check as satisfied.
  *
  * F5_POSTURE_TYPES selects which checks to answer (comma list: "av,fw,hd"); an
  * empty or unset value answers none, leaving the SDK's original result. The

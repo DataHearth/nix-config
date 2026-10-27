@@ -45,9 +45,9 @@ in
       description = ''
         OESIS endpoint checks to report as satisfied to the portal. The OPSWAT
         SDK has no Linux detector for these, so it fails them (PAS01 antivirus,
-        PFS01 firewall, PDE01 disk encryption) even though clamd, nftables, and
-        a LUKS root are present. Listed checks report a fixed pass; the empty
-        default leaves them failing.
+        PFS01 firewall, PDE01 disk encryption) even when nftables or a LUKS
+        root are present. Listed checks report a fixed pass; the empty default
+        leaves them failing.
       '';
     };
   };

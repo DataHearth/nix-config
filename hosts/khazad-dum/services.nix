@@ -21,11 +21,6 @@
 
     udisks2.enable = true;
     fwupd.enable = true;
-
-    clamav = {
-      daemon.enable = true;
-      updater.enable = true;
-    };
   };
 
   hardware.bluetooth = {
