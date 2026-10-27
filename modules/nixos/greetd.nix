@@ -33,34 +33,30 @@ let
     ${regreetBin}
     # ReGreet only returns here if login was cancelled/failed; tear the greeter
     # compositor down so greetd restarts it cleanly.
-    ${hyprctlBin} dispatch exit
+    ${hyprctlBin} dispatch 'hl.dsp.exit()'
   '';
 
-  greeterConfig = pkgs.writeText "greetd-hyprland.conf" ''
-    monitor = ${cfg.internalMonitor}, preferred, 0x0, 1
-    monitor = , disable
+  # Hyprland >= 0.57 parses `--config` as Lua whatever the extension; a
+  # hyprlang file fails on line 1, exec never fires and the greeter is blank.
+  greeterConfig = pkgs.writeText "greetd-hyprland.lua" ''
+    hl.monitor({ output = "${cfg.internalMonitor}", mode = "preferred", position = "0x0", scale = 1 })
+    hl.monitor({ output = "", disabled = true })
 
-    exec-once = ${greeterSession}
+    hl.on("hyprland.start", function()
+      hl.exec_cmd("${greeterSession}")
+    end)
 
-    ecosystem {
-      no_update_news = true
-    }
-    general {
-      gaps_in = 0
-      gaps_out = 0
-      border_size = 0
-    }
-    decoration {
-      rounding = 0
-    }
-    animations {
-      enabled = false
-    }
-    misc {
-      disable_hyprland_logo = true
-      force_default_wallpaper = 0
-      background_color = 0xff24273a
-    }
+    hl.config({
+      ecosystem = { no_update_news = true },
+      general = { gaps_in = 0, gaps_out = 0, border_size = 0 },
+      decoration = { rounding = 0 },
+      animations = { enabled = false },
+      misc = {
+        disable_hyprland_logo = true,
+        force_default_wallpaper = 0,
+        background_color = 0xff24273a,
+      },
+    })
   '';
 in
 {
