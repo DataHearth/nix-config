@@ -189,19 +189,24 @@
                       # Prepending both is enough — qmd's own `auto` probe then
                       # picks the 780M, cutting a full vault embed from ~2m15s to
                       # ~50s. An outer wrapper cannot fix this: the inner wrapper
-                      # would overwrite the variable again.
-                      qmd = inputs'.qmd.packages.default.overrideAttrs (old: {
-                        postFixup = (old.postFixup or "") + ''
-                          substituteInPlace $out/bin/qmd \
-                            --replace-fail "export LD_LIBRARY_PATH='" \
-                              "export LD_LIBRARY_PATH='${
-                                super.lib.makeLibraryPath [
-                                  super.vulkan-loader
-                                  "/run/opengl-driver"
-                                ]
-                              }:"
-                        '';
-                      });
+                      # would overwrite the variable again. The assert fails once
+                      # upstream's wrapper adds vulkan itself; then delete this.
+                      qmd = inputs'.qmd.packages.default.overrideAttrs (
+                        old:
+                        assert !super.lib.hasInfix "vulkan" old.installPhase;
+                        {
+                          postFixup = (old.postFixup or "") + ''
+                            substituteInPlace $out/bin/qmd \
+                              --replace-fail "export LD_LIBRARY_PATH='" \
+                                "export LD_LIBRARY_PATH='${
+                                  super.lib.makeLibraryPath [
+                                    super.vulkan-loader
+                                    "/run/opengl-driver"
+                                  ]
+                                }:"
+                          '';
+                        }
+                      );
                       # Official Anthropic Linux client, packaged locally from the
                       # upstream .deb (nixpkgs has no claude-desktop). The package
                       # forces Wayland/ozone itself — see packages/claude-desktop.nix.
@@ -241,6 +246,9 @@
                         # flags (it only unsets DISPLAY under NIXOS_OZONE_WL=1), so
                         # it stays on XWayland and bitmap-upscales to a blurry window
                         # on fractional scaling. Pass them unconditionally instead.
+                        # The assert fails once nixpkgs' wrapper passes them itself;
+                        # then delete this.
+                        assert !super.lib.hasInfix "ozone-platform" super.spotify.fixupPhase;
                         super.symlinkJoin {
                           name = "spotify-wayland";
                           paths = [ super.spotify ];
@@ -261,47 +269,18 @@
                       # so journald logs one line per second under the unit: 67% of
                       # this machine's journal. Still unfixed on upstream main,
                       # where the same asymmetry survived the port to framework_tool.
-                      # diff-cover 10.5.1's HTML snapshot tests fail on python3.14
-                      # (NixOS/nixpkgs#576851), so Hydra has no cached build and
-                      # sqlfluff (neovim) can't build. Fixed by the 10.6.0 bump
-                      # (#576855), which is on master but not yet on nixos-unstable.
-                      # The assert fires once the channel ships 10.6.0; then delete this.
-                      pythonPackagesExtensions = super.pythonPackagesExtensions ++ [
-                        (_: pyprev: {
-                          diff-cover =
-                            assert super.lib.versionOlder pyprev.diff-cover.version "10.6.0";
-                            pyprev.diff-cover.overridePythonAttrs (old: {
-                              disabledTests = (old.disabledTests or [ ]) ++ [
-                                "test_added_file_pycodestyle_html"
-                                "test_all_reports"
-                                "test_added_file_pyflakes_html"
-                                "test_added_file_pylint_html"
-                                "test_fail_under_html"
-                                "test_fail_under_pass_html"
-                              ];
-                            });
-                        })
-                      ];
-                      # audacity 4.0.0 fails against Qt 6.12: its unity build mixes Qt's
-                      # generated QML code with muse::extensions::Type, and `Type` becomes
-                      # ambiguous (NixOS/nixpkgs#572942). This copies the upstream fix
-                      # (#577022), which is on master but not yet on nixos-unstable. The
-                      # assert fires once the channel ships the fix; then delete this. The
-                      # replacement can't detect that itself, because its pattern still
-                      # matches inside the fixed line.
-                      audacity = super.audacity.overrideAttrs (
-                        old:
-                        assert !super.lib.hasInfix "NO_UNITY" old.postPatch;
-                        {
-                          postPatch = old.postPatch + ''
-                            substituteInPlace muse/framework/extensions/qml/Muse/Extensions/CMakeLists.txt \
-                              --replace-fail 'ALIAS muse::extensions_qml' 'NO_UNITY ALIAS muse::extensions_qml'
-                          '';
-                        }
-                      );
+                      # The replacement can't detect an upstream fix that puts
+                      # stderr= on its own line: the pattern would still match and
+                      # inject a duplicate keyword, a SyntaxError only at daemon
+                      # start. So the build refuses once the call carries stderr.
                       fw-fanctrl = super.fw-fanctrl.overrideAttrs (old: {
                         postPatch = (old.postPatch or "") + ''
-                          substituteInPlace src/fw_fanctrl/hardwareController/EctoolHardwareController.py \
+                          f=src/fw_fanctrl/hardwareController/EctoolHardwareController.py
+                          if sed -n '/"ectool temps all",/,/)/p' "$f" | grep -q stderr; then
+                            echo "fw-fanctrl: upstream now redirects stderr of ectool temps; drop the override" >&2
+                            exit 1
+                          fi
+                          substituteInPlace "$f" \
                             --replace-fail '"ectool temps all",' '"ectool temps all", stderr=subprocess.DEVNULL,'
                         '';
                       });
