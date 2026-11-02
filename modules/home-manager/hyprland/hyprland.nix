@@ -281,9 +281,6 @@ in
           decoration = {
             rounding = 8;
             rounding_power = 2;
-            active_opacity = 0.95;
-            inactive_opacity = 0.88;
-            fullscreen_opacity = 1.0;
 
             shadow = {
               enabled = true;
