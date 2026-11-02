@@ -16,7 +16,6 @@ in
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;
-      mise.enable = true;
     };
 
     # nix-direnv's _nix_refresh_gcroots touches $layout_dir/flake-profile-*

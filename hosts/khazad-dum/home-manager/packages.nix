@@ -9,7 +9,6 @@
     dust
     fd
     gh
-    gpclient
     hyperfine
     jq
     libnotify
@@ -72,7 +71,6 @@
     gpg.enable = true;
     home-manager.enable = true;
     zoxide.enable = true;
-    mise.enable = true;
     qmd = {
       enable = true;
       package = pkgs.qmd;
