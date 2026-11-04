@@ -36,8 +36,11 @@
       "attic/builder" = { };
     };
     templates = {
-      # nix's default netrc-file; the daemon reads it as root.
+      # nix's default netrc-file. Owned by the user because client-side nix
+      # commands (`nix log`) contact substituters directly and print a 401
+      # warning when they can't read it; the daemon reads it as root regardless.
       "nix-netrc" = {
+        owner = "datahearth";
         path = "/etc/nix/netrc";
         content = ''
           machine nix.nerds.casa
