@@ -6,6 +6,12 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+      # The default allows 48000 only, so Spotify Lossless (44.1 kHz) is
+      # resampled before anything (Spytify's capture included) sees it.
+      extraConfig.pipewire."10-clock-rates"."context.properties"."default.clock.allowed-rates" = [
+        44100
+        48000
+      ];
     };
 
     power-profiles-daemon.enable = true;
