@@ -26,6 +26,22 @@ let
       Each entry is an attrset, e.g. `{ workspace = 1; match.class = "Alacritty"; }`.
     '';
   };
+  stacks = lib.mkOption {
+    type = lib.types.listOf (lib.types.listOf lib.types.str);
+    default = [ ];
+    example = [
+      [
+        "spotify"
+        "org.spytify.ui"
+      ]
+    ];
+    description = ''
+      Window classes (exact, compared lowercase) kept stacked in one group.
+      The first class of each list leads the group and stays its first tab;
+      the others join it whenever either side opens. Pair with `window_rules`
+      putting every class of a stack on the same workspace.
+    '';
+  };
   package = lib.mkPackageOption pkgs "hyprland" { };
   display_manager = lib.mkEnableOption "display_manager";
   status_bar = lib.mkOption {
@@ -154,6 +170,53 @@ let
       ]
   );
 
+  # Window rules can't do this: `group` effects only act on the focused group,
+  # so a member opening while focus is elsewhere tiles beside its lead instead.
+  #
+  # `find` prefers a lead that already has a group, so a second lead window
+  # (another Zen window) doesn't start a rival group and pull the members away.
+  # Members leave any group they were auto-joined to first: HL.Group:add on a
+  # grouped window merges its whole group in. They're appended at an explicit
+  # index because group.insert_after_current would otherwise reorder them.
+  stackHook = inline ''
+    function(w)
+      local stacks = ${lib.generators.toLua { } cfg.stacks}
+      local class = w.class:lower()
+
+      local function find(c)
+        local any
+        for _, x in ipairs(hl.get_windows()) do
+          if x.class:lower() == c then
+            if x.group then return x end
+            any = any or x
+          end
+        end
+        return any
+      end
+
+      for _, stack in ipairs(stacks) do
+        local hit = false
+        for _, c in ipairs(stack) do hit = hit or c == class end
+        if hit then
+          local lead = find(stack[1])
+          if not lead then return end
+          if not lead.group then hl.dispatch(hl.dsp.group.toggle({ window = lead })) end
+          local group = lead.group
+          if not group then return end
+          for i = 2, #stack do
+            for _, m in ipairs(hl.get_windows()) do
+              if m.class:lower() == stack[i] and not (m.group and m.group == group) then
+                if m.group then m.group:remove(m) end
+                group:add(m, group.size + 1)
+              end
+            end
+          end
+          return
+        end
+      end
+    end
+  '';
+
   # "VAR,value" -> hl.env("VAR", "value")
   mkEnv =
     s:
@@ -172,6 +235,7 @@ in
     inherit
       enable
       window_rules
+      stacks
       exec_once
       additional_envs
       package
@@ -661,7 +725,13 @@ in
             ];
           }
         ]
-        ++ monitorHooks;
+        ++ monitorHooks
+        ++ lib.optional (cfg.stacks != [ ]) {
+          _args = [
+            "window.open"
+            stackHook
+          ];
+        };
       };
 
       # nwg-displays (0.4.3+) writes these Lua files; pcall keeps startup safe

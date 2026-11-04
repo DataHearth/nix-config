@@ -675,6 +675,10 @@ in
           };
         }
         {
+          workspace = 2;
+          match.class = "chromium-browser";
+        }
+        {
           workspace = 3;
           match = {
             class = "code";
@@ -704,8 +708,23 @@ in
         }
         {
           workspace = 9;
-          match.class = "F5 VPN";
+          # GTK reports the GApplication id; the prgname is the fallback.
+          match.class = "^(com\\.f5\\.f5vpn|f5vpn-ng)$";
         }
+      ];
+      stacks = [
+        [
+          "spotify"
+          "org.spytify.ui"
+        ]
+        [
+          "zen-beta"
+          "chromium-browser"
+        ]
+        [
+          "discord"
+          "signal"
+        ]
       ];
       exec_once = [
         # Commands that need arguments stay as raw strings.
