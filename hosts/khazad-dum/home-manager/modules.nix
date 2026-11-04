@@ -90,6 +90,31 @@ in
     yazi.enable = true;
     zellij.enable = true;
 
+    spytify = {
+      enable = true;
+      target = {
+        process = [
+          ".spotify-wrapped"
+          "spotify"
+        ];
+        mpris = "org.mpris.MediaPlayer2.spotify";
+        launch = lib.getExe pkgs.spotify;
+      };
+      settings = {
+        app = {
+          minimize_to_tray = true;
+          check_updates = false;
+        };
+        output = {
+          dir = "~/Documents/OpenCloud/Personal/medias/music";
+          prefix = "album_track";
+        };
+        encode.format = "flac";
+        tags.cover_size = "large";
+        privacy.bug_tracker = false;
+      };
+    };
+
     chromium = {
       enable = true;
       claudeInChrome = true;
@@ -672,6 +697,10 @@ in
         {
           workspace = 6;
           match.class = "[Ss]potify"; # XWayland "Spotify" + native-Wayland "spotify"
+        }
+        {
+          workspace = 6;
+          match.class = "org\\.spytify\\.ui";
         }
         {
           workspace = 9;

@@ -211,6 +211,7 @@
                       # upstream .deb (nixpkgs has no claude-desktop). The package
                       # forces Wayland/ozone itself — see packages/claude-desktop.nix.
                       claude-desktop = super.callPackage ./packages/claude-desktop.nix { };
+                      spytify = super.callPackage ./packages/spytify.nix { };
                       # Track claude-code releases independently of the nixpkgs
                       # channel: the derivation reads version + per-platform
                       # checksums from a manifest, so pointing it at a local copy

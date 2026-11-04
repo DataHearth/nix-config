@@ -101,7 +101,7 @@ nix-config/
 │   ├── home-manager/    # Home Manager modules (options under home_modules.<name>)
 │   │   ├── alacritty.nix, atuin.nix, bat.nix, battery-notify.nix
 │   │   ├── chromium.nix, direnv.nix, elephant.nix, git.nix
-│   │   ├── jujutsu.nix, okular.nix, power-profile.nix, ssh.nix, starship.nix
+│   │   ├── jujutsu.nix, okular.nix, power-profile.nix, spytify.nix, ssh.nix, starship.nix
 │   │   ├── theme.nix, walker.nix, yazi.nix, zen-browser.nix, zsh.nix
 │   │   ├── claude-code/, hyprland/, neovim/, swaync/, waybar/, zellij/
 │   │   └── default.nix  # Module aggregator
@@ -154,6 +154,7 @@ Available modules in `modules/home-manager/`:
 - **neovim/**: Neovim editor
 - **okular.nix**: Okular document viewer
 - **power-profile.nix**: power-profiles-daemon switching on AC/battery transitions
+- **spytify.nix**: Spytify per-app audio recorder (player target, config.toml)
 - **ssh.nix**: SSH client configuration
 - **starship.nix**: Starship shell prompt
 - **swaync/**: Notification daemon

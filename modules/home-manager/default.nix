@@ -12,6 +12,7 @@
   ./hyprland
   ./jujutsu.nix
   ./okular.nix
+  ./spytify.nix
   ./ssh.nix
   ./starship.nix
   ./swaync
