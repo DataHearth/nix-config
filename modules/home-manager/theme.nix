@@ -32,6 +32,10 @@ in
       # catppuccin/nix only fills in `home.pointerCursor.{name,package}`; Home
       # Manager deprecated inferring `enable` from those, so set it here.
       home.pointerCursor.enable = true;
+      # catppuccin/nix's own cursors drv renders all 64 flavor/accent outputs,
+      # isn't on cache.nixos.org, and rebuilds (~35 min) on every nixpkgs bump.
+      # nixpkgs' package ships the same theme name and is Hydra-cached.
+      home.pointerCursor.package = lib.mkForce pkgs.catppuccin-cursors.macchiatoMauve;
 
       gtk = {
         enable = true;
