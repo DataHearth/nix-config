@@ -149,8 +149,7 @@ in
       # several skills ship .py helpers (skill-creator's quick_validate imports
       # yaml). Scoped to claude's own PATH rather than home.packages: this is an
       # interpreter for the agent, not one for the user profile.
-      # archify's validate/deliver CLI is plain Node; its visual-check and
-      # exports drive the chromium already on the user profile.
+      # watermarks-remover's hooks are launched with a bare `node`.
       # watermarks-remover's cleaning scripts silently skip PDF and image
       # metadata stripping when exiftool, qpdf and c2patool are absent, and
       # leave metadata inside a PDF's embedded images without ghostscript.
@@ -172,16 +171,14 @@ in
         hash = "sha256-Q6vlkbTfBFrNFTxEwYeMe5ciOe6QdULegvExwT//gJs=";
       };
 
-      # Interactive architecture/workflow/sequence diagrams as standalone HTML.
-      # https://github.com/tt-a1i/archify
-      skills.archify = "${
-        pkgs.fetchFromGitHub {
-          owner = "tt-a1i";
-          repo = "archify";
-          rev = "v3.0.1";
-          hash = "sha256-i7+M5PdQkGiC/Sow9Vtfh+ZHnOMVM9uBOtdzkKZhzLY=";
-        }
-      }/archify";
+      # Editorial diagrams as self-contained HTML + SVG. The repo has no tags.
+      # https://github.com/cathrynlavery/diagram-design
+      plugins.diagram-design = pkgs.fetchFromGitHub {
+        owner = "cathrynlavery";
+        repo = "diagram-design";
+        rev = "f24d98b05e2d7a5e68c2dedfe46e5b7173f50118";
+        hash = "sha256-/JrAs1HS7Pwtlpsd1JX8tTiKVzi3iG+baO4O3j7u69c=";
+      };
 
       mcpServers = {
         claude-design = {
