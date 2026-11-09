@@ -41,7 +41,7 @@ in
           backend = "gpg";
           key = cfg.signingKey;
         };
-        git.sign-on-push = cfg.signingKey != null;
+        revsets.git-sign-on-push = lib.mkIf (cfg.signingKey != null) "~signed() & mine()";
         user = {
           name = cfg.user.name;
           email = cfg.user.email;
