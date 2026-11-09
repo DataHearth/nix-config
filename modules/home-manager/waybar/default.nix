@@ -126,12 +126,6 @@ in
 
           "hyprland/workspaces" = {
             format = "{name}";
-            # Hyprland's Lua config (configType = "lua") evaluates every IPC
-            # `dispatch` as Lua, so the legacy `dispatch workspace N` form is
-            # dead — switching is now `hl.dsp.focus({ workspace = N })`.
-            # Scroll uses that form below. Click stays on waybar's built-in
-            # "activate", which hardcodes the legacy string in C++ and is
-            # broken until upstream lands a fix (Alexays/Waybar#5008).
             on-click = "activate";
             on-scroll-up = "${hyprctl} dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'";
             on-scroll-down = "${hyprctl} dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'";
