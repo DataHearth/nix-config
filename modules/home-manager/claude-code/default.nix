@@ -60,6 +60,19 @@ let
     text = builtins.readFile ./cd-guard.sh;
   };
 
+  bgOutputGuard = pkgs.writeShellApplication {
+    name = "claude-bg-output-guard";
+    runtimeInputs = [
+      pkgs.jq
+      pkgs.gnused
+    ];
+    bashOptions = [
+      "nounset"
+      "pipefail"
+    ];
+    text = builtins.readFile ./bg-output-guard.sh;
+  };
+
   # SessionStart + CwdChanged hook: load the cwd's direnv/nix-direnv devShell
   # into Claude Code's Bash environment. Chiefly for the Claude Desktop "Code"
   # tab, which launches from the GUI and inherits no project devShell (see
@@ -253,6 +266,10 @@ in
                     {
                       type = "command";
                       command = lib.getExe cdGuard;
+                    }
+                    {
+                      type = "command";
+                      command = lib.getExe bgOutputGuard;
                     }
                   ];
                 }

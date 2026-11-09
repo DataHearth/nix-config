@@ -148,12 +148,14 @@ keeps it unless there is a specific reason to override.
 
 # Background tasks: leave output on stdout
 
-When a command runs with `run_in_background`, do not redirect its output
-to a file (`> log 2>&1`, `&> log`, `| tee log >/dev/null`, `nohup`). The
-harness already captures stdout/stderr and the user follows it live in
-the Claude Code TUI; a redirect leaves that view empty, and the user
-cannot see what the task is doing. Read the output through the harness
-too, not by tailing a log file.
+When a command runs with `run_in_background`, its stdout and stderr must
+still reach the harness: the user follows them live in the Claude Code
+TUI to check the task is not stalled. Never redirect them away
+(`> log 2>&1`, `&> log`, `2>/dev/null`, `| tee log >/dev/null`), never
+hold them back with `| tail`/`| head`, and never detach (`nohup`,
+`setsid`, `disown`, a trailing `&`). A PreToolUse hook denies these;
+silencing a probe inside `$(…)`, a loop/`if` condition or `command -v`
+is fine.
 
-A file is fine only when the output itself is the artifact (a dump to
-inspect or diff later) — then `tee` it so stdout still carries it.
+Writing a copy to a file is fine: `cmd 2>&1 | tee log` keeps the stream
+on stdout and leaves the file behind.
