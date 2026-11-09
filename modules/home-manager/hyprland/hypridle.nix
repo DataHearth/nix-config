@@ -148,8 +148,10 @@ in
           }
           {
             timeout = 600; # 10min
-            on-timeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
-            on-resume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on && brightnessctl -r ";
+            # Lua-config Hyprland evaluates IPC dispatch as Lua; the legacy
+            # `dispatch dpms off` form is a syntax error there and does nothing.
+            on-timeout = ''${pkgs.hyprland}/bin/hyprctl dispatch 'hl.dsp.dpms({ action = "off" })' '';
+            on-resume = ''${pkgs.hyprland}/bin/hyprctl dispatch 'hl.dsp.dpms({ action = "on" })' && brightnessctl -r'';
           }
           {
             timeout = 720; # 12min
@@ -158,6 +160,12 @@ in
         ];
       };
     };
+
+    # hypridle-power-sync is the only thing allowed to start hypridle. Left
+    # wanted by graphical-session.target, every home-manager activation
+    # restarts it while it is stopped on AC, and power-sync never notices
+    # because it only acts on an AC<->battery flip.
+    systemd.user.services.hypridle.Install.WantedBy = lib.mkForce [ ];
 
     # Drive hypridle from power source: off on AC, on on battery.
     systemd.user.services.hypridle-power-sync = {
