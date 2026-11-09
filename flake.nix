@@ -164,6 +164,17 @@
                   nixpkgs.overlays = [
                     (_self: super: {
                       jj-lsp = inputs'.jj-lsp.packages.default;
+                      # nixpkgs' ccusage 20.0.37 makes zstd-sys probe pkg-config
+                      # for libzstd but never puts zstd in buildInputs, so the
+                      # build panics. The assert fails once nixpkgs adds it; then
+                      # delete this.
+                      ccusage = super.ccusage.overrideAttrs (
+                        old:
+                        assert !builtins.elem super.zstd old.buildInputs;
+                        {
+                          buildInputs = old.buildInputs ++ [ super.zstd ];
+                        }
+                      );
                       # qmd's wrapper hard-`--set`s LD_LIBRARY_PATH, so the Vulkan
                       # loader and the NixOS driver path are invisible to the
                       # prebuilt node-llama-cpp Vulkan addon (`libvulkan.so.1 =>
