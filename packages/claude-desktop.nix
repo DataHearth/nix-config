@@ -81,16 +81,16 @@
   cowork ? true,
 }:
 let
-  version = "4.23118.0";
+  version = "5.1231.2";
   base = "https://downloads.claude.ai/claude-desktop/apt/stable/pool/main/c/claude-desktop";
   srcs = {
     x86_64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_amd64.deb";
-      sha256 = "1ad996e8caab05c9b374646051c40cb6bb9d84f371756f15b8d3728897515a97";
+      sha256 = "eb4d16c9aff0a696366d88728f74fa55136be7cfde3c1fe35af4062b45955b6f";
     };
     aarch64-linux = fetchurl {
       url = "${base}/claude-desktop_${version}_arm64.deb";
-      sha256 = "b4c04e08338b321f5c02543ab6be819cbb9f38ef051a3e7d8ffdc5b4d5248ea4";
+      sha256 = "d7a0144e6946975e6c5f33a48db08cbe08bccda04bdb19cf2254aa690bce25c1";
     };
   };
 in
@@ -185,6 +185,11 @@ stdenvNoCC.mkDerivation {
     # libEGL.so.1 already resolves through libglvnd in runtimeDependencies.
     makeWrapper $out/lib/claude-desktop/claude-desktop $out/bin/claude-desktop \
       "''${gappsWrapperArgs[@]}" \
+      `# Since 4.23118.0 the app narrows its own PATH to FHS dirs plus` \
+      `# /run/current-system/sw/bin, so xdg-open is found but a browser from the` \
+      `# per-user profile is not, and "sign in with Google" silently opens` \
+      `# nothing. The portal launches the handler from its own environment.` \
+      --set NIXOS_XDG_OPEN_USE_PORTAL 1 \
       --prefix PATH : ${
         lib.makeBinPath [
           direnv
